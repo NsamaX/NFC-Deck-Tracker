@@ -1,0 +1,39 @@
+import 'package:flutter/foundation.dart';
+
+import 'package:nfc_deck_tracker/data/repository/update_room.dart';
+
+import '../entity/card.dart';
+import '../entity/room.dart';
+import '../mapper/room.dart';
+
+class UpdateRoomUsecase {
+  final UpdateRoomRepository updateRoomRepository;
+
+  UpdateRoomUsecase({
+    required this.updateRoomRepository,
+  });
+
+  Future<void> call({
+    required String roomId,
+    required RoomEntity updatedRoom,
+  }) async {
+    final uniqueCardsMap = <String, CardEntity>{};
+    for (final card in updatedRoom.cards) {
+      if (card.cardId != null) {
+        uniqueCardsMap[card.cardId!] = card;
+      }
+    }
+
+    final uniqueCards = uniqueCardsMap.values.toList();
+    final deduplicatedRoom = updatedRoom.copyWith(cards: uniqueCards);
+
+    final success = await updateRoomRepository.updateRoomRecord(
+      roomId: roomId,
+      updatedRoom: RoomMapper.toModel(deduplicatedRoom),
+    );
+
+    if (!success) {
+      debugPrint('⚠️ Failed to update room "$roomId"');
+    }
+  }
+}

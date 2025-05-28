@@ -1,0 +1,68 @@
+<mxfile host="65bd71144e">
+    <diagram name="Page-1" id="FUj5JuBEpWsL8a2AdBEq">
+        <mxGraphModel dx="-394" dy="489" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-135" value="เริ่มต้น" style="whiteSpace=wrap;strokeWidth=1;fillColor=default;" parent="1" vertex="1">
+                    <mxGeometry x="1254.36" y="295" width="101" height="49" as="geometry"/>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-148" value="สิ้นสุด" style="whiteSpace=wrap;strokeWidth=1;fillColor=default;" parent="1" vertex="1">
+                    <mxGeometry x="1255.36" y="755" width="99" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-149" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" parent="1" source="6EVmLK6l6n9z2KSdd183-135" target="6EVmLK6l6n9z2KSdd183-172" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                        <mxPoint x="1304.86" y="265" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="2" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;rounded=0;" edge="1" parent="1" source="6EVmLK6l6n9z2KSdd183-172" target="6EVmLK6l6n9z2KSdd183-189">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1194.86" y="455"/>
+                            <mxPoint x="1194.86" y="685"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="3" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;ไม่&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="2">
+                    <mxGeometry x="-0.853" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-172" value="สมาร์ทโฟน&#xa;รองรับ NDEF" style="rhombus;strokeWidth=1;whiteSpace=wrap;fontStyle=0;fillColor=default;" parent="1" vertex="1">
+                    <mxGeometry x="1254.36" y="404" width="101" height="101" as="geometry"/>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-189" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=default;" parent="1" vertex="1">
+                    <mxGeometry x="1294.86" y="675" width="20" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-191" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="6EVmLK6l6n9z2KSdd183-189" target="6EVmLK6l6n9z2KSdd183-148" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1244.86" y="955" as="sourcePoint"/>
+                        <mxPoint x="1294.86" y="905" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-223" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" parent="1" source="6EVmLK6l6n9z2KSdd183-172" target="6EVmLK6l6n9z2KSdd183-228" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                        <mxPoint x="1304.86" y="516" as="sourcePoint"/>
+                        <mxPoint x="1304.86" y="560" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="4" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;ใช่&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="6EVmLK6l6n9z2KSdd183-223">
+                    <mxGeometry x="-0.2141" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-228" value="เขียนข้อมูลที่การ์ด" style="whiteSpace=wrap;strokeWidth=1;fillColor=default;" parent="1" vertex="1">
+                    <mxGeometry x="1255.36" y="565" width="99" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-229" value="" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" parent="1" source="6EVmLK6l6n9z2KSdd183-228" target="6EVmLK6l6n9z2KSdd183-189" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1225.86" y="881" as="sourcePoint"/>
+                        <mxPoint x="1275.86" y="831" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

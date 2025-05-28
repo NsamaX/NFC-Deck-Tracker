@@ -1,0 +1,18 @@
+import '_sqlite_service.dart';
+
+import '../../model/record.dart';
+
+class CreateRecordLocalDatasource {
+  final SQLiteService _sqliteService;
+
+  CreateRecordLocalDatasource(this._sqliteService);
+
+  Future<void> createRecord({
+    required RecordModel record,
+  }) async {
+    await _sqliteService.insert(
+      table: 'records',
+      data: record.toJson(),
+    );
+  }
+}

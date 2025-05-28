@@ -1,0 +1,150 @@
+{
+  "language_name": "English",
+  "common": {
+    "button_cancel": "Cancel",
+    "button_confirm": "Confirm",
+    "button_delete": "Delete",
+    "button_ok": "OK"
+  },
+  "card": {
+    "name": "Name",
+    "description": "Description",
+    "ability": "Ability",
+    "no_name": "No name",
+    "no_description": "No description",
+    "no_result": "No cards found matching your search."
+  },
+  "nfc_snack_bar": {
+    "error_unavailable": "NFC is not available on this device.",
+
+    "error_start_session": "Unable to start NFC session. Please try again.",
+    "error_restart_session": "NFC session expired. Restarting session...",
+
+    "error_process_tag": "An error occurred while processing the NFC tag.",
+    "error_read_tag": "Unable to read from the NFC tag. Please try again.",
+    "error_write_tag": "Unable to write to the NFC tag. Ensure the tag is writable and has enough storage capacity, then try again.",
+    
+    "error_tag_not_detected": "No NFC tag was detected. Please place the tag near the device.",
+    "error_tag_card_found": "A card with this tag already exists.",
+    "error_tag_card_not_found": "No matching card was found for this tag.",
+
+    "success_read_tag": "Card successfully read from the NFC tag.",
+    "success_write_tag": "Card information successfully written to the NFC tag."
+  },
+  "bottom_navigation_bar": {
+    "deck_list": "Decks",
+    "card_reader": "Read",
+    "setting": "Settings"
+  },
+  "page_landing": {
+    "app_name": "Deck Tracker",
+    "app_description": "With NFC technology and this app, managing your cards is easy! Simply scan, track, and organize the cards in your deck with ease. You'll always know what's in your deck, allowing you to focus and enjoy the game more!",
+    "button_get_started": "Get Started"
+  },
+  "page_sign_in": {
+    "title": "Let's Get Started!",
+    "offline_message": "You are currently offline.\nSign-in with other methods is not available.",
+    "snack_bar_sign_in_fail": "Sign-in failed. Please check your credentials and try again.",
+    "snack_bar_sign_in_error_unknow": "An unknown error occurred during sign-in. Please try again later.",
+    "button_guest_sign_in": "Guest Sign In"
+  },
+  "page_deck_list": {
+    "app_bar": "My Decks",
+    "empty_message": "Tap the icon on the top left\nto create a deck."
+  },
+  "page_deck_create": {
+    "app_bar": "New Deck",
+    "toggle_save": "Save",
+    "toggle_edit": "Edit",
+    "dialog_delete_title": "Delete All Cards",
+    "dialog_delete_content": "Are you sure you want to delete all cards in this deck? This action cannot be undone.",
+    "snack_bar_delete": "All cards in the deck deleted successfully.",
+    "snack_bar_share": "Your deck log has been copied to the clipboard for easy sharing.",
+    "clipboard_deck_name": "Deck Name",
+    "clipboard_total_cards": "Total {total} Card",
+    "empty_message": "Tap '+' to add a card\nto your deck."
+  },
+  "page_deck_tracker": {
+    "app_bar": "Deck Tracker",
+    "toggle_create_room": "Create Room",
+    "toggle_join_room": "Join Room",
+    "dialog_tracker_tutorial_title": "Card tracking",
+    "dialog_tracker_tutorial_content": "You can scan your cards while playing to manage your deck. Each scan updates your deck's status—scanned cards are removed, and rescanned cards are added back. Press 'OK' to continue.",
+    "dialog_reset_deck_title": "Would you like to reset?",
+    "dialog_reset_deck_content": "You can choose to save your game or just reset.",
+    "snack_bar_not_part_of_current_deck": "This card is not part of the current deck.",
+    "button_reset": "Reset",
+    "button_save": "Save",
+    "switch_mode_deck": "Deck",
+    "switch_mode_insight": "Insight",
+    "total_cards": "Total {card} Card",
+    "draw": "Draw",
+    "return": "Return",
+    "summerize_title": "Summarize",
+    "summarize_percentage_played": "{percentage}% of the deck's cards were played.",
+    "summarize_total_action": "Total draw {draw} return {return}",
+    "summarize_unused_card": "Unused {unused} Cards",
+    "history_title": "History"
+  },
+  "page_card_reader": {
+    "app_bar": "Read Tag"
+  },
+  "page_collection": {
+    "app_bar": "Games",
+    "toggle_new": "New",
+    "dialog_create_title": "Collection Name"
+  },
+  "page_search": {
+    "app_bar": "Search",
+    "search_hint_text": "Enter card name",
+    "empty_collection": "No card in collection.",
+    "error_fetch_card": "Failed to fetch card data. Please try again later.",
+    "empty_search_result": "No cards found matching your search."
+  },
+  "page_card_detail": {
+    "app_bar_card": "Card Info",
+    "app_bar_custom": "Custom Card",
+    "toggle_add": "Add",
+    "toggle_done": "Done",
+    "snack_bar_add": "Card successfully added to your deck!",
+    "upload_image": "Upload Image"
+  },
+  "page_setting": {
+    "app_bar": "Settings",
+    "section_account_label": "Account",
+    "section_account_email": "Email",
+    "section_account_library": "Library",
+    "section_account_sign_in": "Sign in",
+    "section_account_sign_out": "Sign out",
+    "section_app_info_label": "App Info",
+    "section_app_info_about": "About",
+    "section_app_info_privacy": "Privacy",
+    "section_app_info_terms": "Terms of Use",
+    "section_preferences_label": "Preferences",
+    "section_preferences_language": "Language",
+    "section_preferences_theme": "Theme"
+  },
+  "page_library": {
+    "app_bar": "Library",
+    "empty_message": "Browse all the cards and decks\nyou have created or saved."
+  },
+  "page_about": {
+    "app_bar": "About",
+    "content": "NFC Deck Tracker is a purpose-built mobile application developed to enhance the experience of trading card game (TCG) players. It provides comprehensive tools for deck creation, organization, and real-time tracking—supporting users throughout both the preparation phase and active gameplay.\n\nLeveraging NFC (Near Field Communication) technology, the application enables seamless card interaction, allowing players to monitor card usage in real-time and gain insights through intuitive deck analysis. The platform supports both offline functionality and optional synchronization of user data across devices for added flexibility and reliability.\n\nThis application was developed as part of an academic thesis project by NsamaX, Faculty of Science, Silpakorn University.\n\nVersion: {version}"
+  },
+  "page_privacy": {
+    "app_bar": "Privacy",
+    "content": "NFC Deck Tracker is developed with a strong commitment to user privacy. The application does not require the submission or collection of any personally identifiable information. No personal data is collected, processed, stored, or transmitted to any third party through the use of this application.\n\nAll in-app operations—including the creation, modification, tracking, and storage of card deck data—are strictly limited to functionality necessary for personal and recreational use. NFC functionality is employed exclusively for facilitating local card recognition and deck management. The application does not transmit, analyze, or distribute data beyond the user’s own device, except in cases where the user explicitly enables cloud synchronization.\n\nThis software is intended for non-commercial, non-competitive, and non-intrusive use. It is the responsibility of the user to ensure compliance with any third-party rules, regulations, or terms—such as those set by game publishers, tournament organizers, or affiliated communities. The developer does not endorse or authorize the use of this application in any competitive, official, or regulated setting unless explicitly permitted by such third parties.\n\nAny misuse of this application, including but not limited to unauthorized modification, deceptive behavior, or violations of third-party terms of service, is strictly discouraged. The developer disclaims all liability for damages, disputes, or penalties arising from improper or unintended use of this software or any associated technology.\n\nBy continuing to use this application, the user affirms understanding and acceptance of these terms and agrees to use the software in good faith and within its intended scope."
+  },
+  "page_terms_of_use": {
+    "app_bar": "Tearm of Use",
+    "content": "Effective Date: April 25, 2025\n\nBy downloading, installing, or using NFC Deck Tracker (\"the Application\"), you agree to be bound by the following terms and conditions. If you do not agree with these terms, please do not use the Application.\n\n1. License of Use\nThe Application is provided for personal, non-commercial use only. You are granted a limited, non-exclusive, non-transferable, and revocable license to use the Application for its intended purposes.\n\nYou may not:\n\nReproduce, redistribute, or sublicense the Application or any part of its code.\n\nModify, adapt, reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code of the Application.\n\nUse the Application in any way that violates applicable laws, third-party rights, or the rules of games or tournaments.\n\n2. Intellectual Property\nAll rights, title, and interest in and to the Application, including but not limited to the user interface, design, and source code (except open-source components credited separately), remain the property of the developer.\n\n3. Acceptable Use\nThe Application is intended to assist with deck tracking in trading card games for casual and recreational use. The developer does not authorize use of the Application in official or competitive environments unless explicitly permitted by the relevant authorities.\n\n4. Disclaimer of Liability\nThe Application is provided “as is,” without warranties of any kind. The developer shall not be held liable for any damages, losses, or disputes arising from misuse, unauthorized modifications, or reliance on the Application in competitive settings.\n\n5. Changes to Terms\nThe developer reserves the right to update or modify these Terms of Use at any time without prior notice. It is your responsibility to review this page periodically. Continued use of the Application after changes constitutes acceptance of the revised terms."
+  },
+  "page_language": {
+    "app_bar": "Language"
+  },
+  "page_not_found": {
+    "title": "Page Not Found",
+    "button_back": "Back"
+  }
+}
