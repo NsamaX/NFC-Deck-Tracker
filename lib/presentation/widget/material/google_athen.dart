@@ -43,10 +43,17 @@ Future<void> signOutFromGoogle({
   await GoogleSignIn().signOut();
 }
 
-void handleGuestSignIn({
+Future<void> handleGuestSignIn({
   required NavigatorState navigator,
   required ApplicationCubit applicationCubit,
-}) {
+}) async {
+  final FirebaseAuth auth = FirebaseAuth.instance;
+
+  if (auth.currentUser != null) {
+    await auth.signOut();
+    await GoogleSignIn().signOut();
+  }
+
   applicationCubit.updateSetting(
     key: SettingConstant.keyLoggedIn,
     value: true,
