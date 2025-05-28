@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
-
 import 'package:nfc_deck_tracker/data/datasource/api/_service_factory.dart';
 import 'package:nfc_deck_tracker/data/model/collection.dart';
 import 'package:nfc_deck_tracker/data/model/page.dart';
@@ -19,22 +18,22 @@ import 'package:nfc_deck_tracker/util/logger.dart';
 import '../entity/card.dart';
 import '../mapper/card.dart';
 
-class FetchCardUsecase {
-  final CreateCollectionRepository createCollectionRepository;
-  final CreatePageRepository createPageRepository;
-  final FetchCardRepository fetchCardRepository;
-  final FindPageRepository findPageRepository;
-  final SaveCardRepository saveCardRepository;
-  final UpdatePageRepository updatePageRepository;
+  class FetchCardUsecase {
+    final CreateCollectionRepository createCollectionRepository;
+    final CreatePageRepository createPageRepository;
+    final FetchCardRepository fetchCardRepository;
+    final FindPageRepository findPageRepository;
+    final SaveCardRepository saveCardRepository;
+    final UpdatePageRepository updatePageRepository;
 
-  FetchCardUsecase({
-    required this.createCollectionRepository,
-    required this.createPageRepository,
-    required this.fetchCardRepository,
-    required this.findPageRepository,
-    required this.saveCardRepository,
-    required this.updatePageRepository,
-  });
+    FetchCardUsecase({
+      required this.createCollectionRepository,
+      required this.createPageRepository,
+      required this.fetchCardRepository,
+      required this.findPageRepository,
+      required this.saveCardRepository,
+      required this.updatePageRepository,
+    });
 
   Future<List<CardEntity>> call({
     required String userId,
@@ -44,9 +43,8 @@ class FetchCardUsecase {
   }) async {
     final int effectiveBatchSize = batchSize ?? (kReleaseMode ? 5 : 1);
 
-    final localCards = await fetchCardRepository.fetchLocalCard(
-      collectionId: collectionId,
-    );
+    final localCards = await fetchCardRepository.fetchLocalCard(collectionId: collectionId);
+    final combinedCards = [...localCards];
 
     final bool isFirstLoad = localCards.isEmpty;
     final bool isSupportedGame = GameConstant.isSupported(collectionId);
@@ -70,22 +68,18 @@ class FetchCardUsecase {
         ),
       );
     } else {
-      LoggerUtil.addMessage(message: '[Local] Found ${localCards.length} cards for $collectionId');
+      LoggerUtil.addMessage(message: '[Local] Cards loaded from local database');
     }
 
     if (isSupportedGame) {
-      final Map<String, dynamic> localPageMap = await findPageRepository.findPage(
-        collectionId: collectionId,
-      );
-
+      final Map<String, dynamic> localPageMap = await findPageRepository.findPage(collectionId: collectionId);
       final PagingStrategy pageStrategy = ServiceFactory.create(collectionId: collectionId);
 
       final Map<String, dynamic> pageMap = Map<String, dynamic>.from(localPageMap);
       final List<Map<String, dynamic>> pagesToFetch = [];
 
       if (!kReleaseMode) {
-        final page = pageStrategy.buildPage(current: pageMap, offset: 0);
-        pagesToFetch.add(page);
+        pagesToFetch.add(pageStrategy.buildPage(current: pageMap, offset: 0));
       } else {
         for (int offset = 0; offset < effectiveBatchSize; offset++) {
           final page = pageStrategy.buildPage(current: pageMap, offset: offset);
@@ -101,18 +95,14 @@ class FetchCardUsecase {
         final String pageKey = _normalizeKey(page: page);
 
         try {
-          LoggerUtil.addMessage(message: '[API] Fetching page: ${jsonEncode(page)}');
+          final apiCards = await fetchCardRepository.fetchApiCard(page: page);
 
-          final cards = await fetchCardRepository.fetchApiCard(page: page);
-          LoggerUtil.addMessage(message: '🃏 ${cards.length} cards loaded from API');
-
-          if (cards.isNotEmpty) {
-            await saveCardRepository.saveCard(cards: cards);
-          }
-
-          if (cards.isEmpty) {
-            LoggerUtil.addMessage(message: '[Page] Reached last page → updating paging info');
-
+          if (apiCards.isNotEmpty) {
+            await saveCardRepository.saveCard(cards: apiCards);
+            combinedCards.addAll(apiCards);
+            LoggerUtil.addMessage(message: '[API] Loaded page: ${jsonEncode(page)} → ${apiCards.length} cards');
+          } else {
+            LoggerUtil.addMessage(message: '[API] Page has no more cards: ${jsonEncode(page)}');
             pageMap[pageKey] = true;
 
             await updatePageRepository.updatePage(
@@ -129,7 +119,7 @@ class FetchCardUsecase {
 
       LoggerUtil.flushMessages();
     } else if (userId.isNotEmpty) {
-      LoggerUtil.addMessage(message: '[Remote] Fetching custom collection from remote');
+      LoggerUtil.addMessage(message: '[Remote] Fetching cards from remote (custom collection)');
 
       try {
         final remoteCards = await fetchCardRepository.fetchRemoteCard(
@@ -139,28 +129,19 @@ class FetchCardUsecase {
 
         if (remoteCards.isNotEmpty) {
           await saveCardRepository.saveCard(cards: remoteCards);
-          LoggerUtil.addMessage(message: '🃏 ${remoteCards.length} cards loaded from remote Firestore');
+          combinedCards.addAll(remoteCards);
+          LoggerUtil.addMessage(message: '[Remote] Cards loaded from remote Firestore');
         } else {
-          LoggerUtil.addMessage(message: 'ℹ️ No cards found in remote');
+          LoggerUtil.addMessage(message: '[Remote] No cards found in remote');
         }
       } catch (e) {
         LoggerUtil.addMessage(message: '[Error] Failed to fetch remote cards for $collectionId\n$e');
       }
 
       LoggerUtil.flushMessages();
-
-      final updated = await fetchCardRepository.fetchLocalCard(
-        collectionId: collectionId,
-      );
-
-      return updated.map(CardMapper.toEntity).toList();
     }
 
-    final updatedCards = await fetchCardRepository.fetchLocalCard(
-      collectionId: collectionId,
-    );
-
-    return updatedCards.map(CardMapper.toEntity).toList();
+    return combinedCards.map(CardMapper.toEntity).toList();
   }
 
   String _normalizeKey({
