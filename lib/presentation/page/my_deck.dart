@@ -22,29 +22,31 @@ class _MyDeckPageState extends State<MyDeckPage> {
   @override
   void initState() {
     super.initState();
-
     userId = FirebaseAuth.instance.currentUser?.uid ?? '';
     context.read<DeckCubit>().fetchDeck(userId: userId);
   }
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalization.of(context);
+
     return BlocBuilder<DeckCubit, DeckState>(
       builder: (context, state) {
+        final deckItems = state.decks;
+        final isLoading = state.isLoading;
+
         Widget body;
 
-        if (state.isLoading) {
-          body = const Center(
-            child: CircularProgressIndicator(),
-          );
-        } else if (state.decks.isEmpty) {
+        if (isLoading) {
+          body = const Center(child: CircularProgressIndicator());
+        } else if (deckItems.isEmpty) {
           body = DescriptionAlignCenter(
-            text: AppLocalization.of(context).translate('page_deck_list.empty_message'),
+            text: locale.translate('page_deck_list.empty_message'),
           );
         } else {
           body = DeckOrCardGridView(
             userId: userId,
-            items: state.decks,
+            items: deckItems,
           );
         }
 

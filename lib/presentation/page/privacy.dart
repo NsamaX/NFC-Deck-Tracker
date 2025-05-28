@@ -10,6 +10,7 @@ class PrivacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBarWidget(
@@ -26,7 +27,7 @@ class PrivacyPage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Text(
             locale.translate('page_privacy.content'),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
         ),
       ),

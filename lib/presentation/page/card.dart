@@ -26,20 +26,30 @@ class CardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: locator<CardCubit>(),
-      child: _CardPageContent(),
+      child: const _CardPageContent(),
     );
   }
 }
 
 class _CardPageContent extends StatefulWidget {
+  const _CardPageContent();
+
   @override
   State<_CardPageContent> createState() => _CardPageContentState();
 }
 
 class _CardPageContentState extends State<_CardPageContent> {
-  late final nameController = TextEditingController();
-  late final descriptionController = TextEditingController();
-  late final abilityController = TextEditingController();
+  late final TextEditingController nameController;
+  late final TextEditingController descriptionController;
+  late final TextEditingController abilityController;
+
+  @override
+  void initState() {
+    super.initState();
+    nameController = TextEditingController();
+    descriptionController = TextEditingController();
+    abilityController = TextEditingController();
+  }
 
   @override
   void dispose() {
@@ -52,10 +62,10 @@ class _CardPageContentState extends State<_CardPageContent> {
   @override
   Widget build(BuildContext context) {
     final args = getArguments(context);
-    final card = args['card'] ?? CardEntity();
-    final isAdd = args['isAdd'] ?? false;
+    final card = args['card'] as CardEntity? ?? CardEntity();
     final isCustom = args['isCustom'] ?? false;
-
+    final isAdd = args['isAdd'] ?? false;
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
     final cardCubit = context.read<CardCubit>();
 
     return NfcWriteTagListener(
@@ -63,7 +73,7 @@ class _CardPageContentState extends State<_CardPageContent> {
         builder: (context, state) {
           return Scaffold(
             appBar: CardAppBar(
-              userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+              userId: userId,
               card: card,
               isAdd: isAdd,
               isCustom: isCustom,

@@ -15,10 +15,12 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final mediaQuery = MediaQuery.of(context);
+    final connectivity = Connectivity();
 
     return Scaffold(
       body: StreamBuilder<List<ConnectivityResult>>(
-        stream: Connectivity().onConnectivityChanged,
+        stream: connectivity.onConnectivityChanged,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -37,7 +39,7 @@ class SignInPage extends StatelessWidget {
               vertical: UIConstant.paddingVertical,
             ),
             child: SizedBox(
-              height: MediaQuery.of(context).size.height,
+              height: mediaQuery.size.height,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [

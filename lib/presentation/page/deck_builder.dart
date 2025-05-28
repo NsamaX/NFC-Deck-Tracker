@@ -22,8 +22,9 @@ class _DeckBuilderPageState extends State<DeckBuilderPage> {
   @override
   void initState() {
     super.initState();
-
-    nameController = TextEditingController(text: context.read<DeckCubit>().state.currentDeck.name);
+    nameController = TextEditingController(
+      text: context.read<DeckCubit>().state.currentDeck.name,
+    );
   }
 
   @override
@@ -34,21 +35,23 @@ class _DeckBuilderPageState extends State<DeckBuilderPage> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalization.of(context);
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     return NfcWriteTagListener(
       child: BlocBuilder<DeckCubit, DeckState>(
         builder: (context, state) {
           final deck = state.currentDeck;
+          final isEmpty = deck.cards?.isEmpty ?? true;
 
           return Scaffold(
             appBar: DeckBuilderAppBar(
               userId: userId,
               nameController: nameController,
             ),
-            body: (deck.cards?.isEmpty ?? true)
+            body: isEmpty
                 ? DescriptionAlignCenter(
-                    text: AppLocalization.of(context).translate('page_deck_create.empty_message'),
+                    text: locale.translate('page_deck_create.empty_message'),
                     bottomNavHeight: true,
                   )
                 : DeckOrCardGridView(

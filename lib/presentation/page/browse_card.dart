@@ -25,33 +25,51 @@ class BrowseCardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final args = getArguments(context);
     final collectionId = args['collectionId'] as String;
+    final collectionName = args['collectionName'] ?? 'Unknown';
+    final isSupported = GameConstant.isSupported(collectionId);
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: locator<CardCubit>()),
         BlocProvider.value(value: locator<CollectionCubit>()),
-        BlocProvider.value(value: locator<SearchCubit>(
-            param1: !GameConstant.isSupported(collectionId) ? GameConstant.dummy : collectionId,
+        BlocProvider.value(
+          value: locator<SearchCubit>(
+            param1: isSupported ? collectionId : GameConstant.dummy,
           )..fetchCard(
-              userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+              userId: userId,
               collectionId: collectionId,
-              collectionName: args['collectionName'] ?? 'Unknown',
-            )),
+              collectionName: collectionName,
+            ),
+        ),
       ],
-      child: _BrowseCardPageContent(),
+      child: _BrowseCardPageContent(
+        args: args,
+        collectionId: collectionId,
+        isSupported: isSupported,
+        userId: userId,
+      ),
     );
   }
 }
 
 class _BrowseCardPageContent extends StatelessWidget {
-  const _BrowseCardPageContent();
+  final Map<String, dynamic> args;
+  final String collectionId;
+  final String userId;
+  final bool isSupported;
+
+  const _BrowseCardPageContent({
+    required this.args,
+    required this.collectionId,
+    required this.isSupported,
+    required this.userId,
+  });
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-
-    final args = getArguments(context);
-    final collectionId = args['collectionId'] as String;
+    final isAdd = args['isAdd'] ?? false;
     final searchCubit = context.read<SearchCubit>();
 
     return Scaffold(
@@ -61,7 +79,7 @@ class _BrowseCardPageContent extends StatelessWidget {
           AppBarMenuItem(
             label: locale.translate('page_search.app_bar'),
           ),
-          !GameConstant.isSupported(collectionId)
+          !isSupported
               ? AppBarMenuItem(
                   label: Icons.add_rounded,
                   action: {
@@ -81,9 +99,7 @@ class _BrowseCardPageContent extends StatelessWidget {
             onSearchChanged: (query) {
               searchCubit.filterCardByName(query: query);
             },
-            onSearchCleared: () {
-              searchCubit.resetSearch();
-            },
+            onSearchCleared: searchCubit.resetSearch,
           ),
           const SizedBox(height: 8),
           BlocBuilder<SearchCubit, SearchState>(
@@ -101,8 +117,8 @@ class _BrowseCardPageContent extends StatelessWidget {
               } else {
                 body = CardListWidget(
                   cards: state.visibleCards,
-                  isAdd: args['isAdd'] ?? false,
-                  userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+                  isAdd: isAdd,
+                  userId: userId,
                 );
               }
 

@@ -28,6 +28,8 @@ class _LibraryPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final collectionCubit = context.read<CollectionCubit>();
 
     return Scaffold(
       appBar: AppBarWidget(
@@ -40,18 +42,18 @@ class _LibraryPageContent extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<List<CardEntity>>(
-        future: context.read<CollectionCubit>().fetchUsedCardDistinct(),
+        future: collectionCubit.fetchUsedCardDistinct(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+          final cards = snapshot.data ?? [];
+
+          if (cards.isNotEmpty) {
             return DeckOrCardGridView(
-              items: snapshot.data!,
-              userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+              items: cards,
+              userId: userId,
             );
           } else {
             return DescriptionAlignCenter(

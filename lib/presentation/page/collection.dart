@@ -21,12 +21,14 @@ class CollectionPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: locator<CollectionCubit>(),
-      child: _CollectionPageContent(),
+      child: const _CollectionPageContent(),
     );
   }
 }
 
 class _CollectionPageContent extends StatefulWidget {
+  const _CollectionPageContent();
+
   @override
   State<_CollectionPageContent> createState() => _CollectionPageContentState();
 }
@@ -38,7 +40,6 @@ class _CollectionPageContentState extends State<_CollectionPageContent> {
   @override
   void initState() {
     super.initState();
-
     userId = FirebaseAuth.instance.currentUser?.uid ?? '';
     collectionCubit = context.read<CollectionCubit>();
     collectionCubit.fetchCollection(userId: userId);
@@ -47,14 +48,14 @@ class _CollectionPageContentState extends State<_CollectionPageContent> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final args = getArguments(context);
+    final isAdd = args['isAdd'] ?? false;
 
     return Scaffold(
       appBar: AppBarWidget(
         menu: [
           AppBarMenuItem.back(),
-          AppBarMenuItem(
-            label: locale.translate('page_collection.app_bar'),
-          ),
+          AppBarMenuItem(label: locale.translate('page_collection.app_bar')),
           AppBarMenuItem(
             label: locale.translate('page_collection.toggle_new'),
             action: () {
@@ -68,15 +69,11 @@ class _CollectionPageContentState extends State<_CollectionPageContent> {
                     name: value,
                   );
                 },
-                closeDialog: () {
-                  Navigator.of(context).pop();
-                },
-                showDialog: (dialog) {
-                  showCupertinoDialog(
-                    context: context,
-                    builder: (_) => dialog,
-                  );
-                },
+                closeDialog: () => Navigator.of(context).pop(),
+                showDialog: (dialog) => showCupertinoDialog(
+                  context: context,
+                  builder: (_) => dialog,
+                ),
               );
             },
           ),
@@ -88,7 +85,7 @@ class _CollectionPageContentState extends State<_CollectionPageContent> {
             collections: state.collections,
             gameKeys: ImageConstant.games.keys.toList(),
             gameImages: ImageConstant.games.values.toList(),
-            isAdd: getArguments(context)['isAdd'] ?? false,
+            isAdd: isAdd,
           );
         },
       ),

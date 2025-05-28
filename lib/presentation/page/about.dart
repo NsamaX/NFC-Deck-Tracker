@@ -19,21 +19,19 @@ class _AboutPageState extends State<AboutPage> {
   @override
   void initState() {
     super.initState();
-
     packageInfoFuture = PackageInfo.fromPlatform();
   }
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBarWidget(
         menu: [
           AppBarMenuItem.back(),
-          AppBarMenuItem(
-            label: locale.translate('page_about.app_bar'),
-          ),
+          AppBarMenuItem(label: locale.translate('page_about.app_bar')),
           AppBarMenuItem.empty(),
         ],
       ),
@@ -41,12 +39,10 @@ class _AboutPageState extends State<AboutPage> {
         future: packageInfoFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
 
-          if (snapshot.hasError || !snapshot.hasData || snapshot.data == null) {
+          if (snapshot.hasError || !snapshot.hasData) {
             return DescriptionAlignCenter(
               text: locale.translate('common.error_loading'),
               bottomNavHeight: true,
@@ -54,16 +50,14 @@ class _AboutPageState extends State<AboutPage> {
           }
 
           final version = snapshot.data!.version;
-          final content = locale
-              .translate('page_about.content')
-              .replaceFirst('{version}', version);
+          final content = locale.translate('page_about.content').replaceFirst('{version}', version);
 
           return Padding(
             padding: const EdgeInsets.all(UIConstant.paddingAround),
             child: SingleChildScrollView(
               child: Text(
                 content,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: theme.textTheme.bodyMedium,
               ),
             ),
           );

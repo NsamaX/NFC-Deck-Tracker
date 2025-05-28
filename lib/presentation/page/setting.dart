@@ -15,13 +15,15 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final auth = FirebaseAuth.instance;
+    final applicationCubit = context.read<ApplicationCubit>();
 
     return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: auth.authStateChanges(),
       builder: (context, snapshot) {
         final sectionBuilder = SettingBuilder(
           locale: locale,
-          applicationCubit: context.read<ApplicationCubit>(),
+          applicationCubit: applicationCubit,
           user: snapshot.data,
         );
 

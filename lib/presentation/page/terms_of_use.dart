@@ -10,6 +10,7 @@ class TermsOfUsePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final theme = Theme.of(context);
 
     return Scaffold(
       appBar: AppBarWidget(
@@ -26,7 +27,7 @@ class TermsOfUsePage extends StatelessWidget {
         child: SingleChildScrollView(
           child: Text(
             locale.translate('page_terms_of_use.content'),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: theme.textTheme.bodyMedium,
           ),
         ),
       ),

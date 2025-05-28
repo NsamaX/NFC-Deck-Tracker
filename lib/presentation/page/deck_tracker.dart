@@ -36,13 +36,15 @@ class DeckTrackerPage extends StatelessWidget {
         BlocProvider.value(value: locator<TrackerCubit>(param1: deck)),
         BlocProvider.value(value: locator<ReaderCubit>()),
       ],
-      child: _DeckTrackerPageContent(),
+      child: _DeckTrackerPageContent(deck: deck),
     );
   }
 }
 
 class _DeckTrackerPageContent extends StatefulWidget {
-  const _DeckTrackerPageContent();
+  final deck;
+
+  const _DeckTrackerPageContent({required this.deck});
 
   @override
   State<_DeckTrackerPageContent> createState() => _DeckTrackerPageContentState();
@@ -50,20 +52,16 @@ class _DeckTrackerPageContent extends StatefulWidget {
 
 class _DeckTrackerPageContentState extends State<_DeckTrackerPageContent> {
   late final String userId;
-  late final TrackerCubit trackerCubit;
 
   @override
   void initState() {
     super.initState();
 
     final locale = AppLocalization.of(context);
-
     userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    context.read<RecordCubit>().fetchRecord(
-      userId: userId, 
-      deckId: context.read<DeckCubit>().state.currentDeck.deckId!,
-    );
-    trackerCubit.showAlertDialog();
+
+    context.read<RecordCubit>().fetchRecord(userId: userId,  deckId: widget.deck.deckId!);
+    context.read<TrackerCubit>().showAlertDialog();
 
     buildCupertinoAlertDialog(
       title: locale.translate('page_deck_tracker.dialog_tracker_tutorial_title'),
@@ -81,6 +79,7 @@ class _DeckTrackerPageContentState extends State<_DeckTrackerPageContent> {
   @override
   Widget build(BuildContext context) {
     final drawerCubit = context.read<DrawerCubit>();
+    final trackerCubit = context.read<TrackerCubit>();
 
     return NfcTrackListener(
       child: BlocBuilder<TrackerCubit, TrackerState>(
@@ -88,9 +87,7 @@ class _DeckTrackerPageContentState extends State<_DeckTrackerPageContent> {
           return Scaffold(
             appBar: DeckTrackerAppBar(userId: userId),
             body: GestureDetector(
-              onTap: () {
-                drawerCubit.closeAllDrawer();
-              },
+              onTap: drawerCubit.closeAllDrawer,
               behavior: HitTestBehavior.opaque,
               child: BlocBuilder<DrawerCubit, DrawerState>(
                 builder: (context, drawerState) {
