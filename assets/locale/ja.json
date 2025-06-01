@@ -1,6 +1,7 @@
 {
   "language_name": "日本語",
   "common": {
+    "unknown": "不明",
     "button_cancel": "キャンセル",
     "button_confirm": "確認",
     "button_delete": "削除",

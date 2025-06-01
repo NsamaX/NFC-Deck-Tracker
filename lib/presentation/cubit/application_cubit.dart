@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/domain/usecase/initialize_setting.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
 
-import '../route/route.dart';
+import '../route/route_constant.dart';
 import '../widget/material/setting_constant.dart';
 
 part 'application_state.dart';

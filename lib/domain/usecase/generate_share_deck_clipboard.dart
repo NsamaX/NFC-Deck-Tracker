@@ -6,11 +6,15 @@ class GenerateShareDeckClipboardUsecase {
     required String nameLabel,
     required String totalLabel,
   }) {
+    final cardList = deck.cards ?? [];
+    final totalCount = cardList.fold<int>(0, (sum, e) => sum + e.count);
+
     final lines = <String>[
       '$nameLabel: ${deck.name}',
-      '$totalLabel: ${deck.cards?.fold(0, (sum, e) => sum + e.count) ?? 0}',
-      ...?deck.cards?.map((e) => '- [${e.count}] ${e.card.name}'),
+      totalLabel.replaceAll('{card}', totalCount.toString()),
+      ...cardList.map((e) => '- [${e.count}] ${e.card.name}'),
     ];
+
     return lines.join('\n');
   }
 }

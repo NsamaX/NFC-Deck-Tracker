@@ -4,7 +4,10 @@ class AppBarMenuItem {
   final Object label;
   final Object? action;
 
-  const AppBarMenuItem({required this.label, this.action});
+  const AppBarMenuItem({
+    required this.label, 
+    this.action,
+  });
 
   static AppBarMenuItem empty() => const AppBarMenuItem(label: SizedBox(width: 24));
 
@@ -19,8 +22,7 @@ class AppBarMenuItem {
           text,
           style: isTitle
               ? theme.textTheme.titleMedium
-              : theme.textTheme.bodyMedium?.copyWith(
-                  color: theme.appBarTheme.iconTheme?.color),
+              : theme.textTheme.bodyMedium?.copyWith(color: theme.appBarTheme.iconTheme?.color),
           textAlign: TextAlign.center,
         ),
       Widget widget => widget,
@@ -32,7 +34,10 @@ class AppBarMenuItem {
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final List<AppBarMenuItem> menu;
 
-  const AppBarWidget({super.key, required this.menu});
+  const AppBarWidget({
+    super.key, 
+    required this.menu,
+  });
 
   @override
   Widget build(BuildContext context) {

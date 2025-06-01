@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'setting_constant.dart';
-
 import '../../cubit/application_cubit.dart';
-import '../../route/route.dart';
+import '../../route/route_constant.dart';
+
+import 'setting_constant.dart';
 
 Future<String> signInWithGoogle() async {
   final FirebaseAuth auth = FirebaseAuth.instance;
@@ -34,19 +35,14 @@ Future<String> signInWithGoogle() async {
   }
 }
 
-Future<void> signOutFromGoogle({
-  required ApplicationCubit applicationCubit,
-}) async {
+Future<void> signOutFromGoogle() async {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   await auth.signOut();
   await GoogleSignIn().signOut();
 }
 
-Future<void> handleGuestSignIn({
-  required NavigatorState navigator,
-  required ApplicationCubit applicationCubit,
-}) async {
+Future<void> handleGuestSignIn(BuildContext context) async {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   if (auth.currentUser != null) {
@@ -54,16 +50,16 @@ Future<void> handleGuestSignIn({
     await GoogleSignIn().signOut();
   }
 
-  applicationCubit.updateSetting(
+  context.read<ApplicationCubit>().updateSetting(
     key: SettingConstant.keyLoggedIn,
     value: true,
   );
 
-  applicationCubit.setPageIndex(
+  context.read<ApplicationCubit>().setPageIndex(
     index: RouteConstant.on_boarding_index,
   );
 
-  navigator.pushNamedAndRemoveUntil(
+  Navigator.of(context).pushNamedAndRemoveUntil(
     RouteConstant.on_boarding_route,
     (_) => false,
   );

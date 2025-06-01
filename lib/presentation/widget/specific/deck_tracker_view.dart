@@ -15,7 +15,7 @@ class DeckTrackerViewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
-    final recordCubit = context.read<RecordCubit>();
+    // final recordCubit = context.read<RecordCubit>();
     final pinColorState = context.watch<PinColorCubit>().state;
 
     return BlocBuilder<TrackerCubit, TrackerState>(
@@ -47,10 +47,10 @@ class DeckTrackerViewWidget extends StatelessWidget {
                   final card = cardInDeck.card;
                   final count = cardInDeck.count;
 
-                  final isDraw = recordCubit.wasLastActionDraw(
-                    cardId: card.cardId!,
-                    collectionId: card.collectionId!,
-                  );
+                  // final isDraw = recordCubit.wasLastActionDraw(
+                  //   cardId: card.cardId!,
+                  //   collectionId: card.collectionId!,
+                  // );
 
                   return CardListTileWidget(
                     locale: locale,
@@ -59,8 +59,8 @@ class DeckTrackerViewWidget extends StatelessWidget {
                     mediaQuery: MediaQuery.of(context),
                     card: card,
                     count: count,
-                    isDraw: isDraw,
-                    isNFC: false,
+                    isDraw: false, // isDraw,
+                    onNFC: false,
                     isTrack: true,
                     lightTheme: count > 0,
                     markedColor: pinColorState.pinColor[card.cardId],

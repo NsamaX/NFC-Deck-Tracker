@@ -97,7 +97,6 @@ class DeckCubit extends Cubit<DeckState> {
   }
 
   Future<void> updateDeck({
-    required AppLocalization locale,
     required String userId,
   }) async {
     await updateDeckUsecase(userId: userId, deck: state.currentDeck);
@@ -181,13 +180,17 @@ class DeckCubit extends Cubit<DeckState> {
     safeEmit(state.copyWith(isEditMode: !state.isEditMode));
   }
 
-  void toggleShareDeck({
+  void closeEditMode() {
+    safeEmit(state.copyWith(isEditMode: false));
+  }
+
+  void toggleShare({
     required AppLocalization locale,
   }) {
     final text = generateShareDeckClipboardUsecase(
       deck: state.currentDeck,
-      nameLabel: 'page_deck_create.clipboard_deck_name',
-      totalLabel: 'page_deck_create.clipboard_total_cards',
+      nameLabel: locale.translate('page_deck_create.clipboard_deck_name'),
+      totalLabel: locale.translate('page_deck_create.clipboard_total_cards'),
     );
 
     Clipboard.setData(ClipboardData(text: text));

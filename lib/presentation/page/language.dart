@@ -14,24 +14,6 @@ class LanguagePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final applicationCubit = context.read<ApplicationCubit>();
-
-    final languageCode = locale.locale.languageCode;
-    final languageItems = LanguageManager.languageNames.entries.map((entry) {
-      final code = entry.key;
-      final name = entry.value;
-
-      return {
-        'text': name,
-        'onTap': () {
-          applicationCubit.updateSetting(
-            key: SettingConstant.keylocale,
-            value: code,
-          );
-        },
-        'mark': code == languageCode,
-      };
-    }).toList();
 
     return Scaffold(
       appBar: AppBarWidget(
@@ -43,12 +25,24 @@ class LanguagePage extends StatelessWidget {
           AppBarMenuItem.empty(),
         ],
       ),
-      body: LanguageListViewWidget(
-        language: [
-          {
-            'content': languageItems,
-          }
-        ],
+      body: LanguageListView(
+        language: [{
+          'content': LanguageManager.languageNames.entries.map((entry) {
+            final code = entry.key;
+            final name = entry.value;
+
+            return {
+              'text': name,
+              'onTap': () {
+                context.read<ApplicationCubit>().updateSetting(
+                  key: SettingConstant.keylocale,
+                  value: code,
+                );
+              },
+              'mark': code == locale.locale.languageCode,
+            };
+          }).toList(),
+        }],
       ),
     );
   }

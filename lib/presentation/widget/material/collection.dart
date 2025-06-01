@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'setting_constant.dart';
-
 import '../../cubit/application_cubit.dart';
-import '../../route/route.dart';
+import '../../route/route_constant.dart';
+
+import 'setting_constant.dart';
 
 class CollectionWidget extends StatelessWidget {
   final String collectionId;
   final String collectionName;
   final String description;
   final String? imagePath;
-  final bool isAdd;
+  final bool onAdd;
 
   const CollectionWidget({
     super.key,
@@ -19,7 +19,7 @@ class CollectionWidget extends StatelessWidget {
     required this.collectionName,
     required this.description,
     this.imagePath,
-    this.isAdd = false,
+    this.onAdd = false,
   });
 
   @override
@@ -71,7 +71,7 @@ class CollectionWidget extends StatelessWidget {
       arguments: {
         'collectionId': collectionId,
         'collectionName': collectionName,
-        'isAdd': isAdd,
+        'onAdd': onAdd,
       },
     );
   }

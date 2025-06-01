@@ -1,58 +1,59 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../shared/image_constant.dart';
 import '../shared/ui_constant.dart';
 
-import '../../cubit/application_cubit.dart';
-import '../../cubit/drawer_cubit.dart';
 import '../../locale/localization.dart';
-import '../../route/route.dart';
+import '../../route/route_constant.dart';
 
 class CollectionDrawerWidget extends StatelessWidget {
-  const CollectionDrawerWidget({super.key});
+  final bool isOpen;
+  final String recentId;
+  final String recentGame;
+
+  const CollectionDrawerWidget({
+    super.key,
+    required this.isOpen,
+    required this.recentId,
+    required this.recentGame,
+  });
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
 
-    return BlocSelector<DrawerCubit, DrawerState, bool>(
-      selector: (state) => state.visibleFeatureDrawer,
-      builder: (_, isOpen) => AnimatedPositioned(
-        duration: UIConstant.drawerTransitionDuration,
-        curve: Curves.easeInOut,
-        right: isOpen ? 0 : -80,
-        top: 20,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 8),
-          child: BlocBuilder<ApplicationCubit, ApplicationState>(
-            builder: (_, state) => Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (state.recentId.isNotEmpty)
-                  _buildItem(
-                    context: context,
-                    onTap: () => _navigate(
-                      context: context,
-                      route: RouteConstant.browse_card,
-                      arguments: {
-                        'collectionId': state.recentId,
-                        'collectionName': state.recentGame,
-                      },
-                    ),
-                    image: ImageConstant.games[state.recentId],
-                  ),
-                _buildItem(
+    return AnimatedPositioned(
+      duration: UIConstant.drawerTransitionDuration,
+      curve: Curves.easeInOut,
+      right: isOpen ? 0 : -80,
+      top: 20,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (recentId.isNotEmpty)
+              _buildItem(
+                context: context,
+                onTap: () => _navigate(
                   context: context,
-                  onTap: () => _navigate(
-                    context: context,
-                    route: RouteConstant.collection,
-                  ),
-                  text: locale.translate('page_collection.app_bar'),
+                  route: RouteConstant.browse_card,
+                  arguments: {
+                    'collectionId': recentId,
+                    'collectionName': recentGame,
+                  },
                 ),
-              ],
+                image: ImageConstant.games[recentId],
+              ),
+            _buildItem(
+              context: context,
+              onTap: () => _navigate(
+                context: context,
+                route: RouteConstant.collection,
+              ),
+              text: locale.translate('page_collection.app_bar'),
             ),
-          ),
+          ],
         ),
       ),
     );

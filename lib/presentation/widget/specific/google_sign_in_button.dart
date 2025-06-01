@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+
+import '../../locale/localization.dart';
 
 import '../material/google_athen.dart';
 import '../shared/image_constant.dart';
 import '../shared/snackbar.dart';
 
-import '../../cubit/application_cubit.dart';
-import '../../locale/localization.dart';
-
-class GoogleSignInButtonWidget extends StatelessWidget {
-  const GoogleSignInButtonWidget({super.key});
+class GoogleSignInButton extends StatelessWidget {
+  const GoogleSignInButton({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +15,30 @@ class GoogleSignInButtonWidget extends StatelessWidget {
       onTap: () => _handleGoogleSignIn(context),
       child: _buildButton(context),
     );
+  }
+
+  Future<void> _handleGoogleSignIn(BuildContext context) async {
+    final locale = AppLocalization.of(context);
+
+    switch (await signInWithGoogle()) {
+      case 'success':
+        handleGuestSignIn(context);
+        break;
+      case 'cancelled':
+        AppSnackBar(
+          context,
+          text: locale.translate('page_sign_in.snack_bar_sign_in_error_unknow'),
+          isError: true,
+        );
+        break;
+      case 'fail':
+        AppSnackBar(
+          context,
+          text: locale.translate('page_sign_in.snack_bar_sign_in_fail'),
+          isError: true,
+        );
+        break;
+    }
   }
 
   Widget _buildButton(BuildContext context) {
@@ -39,36 +61,5 @@ class GoogleSignInButtonWidget extends StatelessWidget {
       ),
       child: Image.asset(ImageConstant.googleLogo, fit: BoxFit.cover),
     );
-  }
-
-  Future<void> _handleGoogleSignIn(BuildContext context) async {
-    final locale = AppLocalization.of(context);
-    final navigator = Navigator.of(context);
-    final applicationCubit = context.read<ApplicationCubit>();
-
-    final result = await signInWithGoogle();
-
-    switch (result) {
-      case 'success':
-        handleGuestSignIn(
-          navigator: navigator,
-          applicationCubit: applicationCubit,
-        );
-        break;
-      case 'cancelled':
-        showAppSnackBar(
-          context,
-          text: locale.translate('page_sign_in.snack_bar_sign_in_error_unknow'),
-          isError: true,
-        );
-        break;
-      case 'fail':
-        showAppSnackBar(
-          context,
-          text: locale.translate('page_sign_in.snack_bar_sign_in_fail'),
-          isError: true,
-        );
-        break;
-    }
   }
 }

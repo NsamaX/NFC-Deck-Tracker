@@ -7,55 +7,53 @@ import '../locale/localization.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/shared/description_align_center.dart';
-import '../widget/specific/app_bar_my_deck_page.dart';
+import '../widget/specific/app_bar/my_deck_page.dart';
 
 class MyDeckPage extends StatefulWidget {
   const MyDeckPage({super.key});
 
   @override
-  State<MyDeckPage> createState() => _MyDeckPageState();
+  State<MyDeckPage> createState() => _MyDeckPage();
 }
 
-class _MyDeckPageState extends State<MyDeckPage> {
+class _MyDeckPage extends State<MyDeckPage> {
   late final String userId;
 
   @override
   void initState() {
     super.initState();
+
     userId = FirebaseAuth.instance.currentUser?.uid ?? '';
     context.read<DeckCubit>().fetchDeck(userId: userId);
+    context.read<DeckCubit>().closeEditMode();
   }
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
 
-    return BlocBuilder<DeckCubit, DeckState>(
-      builder: (context, state) {
-        final deckItems = state.decks;
-        final isLoading = state.isLoading;
+    return Scaffold(
+      appBar: const AppBarMyDeckPage(),
+      body: BlocBuilder<DeckCubit, DeckState>(
+        builder: (context, state) {
+          final isLoading = state.isLoading;
+          final deck = state.decks;
 
-        Widget body;
-
-        if (isLoading) {
-          body = const Center(child: CircularProgressIndicator());
-        } else if (deckItems.isEmpty) {
-          body = DescriptionAlignCenter(
-            text: locale.translate('page_deck_list.empty_message'),
-          );
-        } else {
-          body = DeckOrCardGridView(
+          if (isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (deck.isEmpty) {
+            return DescriptionAlignCenter(
+              text: locale.translate('page_deck_list.empty_message'),
+            );
+          }
+          
+          return DeckOrCardGridView(
             userId: userId,
-            items: deckItems,
+            items: deck,
           );
-        }
-
-        return Scaffold(
-          appBar: MyDeckAppBar(),
-          body: body,
-          bottomNavigationBar: BottomNavigationBarWidget(),
-        );
-      },
+        },
+      ),
+      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

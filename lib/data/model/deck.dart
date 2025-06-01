@@ -18,7 +18,6 @@ class DeckModel {
   factory DeckModel.fromJson(Map<String, dynamic> json) {
     if (json['deckId'] == null ||
         json['name'] == null ||
-        json['cards'] == null ||
         json['isSynced'] == null ||
         json['updatedAt'] == null) {
       throw FormatException('Missing required fields in DeckModel');
@@ -27,21 +26,27 @@ class DeckModel {
     return DeckModel(
       deckId: json['deckId'],
       name: json['name'],
-      cards: (json['cards'] as List<dynamic>)
-          .map((item) => CardInDeckModel.fromJson(item))
-          .toList(),
-      isSynced: json['isSynced'],
+      cards: [],
+      isSynced: json['isSynced'] == 1,
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJsonForDeck() => {
         'deckId': deckId,
         'name': name,
-        'cards': cards.map((e) => e.toJson()).toList(),
-        'isSynced': isSynced,
+        'isSynced': isSynced ? 1 : 0,
         'updatedAt': updatedAt.toIso8601String(),
       };
+
+  List<Map<String, dynamic>> toJsonForCardsInDeck() {
+    return cards.map((cardInDeck) => {
+      'collectionId': cardInDeck.card.collectionId,
+      'cardId': cardInDeck.card.cardId,
+      'deckId': deckId,
+      'count': cardInDeck.count,
+    }).toList();
+  }
 }
 
 class CardInDeckModel {

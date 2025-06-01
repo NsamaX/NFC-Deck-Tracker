@@ -3,11 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import 'card_quantity_control.dart';
-
 import '../../cubit/deck_cubit.dart';
 import '../../cubit/nfc_cubit.dart';
-import '../../route/route.dart';
+import '../../route/route_constant.dart';
+import '../../theme/theme.dart';
+
+import 'card_quantity_control.dart';
 
 class CardWidget extends StatelessWidget {
   final CardEntity card;
@@ -21,16 +22,14 @@ class CardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deckCubit = context.read<DeckCubit>();
-    final nfcCubit = context.watch<NfcCubit>();
-    final isEditMode = deckCubit.state.isEditMode;
-    final isSessionActive = nfcCubit.state.isSessionActive;
+    final isEditMode = context.watch<DeckCubit>().state.isEditMode;
+    final isSessionActive = context.watch<NfcCubit>().state.isSessionActive;
 
     return Stack(
       children: [
         _buildCardDisplay(context),
         if (isEditMode && !isSessionActive)
-          CardQuantityControlWidget(
+          CardQuantityControl(
             card: card,
             count: count,
           ),
@@ -40,12 +39,12 @@ class CardWidget extends StatelessWidget {
 
   Widget _buildCardDisplay(BuildContext context) {
     final theme = Theme.of(context);
-    final deckCubit = context.read<DeckCubit>();
-    final isEditMode = deckCubit.state.isEditMode;
-    final selected = deckCubit.state.selectedCard == card;
+
+    final isEditMode = context.read<DeckCubit>().state.isEditMode;
+    final selected = context.read<DeckCubit>().state.selectedCard.cardId == card.cardId;
 
     return GestureDetector(
-      onTap: () => _onCardTap(context),
+      onTap: () => _onTap(context),
       child: AspectRatio(
         aspectRatio: 3 / 4,
         child: Opacity(
@@ -62,7 +61,7 @@ class CardWidget extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: _buildCardImage(),
+                child: _buildCardImage(context),
               ),
             ),
           ),
@@ -71,56 +70,55 @@ class CardWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildCardImage() {
-    final imageUrl = card.imageUrl;
+  void _onTap(BuildContext context) {
+    final isSessionActive = context.read<NfcCubit>().state.isSessionActive;
 
-    if (imageUrl == null || imageUrl.isEmpty) {
-      return _buildImageError();
-    }
-
-    return Image.network(
-      imageUrl,
-      fit: BoxFit.cover,
-      errorBuilder: (_, __, ___) => _buildImageError(),
-    );
-  }
-
-  Widget _buildImageError() {
-    return const Center(
-      child: Icon(
-        Icons.image_not_supported,
-        size: 36,
-        color: Colors.grey,
-      ),
-    );
-  }
-
-  void _onCardTap(BuildContext context) {
-    final deckCubit = context.read<DeckCubit>();
-    final nfcCubit = context.read<NfcCubit>();
-
-    if (nfcCubit.state.isSessionActive) {
-      deckCubit.toggleSelectCard(card: card);
-      _writeCardToTag(context);
+    if (isSessionActive) {
+      context.read<DeckCubit>().toggleSelectCard(card: card);
+      _writeTag(context);
     } else {
       Navigator.of(context).pushNamed(
         RouteConstant.card,
         arguments: {
           'collectionId': card.collectionId,
           'card': card,
-          'isNFC': true,
+          'onNFC': true,
         },
       );
     }
   }
 
-  void _writeCardToTag(BuildContext context) {
-    final deckCubit = context.read<DeckCubit>();
-    final nfcCubit = context.read<NfcCubit>();
-    final selectedCard = deckCubit.state.selectedCard;
+  void _writeTag(BuildContext context) {
+    final selectedCard = context.read<DeckCubit>().state.selectedCard;
 
     if (selectedCard.cardId != null) {
-      nfcCubit.startSession();
+      context.read<NfcCubit>().startSession(card: selectedCard);
     }
+  }
+
+  Widget _buildCardImage(BuildContext context) {
+    final imageUrl = card.imageUrl;
+
+    if (imageUrl == null || imageUrl.isEmpty) {
+      return _buildImageError(context);
+    }
+
+    return Image.network(
+      imageUrl,
+      fit: BoxFit.cover,
+      errorBuilder: (_, __, ___) => _buildImageError(context),
+    );
+  }
+
+  Widget _buildImageError(BuildContext context) {
+    final theme = Theme.of(context);
+
+    return Center(
+      child: Icon(
+        Icons.image_not_supported,
+        size: 36,
+        color: theme.colorScheme.opacityText,
+      ),
+    );
   }
 }

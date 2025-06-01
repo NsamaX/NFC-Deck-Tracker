@@ -5,32 +5,32 @@ import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
 import '../../cubit/deck_cubit.dart';
 import '../../locale/localization.dart';
-import '../../route/route.dart';
+import '../../route/route_constant.dart';
 
 class DeckWidget extends StatelessWidget {
-  final DeckEntity deck;
   final String userId;
+  final DeckEntity deck;
 
   const DeckWidget({
     super.key,
-    required this.deck,
     required this.userId,
+    required this.deck,
   });
 
   @override
   Widget build(BuildContext context) {
-    final deckCubit = context.read<DeckCubit>();
-    final isEditMode = deckCubit.state.isEditMode;
+    final isEditMode = context.read<DeckCubit>().state.isEditMode;
 
     return Stack(
       children: [
-        _buildMainBox(context),
+        _buildDeck(context),
         if (isEditMode) _buildDeleteButton(context),
       ],
     );
   }
 
-  Widget _buildMainBox(BuildContext context) {
+  Widget _buildDeck(BuildContext context) {
+    final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
 
     return InkWell(
@@ -51,12 +51,17 @@ class DeckWidget extends StatelessWidget {
           ],
         ),
         child: Text(
-          deck.name ?? '',
+          deck.name ?? locale.translate('common.unknown'),
           style: theme.textTheme.titleSmall,
           textAlign: TextAlign.center,
         ),
       ),
     );
+  }
+
+  void _onTap(BuildContext context) async {
+    await context.read<DeckCubit>().setDeck(deckId: deck.deckId!);
+    Navigator.of(context).pushNamed(RouteConstant.deck_builder);
   }
 
   Widget _buildDeleteButton(BuildContext context) {
@@ -68,21 +73,20 @@ class DeckWidget extends StatelessWidget {
         child: const SizedBox(
           width: 30,
           height: 30,
-          child: Icon(Icons.close_rounded, size: 26),
+          child: Icon(
+            Icons.close_rounded, 
+            size: 26,
+          ),
         ),
       ),
     );
   }
 
-  void _onTap(BuildContext context) async {
-    final deckCubit = context.read<DeckCubit>();
-    await deckCubit.setDeck(deckId: deck.deckId!);
-    Navigator.of(context).pushNamed(RouteConstant.deck_builder);
-  }
-
   void _onDelete(BuildContext context) {
-    final locale = AppLocalization.of(context);
-    final deckCubit = context.read<DeckCubit>();
-    deckCubit.deleteDeck(userId: userId, locale: locale, deckId: deck.deckId!);
+    context.read<DeckCubit>().deleteDeck(
+      locale: AppLocalization.of(context), 
+      userId: userId, 
+      deckId: deck.deckId!,
+    );
   }
 }

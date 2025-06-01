@@ -11,13 +11,13 @@ import '_argument.dart';
 import '../cubit/card_cubit.dart';
 import '../cubit/deck_cubit.dart';
 import '../cubit/nfc_cubit.dart';
-import '../widget/specific/app_bar_card_page.dart';
+import '../widget/specific/app_bar/card_page.dart';
 import '../widget/specific/card_image.dart';
 import '../widget/specific/card_info.dart';
 import '../widget/specific/card_quantity_selector.dart';
 import '../widget/specific/custom_card_image.dart';
 import '../widget/specific/custom_card_info.dart';
-import '../widget/specific/nfc_write_tag_listener.dart';
+import '../widget/specific/writer_listener.dart';
 
 class CardPage extends StatelessWidget {
   const CardPage({super.key});
@@ -63,25 +63,27 @@ class _CardPageContentState extends State<_CardPageContent> {
   Widget build(BuildContext context) {
     final args = getArguments(context);
     final card = args['card'] as CardEntity? ?? CardEntity();
-    final isCustom = args['isCustom'] ?? false;
-    final isAdd = args['isAdd'] ?? false;
+    final onCustom = args['onCustom'] ?? false;
+    final onNFC = args['onNFC'] ?? false;
+    final onAdd = args['onAdd'] ?? false;
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
     final cardCubit = context.read<CardCubit>();
 
-    return NfcWriteTagListener(
+    return WriterListener(
       child: BlocBuilder<NfcCubit, NfcState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: CardAppBar(
+            appBar: AppBarCardAppPage(
               userId: userId,
               card: card,
-              isAdd: isAdd,
-              isCustom: isCustom,
+              onNFC: onNFC,
+              onAdd: onAdd,
+              onCustom: onCustom,
             ),
             body: ListView(
               padding: const EdgeInsets.all(40.0),
               children: [
-                if (isCustom) ...[
+                if (onCustom) ...[
                   CustomCardImageWidget(cardCubit: cardCubit),
                   const SizedBox(height: 24.0),
                   CustomCardInfoWidget(
@@ -95,7 +97,7 @@ class _CardPageContentState extends State<_CardPageContent> {
                   const SizedBox(height: 24.0),
                   CardInfoWidget(card: card),
                 ],
-                if (isAdd)
+                if (onAdd)
                   BlocSelector<DeckCubit, DeckState, int>(
                     selector: (state) => state.selectedCardCount,
                     builder: (context, quantity) {

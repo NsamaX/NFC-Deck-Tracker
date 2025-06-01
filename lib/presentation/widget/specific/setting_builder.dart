@@ -1,25 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import '../material/google_athen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/application_cubit.dart';
 import '../../locale/language_manager.dart';
 import '../../locale/localization.dart';
-import '../../route/route.dart';
+import '../../route/route_constant.dart';
 
-class SettingBuilder {
+import '../material/google_athen.dart';
+
+class SettingsSectionBuilder {
+  final BuildContext context;
   final AppLocalization locale;
   final ApplicationCubit applicationCubit;
-  final User? user;
 
-  const SettingBuilder({
-    required this.locale,
-    required this.applicationCubit,
-    required this.user,
-  });
+  SettingsSectionBuilder(this.context)
+      : locale = AppLocalization.of(context),
+        applicationCubit = context.read<ApplicationCubit>();
 
-  Map<String, dynamic> buildAccountSection() {
+  Map<String, dynamic> buildAccountSection({User? user}) {
     return {
       'title': locale.translate('page_setting.section_account_label'),
       'content': [
@@ -41,7 +40,7 @@ class SettingBuilder {
             if (user == null) {
               await signInWithGoogle();
             } else {
-              await signOutFromGoogle(applicationCubit: applicationCubit);
+              await signOutFromGoogle();
             }
           },
         },
@@ -49,36 +48,40 @@ class SettingBuilder {
     };
   }
 
-  Map<String, dynamic> buildGeneralSection() => {
-        'title': locale.translate('page_setting.section_app_info_label'),
-        'content': [
-          {
-            'icon': Icons.auto_stories_rounded,
-            'text': locale.translate('page_setting.section_app_info_about'),
-            'route': RouteConstant.about,
-          },
-          {
-            'icon': Icons.privacy_tip_rounded,
-            'text': locale.translate('page_setting.section_app_info_privacy'),
-            'route': RouteConstant.privacy,
-          },
-          {
-            'icon': Icons.balance_rounded,
-            'text': locale.translate('page_setting.section_app_info_terms'),
-            'route': RouteConstant.terms_of_use,
-          },
-        ],
-      };
+  Map<String, dynamic> buildGeneralSection() {
+    return {
+      'title': locale.translate('page_setting.section_app_info_label'),
+      'content': [
+        {
+          'icon': Icons.auto_stories_rounded,
+          'text': locale.translate('page_setting.section_app_info_about'),
+          'route': RouteConstant.about,
+        },
+        {
+          'icon': Icons.privacy_tip_rounded,
+          'text': locale.translate('page_setting.section_app_info_privacy'),
+          'route': RouteConstant.privacy,
+        },
+        {
+          'icon': Icons.balance_rounded,
+          'text': locale.translate('page_setting.section_app_info_terms'),
+          'route': RouteConstant.terms_of_use,
+        },
+      ],
+    };
+  }
 
-  Map<String, dynamic> buildSupportSection() => {
-        'title': locale.translate('page_setting.section_preferences_label'),
-        'content': [
-          {
-            'icon': Icons.language_rounded,
-            'text': locale.translate('page_setting.section_preferences_language'),
-            'info': LanguageManager.getLanguageName(locale.locale.languageCode),
-            'route': RouteConstant.language,
-          },
-        ],
-      };
+  Map<String, dynamic> buildSupportSection() {
+    return {
+      'title': locale.translate('page_setting.section_preferences_label'),
+      'content': [
+        {
+          'icon': Icons.language_rounded,
+          'text': locale.translate('page_setting.section_preferences_language'),
+          'info': LanguageManager.getLanguageName(locale.locale.languageCode),
+          'route': RouteConstant.language,
+        },
+      ],
+    };
+  }
 }

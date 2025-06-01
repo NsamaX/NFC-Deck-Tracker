@@ -11,20 +11,25 @@ class CreateDeckRemoteDatasource {
     required String userId,
     required DeckModel deck,
   }) async {
-    final deckData = deck.toJson()..remove('cards');
-
-    await _firestoreService.insert(
+    final deckInserted = await _firestoreService.insert(
       collectionPath: 'users/$userId/decks',
       documentId: deck.deckId,
-      data: deckData,
+      data: deck.toJsonForDeck(),
     );
 
+    if (!deckInserted) return false;
+
     for (final cardInDeck in deck.cards) {
-      await _firestoreService.insert(
+      final inserted = await _firestoreService.insert(
         collectionPath: 'users/$userId/decks/${deck.deckId}/cards',
-        documentId: '${cardInDeck.card.collectionId}_${cardInDeck.card.cardId}',
-        data: cardInDeck.toJson(),
+        documentId: cardInDeck.card.cardId,
+        data: {
+          'cardId': cardInDeck.card.cardId,
+          'count': cardInDeck.count,
+        },
       );
+
+      if (!inserted) return false;
     }
 
     return true;

@@ -64,11 +64,8 @@ class NfcCubit extends Cubit<NfcState> {
     bool isCardChanged = false,
   }) async {
     if (state.isSessionBusy) return;
-    safeEmit(state.copyWith(
-      isSessionBusy: true,
-      errorMessage: '',
-      successMessage: '',  
-    ));
+    safeEmit(state.copyWith(isSessionBusy: true));
+    clearMessages();
 
     if (state.isSessionActive) {
       try {
@@ -140,4 +137,6 @@ class NfcCubit extends Cubit<NfcState> {
       LoggerUtil.flushMessages(isError: true);
     }
   }
+
+  void clearMessages() => safeEmit(state.copyWith(errorMessage: '', successMessage: ''));
 }

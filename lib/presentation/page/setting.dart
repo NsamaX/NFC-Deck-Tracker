@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../cubit/application_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/shared/app_bar.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
@@ -15,18 +13,11 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final auth = FirebaseAuth.instance;
-    final applicationCubit = context.read<ApplicationCubit>();
+    final sectionBuilder = SettingsSectionBuilder(context);
 
     return StreamBuilder<User?>(
-      stream: auth.authStateChanges(),
+      stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
-        final sectionBuilder = SettingBuilder(
-          locale: locale,
-          applicationCubit: applicationCubit,
-          user: snapshot.data,
-        );
-
         return Scaffold(
           appBar: AppBarWidget(
             menu: [
@@ -35,9 +26,9 @@ class SettingPage extends StatelessWidget {
               ),
             ],
           ),
-          body: SettingsSectionWidget(
+          body: SettingSection(
             section: [
-              sectionBuilder.buildAccountSection(),
+              sectionBuilder.buildAccountSection(user: snapshot.data),
               sectionBuilder.buildGeneralSection(),
               sectionBuilder.buildSupportSection(),
             ],

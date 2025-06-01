@@ -1,5 +1,6 @@
 import '_firestore_service.dart';
 
+import '../../model/card.dart';
 import '../../model/deck.dart';
 
 class FetchDeckRemoteDatasource {
@@ -27,12 +28,23 @@ class FetchDeckRemoteDatasource {
 
       for (final cardDoc in cardSnapshot) {
         final cardData = cardDoc.data();
-        try {
+
+        final String collectionId = cardData['collectionId'];
+        final String cardId = cardData['cardId'];
+        final int count = cardData['count'];
+
+        final CardModel? card = await _fetchCardById(
+          userId: userId,
+          collectionId: collectionId,
+          cardId: cardId,
+        );
+
+        if (card != null) {
           cardListJson.add({
-            'card': cardData['card'],
-            'count': cardData['count'],
+            'card': card.toJson(),
+            'count': count,
           });
-        } catch (_) {}
+        }
       }
 
       final fullData = {
@@ -45,5 +57,22 @@ class FetchDeckRemoteDatasource {
     }
 
     return decks;
+  }
+
+  Future<CardModel?> _fetchCardById({
+    required String userId,
+    required String collectionId,
+    required String cardId,
+  }) async {
+    final doc = await _firestoreService.getDocument(
+      collectionPath: 'users/$userId/collections/$collectionId/cards',
+      documentId: cardId,
+    );
+
+    if (doc != null && doc.data() != null) {
+      return CardModel.fromJson(doc.data()!);
+    }
+
+    return null;
   }
 }

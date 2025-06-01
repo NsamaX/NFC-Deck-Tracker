@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
@@ -123,6 +125,7 @@ class FirestoreService {
       final ext = imagePath.split('.').last;
       final ref = storage.ref().child('users/$userId/images/$uniqueId.$ext');
 
+      await ref.putFile(File(imagePath));
       final url = await ref.getDownloadURL();
       debugPrint('📤 Uploaded image → $url');
       return url;

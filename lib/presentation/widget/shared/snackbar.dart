@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'ui_constant.dart';
 
-void showAppSnackBar(
+void AppSnackBar(
   BuildContext context, {
   required String text,
   bool isError = false,

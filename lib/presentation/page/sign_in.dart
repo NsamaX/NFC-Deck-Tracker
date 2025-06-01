@@ -4,7 +4,7 @@ import 'package:connectivity_plus/connectivity_plus.dart';
 import '../locale/localization.dart';
 import '../widget/shared/description_align_center.dart';
 import '../widget/shared/image_constant.dart';
-import '../widget/shared/text_align_center.dart';
+import '../widget/shared/title_align_center.dart';
 import '../widget/shared/ui_constant.dart';
 import '../widget/specific/google_sign_in_button.dart';
 import '../widget/specific/guest_sign_in_button.dart';
@@ -15,12 +15,10 @@ class SignInPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final mediaQuery = MediaQuery.of(context);
-    final connectivity = Connectivity();
 
     return Scaffold(
       body: StreamBuilder<List<ConnectivityResult>>(
-        stream: connectivity.onConnectivityChanged,
+        stream: Connectivity().onConnectivityChanged,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -38,34 +36,31 @@ class SignInPage extends StatelessWidget {
               horizontal: UIConstant.paddingAround,
               vertical: UIConstant.paddingVertical,
             ),
-            child: SizedBox(
-              height: mediaQuery.size.height,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  TitleAlignCenter(
-                    text: locale.translate('page_sign_in.title'),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TitleAlignCenter(
+                  text: locale.translate('page_sign_in.title'),
+                ),
+                if (isOnline) ...[
+                  const SizedBox(height: 80.0),
+                  const GoogleSignInButton(),
+                  const SizedBox(height: 80.0),
+                ] else ...[
+                  Image.asset(
+                    ImageConstant.internetLost,
+                    fit: BoxFit.cover,
                   ),
-                  if (isOnline) ...[
-                    const SizedBox(height: 80.0),
-                    const GoogleSignInButtonWidget(),
-                    const SizedBox(height: 80.0),
-                  ] else ...[
-                    Image.asset(
-                      ImageConstant.internetLost,
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(height: 20.0),
-                    DescriptionAlignCenter(
-                      text: locale.translate('page_sign_in.offline_message'),
-                    ),
-                    const SizedBox(height: 20.0),
-                  ],
-                  GuestSignInButtonWidget(
-                    text: locale.translate('page_sign_in.button_guest_sign_in'),
+                  const SizedBox(height: 20.0),
+                  DescriptionAlignCenter(
+                    text: locale.translate('page_sign_in.offline_message'),
                   ),
+                  const SizedBox(height: 20.0),
                 ],
-              ),
+                GuestSignInButton(
+                  text: locale.translate('page_sign_in.button_guest_sign_in'),
+                ),
+              ],
             ),
           );
         },

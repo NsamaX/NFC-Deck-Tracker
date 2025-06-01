@@ -5,11 +5,11 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
 import '../../cubit/deck_cubit.dart';
 
-class CardQuantityControlWidget extends StatelessWidget {
+class CardQuantityControl extends StatelessWidget {
   final CardEntity card;
   final int count;
 
-  const CardQuantityControlWidget({
+  const CardQuantityControl({
     super.key,
     required this.card,
     required this.count,
@@ -20,33 +20,32 @@ class CardQuantityControlWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final deckCubit = context.read<DeckCubit>();
-
     return Positioned(
       top: 0,
       right: 0,
       child: Column(
         children: [
-          _buildCountIndicator(theme),
+          _buildCountIndicator(context),
           const SizedBox(height: _spacing),
           _buildActionButton(
-            theme: theme,
+            context,
             icon: Icons.add,
-            onPressed: () => deckCubit.toggleAddCard(card: card, quantity: 1),
+            onPressed: () => context.read<DeckCubit>().toggleAddCard(card: card, quantity: 1),
           ),
           const SizedBox(height: _spacing),
           _buildActionButton(
-            theme: theme,
+            context,
             icon: Icons.remove,
-            onPressed: () => deckCubit.toggleRemoveCard(card: card),
+            onPressed: () => context.read<DeckCubit>().toggleRemoveCard(card: card),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildCountIndicator(ThemeData theme) {
+  Widget _buildCountIndicator(BuildContext context) {
+    final theme = Theme.of(context);
+
     return Container(
       width: _buttonSize,
       height: _buttonSize,
@@ -64,11 +63,13 @@ class CardQuantityControlWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButton({
-    required ThemeData theme,
+  Widget _buildActionButton(
+    BuildContext context, {
     required IconData icon,
     required VoidCallback onPressed,
   }) {
+    final theme = Theme.of(context);
+
     return GestureDetector(
       onTap: onPressed,
       child: Container(

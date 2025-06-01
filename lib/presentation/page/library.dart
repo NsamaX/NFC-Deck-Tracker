@@ -17,51 +17,42 @@ class LibraryPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalization.of(context);
+
     return BlocProvider.value(
       value: locator<CollectionCubit>(),
-      child: _LibraryPageContent(),
-    );
-  }
-}
+      child: Scaffold(
+        appBar: AppBarWidget(
+          menu: [
+            AppBarMenuItem.back(),
+            AppBarMenuItem(
+              label: locale.translate('page_library.app_bar'),
+            ),
+            AppBarMenuItem.empty(),
+          ],
+        ),
+        body: FutureBuilder<List<CardEntity>>(
+          future: context.read<CollectionCubit>().fetchUsedCardDistinct(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-class _LibraryPageContent extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final locale = AppLocalization.of(context);
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-    final collectionCubit = context.read<CollectionCubit>();
+            final cards = snapshot.data ?? [];
 
-    return Scaffold(
-      appBar: AppBarWidget(
-        menu: [
-          AppBarMenuItem.back(),
-          AppBarMenuItem(
-            label: locale.translate('page_library.app_bar'),
-          ),
-          AppBarMenuItem.empty(),
-        ],
-      ),
-      body: FutureBuilder<List<CardEntity>>(
-        future: collectionCubit.fetchUsedCardDistinct(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final cards = snapshot.data ?? [];
-
-          if (cards.isNotEmpty) {
-            return DeckOrCardGridView(
-              items: cards,
-              userId: userId,
-            );
-          } else {
-            return DescriptionAlignCenter(
-              text: locale.translate('page_library.empty_message'),
-              bottomNavHeight: true,
-            );
-          }
-        },
+            if (cards.isNotEmpty) {
+              return DeckOrCardGridView(
+                userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+                items: cards,
+              );
+            } else {
+              return DescriptionAlignCenter(
+                text: locale.translate('page_library.empty_message'),
+                bottomNavHeight: true,
+              );
+            }
+          },
+        ),
       ),
     );
   }

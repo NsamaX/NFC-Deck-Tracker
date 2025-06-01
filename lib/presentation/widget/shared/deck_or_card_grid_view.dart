@@ -6,6 +6,21 @@ import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import '../material/card.dart';
 import '../material/deck.dart';
 
+class _GridConfig {
+  final double spacing;
+  final double aspectRatio;
+
+  const _GridConfig({
+    required this.spacing, 
+    required this.aspectRatio,
+  });
+}
+
+const _gridConfig = {
+  'deck': _GridConfig(spacing: 12.0, aspectRatio: 1.0),
+  'card': _GridConfig(spacing: 8.0, aspectRatio: 3 / 4),
+};
+
 class DeckOrCardGridView extends StatelessWidget {
   final String userId;
   final List<Object> items;
@@ -21,7 +36,7 @@ class DeckOrCardGridView extends StatelessWidget {
     if (items.isEmpty) return const SizedBox();
 
     final firstItem = items.first;
-    final config = _getGridConfig(firstItem);
+    final config = _getGridConfig(item: firstItem);
 
     return GridView.builder(
       padding: const EdgeInsets.all(12.0),
@@ -32,40 +47,28 @@ class DeckOrCardGridView extends StatelessWidget {
         childAspectRatio: config.aspectRatio,
       ),
       itemCount: items.length,
-      itemBuilder: (_, index) => _buildItem(context, items[index]),
+      itemBuilder: (_, index) => _buildItem(context, item: items[index]),
     );
   }
 
-  _GridConfig _getGridConfig(Object item) {
+  _GridConfig _getGridConfig({
+    required Object item,
+  }) {
     if (item is DeckEntity) return _gridConfig['deck']!;
     if (item is CardEntity) return _gridConfig['card']!;
     if (item is MapEntry<CardEntity, int>) return _gridConfig['card']!;
+
     return const _GridConfig(spacing: 8.0, aspectRatio: 1.0);
   }
 
-  Widget _buildItem(BuildContext context, Object item) {
-    if (item is DeckEntity) {
-      return DeckWidget(deck: item, userId: userId);
-    }
-    if (item is CardEntity) {
-      return CardWidget(card: item);
-    }
-    if (item is MapEntry<CardEntity, int>) {
-      return CardWidget(card: item.key, count: item.value);
-    }
+  Widget _buildItem(
+    BuildContext context, {
+    required Object item,
+  }) {
+    if (item is DeckEntity) return DeckWidget(userId: userId, deck: item);
+    if (item is CardEntity) return CardWidget(card: item);
+    if (item is MapEntry<CardEntity, int>) return CardWidget(card: item.key, count: item.value);
 
     return const SizedBox();
   }
 }
-
-class _GridConfig {
-  final double spacing;
-  final double aspectRatio;
-
-  const _GridConfig({required this.spacing, required this.aspectRatio});
-}
-
-const _gridConfig = {
-  'deck': _GridConfig(spacing: 12.0, aspectRatio: 1.0),
-  'card': _GridConfig(spacing: 8.0, aspectRatio: 3 / 4),
-};

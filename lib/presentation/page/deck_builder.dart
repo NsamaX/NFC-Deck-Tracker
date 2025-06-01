@@ -6,25 +6,30 @@ import '../cubit/deck_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/shared/description_align_center.dart';
-import '../widget/specific/app_bar_deck_builder_page.dart';
-import '../widget/specific/nfc_write_tag_listener.dart';
+import '../widget/specific/app_bar/deck_builder_page.dart';
+import '../widget/specific/writer_listener.dart';
 
 class DeckBuilderPage extends StatefulWidget {
   const DeckBuilderPage({super.key});
 
   @override
-  State<DeckBuilderPage> createState() => _DeckBuilderPageState();
+  State<DeckBuilderPage> createState() => _DeckBuilderPage();
 }
 
-class _DeckBuilderPageState extends State<DeckBuilderPage> {
+class _DeckBuilderPage extends State<DeckBuilderPage> {
   late final TextEditingController nameController;
+  late final String userId;
 
   @override
   void initState() {
     super.initState();
+
     nameController = TextEditingController(
       text: context.read<DeckCubit>().state.currentDeck.name,
     );
+    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+
+    context.read<DeckCubit>().closeEditMode();
   }
 
   @override
@@ -36,32 +41,32 @@ class _DeckBuilderPageState extends State<DeckBuilderPage> {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-    return NfcWriteTagListener(
-      child: BlocBuilder<DeckCubit, DeckState>(
-        builder: (context, state) {
-          final deck = state.currentDeck;
-          final isEmpty = deck.cards?.isEmpty ?? true;
+    return WriterListener(
+      child: Scaffold(
+        appBar: AppBarDeckBuilderPage(
+          userId: userId,
+          nameController: nameController,
+        ),
+        body: BlocBuilder<DeckCubit, DeckState>(
+          builder: (context, state) {
+            final deck = state.currentDeck;
 
-          return Scaffold(
-            appBar: DeckBuilderAppBar(
+            if (deck.cards?.isEmpty ?? true) {
+              return DescriptionAlignCenter(
+                text: locale.translate('page_deck_create.empty_message'),
+                bottomNavHeight: true,
+              );
+            }
+
+            return DeckOrCardGridView(
               userId: userId,
-              nameController: nameController,
-            ),
-            body: isEmpty
-                ? DescriptionAlignCenter(
-                    text: locale.translate('page_deck_create.empty_message'),
-                    bottomNavHeight: true,
-                  )
-                : DeckOrCardGridView(
-                    userId: userId,
-                    items: deck.cards!
-                        .map((e) => MapEntry(e.card, e.count))
-                        .toList(),
-                  ),
-          );
-        },
+              items: deck.cards!
+                  .map((e) => MapEntry(e.card, e.count))
+                  .toList(),
+            );
+          },
+        ),
       ),
     );
   }

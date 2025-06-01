@@ -10,15 +10,16 @@ class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
 
   @override
-  State<AboutPage> createState() => _AboutPageState();
+  State<AboutPage> createState() => _AboutPage();
 }
 
-class _AboutPageState extends State<AboutPage> {
+class _AboutPage extends State<AboutPage> {
   late final Future<PackageInfo> packageInfoFuture;
 
   @override
   void initState() {
     super.initState();
+
     packageInfoFuture = PackageInfo.fromPlatform();
   }
 
@@ -31,7 +32,9 @@ class _AboutPageState extends State<AboutPage> {
       appBar: AppBarWidget(
         menu: [
           AppBarMenuItem.back(),
-          AppBarMenuItem(label: locale.translate('page_about.app_bar')),
+          AppBarMenuItem(
+            label: locale.translate('page_about.app_bar'),
+          ),
           AppBarMenuItem.empty(),
         ],
       ),

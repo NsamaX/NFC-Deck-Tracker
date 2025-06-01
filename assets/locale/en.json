@@ -1,6 +1,7 @@
 {
   "language_name": "English",
   "common": {
+    "unknown": "Unknown",
     "button_cancel": "Cancel",
     "button_confirm": "Confirm",
     "button_delete": "Delete",

@@ -11,15 +11,15 @@ import '../../locale/localization.dart';
 class CardListWidget extends StatelessWidget {
   final List<CardEntity> cards;
   final String userId;
-  final bool isAdd;
-  final bool isCustom;
+  final bool onAdd;
+  final bool onCustom;
 
   const CardListWidget({
     super.key,
     required this.cards,
     required this.userId,
-    this.isAdd = false,
-    this.isCustom = false,
+    this.onAdd = false,
+    this.onCustom = false,
   });
 
   @override
@@ -47,8 +47,8 @@ class CardListWidget extends StatelessWidget {
         mediaQuery: mediaQuery,
         navigator: navigator,
         card: cards[index],
-        isAdd: isAdd,
-        isCustom: isCustom,
+        onAdd: onAdd,
+        onCustom: onCustom,
         onDelete: (cardId) => _deleteCard(cardCubit, userId, cardId),
       ),
       separatorBuilder: (_, __) => const SizedBox(height: 2),

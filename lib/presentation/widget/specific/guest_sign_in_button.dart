@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../material/google_athen.dart';
 
-import '../../cubit/application_cubit.dart';
-
-class GuestSignInButtonWidget extends StatelessWidget {
+class GuestSignInButton extends StatelessWidget {
   final String text;
 
-  const GuestSignInButtonWidget({
+  const GuestSignInButton({
     super.key,
     required this.text,
   });
@@ -16,16 +13,12 @@ class GuestSignInButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final ApplicationCubit applicationCubit = context.read<ApplicationCubit>();
 
     return SizedBox(
       width: double.infinity,
       height: 46.0,
       child: ElevatedButton(
-        onPressed: () => handleGuestSignIn(
-          navigator: Navigator.of(context),
-          applicationCubit: applicationCubit,
-        ),
+        onPressed: () => handleGuestSignIn(context),
         child: Text(
           text,
           style: theme.textTheme.bodyMedium?.copyWith(

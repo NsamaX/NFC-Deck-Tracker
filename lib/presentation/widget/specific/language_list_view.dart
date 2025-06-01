@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
 
-class LanguageListViewWidget extends StatelessWidget {
+class LanguageListView extends StatelessWidget {
   final List<Map<String, dynamic>> language;
 
-  const LanguageListViewWidget({
+  const LanguageListView({
     super.key,
     required this.language,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Padding(
       padding: const EdgeInsets.only(top: 2.0),
       child: Column(
@@ -25,8 +23,8 @@ class LanguageListViewWidget extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (title != null) _buildTitle(title, theme),
-              ...content.map((item) => _buildItem(item, theme)).toList(),
+              if (title != null) _buildTitle(context, title: title),
+              ...content.map((item) => _buildItem(context, item: item)).toList(),
             ],
           );
         }).toList(),
@@ -34,7 +32,12 @@ class LanguageListViewWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(String title, ThemeData theme) {
+  Widget _buildTitle(
+    BuildContext context, {
+    required String title,
+  }) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, top: 16.0, bottom: 8.0),
       child: Text(
@@ -44,7 +47,12 @@ class LanguageListViewWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(Map<String, dynamic> item, ThemeData theme) {
+  Widget _buildItem(
+    BuildContext context, {
+    required Map<String, dynamic> item,
+  }) {
+    final theme = Theme.of(context);
+
     final text = item['text'] as String?;
     final onTap = item['onTap'] as VoidCallback?;
     final mark = item['mark'] ?? false;
@@ -63,10 +71,8 @@ class LanguageListViewWidget extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (text != null)
-              Text(text, style: theme.textTheme.bodySmall),
-            if (mark)
-              Icon(Icons.check_rounded, size: 18.0, color: theme.colorScheme.opacityText),
+            if (text != null) Text(text, style: theme.textTheme.bodySmall),
+            if (mark) Icon(Icons.check_rounded, size: 18.0, color: theme.colorScheme.opacityText),
           ],
         ),
       ),

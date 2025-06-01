@@ -12,8 +12,10 @@ class FindCardRepository {
   });
 
   Future<CardModel> findApiCard({
+    required String collectionId,
     required String cardId,
   }) async {
+    final GameApi gameApi = ServiceFactory.create(collectionId: collectionId);
     return await gameApi.findCard(cardId: cardId);
   }
 

@@ -22,7 +22,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     required TagEntity? tag,
   }) async {
     if (state.isLoading || isClosed) return;
-    safeEmit(state.copyWith(isLoading: true, errorMessage: '', successMessage: ''));
+    safeEmit(state.copyWith(isLoading: true));
 
     if (tag == null) {
       safeEmit(state.copyWith(
@@ -36,7 +36,6 @@ class ReaderCubit extends Cubit<ReaderState> {
       final card = await findCardFromTagUsecase(tag);
       safeEmit(state.copyWith(
         scannedCards: [...state.scannedCards, card!],
-        successMessage: 'success_read_tag',
         isLoading: false,
       ));
     } catch (e) {
@@ -72,4 +71,6 @@ class ReaderCubit extends Cubit<ReaderState> {
   void resetScannedCard() {
     safeEmit(state.copyWith(scannedCards: []));
   }
+
+  void clearMessages() => safeEmit(state.copyWith(errorMessage: ''));
 }

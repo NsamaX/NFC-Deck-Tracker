@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+
 import 'package:nfc_deck_tracker/data/datasource/api/_service_factory.dart';
 import 'package:nfc_deck_tracker/data/model/collection.dart';
 import 'package:nfc_deck_tracker/data/model/page.dart';

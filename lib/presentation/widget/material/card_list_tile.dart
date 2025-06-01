@@ -8,7 +8,7 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'card_slidable_fun.dart';
 
 import '../../locale/localization.dart';
-import '../../route/route.dart';
+import '../../route/route_constant.dart';
 
 class CardListTileWidget extends StatelessWidget {
   final AppLocalization locale;
@@ -18,7 +18,7 @@ class CardListTileWidget extends StatelessWidget {
   final CardEntity? card;
   final int? count;
   final bool? isDraw;
-  final bool isNFC, isAdd, isCustom, isTrack, lightTheme;
+  final bool onNFC, onAdd, onCustom, isTrack, lightTheme;
   final Color? markedColor;
   final void Function(Color color)? changeCardColor;
   final void Function(String cardId)? onDelete;
@@ -32,9 +32,9 @@ class CardListTileWidget extends StatelessWidget {
     required this.card,
     this.count,
     this.isDraw,
-    this.isNFC = true,
-    this.isAdd = false,
-    this.isCustom = false,
+    this.onNFC = true,
+    this.onAdd = false,
+    this.onCustom = false,
     this.isTrack = false,
     this.lightTheme = false,
     this.markedColor,
@@ -56,9 +56,9 @@ class CardListTileWidget extends StatelessWidget {
         arguments: {
           'collectionId': card?.collectionId,
           'card': card,
-          'isNFC': isNFC,
-          'isAdd': isAdd,
-          'isCustom': isCustom,
+          'onNFC': onNFC,
+          'onAdd': onAdd,
+          'onCustom': onCustom,
         },
       ),
       child: Container(

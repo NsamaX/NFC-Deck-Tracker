@@ -2,20 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../shared/app_bar.dart';
-import '../shared/cupertino_dialog.dart';
+import '../../shared/app_bar.dart';
+import '../../shared/cupertino_dialog.dart';
 
-import '../../cubit/drawer_cubit.dart';
-import '../../cubit/nfc_cubit.dart';
-import '../../cubit/reader_cubit.dart';
-import '../../cubit/record_cubit.dart';
-import '../../cubit/tracker_cubit.dart';
-import '../../locale/localization.dart';
+import '../../../cubit/drawer_cubit.dart';
+import '../../../cubit/nfc_cubit.dart';
+import '../../../cubit/reader_cubit.dart';
+import '../../../cubit/record_cubit.dart';
+import '../../../cubit/tracker_cubit.dart';
+import '../../../locale/localization.dart';
 
-class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
+class AppBarDeckTrackerPage extends StatelessWidget implements PreferredSizeWidget {
   final String userId;
 
-  const DeckTrackerAppBar({
+  const AppBarDeckTrackerPage({
     super.key,
     required this.userId,
   });

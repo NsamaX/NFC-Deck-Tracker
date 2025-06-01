@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
@@ -7,27 +8,27 @@ import 'package:nfc_deck_tracker/data/datasource/api/_api_config.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/collection.dart';
 
+import '../../cubit/collection_cubit.dart';
+
 import '../material/collection.dart';
 
-class CollectionListViewWidget extends StatelessWidget {
-  final List<CollectionEntity> collections;
+class CollectionListView extends StatelessWidget {
   final List<String> gameKeys;
   final List<String> gameImages;
-  final bool isAdd;
+  final bool onAdd;
 
-  const CollectionListViewWidget({
+  const CollectionListView({
     super.key,
-    required this.collections,
     required this.gameKeys,
     required this.gameImages,
-    this.isAdd = false,
+    this.onAdd = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (collections.isEmpty && gameKeys.isEmpty) return const SizedBox.shrink();
+    if (context.read<CollectionCubit>().state.collections.isEmpty && gameKeys.isEmpty) return const SizedBox.shrink();
 
-    final userCollections = collections
+    final userCollections = context.read<CollectionCubit>().state.collections
         .where((e) => !GameConstant.isSupported(e.collectionId))
         .toList();
 
@@ -35,38 +36,37 @@ class CollectionListViewWidget extends StatelessWidget {
       padding: const EdgeInsets.only(top: 8),
       child: ListView(
         children: [
-          ...userCollections.map((collection) => _buildUserItem(context, collection)),
+          ...userCollections.map((collection) => _buildUserItem(collection)),
           if (gameKeys.isNotEmpty)
             ListView.builder(
               itemCount: gameKeys.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (ctx, index) => _buildGameItem(context, index),
+              itemBuilder: (ctx, index) => _buildGameItem(index),
             ),
         ],
       ),
     );
   }
 
-  Widget _buildUserItem(BuildContext context, CollectionEntity collection) {
-    final formattedDate = DateFormat('yyyy-MM-dd HH:mm')
-        .format(collection.updatedAt ?? DateTime.now());
+  Widget _buildUserItem(CollectionEntity collection) {
+    final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(collection.updatedAt!);
 
     return CollectionWidget(
       collectionId: collection.collectionId,
       collectionName: collection.name,
       description: formattedDate,
-      isAdd: isAdd,
+      onAdd: onAdd,
     );
   }
 
-  Widget _buildGameItem(BuildContext context, int index) {
+  Widget _buildGameItem(int index) {
     return CollectionWidget(
       collectionId: gameKeys[index],
       collectionName: gameKeys[index],
       description: ApiConfig.getBaseUrl(gameKeys[index]),
       imagePath: gameImages[index],
-      isAdd: isAdd,
+      onAdd: onAdd,
     );
   }
 }

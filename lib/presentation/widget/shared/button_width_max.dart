@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ButtonMaxWidth extends StatelessWidget {
+class ButtonWidthMax extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const ButtonMaxWidth({
+  const ButtonWidthMax({
     super.key,
     required this.text,
     required this.onPressed,

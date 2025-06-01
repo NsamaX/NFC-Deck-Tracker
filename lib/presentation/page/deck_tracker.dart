@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+
 import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 
 import '../cubit/deck_cubit.dart';
@@ -14,27 +16,32 @@ import '../cubit/tracker_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/shared/cupertino_dialog.dart';
 import '../widget/shared/history_drawer.dart';
-import '../widget/specific/app_bar_deck_tracker_page.dart';
+import '../widget/specific/app_bar/deck_tracker_page.dart';
 import '../widget/specific/create_room_drawer.dart';
 import '../widget/specific/deck_insight_view_new.dart';
 import '../widget/specific/deck_tracker_view.dart';
 import '../widget/specific/deck_view_switcher.dart';
-import '../widget/specific/nfc_track_listener.dart';
+import '../widget/specific/tracker_listener.dart';
 
 class DeckTrackerPage extends StatelessWidget {
   const DeckTrackerPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    String _collectionId = GameConstant.dummy;
     final deck = context.read<DeckCubit>().state.currentDeck;
 
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: locator<DrawerCubit>()),
         BlocProvider.value(value: locator<PinColorCubit>()),
-        BlocProvider.value(value: locator<RecordCubit>(param1: deck)),
+        BlocProvider(
+          create: (_) => locator<ReaderCubit>(param1: _collectionId),
+        ),
+        BlocProvider(
+          create: (_) => locator<RecordCubit>(param1: deck.deckId),
+        ),
         BlocProvider.value(value: locator<TrackerCubit>(param1: deck)),
-        BlocProvider.value(value: locator<ReaderCubit>()),
       ],
       child: _DeckTrackerPageContent(deck: deck),
     );
@@ -52,42 +59,44 @@ class _DeckTrackerPageContent extends StatefulWidget {
 
 class _DeckTrackerPageContentState extends State<_DeckTrackerPageContent> {
   late final String userId;
+  bool _didInit = false;
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_didInit) {
+      _didInit = true;
 
-    final locale = AppLocalization.of(context);
-    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+      final locale = AppLocalization.of(context);
+      userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
-    context.read<RecordCubit>().fetchRecord(userId: userId,  deckId: widget.deck.deckId!);
-    context.read<TrackerCubit>().showAlertDialog();
+      context.read<TrackerCubit>().showAlertDialog();
 
-    buildCupertinoAlertDialog(
-      title: locale.translate('page_deck_tracker.dialog_tracker_tutorial_title'),
-      content: locale.translate('page_deck_tracker.dialog_tracker_tutorial_content'),
-      onPressed: () {},
-      confirmButtonText: locale.translate('common.button_ok'),
-      closeDialog: () => Navigator.of(context).pop(),
-      showDialog: (dialog) => showCupertinoDialog(
-        context: context,
-        builder: (_) => dialog,
-      ),
-    );
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        buildCupertinoAlertDialog(
+          title: locale.translate('page_deck_tracker.dialog_tracker_tutorial_title'),
+          content: locale.translate('page_deck_tracker.dialog_tracker_tutorial_content'),
+          onPressed: () {},
+          confirmButtonText: locale.translate('common.button_ok'),
+          closeDialog: () => Navigator.of(context).pop(),
+          showDialog: (dialog) => showCupertinoDialog(
+            context: context,
+            builder: (_) => dialog,
+          ),
+        );
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final drawerCubit = context.read<DrawerCubit>();
-    final trackerCubit = context.read<TrackerCubit>();
-
-    return NfcTrackListener(
+    return TrackerListener(
       child: BlocBuilder<TrackerCubit, TrackerState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: DeckTrackerAppBar(userId: userId),
+            appBar: AppBarDeckTrackerPage(userId: userId),
             body: GestureDetector(
-              onTap: drawerCubit.closeAllDrawer,
+              onTap: context.read<DrawerCubit>().closeAllDrawer,
               behavior: HitTestBehavior.opaque,
               child: BlocBuilder<DrawerCubit, DrawerState>(
                 builder: (context, drawerState) {
@@ -104,7 +113,7 @@ class _DeckTrackerPageContentState extends State<_DeckTrackerPageContent> {
                             DeckViewSwitcherWidget(
                               isAnalyzeModeEnabled: state.isAnalysisMode,
                               onSelected: (_) {
-                                trackerCubit.toggleAnalysisMode();
+                                context.read<TrackerCubit>().toggleAnalysisMode();
                               },
                             ),
                             const SizedBox(height: 8.0),
@@ -116,7 +125,10 @@ class _DeckTrackerPageContentState extends State<_DeckTrackerPageContent> {
                           ],
                         ),
                       ),
-                      const HistoryDrawerWidget(),
+                      HistoryDrawer(
+                        isOpen: context.watch<DrawerCubit>().state.visibleHistoryDrawer,
+                        cards: context.watch<ReaderCubit>().state.scannedCards,
+                      ),
                       const CreateRoomDrawerWidget(),
                     ],
                   );

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../shared/app_bar.dart';
+import '../../../cubit/deck_cubit.dart';
+import '../../../locale/localization.dart';
+import '../../../route/route_constant.dart';
 
-import '../../cubit/deck_cubit.dart';
-import '../../locale/localization.dart';
-import '../../route/route.dart';
+import '../../shared/app_bar.dart';
 
-class MyDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MyDeckAppBar({super.key});
+class AppBarMyDeckPage extends StatelessWidget implements PreferredSizeWidget {
+  const AppBarMyDeckPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,6 @@ class MyDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   List<AppBarMenuItem> _buildMenu(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final deckCubit = context.read<DeckCubit>();
-    final showEdit = deckCubit.state.decks.isNotEmpty;
 
     return [
       AppBarMenuItem(
@@ -26,24 +24,19 @@ class MyDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
         action: () => _createNewDeck(context),
       ),
       AppBarMenuItem(label: locale.translate('page_deck_list.app_bar')),
-      showEdit
+      context.watch<DeckCubit>().state.decks.isNotEmpty
           ? AppBarMenuItem(
               label: Icons.edit_rounded,
-              action: deckCubit.toggleEditMode,
+              action: context.read<DeckCubit>().toggleEditMode,
             )
           : AppBarMenuItem.empty(),
     ];
   }
 
   void _createNewDeck(BuildContext context) {
-    final deckCubit = context.read<DeckCubit>();
     final locale = AppLocalization.of(context);
 
-    deckCubit.createNewDeck(locale: locale);
-    if (deckCubit.state.isEditMode) {
-      deckCubit.toggleEditMode();
-    }
-
+    context.read<DeckCubit>().createNewDeck(locale: locale);
     Navigator.of(context).pushNamed(RouteConstant.deck_builder);
   }
 

@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'route.dart';
+import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
 
+import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+
+import '../cubit/card_cubit.dart';
+import '../cubit/collection_cubit.dart';
+import '../cubit/search_cubit.dart';
 import '../page/_index.dart';
+
+import 'route_constant.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -15,8 +23,32 @@ class RouteGenerator {
       case RouteConstant.deck_tracker: return _build(page: const DeckTrackerPage(),settings: settings);
 
       case RouteConstant.tag_reader:   return _build(page: const TagReaderPage(), settings: settings);
-      case RouteConstant.collection:   return _build(page: CollectionPage(), settings: settings);
-      case RouteConstant.browse_card:  return _build(page: BrowseCardPage(), settings: settings);
+      case RouteConstant.collection:   
+        return _build(
+          page: BlocProvider.value(
+            value: locator<CollectionCubit>(),
+            child: CollectionPage(),
+          ), 
+          settings: settings,
+        );
+      case RouteConstant.browse_card:
+        final args = settings.arguments as Map<String, dynamic>? ?? {};
+        final collectionId = args['collectionId'] ?? GameConstant.dummy;
+
+        return _build(
+          page: MultiBlocProvider(
+            providers: [
+              BlocProvider<CardCubit>(
+                create: (_) => locator<CardCubit>(),
+              ),
+              BlocProvider<SearchCubit>(
+                create: (_) => locator<SearchCubit>(param1: GameConstant.isSupported(collectionId) ? collectionId : GameConstant.dummy),
+              ),
+            ],
+            child: const BrowseCardPage(),
+          ),
+          settings: settings,
+        );
       case RouteConstant.card:         return _build(page: CardPage(), settings: settings);
 
       case RouteConstant.setting:      return _build(page: const SettingPage(), settings: settings);

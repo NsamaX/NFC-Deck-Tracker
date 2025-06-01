@@ -11,25 +11,21 @@ class UpdateDeckRemoteDatasource {
     required String userId,
     required DeckModel deck,
   }) async {
-    final deckData = deck.toJson()
-      ..remove('deckId')
-      ..remove('cards');
-
-    await _firestoreService.update(
+    final deckData = deck.toJsonForDeck()..remove('deckId');
+    final deckUpdated = await _firestoreService.update(
       collectionPath: 'users/$userId/decks',
       documentId: deck.deckId,
       data: deckData,
     );
 
-    final deckCardsPath = 'users/$userId/decks/${deck.deckId}/cards';
+    if (!deckUpdated) return false;
 
+    final deckCardsPath = 'users/$userId/decks/${deck.deckId}/cards';
     final remoteSnapshot = await _firestoreService.queryCollection(
       collectionPath: deckCardsPath,
     );
     final remoteIds = remoteSnapshot.map((doc) => doc.id).toSet();
-    final localIds = deck.cards
-        .map((c) => '${c.card.collectionId}_${c.card.cardId}')
-        .toSet();
+    final localIds = deck.cards.map((c) => c.card.cardId).toSet();
     final idsToDelete = remoteIds.difference(localIds);
 
     for (final id in idsToDelete) {
@@ -40,12 +36,14 @@ class UpdateDeckRemoteDatasource {
     }
 
     for (final cardInDeck in deck.cards) {
-      final cardId = '${cardInDeck.card.collectionId}_${cardInDeck.card.cardId}';
-
+      final cardId = cardInDeck.card.cardId;
       await _firestoreService.insert(
         collectionPath: deckCardsPath,
         documentId: cardId,
-        data: cardInDeck.toJson(),
+        data: {
+          'cardId': cardId,
+          'count': cardInDeck.count,
+        },
         merge: true,
       );
     }

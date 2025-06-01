@@ -2,18 +2,16 @@ import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
 
-class SettingsSectionWidget extends StatelessWidget {
+class SettingSection extends StatelessWidget {
   final List<Map<String, dynamic>> section;
 
-  const SettingsSectionWidget({
+  const SettingSection({
     super.key,
     required this.section,
   });
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-
     return Padding(
       padding: const EdgeInsets.only(top: 2.0),
       child: Column(
@@ -25,8 +23,8 @@ class SettingsSectionWidget extends StatelessWidget {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (title != null) _buildTitle(title, theme),
-              ...content.map((item) => _buildContentItem(context, item, theme)).toList(),
+              if (title != null) _buildTitle(context, title: title),
+              ...content.map((item) => _buildContentItem(context, item: item)).toList(),
             ],
           );
         }).toList(),
@@ -34,7 +32,12 @@ class SettingsSectionWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle(String title, ThemeData theme) {
+  Widget _buildTitle(
+    BuildContext context, {
+    required String title,
+  }) {
+    final theme = Theme.of(context);
+
     return Padding(
       padding: const EdgeInsets.only(left: 20.0, top: 16.0, bottom: 8.0),
       child: Text(
@@ -47,10 +50,11 @@ class SettingsSectionWidget extends StatelessWidget {
   }
 
   Widget _buildContentItem(
-    BuildContext context,
-    Map<String, dynamic> item,
-    ThemeData theme,
-  ) {
+    BuildContext context, {
+    required Map<String, dynamic> item,
+  }) {
+    final theme = Theme.of(context);
+
     final icon  = item['icon']  as IconData?;
     final text  = item['text']  as String?;
     final info  = item['info']  as String?;
@@ -86,11 +90,9 @@ class SettingsSectionWidget extends StatelessWidget {
             ),
             Row(
               children: [
-                if (info != null)
-                  Text(info, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.opacityText)),
+                if (info != null) Text(info, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.opacityText)),
                 if (info != null) const SizedBox(width: 6.0),
-                if (route != null)
-                  Icon(Icons.arrow_forward_ios_rounded, color: theme.colorScheme.opacityText),
+                if (route != null) Icon(Icons.arrow_forward_ios_rounded, color: theme.colorScheme.opacityText),
               ],
             ),
           ],
