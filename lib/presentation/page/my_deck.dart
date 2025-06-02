@@ -41,7 +41,9 @@ class _MyDeckPage extends State<MyDeckPage> {
 
           if (isLoading) {
             return const Center(child: CircularProgressIndicator());
-          } else if (deck.isEmpty) {
+          } 
+          
+          if (deck.isEmpty) {
             return DescriptionAlignCenter(
               text: locale.translate('page_deck_list.empty_message'),
             );

@@ -19,7 +19,6 @@ export 'fetch_used_card_distinct.dart';
 export 'filter_deck_cards.dart';
 export 'find_card_from_tag.dart';
 export 'generate_share_deck_clipboard.dart';
-export 'get_card_from_record.dart';
 export 'initialize_setting.dart';
 export 'join_room.dart';
 export 'tracke_card_interaction.dart';

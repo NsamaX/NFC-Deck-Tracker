@@ -46,6 +46,7 @@ class _CardPageContentState extends State<_CardPageContent> {
   @override
   void initState() {
     super.initState();
+
     nameController = TextEditingController();
     descriptionController = TextEditingController();
     abilityController = TextEditingController();
@@ -56,6 +57,7 @@ class _CardPageContentState extends State<_CardPageContent> {
     nameController.dispose();
     descriptionController.dispose();
     abilityController.dispose();
+
     super.dispose();
   }
 

@@ -45,12 +45,12 @@ class LibraryPage extends StatelessWidget {
                 userId: FirebaseAuth.instance.currentUser?.uid ?? '',
                 items: cards,
               );
-            } else {
-              return DescriptionAlignCenter(
-                text: locale.translate('page_library.empty_message'),
-                bottomNavHeight: true,
-              );
-            }
+            } 
+            
+            return DescriptionAlignCenter(
+              text: locale.translate('page_library.empty_message'),
+              bottomNavHeight: true,
+            );
           },
         ),
       ),

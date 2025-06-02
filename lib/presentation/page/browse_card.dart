@@ -81,7 +81,9 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
             builder: (context, state) {
               if (state.isLoading) {
                 return const Expanded(child: Center(child: CircularProgressIndicator()));
-              } else if (state.errorMessage.isNotEmpty) {
+              } 
+              
+              if (state.errorMessage.isNotEmpty) {
                 return Expanded(
                   child: DescriptionAlignCenter(
                     text: locale.translate(state.errorMessage),
@@ -89,15 +91,15 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
                     bottomNavHeight: true,
                   ),
                 );
-              } else {
-                return Expanded(
-                  child: CardListWidget(
-                    cards: state.visibleCards,
-                    onAdd: args['onAdd'] ?? false,
-                    userId: FirebaseAuth.instance.currentUser?.uid ?? '',
-                  ),
-                );
-              }
+              } 
+              
+              return Expanded(
+                child: CardListWidget(
+                  cards: state.visibleCards,
+                  onAdd: args['onAdd'] ?? false,
+                  userId: FirebaseAuth.instance.currentUser?.uid ?? '',
+                ),
+              );
             },
           ),
         ],

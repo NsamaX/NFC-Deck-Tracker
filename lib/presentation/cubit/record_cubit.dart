@@ -2,15 +2,14 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:nfc_deck_tracker/domain/entity/player_action.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/data.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
+import 'package:nfc_deck_tracker/domain/entity/player_action.dart';
 import 'package:nfc_deck_tracker/domain/entity/record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/create_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/delete_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_record.dart';
-import 'package:nfc_deck_tracker/domain/usecase/get_card_from_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_record.dart';
 
 part 'record_state.dart';
@@ -19,7 +18,6 @@ class RecordCubit extends Cubit<RecordState> {
   final CreateRecordUsecase createRecordUsecase;
   final DeleteRecordUsecase deleteRecordUsecase;
   final FetchRecordUsecase fetchRecordUsecase;
-  final GetCardsFromRecordUsecase getCardsFromRecordUsecase;
   final UpdateRecordUsecase updateRecordUsecase;
 
   RecordCubit({
@@ -27,7 +25,6 @@ class RecordCubit extends Cubit<RecordState> {
     required this.createRecordUsecase,
     required this.deleteRecordUsecase,
     required this.fetchRecordUsecase,
-    required this.getCardsFromRecordUsecase,
     required this.updateRecordUsecase,
   }) : super(RecordState(
         currentRecord: RecordEntity(
@@ -67,11 +64,31 @@ class RecordCubit extends Cubit<RecordState> {
     final records = await fetchRecordUsecase.call(userId: userId, deckId: deckId);
     safeEmit(state.copyWith(records: records, isLoading: false));
   }
+  
+  void findRecord({
+    required String recordId,
+  }) {
+    final selected = state.records.firstWhere((r) => r.recordId == recordId);
+    safeEmit(state.copyWith(currentRecord: selected));
+  }
 
   void saveRecord({
     required String userId,
   }) async {
     await updateRecordUsecase.call(userId: userId, record: state.currentRecord);
+  }
+
+  List<CardEntity> getCardFromRecord({
+    required String recordId,
+    required DeckEntity deck,
+  }) {
+    final record = state.records.firstWhere((r) => r.recordId == recordId);
+
+    return record.data
+        .map((data) =>
+            deck.cards?.firstWhere((card) => card.card.cardId == data.cardId).card)
+        .whereType<CardEntity>()
+        .toList();
   }
 
   Future<void> selectRecord({
@@ -98,18 +115,6 @@ class RecordCubit extends Cubit<RecordState> {
         data: newDataList,
       ),
     ));
-  }
-
-  Future<List<CardEntity>> getCardFromRecord({
-    required DeckEntity deck,
-  }) async {
-    safeEmit(state.copyWith(isLoading: true));
-    final cards = await getCardsFromRecordUsecase(
-      deck: deck,
-      record: state.currentRecord,
-    );
-    safeEmit(state.copyWith(isLoading: false));
-    return cards;
   }
 
   bool? wasLastActionDraw({

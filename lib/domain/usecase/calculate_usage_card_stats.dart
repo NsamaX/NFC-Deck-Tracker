@@ -1,18 +1,12 @@
-import 'package:nfc_deck_tracker/data/repository/find_card.dart';
-
 import '../entity/card.dart';
 import '../entity/deck.dart';
 import '../entity/record.dart';
 import '../entity/player_action.dart';
 import '../entity/usage_card_stats.dart';
-import '../mapper/card.dart';
 
 class CalculateUsageCardStatsUsecase {
-  final FindCardRepository findCardRepository;
 
-  CalculateUsageCardStatsUsecase({
-    required this.findCardRepository,
-  });
+  CalculateUsageCardStatsUsecase();
 
   Future<List<UsageCardStats>> call({
     required DeckEntity deck,
@@ -51,20 +45,11 @@ class CalculateUsageCardStatsUsecase {
         if (card != null) {
           cardCache[key] = card;
         } else {
-          final cardModel = await findCardRepository.findLocalCard(
+          cardCache[key] = CardEntity(
             collectionId: log.collectionId,
             cardId: log.cardId,
+            name: 'Unknown',
           );
-
-          if (cardModel != null) {
-            cardCache[key] = CardMapper.toEntity(cardModel);
-          } else {
-            cardCache[key] = CardEntity(
-              collectionId: log.collectionId,
-              cardId: log.cardId,
-              name: 'Unknown',
-            );
-          }
         }
       }
 

@@ -35,6 +35,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> {
   @override
   void dispose() {
     nameController.dispose();
+
     super.dispose();
   }
 

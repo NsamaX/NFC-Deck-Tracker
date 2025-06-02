@@ -111,9 +111,7 @@ void setupLocalUsecase() {
 // ----------------- Record -----------------
 
 void setupRecordUsecase() {
-  locator.registerLazySingleton(() => CalculateUsageCardStatsUsecase(
-    findCardRepository: locator<FindCardRepository>(),
-  ));
+  locator.registerLazySingleton(() => CalculateUsageCardStatsUsecase());
   locator.registerLazySingleton(() => CreateRecordUsecase(
     createRecordRepository: locator<CreateRecordRepository>(),
   ));
@@ -125,9 +123,6 @@ void setupRecordUsecase() {
     deleteRecordRepository: locator<DeleteRecordRepository>(),
     fetchRecordRepository: locator<FetchRecordRepository>(),
     updateRecordRepository: locator<UpdateRecordRepository>(),
-  ));
-  locator.registerLazySingleton(() => GetCardsFromRecordUsecase(
-    findCardRepository: locator<FindCardRepository>(),
   ));
   locator.registerLazySingleton(() => UpdateRecordUsecase(
     updateRecordRepository: locator<UpdateRecordRepository>(),

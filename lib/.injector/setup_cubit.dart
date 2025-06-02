@@ -85,33 +85,26 @@ void setupReaderCubit() {
 }
 
 void setupRecordCubit() {
-  locator.registerFactoryParam<RecordCubit, String, void>(
-    (deckId, _) => RecordCubit(
-      deckId: deckId,
-      createRecordUsecase: locator<CreateRecordUsecase>(),
-      deleteRecordUsecase: locator<DeleteRecordUsecase>(),
-      fetchRecordUsecase: locator<FetchRecordUsecase>(),
-      getCardsFromRecordUsecase: locator<GetCardsFromRecordUsecase>(),
-      updateRecordUsecase: locator<UpdateRecordUsecase>(),
-    ),
-  );
+  locator.registerFactoryParam<RecordCubit, String, void>((deckId, _) => RecordCubit(
+    deckId: deckId,
+    createRecordUsecase: locator<CreateRecordUsecase>(),
+    deleteRecordUsecase: locator<DeleteRecordUsecase>(),
+    fetchRecordUsecase: locator<FetchRecordUsecase>(),
+    updateRecordUsecase: locator<UpdateRecordUsecase>(),
+  ));
 }
 
 void setupSearchCubit() {
-  locator.registerFactoryParam<SearchCubit, String, void>(
-    (collectionId, _) => SearchCubit(
-      fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
-    ),
-  );
+  locator.registerFactoryParam<SearchCubit, String, void>((collectionId, _) => SearchCubit(
+    fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
+  ));
 }
 
 void setupTrackerCubit() {
-  locator.registerFactoryParam<TrackerCubit, DeckEntity, void>(
-    (deck, _) => TrackerCubit(
-      deck: deck,
-      trackCardInteractionUsecase: locator<TrackCardInteractionUsecase>(),
-    ),
-  );
+  locator.registerFactoryParam<TrackerCubit, DeckEntity, void>((deck, _) => TrackerCubit(
+    deck: deck,
+    trackCardInteractionUsecase: locator<TrackCardInteractionUsecase>(),
+  ));
 }
 
 void setupUsageCardCubit() {

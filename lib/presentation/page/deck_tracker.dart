@@ -13,12 +13,13 @@ import '../cubit/pin_color_cubit.dart';
 import '../cubit/reader_cubit.dart';
 import '../cubit/record_cubit.dart';
 import '../cubit/tracker_cubit.dart';
+import '../cubit/usage_card_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/shared/cupertino_dialog.dart';
 import '../widget/shared/history_drawer.dart';
 import '../widget/specific/app_bar/deck_tracker_page.dart';
 import '../widget/specific/create_room_drawer.dart';
-import '../widget/specific/deck_insight_view_new.dart';
+import '../widget/specific/deck_insight_view.dart';
 import '../widget/specific/deck_tracker_view.dart';
 import '../widget/specific/deck_view_switcher.dart';
 import '../widget/specific/tracker_listener.dart';
@@ -36,6 +37,9 @@ class DeckTrackerPage extends StatelessWidget {
         BlocProvider.value(value: locator<DrawerCubit>()),
         BlocProvider.value(value: locator<PinColorCubit>()),
         BlocProvider(
+          create: (_) => locator<UsageCardCubit>(),
+        ),
+        BlocProvider(
           create: (_) => locator<ReaderCubit>(param1: _collectionId),
         ),
         BlocProvider(
@@ -43,15 +47,13 @@ class DeckTrackerPage extends StatelessWidget {
         ),
         BlocProvider.value(value: locator<TrackerCubit>(param1: deck)),
       ],
-      child: _DeckTrackerPageContent(deck: deck),
+      child: _DeckTrackerPageContent(),
     );
   }
 }
 
 class _DeckTrackerPageContent extends StatefulWidget {
-  final deck;
-
-  const _DeckTrackerPageContent({required this.deck});
+  const _DeckTrackerPageContent();
 
   @override
   State<_DeckTrackerPageContent> createState() => _DeckTrackerPageContentState();
@@ -120,7 +122,7 @@ class _DeckTrackerPageContentState extends State<_DeckTrackerPageContent> {
                             Expanded(
                               child: state.isAnalysisMode
                                   ? const DeckInsightViewWidget()
-                                  : const DeckTrackerViewWidget(),
+                                  : DeckTrackerView(recordCubit: locator<RecordCubit>(param1: state.currentDeck.deckId)),
                             ),
                           ],
                         ),

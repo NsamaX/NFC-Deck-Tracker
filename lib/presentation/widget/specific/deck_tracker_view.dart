@@ -3,19 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../material/card_list_tile.dart';
 
-import '../../cubit/record_cubit.dart';
 import '../../cubit/pin_color_cubit.dart';
+import '../../cubit/record_cubit.dart';
 import '../../cubit/tracker_cubit.dart';
 import '../../locale/localization.dart';
 
-class DeckTrackerViewWidget extends StatelessWidget {
-  const DeckTrackerViewWidget({super.key});
+class DeckTrackerView extends StatelessWidget {
+  final RecordCubit recordCubit;
+
+  const DeckTrackerView({
+    super.key,
+    required this.recordCubit,
+  });
 
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
-    // final recordCubit = context.read<RecordCubit>();
     final pinColorState = context.watch<PinColorCubit>().state;
 
     return BlocBuilder<TrackerCubit, TrackerState>(
@@ -33,7 +37,7 @@ class DeckTrackerViewWidget extends StatelessWidget {
                 child: Text(
                   locale
                       .translate('page_deck_tracker.total_cards')
-                      .replaceFirst('{total}', '$total'),
+                      .replaceFirst('{card}', '$total'),
                   style: theme.textTheme.titleMedium,
                 ),
               ),
@@ -47,11 +51,6 @@ class DeckTrackerViewWidget extends StatelessWidget {
                   final card = cardInDeck.card;
                   final count = cardInDeck.count;
 
-                  // final isDraw = recordCubit.wasLastActionDraw(
-                  //   cardId: card.cardId!,
-                  //   collectionId: card.collectionId!,
-                  // );
-
                   return CardListTileWidget(
                     locale: locale,
                     theme: theme,
@@ -59,7 +58,10 @@ class DeckTrackerViewWidget extends StatelessWidget {
                     mediaQuery: MediaQuery.of(context),
                     card: card,
                     count: count,
-                    isDraw: false, // isDraw,
+                    isDraw: recordCubit.wasLastActionDraw(
+                      cardId: card.cardId!,
+                      collectionId: card.collectionId!,
+                    ),
                     onNFC: false,
                     isTrack: true,
                     lightTheme: count > 0,
