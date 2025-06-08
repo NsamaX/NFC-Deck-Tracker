@@ -23,17 +23,15 @@ class UsageCardCubit extends Cubit<UsageCardState> {
     required DeckEntity deck,
     required RecordEntity record,
   }) async {
-    safeEmit(state.copyWith(isProcessing: true));
-
     try {
       final stats = await calculateUsageCardStatsUsecase(
         deck: deck,
         record: record,
       );
 
-      safeEmit(state.copyWith(stat: stats, isProcessing: false));
-    } catch (_) {
-      safeEmit(state.copyWith(isProcessing: false));
-    }
+      safeEmit(state.copyWith(stat: stats));
+    } catch (_) {}
   }
+
+  void resetUsageStats() => safeEmit(state.copyWith(stat: []));
 }

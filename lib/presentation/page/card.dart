@@ -42,6 +42,7 @@ class _CardPageContentState extends State<_CardPageContent> {
   late final TextEditingController nameController;
   late final TextEditingController descriptionController;
   late final TextEditingController abilityController;
+  late NfcCubit nfcCubit;
 
   @override
   void initState() {
@@ -53,10 +54,21 @@ class _CardPageContentState extends State<_CardPageContent> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    nfcCubit = context.read<NfcCubit>();
+  }
+
+  @override
   void dispose() {
     nameController.dispose();
     descriptionController.dispose();
     abilityController.dispose();
+
+    if (nfcCubit.state.isSessionActive) {
+      nfcCubit.stopSession();
+    }
 
     super.dispose();
   }

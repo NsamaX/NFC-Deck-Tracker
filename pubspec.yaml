@@ -46,6 +46,8 @@ dependencies:
   flutter_slidable: ^4.0.0
   google_fonts: ^6.2.1
   image_picker: ^1.1.2
+  qr_code_scanner: ^1.0.1
+  qr_flutter: ^4.1.0
 
 dev_dependencies:
   flutter_test:

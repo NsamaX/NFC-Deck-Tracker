@@ -105,8 +105,8 @@ class _TagReaderPageContent extends StatelessWidget {
                   return BlocBuilder<ReaderCubit, ReaderState>(
                     builder: (context, readerState) {
                       return HistoryDrawer(
-                        isOpen: drawerState.visibleHistoryDrawer,
-                        cards: readerState.scannedCards,
+                        drawerCubit: context.watch<DrawerCubit>(),
+                        readerCubit: context.watch<ReaderCubit>(),
                       );
                     },
                   );

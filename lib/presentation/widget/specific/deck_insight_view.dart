@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/usage_card_stats.dart';
 
-import '../../cubit/application_cubit.dart';
 import '../../cubit/reader_cubit.dart';
 import '../../cubit/tracker_cubit.dart';
 import '../../cubit/record_cubit.dart';
@@ -17,129 +15,109 @@ import 'deck_insight_summary.dart';
 import 'history_list_view.dart';
 
 class DeckInsightViewWidget extends StatefulWidget {
-  const DeckInsightViewWidget({super.key});
+  final AppLocalization locale;
+  final ReaderCubit readerCubit;
+  final TrackerCubit trackerCubit;
+  final RecordCubit recordCubit;
+  final UsageCardCubit usageCardCubit;
+  final String userId;
+
+  const DeckInsightViewWidget({
+    super.key,
+    required this.locale,
+    required this.readerCubit,
+    required this.trackerCubit,
+    required this.recordCubit,
+    required this.usageCardCubit,
+    required this.userId,
+  });
 
   @override
   State<DeckInsightViewWidget> createState() => _DeckInsightViewWidgetState();
 }
 
 class _DeckInsightViewWidgetState extends State<DeckInsightViewWidget> {
-  bool _didLoad = false;
+  bool _hasLoaded = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (!_didLoad) {
-      final trackerCubit = context.read<TrackerCubit>();
-      final recordCubit = context.read<RecordCubit>();
-      final usageCardCubit = context.read<UsageCardCubit>();
 
-      usageCardCubit.loadUsageStats(
-        deck: trackerCubit.state.originalDeck,
-        record: recordCubit.state.currentRecord,
+    if (!_hasLoaded) {
+      widget.recordCubit.fetchRecord(
+        userId: widget.userId,
+        deckId: widget.trackerCubit.state.originalDeck.deckId!,
       );
 
-      _didLoad = true;
+      _hasLoaded = true;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    final locale = AppLocalization.of(context);
-    final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
+    final stat = widget.usageCardCubit.state.stat;
 
-    final applicationCubit = context.read<ApplicationCubit>();
-    final readerCubit = context.read<ReaderCubit>();
-    final trackerCubit = context.read<TrackerCubit>();
-    final recordCubit = context.read<RecordCubit>();
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    return ListView(
+      children: [
+        _buildChart(stat),
+        _buildSummary(stat),
+        _buildHistory(stat),
+      ],
+    );
+  }
 
-    return BlocBuilder<UsageCardCubit, UsageCardState>(
+  Widget _buildChart(List<UsageCardStats> cardStats) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(6.0, 0.0, 16.0, 0.0),
+      child: DeckInsightChart(cardStats: cardStats),
+    );
+  }
+
+  Widget _buildSummary(List<UsageCardStats> cardStats) {
+    return DeckInsightSummary(
+      initialDeck: widget.trackerCubit.state.originalDeck,
+      allRecord: widget.recordCubit.state.records,
+      currentRecord: widget.recordCubit.state.currentRecord,
+      usageCardStat: cardStats,
+      selectRecord: (context, recordId) {
+        widget.recordCubit.findRecord(recordId: recordId);
+      },
+    );
+  }
+
+  Widget _buildHistory(List<UsageCardStats> cardStats) {
+    return BlocBuilder<RecordCubit, RecordState>(
       builder: (context, state) {
-        if (state.isProcessing) {
-          return const Center(child: CircularProgressIndicator());
-        }
-
-        return ListView(
-          children: [
-            _buildChart(locale, theme, mediaQuery, state.stat),
-            _buildSummary(locale, theme, trackerCubit, recordCubit, state.stat),
-            if (recordCubit.state.records.isNotEmpty)
-              _buildHistory(locale, theme, readerCubit, trackerCubit, recordCubit, applicationCubit, userId),
+        return HistoryListView(
+          section: [
+            {
+              'title': widget.locale.translate('page_deck_tracker.history_title'),
+              'content': state.records.map((record) {
+                return {
+                  'key': record.recordId,
+                  'info': DateFormat('HH:mm:ss').format(record.createdAt),
+                  'text': DateFormat('yyyy-MM-dd').format(record.createdAt),
+                  'onTap': () {
+                    widget.recordCubit.findRecord(recordId: record.recordId);
+                    final cards = widget.recordCubit.getCardFromRecord(
+                      recordId: record.recordId,
+                      deck: widget.trackerCubit.state.originalDeck,
+                    );
+                    widget.readerCubit.setScannedCard(scannedCards: cards);
+                  },
+                  'onDel': () {
+                    widget.recordCubit.removeRecord(
+                      userId: widget.userId,
+                      recordId: record.recordId,
+                    );
+                  },
+                  'pop': true,
+                };
+              }).toList(),
+            }
           ],
         );
       },
-    );
-  }
-
-  Widget _buildChart(
-    AppLocalization locale,
-    ThemeData theme,
-    MediaQueryData mediaQuery,
-    List<UsageCardStats> cardStats,
-  ) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(6.0, 0.0, 16.0, 0.0),
-      child: DeckInsightChart(
-        cardStats: cardStats,
-      ),
-    );
-  }
-
-  Widget _buildSummary(
-    AppLocalization locale,
-    ThemeData theme,
-    TrackerCubit trackerCubit,
-    RecordCubit recordCubit,
-    List<UsageCardStats> cardStats,
-  ) {
-    return DeckInsightSummary(
-      initialDeck: trackerCubit.state.originalDeck,
-      allRecord: recordCubit.state.records,
-      currentRecord: recordCubit.state.currentRecord,
-      usageCardStat: cardStats,
-      selectRecord: (context, recordId) {
-        recordCubit.findRecord(recordId: recordId);
-      },
-    );
-  }
-
-  Widget _buildHistory(
-    AppLocalization locale,
-    ThemeData theme,
-    ReaderCubit readerCubit,
-    TrackerCubit trackerCubit,
-    RecordCubit recordCubit,
-    ApplicationCubit applicationCubit,
-    String userId,
-  ) {
-    return HistoryListView(
-      section: [
-        {
-          'title': locale.translate('page_deck_tracker.history_title'),
-          'content': recordCubit.state.records.map((record) {
-            return {
-              'key': record.recordId,
-              'info': DateFormat('HH:mm:ss').format(record.createdAt),
-              'text': DateFormat('yyyy-MM-dd').format(record.createdAt),
-              'onTap': () {
-                recordCubit.findRecord(recordId: record.recordId);
-                final cards = recordCubit.getCardFromRecord(
-                  recordId: record.recordId,
-                  deck: trackerCubit.state.originalDeck,
-                );
-                readerCubit.setScannedCard(scannedCards: cards);
-              },
-              'onDel': () => recordCubit.removeRecord(
-                userId: userId,
-                recordId: record.recordId,
-              ),
-              'pop': true,
-            };
-          }).toList(),
-        }
-      ],
     );
   }
 }

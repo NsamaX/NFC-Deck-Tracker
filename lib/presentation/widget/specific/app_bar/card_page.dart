@@ -63,7 +63,13 @@ class AppBarCardAppPage extends StatelessWidget implements PreferredSizeWidget {
         label: nfcCubit.state.isSessionActive
             ? Icons.wifi_tethering_rounded
             : Icons.wifi_tethering_off_rounded,
-        action: () => _toggleNFC(nfcCubit),
+        action: () {
+          if (nfcCubit.state.isSessionActive) {
+            nfcCubit.stopSession();
+          } else {
+            nfcCubit.startSession(card: card);
+          }
+        },
       );
     } else {
       rightItem = AppBarMenuItem.empty();
@@ -89,12 +95,6 @@ class AppBarCardAppPage extends StatelessWidget implements PreferredSizeWidget {
   void _toggleCreate(BuildContext context, AppLocalization locale, CardCubit cardCubit) async {
     await cardCubit.createCard(userId: userId);
     AppSnackBar(context, text: locale.translate('page_card_detail.snack_bar_add'));
-  }
-
-  void _toggleNFC(NfcCubit nfcCubit) {
-    nfcCubit.startSession(
-      card: card,
-    );
   }
 
   @override

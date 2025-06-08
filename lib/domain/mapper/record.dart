@@ -10,7 +10,6 @@ class RecordMapper {
         deckId: model.deckId,
         createdAt: model.createdAt,
         data: model.data.map(DataMapper.toEntity).toList(),
-        isShared: model.isShared,
         isSynced: model.isSynced,
         updatedAt: model.updatedAt,
       );
@@ -20,7 +19,6 @@ class RecordMapper {
         deckId: entity.deckId,
         createdAt: entity.createdAt,
         data: entity.data.map(DataMapper.toModel).toList(),
-        isShared: entity.isShared ?? false,
         isSynced: entity.isSynced ?? false,
         updatedAt: entity.updatedAt ?? DateTime.now(),
       );

@@ -25,8 +25,6 @@ Future<void> setupRepository() async {
   }
 }
 
-// ----------------- Card -----------------
-
 void setupCardRepository() {
   locator.registerLazySingleton(() => CreateCardRepository(
     createCardLocalDatasource: locator<CreateCardLocalDatasource>(),
@@ -61,8 +59,6 @@ void setupCardRepository() {
   ));
 }
 
-// ----------------- Collection -----------------
-
 void setupCollectionRepository() {
   locator.registerLazySingleton(() => CreateCollectionRepository(
     createCollectionLocalDatasource: locator<CreateCollectionLocalDatasource>(),
@@ -81,8 +77,6 @@ void setupCollectionRepository() {
     updateCollectionRemoteDatasource: locator<UpdateCollectionRemoteDatasource>(),
   ));
 }
-
-// ----------------- Deck -----------------
 
 void setupDeckRepository() {
   locator.registerLazySingleton(() => CreateDeckRepository(
@@ -103,8 +97,6 @@ void setupDeckRepository() {
   ));
 }
 
-// ----------------- Room -----------------
-
 void setupRoomRepository() {
   locator.registerLazySingleton(() => CloseRoomRepository(
     closeRoomRemoteDatasource: locator<CloseRoomRemoteDatasource>(),
@@ -122,8 +114,6 @@ void setupRoomRepository() {
     updateRoomRemoteDatasource: locator<UpdateRoomRemoteDatasource>(),
   ));
 }
-
-// ----------------- Record -----------------
 
 void setupRecordRepository() {
   locator.registerLazySingleton(() => CreateRecordRepository(
@@ -144,8 +134,6 @@ void setupRecordRepository() {
   ));
 }
 
-// ----------------- Page -----------------
-
 void setupPageRepository() {
   locator.registerLazySingleton(() => CreatePageRepository(
     createPageLocalDatasource: locator<CreatePageLocalDatasource>(),
@@ -158,15 +146,11 @@ void setupPageRepository() {
   ));
 }
 
-// ----------------- Local Clear -----------------
-
 void setupLocalRepository() {
   locator.registerLazySingleton(() => ClearLocalDataSourceRepository(
     clearLocalDatasource: locator<ClearLocalDatasource>(),
   ));
 }
-
-// ----------------- Setting -----------------
 
 void setupSettingRepository() {
   locator.registerLazySingleton(() => LoadSettingRepository(
@@ -176,8 +160,6 @@ void setupSettingRepository() {
     saveSettingLocalDatasource: locator<SaveSettingLocalDatasource>(),
   ));
 }
-
-// ----------------- Upload Image -----------------
 
 void setupUploadImageRepository() {
   locator.registerLazySingleton(() => UploadImageRepository(

@@ -39,14 +39,11 @@ Future<void> setupDataSource() async {
   }
 }
 
-// API Factory
 void setupServiceFactoryRemoteDatasource() {
   locator.registerFactoryParam<GameApi, String, void>((collectionId, _) {
     return ServiceFactory.create(collectionId: collectionId);
   });
 }
-
-// ----------------- Local DataSources -----------------
 
 void setupCardLocalDatasource() {
   locator.registerLazySingleton(() => CreateCardLocalDatasource(locator<SQLiteService>()));
@@ -93,8 +90,6 @@ void setupSettingLocalDatasource() {
   locator.registerLazySingleton(() => LoadSettingLocalDatasource(locator<SharedPreferencesService>()));
   locator.registerLazySingleton(() => SaveSettingLocalDatasource(locator<SharedPreferencesService>()));
 }
-
-// ----------------- Remote DataSources -----------------
 
 void setupCardRemoteDatasource() {
   locator.registerLazySingleton(() => CreateCardRemoteDatasource(locator<FirestoreService>()));

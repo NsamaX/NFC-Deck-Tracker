@@ -7,7 +7,6 @@ class RecordModel {
   final String deckId;
   final DateTime createdAt;
   final List<DataModel> data;
-  final bool isShared;
   final bool isSynced;
   final DateTime updatedAt;
 
@@ -16,7 +15,6 @@ class RecordModel {
     required this.deckId,
     required this.createdAt,
     required this.data,
-    required this.isShared,
     required this.isSynced,
     required this.updatedAt,
   });
@@ -43,7 +41,6 @@ class RecordModel {
       data: (parsedData as List)
           .map((item) => DataModel.fromJson(item))
           .toList(),
-      isShared: json['isShared'],
       isSynced: json['isSynced'] == 1,
       updatedAt: DateTime.parse(json['updatedAt']),
     );
@@ -54,7 +51,6 @@ class RecordModel {
         'deckId': deckId,
         'createdAt': createdAt.toIso8601String(),
         'data': json.encode(data.map((item) => item.toJson()).toList()),
-        'isShared': isShared,
         'isSynced': isSynced ? 1 : 0,
         'updatedAt': updatedAt.toIso8601String(),
       };

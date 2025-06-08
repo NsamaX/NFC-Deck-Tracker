@@ -19,6 +19,7 @@ Future<void> setupCubit() async {
     setupReaderCubit();
     setupRecordCubit();
     setupSearchCubit();
+    setupSignOutCubit();
     setupTrackerCubit();
     setupUsageCardCubit();
 
@@ -73,7 +74,7 @@ void setupNfcCubit() {
 }
 
 void setupPinColorCubit() {
-  locator.registerLazySingleton(() => PinColorCubit());
+  locator.registerFactory(() => PinColorCubit());
 }
 
 void setupReaderCubit() {
@@ -100,6 +101,12 @@ void setupSearchCubit() {
   ));
 }
 
+void setupSignOutCubit() {
+  locator.registerLazySingleton(() => SignOutCubit(
+    clearLocalDataSourceUsecase: locator<ClearLocalDataSourceUsecase>(),
+  ));
+}
+
 void setupTrackerCubit() {
   locator.registerFactoryParam<TrackerCubit, DeckEntity, void>((deck, _) => TrackerCubit(
     deck: deck,
@@ -108,7 +115,7 @@ void setupTrackerCubit() {
 }
 
 void setupUsageCardCubit() {
-  locator.registerLazySingleton(() => UsageCardCubit(
+  locator.registerFactory(() => UsageCardCubit(
     calculateUsageCardStatsUsecase: locator<CalculateUsageCardStatsUsecase>(),
   ));
 }

@@ -22,8 +22,6 @@ Future<void> setupUsecase() async {
   }
 }
 
-// ----------------- Card -----------------
-
 void setupCardUsecase() {
   locator.registerLazySingleton(() => CreateCardUsecase(
     createCardRepository: locator<CreateCardRepository>(),
@@ -56,8 +54,6 @@ void setupCardUsecase() {
   ));
 }
 
-// ----------------- Collection -----------------
-
 void setupCollectionUsecase() {
   locator.registerLazySingleton(() => CreateCollectionUsecase(
     createCollectionRepository: locator<CreateCollectionRepository>(),
@@ -75,8 +71,6 @@ void setupCollectionUsecase() {
     updateCollectionRepository: locator<UpdateCollectionRepository>(),
   ));
 }
-
-// ----------------- Deck -----------------
 
 void setupDeckUsecase() {
   locator.registerLazySingleton(() => CreateDeckUsecase(
@@ -100,15 +94,11 @@ void setupDeckUsecase() {
   ));
 }
 
-// ----------------- Local Clear -----------------
-
 void setupLocalUsecase() {
   locator.registerLazySingleton(() => ClearLocalDataSourceUsecase(
     clearLocalDataSourceRepository: locator<ClearLocalDataSourceRepository>(),
   ));
 }
-
-// ----------------- Record -----------------
 
 void setupRecordUsecase() {
   locator.registerLazySingleton(() => CalculateUsageCardStatsUsecase());
@@ -129,8 +119,6 @@ void setupRecordUsecase() {
   ));
 }
 
-// ----------------- Room -----------------
-
 void setupRoomUsecase() {
   locator.registerLazySingleton(() => CloseRoomUsecase(
     closeRoomRepository: locator<CloseRoomRepository>(),
@@ -148,8 +136,6 @@ void setupRoomUsecase() {
     updateRoomRepository: locator<UpdateRoomRepository>(),
   ));
 }
-
-// ----------------- Setting -----------------
 
 void setupSettingUsecase() {
   locator.registerLazySingleton(() => InitializeSettingUsecase(

@@ -8,5 +8,6 @@ export 'pin_color_cubit.dart';
 export 'reader_cubit.dart';
 export 'record_cubit.dart';
 export 'search_cubit.dart';
+export 'sign_out_cubit.dart';
 export 'tracker_cubit.dart';
 export 'usage_card_cubit.dart';

@@ -5,7 +5,6 @@ class RecordEntity {
   final String recordId;
   final DateTime createdAt;
   final List<DataEntity> data;
-  final bool? isShared;
   final bool? isSynced;
   final DateTime? updatedAt;
 
@@ -14,7 +13,6 @@ class RecordEntity {
     required this.recordId,
     required this.createdAt,
     required this.data,
-    this.isShared,
     this.isSynced,
     this.updatedAt,
   });
@@ -24,7 +22,6 @@ class RecordEntity {
     String? recordId,
     DateTime? createdAt,
     List<DataEntity>? data,
-    bool? isShared,
     bool? isSynced,
     DateTime? updatedAt,
   }) => RecordEntity(
@@ -34,6 +31,5 @@ class RecordEntity {
         data: data ?? this.data,
         isSynced: isSynced ?? this.isSynced,
         updatedAt: updatedAt ?? this.updatedAt,
-        isShared: isShared ?? this.isShared,
       );
 }

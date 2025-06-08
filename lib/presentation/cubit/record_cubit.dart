@@ -82,11 +82,12 @@ class RecordCubit extends Cubit<RecordState> {
     required String recordId,
     required DeckEntity deck,
   }) {
+    if (state.records.isEmpty) return [];
+
     final record = state.records.firstWhere((r) => r.recordId == recordId);
 
     return record.data
-        .map((data) =>
-            deck.cards?.firstWhere((card) => card.card.cardId == data.cardId).card)
+        .map((data) => deck.cards?.firstWhere((card) => card.card.cardId == data.cardId).card)
         .whereType<CardEntity>()
         .toList();
   }
@@ -110,10 +111,20 @@ class RecordCubit extends Cubit<RecordState> {
     required DataEntity data,
   }) {
     final newDataList = [...state.currentRecord.data, data];
+    final updatedRecord = state.currentRecord.copyWith(data: newDataList);
+
+    final records = [...state.records];
+    final index = records.indexWhere((r) => r.recordId == updatedRecord.recordId);
+
+    if (index >= 0) {
+      records[index] = updatedRecord;
+    } else {
+      records.add(updatedRecord);
+    }
+
     safeEmit(state.copyWith(
-      currentRecord: state.currentRecord.copyWith(
-        data: newDataList,
-      ),
+      currentRecord: updatedRecord,
+      records: records,
     ));
   }
 

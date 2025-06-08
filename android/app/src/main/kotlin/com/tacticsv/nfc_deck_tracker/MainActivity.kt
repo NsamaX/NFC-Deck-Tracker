@@ -1,12 +1,12 @@
 package com.tacticsv.nfc_deck_tracker
 
-import io.flutter.embedding.android.FlutterActivity
 import android.app.PendingIntent
 import android.content.Intent
 import android.nfc.NdefMessage
 import android.nfc.NfcAdapter
+import io.flutter.embedding.android.FlutterFragmentActivity
 
-class MainActivity: FlutterActivity() {
+class MainActivity: FlutterFragmentActivity() {
     override fun onResume() {
         super.onResume()
         val nfcAdapter = NfcAdapter.getDefaultAdapter(this)
