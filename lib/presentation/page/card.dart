@@ -10,13 +10,13 @@ import '@argument.dart';
 import '../cubit/card_cubit.dart';
 import '../cubit/deck_cubit.dart';
 import '../cubit/nfc_cubit.dart';
-import '../widget/specific/app_bar/card_page.dart';
-import '../widget/specific/card_image.dart';
-import '../widget/specific/card_info.dart';
-import '../widget/specific/card_quantity_selector.dart';
-import '../widget/specific/custom_card_image.dart';
-import '../widget/specific/custom_card_info.dart';
-import '../widget/specific/writer_listener.dart';
+import '../widget/app_bar/card.dart';
+import '../widget/card/image.dart';
+import '../widget/card/info.dart';
+import '../widget/card/quantity_selector.dart';
+import '../widget/card/custom_image.dart';
+import '../widget/card/custom_info.dart';
+import '../widget/wrapper/writer_listener.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -103,7 +103,7 @@ class _CardPageContent extends State<_CardContent> {
       child: BlocBuilder<NfcCubit, NfcState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: AppBarCardAppPage(
+            appBar: CardAppBar(
               userId: userId,
               card: card,
               onNFC: onNFC,
@@ -114,24 +114,24 @@ class _CardPageContent extends State<_CardContent> {
               padding: const EdgeInsets.all(40.0),
               children: [
                 if (onCustom) ...[
-                  CustomCardImageWidget(cardCubit: cardCubit),
+                  CardCustomImage(cardCubit: cardCubit),
                   const SizedBox(height: 24.0),
-                  CustomCardInfoWidget(
+                  CardCustomInfo(
                     cardCubit: cardCubit,
                     nameController: nameController,
                     descriptionController: descriptionController,
                     abilityController: abilityController,
                   ),
                 ] else ...[
-                  CardImageWidget(card: card),
+                  CardImage(card: card),
                   const SizedBox(height: 24.0),
-                  CardInfoWidget(card: card),
+                  CardInfo(card: card),
                 ],
                 if (onAdd)
                   BlocSelector<DeckCubit, DeckState, int>(
                     selector: (state) => state.selectedCardCount,
                     builder: (context, quantity) {
-                      return CardQuantitySelectorWidget(
+                      return CardQuantitySelector(
                         onSelected: (q) {
                           context.read<DeckCubit>().setCardQuantity(quantity: q);
                         },

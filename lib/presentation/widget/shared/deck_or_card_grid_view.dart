@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
-import '../material/card.dart';
-import '../material/deck.dart';
+import '../card/item.dart';
+import '../deck/item.dart';
 
 class _GridConfig {
   final double spacing;
@@ -65,9 +65,9 @@ class DeckOrCardGridView extends StatelessWidget {
     BuildContext context, {
     required Object item,
   }) {
-    if (item is DeckEntity) return DeckWidget(userId: userId, deck: item);
-    if (item is CardEntity) return CardWidget(card: item);
-    if (item is MapEntry<CardEntity, int>) return CardWidget(card: item.key, count: item.value);
+    if (item is DeckEntity) return DeckItem(userId: userId, deck: item);
+    if (item is CardEntity) return CardItem(card: item);
+    if (item is MapEntry<CardEntity, int>) return CardItem(card: item.key, count: item.value);
 
     return const SizedBox();
   }

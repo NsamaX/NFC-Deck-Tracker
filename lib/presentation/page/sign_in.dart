@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../locale/localization.dart';
-import '../widget/shared/description_align_center.dart';
-import '../widget/shared/image_constant.dart';
-import '../widget/shared/title_align_center.dart';
-import '../widget/shared/ui_constant.dart';
-import '../widget/specific/google_sign_in_button.dart';
-import '../widget/specific/guest_sign_in_button.dart';
+import '../widget/text/description_align_center.dart';
+import '../widget/constant/image.dart';
+import '../widget/text/title_align_center.dart';
+import '../widget/constant/ui.dart';
+import '../widget/button/google_sign_in.dart';
+import '../widget/button/guest_sign_in.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -44,7 +44,7 @@ class SignInPage extends StatelessWidget {
                 ),
                 if (isOnline) ...[
                   const SizedBox(height: 80.0),
-                  const GoogleSignInButton(),
+                  const ButtonGoogleSignIn(),
                   const SizedBox(height: 80.0),
                 ] else ...[
                   Image.asset(
@@ -57,7 +57,7 @@ class SignInPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 20.0),
                 ],
-                GuestSignInButton(
+                ButtonGuestSignIn(
                   text: locale.translate('page_sign_in.button_guest_sign_in'),
                 ),
               ],

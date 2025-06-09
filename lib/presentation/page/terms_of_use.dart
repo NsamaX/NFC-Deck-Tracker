@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../locale/localization.dart';
-import '../widget/shared/app_bar.dart';
-import '../widget/shared/ui_constant.dart';
+import '../widget/app_bar/@default.dart';
+import '../widget/constant/ui.dart';
 
 class TermsOfUsePage extends StatelessWidget {
   const TermsOfUsePage({super.key});
@@ -13,7 +13,7 @@ class TermsOfUsePage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: DefaultAppBar(
         menu: [
           AppBarMenuItem.back(),
           AppBarMenuItem(

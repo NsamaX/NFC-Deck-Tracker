@@ -7,9 +7,9 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
 import '../cubit/collection_cubit.dart';
 import '../locale/localization.dart';
-import '../widget/shared/app_bar.dart';
+import '../widget/app_bar/@default.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
-import '../widget/shared/description_align_center.dart';
+import '../widget/text/description_align_center.dart';
 
 class LibraryPage extends StatefulWidget {
   const LibraryPage({super.key});
@@ -37,7 +37,7 @@ class _LibraryPageContent extends StatelessWidget {
     final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: DefaultAppBar(
         menu: [
           AppBarMenuItem.back(),
           AppBarMenuItem(

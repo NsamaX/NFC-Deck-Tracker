@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import '../locale/localization.dart';
-import '../widget/shared/app_bar.dart';
+import '../widget/app_bar/@default.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
-import '../widget/specific/setting_builder.dart';
-import '../widget/specific/setting_section.dart';
+import '../widget/setting/builder.dart';
+import '../widget/setting/section.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -13,13 +13,13 @@ class SettingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final sectionBuilder = SettingsSectionBuilder(context);
+    final sectionBuilder = SettingBuilder(context);
 
     return StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (context, snapshot) {
         return Scaffold(
-          appBar: AppBarWidget(
+          appBar: DefaultAppBar(
             menu: [
               AppBarMenuItem(
                 label: locale.translate('page_setting.app_bar'),

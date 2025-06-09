@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../shared/ui_constant.dart';
+import '../constant/ui.dart';
 
 import '../../locale/localization.dart';
 

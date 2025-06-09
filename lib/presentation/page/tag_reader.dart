@@ -10,12 +10,12 @@ import '../cubit/drawer_cubit.dart';
 import '../cubit/nfc_cubit.dart';
 import '../cubit/reader_cubit.dart';
 import '../locale/localization.dart';
-import '../widget/shared/app_bar.dart';
+import '../widget/app_bar/@default.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
-import '../widget/shared/history_drawer.dart';
-import '../widget/specific/collection_drawer.dart';
-import '../widget/specific/nfc_button_icon.dart';
-import '../widget/specific/reader_listener.dart';
+import '../widget/drawer/card_history.dart';
+import '../widget/collection/drawer.dart';
+import '../widget/specific/nfc_icon.dart';
+import '../widget/wrapper/reader_listener.dart';
 
 class TagReaderPage extends StatefulWidget {
   const TagReaderPage({super.key});
@@ -57,7 +57,7 @@ class _TagReaderPageContent extends StatelessWidget {
     final locale = AppLocalization.of(context);
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: DefaultAppBar(
         menu: [
           AppBarMenuItem(
             label: Icons.history_rounded,
@@ -87,7 +87,7 @@ class _TagReaderPageContent extends StatelessWidget {
             children: [
               BlocBuilder<NfcCubit, NfcState>(
                 builder: (context, state) {
-                  return NfcButtonIconWidget(
+                  return NfcIcon(
                     isSessionActive: state.isSessionActive,
                     onTap: () => state.isSessionActive
                         ? context.read<NfcCubit>().stopSession()
@@ -100,7 +100,7 @@ class _TagReaderPageContent extends StatelessWidget {
                 builder: (context, drawerState) {
                   return BlocBuilder<ReaderCubit, ReaderState>(
                     builder: (context, readerState) {
-                      return HistoryDrawer(
+                      return CardHistoryDrawer(
                         drawerCubit: context.watch<DrawerCubit>(),
                         readerCubit: context.watch<ReaderCubit>(),
                       );
@@ -113,7 +113,7 @@ class _TagReaderPageContent extends StatelessWidget {
                 builder: (context, drawerState) {
                   return BlocBuilder<ApplicationCubit, ApplicationState>(
                     builder: (context, appState) {
-                      return CollectionDrawerWidget(
+                      return CollectionDrawer(
                         isOpen: drawerState.visibleFeatureDrawer,
                         recentId: appState.recentId,
                         recentGame: appState.recentGame,

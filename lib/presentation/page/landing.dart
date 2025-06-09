@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import '../locale/localization.dart';
 import '../route/route_constant.dart';
-import '../widget/shared/button_width_max.dart';
-import '../widget/shared/description_align_center.dart';
-import '../widget/shared/image_constant.dart';
-import '../widget/shared/title_align_center.dart';
-import '../widget/shared/ui_constant.dart';
+import '../widget/button/max_width.dart';
+import '../widget/text/description_align_center.dart';
+import '../widget/constant/image.dart';
+import '../widget/text/title_align_center.dart';
+import '../widget/constant/ui.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -34,7 +34,7 @@ class LandingPage extends StatelessWidget {
             DescriptionAlignCenter(
               text: locale.translate('page_landing.app_description'),
             ),
-            ButtonWidthMax(
+            ButtonMaxWidth(
               text: locale.translate('page_landing.button_get_started'),
               onPressed: () {
                 Navigator.of(context).pushNamed(RouteConstant.sign_in);

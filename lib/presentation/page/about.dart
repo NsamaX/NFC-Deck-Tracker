@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 import '../locale/localization.dart';
-import '../widget/shared/app_bar.dart';
-import '../widget/shared/description_align_center.dart';
-import '../widget/shared/ui_constant.dart';
+import '../widget/app_bar/@default.dart';
+import '../widget/text/description_align_center.dart';
+import '../widget/constant/ui.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});
@@ -29,7 +29,7 @@ class _AboutPage extends State<AboutPage> {
     final theme = Theme.of(context);
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: DefaultAppBar(
         menu: [
           AppBarMenuItem.back(),
           AppBarMenuItem(

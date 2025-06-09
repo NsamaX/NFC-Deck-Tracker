@@ -11,10 +11,10 @@ import '../cubit/search_cubit.dart';
 import '../cubit/card_cubit.dart';
 import '../locale/localization.dart';
 import '../route/route_constant.dart';
-import '../widget/shared/app_bar.dart';
-import '../widget/shared/description_align_center.dart';
-import '../widget/shared/ui_constant.dart';
-import '../widget/specific/card_list_view.dart';
+import '../widget/app_bar/@default.dart';
+import '../widget/text/description_align_center.dart';
+import '../widget/constant/ui.dart';
+import '../widget/card/list_view.dart';
 import '../widget/specific/search_bar.dart';
 
 class BrowseCardPage extends StatefulWidget {
@@ -78,7 +78,7 @@ class _BrowseCardContent extends StatelessWidget {
     final locale = AppLocalization.of(context);
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: DefaultAppBar(
         menu: [
           AppBarMenuItem.back(),
           AppBarMenuItem(
@@ -124,7 +124,7 @@ class _BrowseCardContent extends StatelessWidget {
               }
 
               return Expanded(
-                child: CardListWidget(
+                child: CardListView(
                   cards: state.visibleCards,
                   onAdd: onAdd,
                   userId: userId,

@@ -6,8 +6,8 @@ import 'package:nfc_deck_tracker/.config/setting.dart';
 import '../cubit/application_cubit.dart';
 import '../locale/language_manager.dart';
 import '../locale/localization.dart';
-import '../widget/shared/app_bar.dart';
-import '../widget/specific/language_list_view.dart';
+import '../widget/app_bar/@default.dart';
+import '../widget/setting/language.dart';
 
 class LanguagePage extends StatelessWidget {
   const LanguagePage({super.key});
@@ -17,7 +17,7 @@ class LanguagePage extends StatelessWidget {
     final locale = AppLocalization.of(context);
 
     return Scaffold(
-      appBar: AppBarWidget(
+      appBar: DefaultAppBar(
         menu: [
           AppBarMenuItem.back(),
           AppBarMenuItem(
@@ -26,7 +26,7 @@ class LanguagePage extends StatelessWidget {
           AppBarMenuItem.empty(),
         ],
       ),
-      body: LanguageListView(
+      body: SettingLanguage(
         language: [{
           'content': LanguageManager.languageNames.entries.map((entry) {
             final code = entry.key;

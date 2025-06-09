@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../cubit/deck_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
-import '../widget/shared/description_align_center.dart';
-import '../widget/specific/app_bar/deck_builder_page.dart';
-import '../widget/specific/writer_listener.dart';
+import '../widget/text/description_align_center.dart';
+import '../widget/app_bar/deck_builder.dart';
+import '../widget/wrapper/writer_listener.dart';
 
 class DeckBuilderPage extends StatefulWidget {
   const DeckBuilderPage({super.key});
@@ -45,7 +45,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> {
 
     return WriterListener(
       child: Scaffold(
-        appBar: AppBarDeckBuilderPage(
+        appBar: DeckBuilderAppBar(
           userId: userId,
           nameController: nameController,
         ),

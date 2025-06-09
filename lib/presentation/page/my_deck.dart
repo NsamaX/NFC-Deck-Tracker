@@ -6,8 +6,8 @@ import '../cubit/deck_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
-import '../widget/shared/description_align_center.dart';
-import '../widget/specific/app_bar/my_deck_page.dart';
+import '../widget/text/description_align_center.dart';
+import '../widget/app_bar/my_deck.dart';
 
 class MyDeckPage extends StatefulWidget {
   const MyDeckPage({super.key});
@@ -33,7 +33,7 @@ class _MyDeckPage extends State<MyDeckPage> {
     final locale = AppLocalization.of(context);
 
     return Scaffold(
-      appBar: const AppBarMyDeckPage(),
+      appBar: const MyDeckAppBar(),
       body: BlocBuilder<DeckCubit, DeckState>(
         builder: (context, state) {
           final isLoading = state.isLoading;

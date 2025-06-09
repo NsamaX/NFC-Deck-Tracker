@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../locale/localization.dart';
-import '../widget/shared/button_width_max.dart';
-import '../widget/shared/image_constant.dart';
+import '../widget/button/max_width.dart';
+import '../widget/constant/image.dart';
 
 class PageNotFound extends StatelessWidget {
   const PageNotFound({super.key});
@@ -36,7 +36,7 @@ class PageNotFound extends StatelessWidget {
             ),
             const SizedBox(height: 40.0),
             Navigator.canPop(context)
-                ? ButtonWidthMax(
+                ? ButtonMaxWidth(
                     text: locale.translate('page_not_found.button_back'),
                     onPressed: () {
                       Navigator.of(context).pop();

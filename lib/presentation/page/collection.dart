@@ -7,9 +7,9 @@ import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 import '@argument.dart';
 
 import '../cubit/collection_cubit.dart';
-import '../widget/shared/image_constant.dart';
-import '../widget/specific/app_bar/collection_page.dart';
-import '../widget/specific/collection_list_view.dart';
+import '../widget/constant/image.dart';
+import '../widget/app_bar/collection.dart';
+import '../widget/collection/list_view.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({super.key});
@@ -48,7 +48,7 @@ class _CollectionPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarCollectionPage(userId: userId),
+      appBar: CollectionAppBar(userId: userId),
       body: BlocBuilder<CollectionCubit, CollectionState>(
         builder: (context, state) {
           return CollectionListView(
