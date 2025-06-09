@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import '_firestore_service.dart';
+import '@firestore_service.dart';
 
 class UploadImageRemoteDatasource {
   final FirestoreService _firestoreService;

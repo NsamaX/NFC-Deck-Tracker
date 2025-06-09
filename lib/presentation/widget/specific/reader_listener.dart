@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
 import '../../cubit/drawer_cubit.dart';
 import '../../cubit/nfc_cubit.dart';
@@ -22,7 +22,7 @@ class ReaderListener extends StatelessWidget {
     return BlocListener<NfcCubit, NfcState>(
       listenWhen: (previous, current) => previous.lastScannedTag != current.lastScannedTag && current.lastScannedTag != null,
       listener: (context, nfcState) {
-        onTagDetected.call(nfcState.lastScannedTag?.collectionId ?? GameConstant.dummy);
+        onTagDetected.call(nfcState.lastScannedTag?.collectionId ?? Game.dummy);
         context.read<DrawerCubit>().toggleHistoryDrawer();
         context.read<NfcCubit>().clearMessages();
         context.read<ReaderCubit>().scanTag(tag: nfcState.lastScannedTag);

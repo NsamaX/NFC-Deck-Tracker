@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
-import 'package:nfc_deck_tracker/data/datasource/api/_service_factory.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
 import 'package:nfc_deck_tracker/data/model/collection.dart';
 import 'package:nfc_deck_tracker/data/model/page.dart';
 import 'package:nfc_deck_tracker/data/repository/create_collection.dart';
@@ -48,7 +48,7 @@ import '../mapper/card.dart';
     final combinedCards = [...localCards];
 
     final bool isFirstLoad = localCards.isEmpty;
-    final bool isSupportedGame = GameConstant.isSupported(collectionId);
+    final bool isSupportedGame = Game.isSupported(collectionId);
 
     if (isFirstLoad) {
       LoggerUtil.addMessage(message: '[Local] No cards found for $collectionId');

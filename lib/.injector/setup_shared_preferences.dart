@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'package:nfc_deck_tracker/data/datasource/local/_shared_preferences_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/local/@shared_preferences_service.dart';
 
 import 'setup_locator.dart';
 

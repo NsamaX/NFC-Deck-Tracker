@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:nfc_deck_tracker/data/repository/_index.dart';
+import 'package:nfc_deck_tracker/data/repository/~index.dart';
 
-import 'package:nfc_deck_tracker/domain/usecase/_index.dart';
+import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
 
 import 'setup_locator.dart';
 

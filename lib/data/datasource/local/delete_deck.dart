@@ -1,4 +1,4 @@
-import '_sqlite_service.dart';
+import '@sqlite_service.dart';
 
 class DeleteDeckLocalDatasource {
   final SQLiteService _sqliteService;

@@ -1,4 +1,4 @@
-import '_firestore_service.dart';
+import '@firestore_service.dart';
 
 import '../../model/record.dart';
 

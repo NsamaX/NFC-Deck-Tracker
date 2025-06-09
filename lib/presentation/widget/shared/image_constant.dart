@@ -1,4 +1,4 @@
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
 class ImageConstant {
   static final String googleLogo   = 'assets/image/google-logo.png';
@@ -9,7 +9,7 @@ class ImageConstant {
   static Map<String, String> get games {
     final Map<String, String> map = {};
 
-    for (final String game in GameConstant.supportedGameKeys) {
+    for (final String game in Game.supportedGameKeys) {
       map[game] = 'assets/image/game/$game.png';
     }
 

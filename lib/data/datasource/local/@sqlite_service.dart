@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import '_database_service.dart';
+import '@database_service.dart';
 
 class SQLiteService {
   final DatabaseService _databaseService;

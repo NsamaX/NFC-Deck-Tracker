@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 
 import '../cubit/card_cubit.dart';
 import '../cubit/collection_cubit.dart';
 import '../cubit/search_cubit.dart';
-import '../page/_index.dart';
+import '../page/~index.dart';
 
 import 'route_constant.dart';
 
@@ -33,7 +33,7 @@ class RouteGenerator {
         );
       case RouteConstant.browse_card:
         final args = settings.arguments as Map<String, dynamic>? ?? {};
-        final collectionId = args['collectionId'] ?? GameConstant.dummy;
+        final collectionId = args['collectionId'] ?? Game.dummy;
 
         return _build(
           page: MultiBlocProvider(
@@ -42,7 +42,7 @@ class RouteGenerator {
                 create: (_) => locator<CardCubit>(),
               ),
               BlocProvider<SearchCubit>(
-                create: (_) => locator<SearchCubit>(param1: GameConstant.isSupported(collectionId) ? collectionId : GameConstant.dummy),
+                create: (_) => locator<SearchCubit>(param1: Game.isSupported(collectionId) ? collectionId : Game.dummy),
               ),
             ],
             child: const BrowseCardPage(),

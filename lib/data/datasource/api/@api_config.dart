@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
 class ApiConfig {
   static String? _currentEnvironment;
@@ -13,7 +13,7 @@ class ApiConfig {
         return;
       }
 
-      final envData = GameConstant.environments[environment];
+      final envData = Game.environments[environment];
 
       if (envData == null) {
         debugPrint('❗ Environment "$environment" not found in GameConstant');

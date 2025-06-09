@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import '_sqlite_service.dart';
+import '@sqlite_service.dart';
 
 class FindPageLocalDatasource {
   final SQLiteService _sqliteService;

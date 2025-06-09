@@ -1,7 +1,7 @@
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '_api_config.dart';
-import '_index.dart';
+import '@api_config.dart';
+import '~Index.dart';
 
 import '../../model/card.dart';
 
@@ -24,7 +24,7 @@ abstract class PagingStrategy {
 
 class ServiceFactory {
   static T create<T>({ required String collectionId }) {
-    if (collectionId == GameConstant.dummy) {
+    if (collectionId == Game.dummy) {
       return _createDummy<T>();
     }
 
@@ -50,12 +50,12 @@ class ServiceFactory {
   }
 
   static final Map<String, GameApi Function(String baseUrl)> _apiRegistry = {
-    GameConstant.pokemon: (baseUrl) => PokemonApi(baseUrl),
-    GameConstant.vanguard: (baseUrl) => VanguardApi(baseUrl),
+    Game.pokemon: (baseUrl) => PokemonApi(baseUrl),
+    Game.vanguard: (baseUrl) => VanguardApi(baseUrl),
   };
 
   static final Map<String, PagingStrategy Function()> _pagingRegistry = {
-    GameConstant.pokemon: () => PokemonPagingStrategy(),
-    GameConstant.vanguard: () => VanguardPagingStrategy(),
+    Game.pokemon: () => PokemonPagingStrategy(),
+    Game.vanguard: () => VanguardPagingStrategy(),
   };
 }

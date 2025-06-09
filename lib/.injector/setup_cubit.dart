@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
-import 'package:nfc_deck_tracker/domain/usecase/_index.dart';
+import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
 
-import 'package:nfc_deck_tracker/presentation/cubit/_index.dart';
+import 'package:nfc_deck_tracker/presentation/cubit/~index.dart';
 
 import 'setup_locator.dart';
 
@@ -37,7 +37,7 @@ void setupApplicationCubit() {
 }
 
 void setupCardCubit() {
-  locator.registerLazySingleton(() => CardCubit(
+  locator.registerFactory(() => CardCubit(
     createCardUsecase: locator<CreateCardUsecase>(),
     deleteCardUsecase: locator<DeleteCardUsecase>(),
     updateCardUsecase: locator<UpdateCardUsecase>(),

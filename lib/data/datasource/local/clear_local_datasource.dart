@@ -1,6 +1,6 @@
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '_sqlite_service.dart';
+import '@sqlite_service.dart';
 
 class ClearLocalDatasource {
   final SQLiteService _sqliteService;
@@ -12,7 +12,7 @@ class ClearLocalDatasource {
     await _sqliteService.delete(table: 'cardsInDeck');
     await _sqliteService.delete(table: 'records');
 
-    final supportedGames = GameConstant.supportedGameKeys;
+    final supportedGames = Game.supportedGameKeys;
     final placeholders = List.filled(supportedGames.length, '?').join(', ');
     final where = 'collectionId NOT IN ($placeholders)';
 

@@ -19,9 +19,9 @@ class ApplicationState extends Equatable {
 
   factory ApplicationState.initialFromConstant() {
     return ApplicationState(
-      locale: Locale(SettingConstant.all[SettingConstant.keylocale]),
-      isDark: SettingConstant.all[SettingConstant.keyIsDark],
-      loggedIn: SettingConstant.all[SettingConstant.keyLoggedIn],
+      locale: Locale(Setting.all[Setting.keylocale]),
+      isDark: Setting.all[Setting.keyIsDark],
+      loggedIn: Setting.all[Setting.keyLoggedIn],
       recentId: '',
       recentGame: '',
       currentPageIndex: RouteConstant.on_boarding_index,

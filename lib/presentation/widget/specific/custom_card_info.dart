@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../cubit/card_cubit.dart';
 import '../../locale/localization.dart';
-import '../../theme/theme.dart';
+import '../../theme/@theme.dart';
 
 class CustomCardInfoWidget extends StatelessWidget {
   final CardCubit cardCubit;

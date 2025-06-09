@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '_argument.dart';
+import '@argument.dart';
 
 import '../cubit/collection_cubit.dart';
 import '../widget/shared/image_constant.dart';

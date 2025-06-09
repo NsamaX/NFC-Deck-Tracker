@@ -12,7 +12,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '.injector/setup_locator.dart';
 
-import 'data/datasource/api/_api_config.dart';
+import 'data/datasource/api/@api_config.dart';
 
 import 'presentation/cubit/application_cubit.dart';
 import 'presentation/cubit/deck_cubit.dart';
@@ -20,13 +20,13 @@ import 'presentation/cubit/nfc_cubit.dart';
 import 'presentation/locale/language_manager.dart';
 import 'presentation/locale/localization_delegate.dart';
 import 'presentation/route/route_generator.dart';
-import 'presentation/theme/theme.dart';
+import 'presentation/theme/@theme.dart';
 
 import 'util/nfc_session_handler.dart';
 
 // ignore_for_file: unused_import
-import 'data/datasource/local/_database_service.dart';
-import 'data/datasource/local/_shared_preferences_service.dart';
+import 'data/datasource/local/@database_service.dart';
+import 'data/datasource/local/@shared_preferences_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,7 +61,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
-  final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
+  final RouteObserver<ModalRoute> routeObserver = locator<RouteObserver<ModalRoute>>();
 
   late final NfcCubit nfcCubit;
   late final NfcSessionHandler nfcSessionHandler;
@@ -97,7 +97,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => nfcCubit),
+        BlocProvider<NfcCubit>.value(value: nfcCubit),
         BlocProvider(create: (_) => locator<DeckCubit>()),
         BlocProvider(create: (_) => locator<ApplicationCubit>()),
       ],

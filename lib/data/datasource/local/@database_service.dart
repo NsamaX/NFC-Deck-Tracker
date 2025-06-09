@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-import '_database_constant.dart';
+import '&database_constant.dart';
 
 class DatabaseService {
   static final DatabaseService _instance = DatabaseService._internal();

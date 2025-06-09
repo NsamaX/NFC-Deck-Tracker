@@ -1,4 +1,4 @@
-import '_service_factory.dart';
+import '@service_factory.dart';
 
 import '../../model/card.dart';
 

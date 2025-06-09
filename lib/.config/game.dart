@@ -1,6 +1,6 @@
-import 'package:nfc_deck_tracker/data/datasource/api/_api_config.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/@api_config.dart';
 
-class GameConstant {
+class Game {
   static const String dummy    = 'dummy';
   static const String pokemon  = 'pokemon';  // https://dev.pokemontcg.io/dashboard
   static const String vanguard = 'vanguard'; // https://card-fight-vanguard-api.ue.r.appspot.com

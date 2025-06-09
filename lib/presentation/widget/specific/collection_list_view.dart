@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
-import 'package:nfc_deck_tracker/data/datasource/api/_api_config.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/@api_config.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/collection.dart';
 
@@ -29,7 +29,7 @@ class CollectionListView extends StatelessWidget {
     if (context.read<CollectionCubit>().state.collections.isEmpty && gameKeys.isEmpty) return const SizedBox.shrink();
 
     final userCollections = context.read<CollectionCubit>().state.collections
-        .where((e) => !GameConstant.isSupported(e.collectionId))
+        .where((e) => !Game.isSupported(e.collectionId))
         .toList();
 
     return Padding(

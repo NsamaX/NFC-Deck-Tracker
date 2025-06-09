@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../locale/localization.dart';
-import '../../theme/theme.dart';
+import '../../theme/@theme.dart';
 
 class HistoryListView extends StatelessWidget {
   final List<Map<String, dynamic>> section;

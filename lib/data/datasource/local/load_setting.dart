@@ -1,4 +1,4 @@
-import '_shared_preferences_service.dart';
+import '@shared_preferences_service.dart';
 
 class LoadSettingLocalDatasource {
   final SharedPreferencesService _sharedPreferencesService;

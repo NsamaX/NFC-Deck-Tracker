@@ -6,7 +6,7 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import '../../cubit/deck_cubit.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../route/route_constant.dart';
-import '../../theme/theme.dart';
+import '../../theme/@theme.dart';
 
 import 'card_quantity_control.dart';
 

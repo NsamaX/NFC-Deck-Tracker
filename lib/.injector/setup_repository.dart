@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:nfc_deck_tracker/data/datasource/api/_service_factory.dart';
-import 'package:nfc_deck_tracker/data/datasource/local/_index.dart';
-import 'package:nfc_deck_tracker/data/datasource/remote/_index.dart';
-import 'package:nfc_deck_tracker/data/repository/_index.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
+import 'package:nfc_deck_tracker/data/datasource/local/~index.dart';
+import 'package:nfc_deck_tracker/data/datasource/remote/~index.dart';
+import 'package:nfc_deck_tracker/data/repository/~index.dart';
 
 import 'setup_locator.dart';
 

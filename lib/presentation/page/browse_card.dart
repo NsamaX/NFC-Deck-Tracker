@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '_argument.dart';
+import '@argument.dart';
 
 import '../cubit/search_cubit.dart';
 import '../locale/localization.dart';
@@ -54,7 +54,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
           AppBarMenuItem(
             label: locale.translate('page_search.app_bar'),
           ),
-          !GameConstant.isSupported(args['collectionId'])
+          !Game.isSupported(args['collectionId'])
               ? AppBarMenuItem(
                   label: Icons.add_rounded,
                   action: {

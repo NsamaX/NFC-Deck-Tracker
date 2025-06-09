@@ -1,4 +1,4 @@
-import '_firestore_service.dart';
+import '@firestore_service.dart';
 
 import '../../model/card.dart';
 import '../../model/deck.dart';

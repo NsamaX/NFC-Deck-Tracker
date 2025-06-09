@@ -3,11 +3,12 @@ import 'dart:ui';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nfc_deck_tracker/.config/setting.dart';
+
 import 'package:nfc_deck_tracker/domain/usecase/initialize_setting.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
 
 import '../route/route_constant.dart';
-import '../widget/material/setting_constant.dart';
 
 part 'application_state.dart';
 
@@ -25,7 +26,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
   }
 
   Future<void> initializeCubit() async {
-    final updated = await initializeSettingUsecase.call(SettingConstant.all);
+    final updated = await initializeSettingUsecase.call(Setting.all);
 
     for (final entry in updated.entries) {
       safeEmit(_mapUpdatedState(key: entry.key, value: entry.value));
@@ -47,11 +48,11 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     required dynamic value,
   }) {
     switch (key) {
-      case SettingConstant.keylocale:     return state.copyWith(locale: Locale(value));
-      case SettingConstant.keyIsDark:     return state.copyWith(isDark: value);
-      case SettingConstant.keyLoggedIn:   return state.copyWith(loggedIn: value);
-      case SettingConstant.keyRecentId:   return state.copyWith(recentId: value);
-      case SettingConstant.keyRecentGame: return state.copyWith(recentGame: value);
+      case Setting.keylocale:     return state.copyWith(locale: Locale(value));
+      case Setting.keyIsDark:     return state.copyWith(isDark: value);
+      case Setting.keyLoggedIn:   return state.copyWith(loggedIn: value);
+      case Setting.keyRecentId:   return state.copyWith(recentId: value);
+      case Setting.keyRecentGame: return state.copyWith(recentGame: value);
       default: return state;
     }
   }

@@ -1,4 +1,4 @@
-class SettingConstant {
+class Setting {
   static const String keylocale     = 'locale';
   static const String keyIsDark     = 'isDark';
   static const String keyLoggedIn   = 'loggedIn';

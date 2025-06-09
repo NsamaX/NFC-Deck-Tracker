@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nfc_deck_tracker/.config/setting.dart';
+
 import '../../cubit/application_cubit.dart';
 import '../../route/route_constant.dart';
-
-import 'setting_constant.dart';
 
 class CollectionWidget extends StatelessWidget {
   final String collectionId;
@@ -58,11 +58,11 @@ class CollectionWidget extends StatelessWidget {
   void _goToSearchPage(BuildContext context) {
     final applicationCubit = context.read<ApplicationCubit>();
     applicationCubit.updateSetting(
-      key: SettingConstant.keyRecentId,
+      key: Setting.keyRecentId,
       value: collectionId,
     );
     applicationCubit.updateSetting(
-      key: SettingConstant.keyRecentGame,
+      key: Setting.keyRecentGame,
       value: collectionName,
     );
 

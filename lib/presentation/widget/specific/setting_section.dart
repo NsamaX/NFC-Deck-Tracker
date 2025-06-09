@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/theme.dart';
+import '../../theme/@theme.dart';
 
 class SettingSection extends StatelessWidget {
   final List<Map<String, dynamic>> section;

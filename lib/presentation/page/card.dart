@@ -6,7 +6,7 @@ import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '_argument.dart';
+import '@argument.dart';
 
 import '../cubit/card_cubit.dart';
 import '../cubit/deck_cubit.dart';

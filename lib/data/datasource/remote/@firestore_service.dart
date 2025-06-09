@@ -25,8 +25,10 @@ class FirestoreService {
       if (queryBuilder != null) query = queryBuilder(query);
 
       final result = await query.get();
+
       LoggerUtil.addMessage(message: '🔎 Query\nCollection: $collectionPath\nReturned: ${result.docs.length} documents');
       LoggerUtil.flushMessages();
+
       return result.docs;
     } catch (e) {
       debugPrint('❌ Failed to query Firestore collection "$collectionPath": $e');
@@ -127,6 +129,7 @@ class FirestoreService {
 
       await ref.putFile(File(imagePath));
       final url = await ref.getDownloadURL();
+
       debugPrint('📤 Uploaded image → $url');
       return url;
     } catch (e) {

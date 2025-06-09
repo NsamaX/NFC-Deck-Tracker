@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nfc_deck_tracker/.config/setting.dart';
+
 import '../cubit/application_cubit.dart';
 import '../locale/language_manager.dart';
 import '../locale/localization.dart';
-import '../widget/material/setting_constant.dart';
 import '../widget/shared/app_bar.dart';
 import '../widget/specific/language_list_view.dart';
 
@@ -35,7 +36,7 @@ class LanguagePage extends StatelessWidget {
               'text': name,
               'onTap': () {
                 context.read<ApplicationCubit>().updateSetting(
-                  key: SettingConstant.keylocale,
+                  key: Setting.keylocale,
                   value: code,
                 );
               },

@@ -1,7 +1,7 @@
-import 'package:nfc_deck_tracker/.game_config/game_constant.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '_service_factory.dart';
-import '3ase_api.dart';
+import '@service_factory.dart';
+import '&base_api.dart';
 
 import '../../model/card.dart';
 
@@ -40,7 +40,7 @@ class VanguardApi extends BaseApi implements GameApi {
   ) {
     return CardModel(
       cardId: cardData['id']?.toString() ?? '',
-      collectionId: GameConstant.vanguard,
+      collectionId: Game.vanguard,
       name: cardData['name'] ?? '',
       imageUrl: cardData['imageurljp'] ?? '',
       description: cardData['format'] ?? '',
