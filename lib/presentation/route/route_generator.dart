@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:nfc_deck_tracker/.config/game.dart';
-
-import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
-
-import '../cubit/card_cubit.dart';
-import '../cubit/collection_cubit.dart';
-import '../cubit/search_cubit.dart';
-import '../page/~index.dart';
 
 import 'route_constant.dart';
+
+import '../page/~index.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -23,32 +15,8 @@ class RouteGenerator {
       case RouteConstant.deck_tracker: return _build(page: const DeckTrackerPage(),settings: settings);
 
       case RouteConstant.tag_reader:   return _build(page: const TagReaderPage(), settings: settings);
-      case RouteConstant.collection:   
-        return _build(
-          page: BlocProvider.value(
-            value: locator<CollectionCubit>(),
-            child: CollectionPage(),
-          ), 
-          settings: settings,
-        );
-      case RouteConstant.browse_card:
-        final args = settings.arguments as Map<String, dynamic>? ?? {};
-        final collectionId = args['collectionId'] ?? Game.dummy;
-
-        return _build(
-          page: MultiBlocProvider(
-            providers: [
-              BlocProvider<CardCubit>(
-                create: (_) => locator<CardCubit>(),
-              ),
-              BlocProvider<SearchCubit>(
-                create: (_) => locator<SearchCubit>(param1: Game.isSupported(collectionId) ? collectionId : Game.dummy),
-              ),
-            ],
-            child: const BrowseCardPage(),
-          ),
-          settings: settings,
-        );
+      case RouteConstant.collection:   return _build(page: const CollectionPage(), settings: settings);
+      case RouteConstant.browse_card:  return _build(page: const BrowseCardPage(), settings: settings);
       case RouteConstant.card:         return _build(page: CardPage(), settings: settings);
 
       case RouteConstant.setting:      return _build(page: const SettingPage(), settings: settings);
