@@ -37,7 +37,7 @@ class DeckTrackerView extends StatelessWidget {
                 child: Text(
                   locale
                       .translate('page_deck_tracker.total_cards')
-                      .replaceFirst('{card}', '$total'),
+                      .replaceFirst('{total}', '$total'),
                   style: theme.textTheme.titleMedium,
                 ),
               ),

@@ -13,28 +13,12 @@ class QRCodeCreateRoom extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String qrData = '{"roomId":"$roomId","userId":"$userId"}';
-
     return Center(
-      child: Container(
-        padding: const EdgeInsets.all(12.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12.0),
-          boxShadow: const [
-            BoxShadow(
-              color: Color.fromRGBO(0, 0, 0, 0.2),
-              spreadRadius: 1.0,
-              blurRadius: 2.0,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: QrImageView(
-          data: qrData,
-          version: QrVersions.auto,
-          size: 200.0,
-        ),
+      child: QrImageView(
+        data: '{"roomId":"$roomId","userId":"$userId"}',
+        version: QrVersions.auto,
+        size: 200.0,
+        backgroundColor: Colors.white,
       ),
     );
   }
