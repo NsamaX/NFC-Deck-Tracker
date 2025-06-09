@@ -39,7 +39,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
     collectionId = Game.dummy;
     deck = context.read<DeckCubit>().state.currentDeck;
   }

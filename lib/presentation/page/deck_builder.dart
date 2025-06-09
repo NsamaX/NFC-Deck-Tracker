@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+
 import '../cubit/deck_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_builder.dart';
@@ -27,7 +29,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> {
     nameController = TextEditingController(
       text: context.read<DeckCubit>().state.currentDeck.name,
     );
-    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
 
     context.read<DeckCubit>().closeEditMode();
   }

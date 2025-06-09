@@ -34,7 +34,7 @@ class _LibraryPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
 
     return Scaffold(
       appBar: DefaultAppBar(

@@ -8,7 +8,8 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
 
-import 'slidable_action.dart';
+import 'slidable_delete.dart';
+import 'slidable_pin_color.dart';
 
 class CardListTile extends StatelessWidget {
   final AppLocalization locale;
@@ -85,15 +86,20 @@ class CardListTile extends StatelessWidget {
             ),
             child: Slidable(
               key: ValueKey(card!.cardId ?? UniqueKey()),
-              endActionPane: buildSlidableAction(
-                context: context,
-                isTrack: isTrack,
-                card: card!,
-                markedColor: markedColor,
-                backgroundColor: backgroundColor,
-                changeCardColor: changeCardColor,
-                onDelete: onDelete,
-              ),
+              endActionPane: isTrack && changeCardColor != null
+                  ? buildCardSlidablePinColor(
+                      context: context,
+                      markedColor: markedColor,
+                      backgroundColor: backgroundColor,
+                      changeCardColor: changeCardColor!,
+                    )
+                  : (!isTrack && onDelete != null)
+                      ? buildCardSlidableDelete(
+                          context: context,
+                          card: card!,
+                          onDelete: onDelete!,
+                        )
+                      : null,
               child: Row(
                 children: [
                   _buildImage(markColor: markColor, iconColor: systemColor),

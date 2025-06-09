@@ -1,6 +1,6 @@
 class RouteConstant {
-  static const String on_boarding_route = tag_reader;
-  static const int    on_boarding_index = 1;
+  static const String on_boarding_route = my_deck;
+  static const int    on_boarding_index = 0;
 
   static const String landing      = '/landing';
   static const String sign_in      = '/sign_in';

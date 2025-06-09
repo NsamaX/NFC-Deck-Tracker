@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
 import '../widget/setting/builder.dart';
@@ -16,7 +18,7 @@ class SettingPage extends StatelessWidget {
     final sectionBuilder = SettingBuilder(context);
 
     return StreamBuilder<User?>(
-      stream: FirebaseAuth.instance.authStateChanges(),
+      stream: locator<FirebaseAuth>().authStateChanges(),
       builder: (context, snapshot) {
         return Scaffold(
           appBar: DefaultAppBar(

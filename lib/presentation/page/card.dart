@@ -96,7 +96,7 @@ class _CardPageContent extends State<_CardContent> {
     final onCustom = args['onCustom'] ?? false;
     final onNFC = args['onNFC'] ?? false;
     final onAdd = args['onAdd'] ?? false;
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    final userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
     final cardCubit = context.read<CardCubit>();
 
     return WriterListener(

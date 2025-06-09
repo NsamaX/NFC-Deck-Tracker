@@ -34,7 +34,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final args = getArguments(context);
-    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
     collectionId = args['collectionId'];
     collectionName = args['collectionName'];
     onAdd = args['onAdd'] ?? false;

@@ -39,7 +39,11 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     final deckName = deckState.currentDeck.name ?? '';
     final hasCards = deckState.currentDeck.cards?.isNotEmpty == true;
-    final collectionId = deckState.currentDeck.cards?.first.card.collectionId;
+
+    late final collectionId;
+    if (hasCards) {
+      collectionId = deckState.currentDeck.cards?.first.card.collectionId;  
+    }
 
     if (!hasCards) {
       return [
