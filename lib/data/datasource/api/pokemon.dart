@@ -38,17 +38,21 @@ class PokemonApi extends BaseApi implements GameApi {
   CardModel _parseCardData(
     Map<String, dynamic> cardData,
   ) {
+    final types = (cardData['types'] as List<dynamic>?)?.cast<String>() ?? [];
+    final hp = int.tryParse(cardData['hp']?.toString() ?? '') ?? 0;
+
     return CardModel(
       cardId: cardData['id']?.toString() ?? '',
       collectionId: Game.pokemon,
       name: cardData['name'] ?? '',
       imageUrl: cardData['images']?['large'] ?? '',
-      description: cardData['flavorText'] ?? '',
+      description: 'Type: ${types.join(', ')}, HP: $hp',
       additionalData: {
+        'flavorText': cardData['flavorText'] ?? '',
         'supertype': cardData['supertype'] ?? '',
         'subtypes': (cardData['subtypes'] as List<dynamic>?)?.cast<String>() ?? [],
-        'hp': int.tryParse(cardData['hp']?.toString() ?? '') ?? 0,
-        'types': (cardData['types'] as List<dynamic>?)?.cast<String>() ?? [],
+        'hp': hp,
+        'types': types,
         'evolvesFrom': cardData['evolvesFrom'] ?? '',
         'attacks': cardData['attacks'] ?? [],
         'weaknesses': cardData['weaknesses'] ?? [],

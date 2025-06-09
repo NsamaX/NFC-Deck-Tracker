@@ -29,15 +29,19 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
   late final String collectionId;
   late final String collectionName;
   late final bool onAdd;
+  bool _isInitialized = false;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final args = getArguments(context);
-    userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
-    collectionId = args['collectionId'];
-    collectionName = args['collectionName'];
-    onAdd = args['onAdd'] ?? false;
+    if (!_isInitialized) {
+      final args = getArguments(context);
+      userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
+      collectionId = args['collectionId'];
+      collectionName = args['collectionName'];
+      onAdd = args['onAdd'] ?? false;
+      _isInitialized = true;
+    }
   }
 
   @override
@@ -53,9 +57,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
               collectionName: collectionName,
             ),
         ),
-        BlocProvider<CardCubit>(
-          create: (_) => locator<CardCubit>(),
-        ),
+        BlocProvider<CardCubit>(create: (_) => locator<CardCubit>()),
       ],
       child: _BrowseCardContent(userId: userId, onAdd: onAdd, collectionId: collectionId),
     );

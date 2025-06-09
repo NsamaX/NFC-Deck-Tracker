@@ -45,10 +45,11 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<!-- NFC Permission -->
+	<!-- Permission -->
 	<key>NFCReaderUsageDescription</key>
 	<string>This app uses NFC to read and write data from NFC tags.</string>
-	<!-- Media Permission -->
+	<key>NSCameraUsageDescription</key>
+	<string>This app needs camera access to scan QR codes.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>We need access to your photos to upload a card image</string>
 </dict>
