@@ -14,7 +14,7 @@ Each layer has a clear responsibility and communicates with other layers through
 2. **Domain Layer**       – Core business logic and use cases  
 3. **Data Layer**         – Data access from APIs, databases, etc.  
 4. **Injection Layer**    – Dependency registration via service locator  
-5. **Constants & Utilities** – Reusable app-wide configs and helpers
+5. **Config Layer**       – App-wide constants and configurations
 
 ---
 
@@ -22,8 +22,8 @@ Each layer has a clear responsibility and communicates with other layers through
 
 ```plaintext
 lib/
+├── .config/                # App-wide constants and configurations
 ├── .injector/              # Dependency injection setup (via GetIt)
-├── constant/               # Application constants (e.g., game IDs, URLs)
 ├── data/                   # Data sources, models, and repository implementations
 ├── domain/                 # Business logic, use cases, and entities
 ├── presentation/           # UI components, localization, theming, and Cubits
@@ -47,7 +47,7 @@ lib/
 
 ---
 
-### **`constant/`**
+### **`.config/`**
 
 * **Purpose**: Defines static constants used throughout the app.
 * **Files**: Game identifiers, environment configurations, base URLs, etc.

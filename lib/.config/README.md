@@ -18,9 +18,9 @@ Each game must be registered in the application along with its associated **API 
 
 ---
 
-### 🔹 Step 1: Register Game in `GameConstant`
+### 🔹 Step 1: Register Game in `Game`
 
-File: `lib/constant/game.dart`
+File: `lib/.config/game.dart`
 
 1. Add a new constant for your game ID.
 2. Define API URLs under each environment (`development`, `production`).
@@ -65,7 +65,7 @@ class NewGameApi extends BaseApi implements GameApi {
     final data = decodeResponse(response);
     return CardModel(
       cardId: data['id'] ?? '',
-      collectionId: GameConstant.newgame,
+      collectionId: Game.newgame,
       name: data['name'] ?? '',
       imageUrl: data['image'] ?? '',
       updatedAt: DateTime.now(),
@@ -81,7 +81,7 @@ class NewGameApi extends BaseApi implements GameApi {
 
     return results.map((e) => CardModel(
       cardId: e['id'],
-      collectionId: GameConstant.newgame,
+      collectionId: Game.newgame,
       name: e['name'],
       imageUrl: e['image'],
       updatedAt: DateTime.now(),
@@ -102,7 +102,7 @@ class NewGamePagingStrategy implements PagingStrategy {
 
 ### 🔹 Step 3: Export the Game File
 
-File: `lib/data/datasource/api/_index.dart`
+File: `lib/data/datasource/api/~index.dart`
 
 Add an export statement for your new game file:
 
@@ -116,17 +116,17 @@ export 'newgame.dart'; // <-- Add this
 
 ### 🔹 Step 4: Register the Game in `ServiceFactory`
 
-File: `lib/data/datasource/api/_service_factory.dart`
+File: `lib/data/datasource/api/@service_factory.dart`
 
 Add your game into the two factory maps:
 
 ```dart
 static final Map<String, GameApi Function(String)> _apiRegistry = {
-  GameConstant.newgame: (baseUrl) => NewGameApi(baseUrl), // <-- Add this
+  Game.newgame: (baseUrl) => NewGameApi(baseUrl), // <-- Add this
 };
 
 static final Map<String, PagingStrategy Function()> _pagingRegistry = {
-  GameConstant.newgame: () => NewGamePagingStrategy(), // <-- Add this
+  Game.newgame: () => NewGamePagingStrategy(), // <-- Add this
 };
 ```
 
@@ -136,8 +136,8 @@ static final Map<String, PagingStrategy Function()> _pagingRegistry = {
 
 Folder: `assets/image/game/`
 
-1. Save a `.png` image with the **exact same name** as the game constant defined in `GameConstant`.
-2. For example, if you declared `GameConstant.newgame = 'newgame'`, then save the image as:
+1. Save a `.png` image with the **exact same name** as the game constant defined in `Game`.
+2. For example, if you declared `Game.newgame = 'newgame'`, then save the image as:
 
 ```
 assets/image/game/newgame.png
@@ -163,7 +163,7 @@ Now it will be recognized in the system and available for:
 
 * [ ] API returns valid data for both `findCard` and `fetchCard`
 * [ ] Cards are correctly saved to local storage
-* [ ] Game appears in `GameConstant.supportedGameKeys`
+* [ ] Game appears in `Game.supportedGameKeys`
 * [ ] Game-specific image asset exists (`/assets/image/game/{game}.png`)
 * [ ] No exceptions thrown when selecting or syncing with the new game
 

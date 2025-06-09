@@ -1,7 +1,7 @@
 import 'package:nfc_deck_tracker/.config/game.dart';
 
 import '@api_config.dart';
-import '~Index.dart';
+import '~index.dart';
 
 import '../../model/card.dart';
 
