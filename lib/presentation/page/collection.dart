@@ -11,26 +11,39 @@ import '../widget/shared/image_constant.dart';
 import '../widget/specific/app_bar/collection_page.dart';
 import '../widget/specific/collection_list_view.dart';
 
-class CollectionPage extends StatelessWidget {
-  const CollectionPage();
+class CollectionPage extends StatefulWidget {
+  const CollectionPage({super.key});
+
+  @override
+  State<CollectionPage> createState() => _CollectionPageState();
+}
+
+class _CollectionPageState extends State<CollectionPage> {
+  late final String userId;
+  late final bool onAdd;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = getArguments(context);
+    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    onAdd = args['onAdd'] ?? false;
+  }
 
   @override
   Widget build(BuildContext context) {
-    final args = getArguments(context);
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
-
     return BlocProvider(
       create: (_) => locator<CollectionCubit>()..fetchCollection(userId: userId),
-      child: _CollectionView(userId: userId, onAdd: args['onAdd'] ?? false),
+      child: _CollectionPageContent(userId: userId, onAdd: onAdd),
     );
   }
 }
 
-class _CollectionView extends StatelessWidget {
+class _CollectionPageContent extends StatelessWidget {
   final String userId;
   final bool onAdd;
 
-  const _CollectionView({required this.userId, required this.onAdd});
+  const _CollectionPageContent({required this.userId, required this.onAdd});
 
   @override
   Widget build(BuildContext context) {

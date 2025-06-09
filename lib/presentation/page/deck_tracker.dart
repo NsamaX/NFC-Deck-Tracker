@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
-
 import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
@@ -40,7 +39,6 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     userId = FirebaseAuth.instance.currentUser?.uid ?? '';
     collectionId = Game.dummy;
     deck = context.read<DeckCubit>().state.currentDeck;
@@ -58,71 +56,83 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
         BlocProvider(create: (_) => locator<TrackerCubit>(param1: deck)),
         BlocProvider(create: (_) => locator<NfcCubit>()),
       ],
-      child: Builder(
-        builder: (context) {
-          return TrackerListener(
-            child: Scaffold(
-              appBar: AppBarDeckTrackerPage(
-                locale: AppLocalization.of(context),
-                theme: Theme.of(context),
-                navigator: Navigator.of(context), 
-                drawerCubit: context.watch<DrawerCubit>(),
-                nfcCubit: context.watch<NfcCubit>(),
-                readerCubit: context.watch<ReaderCubit>(),
-                recordCubit: context.watch<RecordCubit>(),
-                trackerCubit: context.watch<TrackerCubit>(),
-                usageCardCubit: context.watch<UsageCardCubit>(),
-                userId: userId,
-              ),
-              body: GestureDetector(
-                onTap: context.watch<DrawerCubit>().closeAllDrawer,
-                behavior: HitTestBehavior.opaque,
-                child: Stack(
+      child: _DeckTrackerPageContent(userId: userId),
+    );
+  }
+}
+
+class _DeckTrackerPageContent extends StatelessWidget {
+  final String userId;
+
+  const _DeckTrackerPageContent({required this.userId});
+
+  @override
+  Widget build(BuildContext context) {
+    final trackerCubit = context.watch<TrackerCubit>();
+    final readerCubit = context.watch<ReaderCubit>();
+    final drawerCubit = context.watch<DrawerCubit>();
+    final recordCubit = context.watch<RecordCubit>();
+    final usageCardCubit = context.watch<UsageCardCubit>();
+    final nfcCubit = context.watch<NfcCubit>();
+    final locale = AppLocalization.of(context);
+
+    return TrackerListener(
+      child: Scaffold(
+        appBar: AppBarDeckTrackerPage(
+          locale: locale,
+          theme: Theme.of(context),
+          navigator: Navigator.of(context),
+          drawerCubit: drawerCubit,
+          nfcCubit: nfcCubit,
+          readerCubit: readerCubit,
+          recordCubit: recordCubit,
+          trackerCubit: trackerCubit,
+          usageCardCubit: usageCardCubit,
+          userId: userId,
+        ),
+        body: GestureDetector(
+          onTap: drawerCubit.closeAllDrawer,
+          behavior: HitTestBehavior.opaque,
+          child: Stack(
+            children: [
+              AbsorbPointer(
+                absorbing: drawerCubit.state.visibleHistoryDrawer ||
+                    drawerCubit.state.visibleFeatureDrawer,
+                child: Column(
                   children: [
-                    AbsorbPointer(
-                      absorbing: context.watch<DrawerCubit>().state.visibleHistoryDrawer || context.watch<DrawerCubit>().state.visibleFeatureDrawer,
-                      child: Column(
-                        children: [
-                          const SizedBox(height: 16.0),
-                          DeckViewSwitcherWidget(
-                            isAnalyzeModeEnabled: context.watch<TrackerCubit>().state.isAnalysisMode,
-                            onSelected: (_) {
-                              context.read<TrackerCubit>().toggleAnalysisMode();
-                            },
-                          ),
-                          const SizedBox(height: 8.0),
-                          Expanded(
-                            child: context.watch<TrackerCubit>().state.isAnalysisMode
-                                ? DeckInsightViewWidget(
-                                    locale: AppLocalization.of(context),
-                                    readerCubit: context.watch<ReaderCubit>(),
-                                    trackerCubit: context.watch<TrackerCubit>(),
-                                    recordCubit: context.watch<RecordCubit>(),
-                                    usageCardCubit: context.watch<UsageCardCubit>(),
-                                    userId: userId,
-                                  )
-                                : DeckTrackerView(
-                                    recordCubit: locator<RecordCubit>(
-                                      param1: context.watch<TrackerCubit>().state.currentDeck.deckId,
-                                    ),
-                                  ),
-                          ),
-                        ],
-                      ),
+                    const SizedBox(height: 16.0),
+                    DeckViewSwitcherWidget(
+                      isAnalyzeModeEnabled: trackerCubit.state.isAnalysisMode,
+                      onSelected: (_) => trackerCubit.toggleAnalysisMode(),
                     ),
-                    HistoryDrawer(
-                      drawerCubit: context.watch<DrawerCubit>(),
-                      readerCubit: context.watch<ReaderCubit>(),
-                    ),
-                    CreateRoomDrawerWidget(
-                      userId: userId,
+                    const SizedBox(height: 8.0),
+                    Expanded(
+                      child: trackerCubit.state.isAnalysisMode
+                          ? DeckInsightViewWidget(
+                              locale: locale,
+                              readerCubit: readerCubit,
+                              trackerCubit: trackerCubit,
+                              recordCubit: recordCubit,
+                              usageCardCubit: usageCardCubit,
+                              userId: userId,
+                            )
+                          : DeckTrackerView(
+                              recordCubit: locator<RecordCubit>(
+                                param1: trackerCubit.state.currentDeck.deckId,
+                              ),
+                            ),
                     ),
                   ],
                 ),
               ),
-            ),
-          );
-        },
+              HistoryDrawer(
+                drawerCubit: drawerCubit,
+                readerCubit: readerCubit,
+              ),
+              CreateRoomDrawerWidget(userId: userId),
+            ],
+          ),
+        ),
       ),
     );
   }

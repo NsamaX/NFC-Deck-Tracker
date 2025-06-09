@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
-
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
 import '@argument.dart';
@@ -19,26 +18,45 @@ import '../widget/specific/custom_card_image.dart';
 import '../widget/specific/custom_card_info.dart';
 import '../widget/specific/writer_listener.dart';
 
-class CardPage extends StatelessWidget {
+class CardPage extends StatefulWidget {
   const CardPage({super.key});
 
   @override
+  State<CardPage> createState() => _CardPageState();
+}
+
+class _CardPageState extends State<CardPage> {
+  late final CardCubit cardCubit;
+
+  @override
+  void initState() {
+    super.initState();
+    cardCubit = locator<CardCubit>();
+  }
+
+  @override
+  void dispose() {
+    cardCubit.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return BlocProvider.value(
-      value: locator<CardCubit>(),
-      child: const _CardPageContent(),
+    return BlocProvider<CardCubit>.value(
+      value: cardCubit,
+      child: const _CardContent(),
     );
   }
 }
 
-class _CardPageContent extends StatefulWidget {
-  const _CardPageContent();
+class _CardContent extends StatefulWidget {
+  const _CardContent();
 
   @override
-  State<_CardPageContent> createState() => _CardPageContentState();
+  State<_CardContent> createState() => _CardPageContent();
 }
 
-class _CardPageContentState extends State<_CardPageContent> {
+class _CardPageContent extends State<_CardContent> {
   late final TextEditingController nameController;
   late final TextEditingController descriptionController;
   late final TextEditingController abilityController;
@@ -47,7 +65,6 @@ class _CardPageContentState extends State<_CardPageContent> {
   @override
   void initState() {
     super.initState();
-
     nameController = TextEditingController();
     descriptionController = TextEditingController();
     abilityController = TextEditingController();
@@ -56,7 +73,6 @@ class _CardPageContentState extends State<_CardPageContent> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     nfcCubit = context.read<NfcCubit>();
   }
 

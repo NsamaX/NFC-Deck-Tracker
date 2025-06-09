@@ -37,12 +37,8 @@ class _TagReaderPageState extends State<TagReaderPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(
-          create: (_) => locator<DrawerCubit>(),
-        ),
-        BlocProvider(
-          create: (_) => locator<ReaderCubit>(param1: _collectionId),
-        ),
+        BlocProvider(create: (_) => locator<DrawerCubit>()),
+        BlocProvider(create: (_) => locator<ReaderCubit>(param1: _collectionId)),
       ],
       child: _TagReaderPageContent(onTagDetected: _onTagDetected),
     );

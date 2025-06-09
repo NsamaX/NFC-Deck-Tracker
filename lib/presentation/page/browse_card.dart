@@ -17,16 +17,31 @@ import '../widget/shared/ui_constant.dart';
 import '../widget/specific/card_list_view.dart';
 import '../widget/specific/search_bar.dart';
 
-class BrowseCardPage extends StatelessWidget {
+class BrowseCardPage extends StatefulWidget {
   const BrowseCardPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final args = getArguments(context);
-    final collectionId = args['collectionId'];
-    final collectionName = args['collectionName'];
-    final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+  State<BrowseCardPage> createState() => _BrowseCardPageState();
+}
 
+class _BrowseCardPageState extends State<BrowseCardPage> {
+  late final String userId;
+  late final String collectionId;
+  late final String collectionName;
+  late final bool onAdd;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = getArguments(context);
+    userId = FirebaseAuth.instance.currentUser?.uid ?? '';
+    collectionId = args['collectionId'];
+    collectionName = args['collectionName'];
+    onAdd = args['onAdd'] ?? false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<SearchCubit>(
@@ -42,16 +57,21 @@ class BrowseCardPage extends StatelessWidget {
           create: (_) => locator<CardCubit>(),
         ),
       ],
-      child: _BrowseCardView(args: args, userId: userId),
+      child: _BrowseCardContent(userId: userId, onAdd: onAdd, collectionId: collectionId),
     );
   }
 }
 
-class _BrowseCardView extends StatelessWidget {
-  final Map<String, dynamic> args;
+class _BrowseCardContent extends StatelessWidget {
   final String userId;
+  final bool onAdd;
+  final String collectionId;
 
-  const _BrowseCardView({required this.args, required this.userId});
+  const _BrowseCardContent({
+    required this.userId,
+    required this.onAdd,
+    required this.collectionId,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -64,13 +84,13 @@ class _BrowseCardView extends StatelessWidget {
           AppBarMenuItem(
             label: locale.translate('page_search.app_bar'),
           ),
-          !Game.isSupported(args['collectionId'])
+          !Game.isSupported(collectionId)
               ? AppBarMenuItem(
                   label: Icons.add_rounded,
                   action: {
                     'route': RouteConstant.card,
                     'arguments': {
-                      'collectionId': args['collectionId'],
+                      'collectionId': collectionId,
                       'onCustom': true,
                     },
                   },
@@ -106,7 +126,7 @@ class _BrowseCardView extends StatelessWidget {
               return Expanded(
                 child: CardListWidget(
                   cards: state.visibleCards,
-                  onAdd: args['onAdd'] ?? false,
+                  onAdd: onAdd,
                   userId: userId,
                 ),
               );
