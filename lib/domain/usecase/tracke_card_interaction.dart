@@ -1,6 +1,7 @@
+import 'package:nfc_deck_tracker/util/player_action.dart';
+
 import '../entity/deck.dart';
 import '../entity/data.dart';
-import '../entity/player_action.dart';
 import '../entity/tag.dart';
 
 class TrackCardInteractionResult {
@@ -48,22 +49,22 @@ class TrackCardInteractionUsecase {
           newLog: null,
         );
       }
-      nextAction = PlayerAction.draw;
+      nextAction = PlayerAction.take;
       newCount -= 1;
     } else {
       final lastAction = previousLogs.last.playerAction;
 
-      if (lastAction == PlayerAction.draw) {
-        nextAction = PlayerAction.returnToDeck;
+      if (lastAction == PlayerAction.take) {
+        nextAction = PlayerAction.give;
         newCount += 1;
-      } else if (lastAction == PlayerAction.returnToDeck) {
+      } else if (lastAction == PlayerAction.give) {
         if (newCount < 1) {
           return TrackCardInteractionResult(
             updatedDeck: deck,
             newLog: null,
           );
         }
-        nextAction = PlayerAction.draw;
+        nextAction = PlayerAction.take;
         newCount -= 1;
       } else {
         return TrackCardInteractionResult(updatedDeck: deck, newLog: null);
@@ -80,7 +81,7 @@ class TrackCardInteractionUsecase {
       ),
     ];
 
-    final location = (nextAction == PlayerAction.draw) ? 'deck' : 'hand';
+    final location = (nextAction == PlayerAction.take) ? 'deck' : 'hand';
     final newLog = DataEntity(
       tagId: tag.tagId,
       collectionId: tag.collectionId,

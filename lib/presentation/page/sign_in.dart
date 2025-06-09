@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 import '../locale/localization.dart';
-import '../widget/text/description_align_center.dart';
 import '../widget/constant/image.dart';
-import '../widget/text/title_align_center.dart';
 import '../widget/constant/ui.dart';
 import '../widget/button/google_sign_in.dart';
 import '../widget/button/guest_sign_in.dart';
+import '../widget/text/description_align_center.dart';
+import '../widget/text/title_align_center.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});

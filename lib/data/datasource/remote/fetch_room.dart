@@ -1,5 +1,6 @@
-import '@firestore_service.dart';
 import '../../model/record.dart';
+
+import '@firestore_service.dart';
 
 class FetchRoomRemoteDatasource {
   final FirestoreService _firestoreService;

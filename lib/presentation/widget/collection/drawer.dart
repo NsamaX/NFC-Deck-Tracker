@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../constant/image.dart';
-import '../constant/ui.dart';
-
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
+
+import '../constant/image.dart';
+import '../constant/ui.dart';
 
 class CollectionDrawer extends StatelessWidget {
   final bool isOpen;

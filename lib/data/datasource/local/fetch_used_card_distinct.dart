@@ -1,6 +1,6 @@
-import '@sqlite_service.dart';
-
 import '../../model/card.dart';
+
+import '@sqlite_service.dart';
 
 class FetchUsedCardDistinctLocalDatasource {
   final SQLiteService _sqliteService;

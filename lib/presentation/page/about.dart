@@ -3,8 +3,8 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
-import '../widget/text/description_align_center.dart';
 import '../widget/constant/ui.dart';
+import '../widget/text/description_align_center.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});

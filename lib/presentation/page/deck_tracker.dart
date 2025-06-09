@@ -16,12 +16,12 @@ import '../cubit/record_cubit.dart';
 import '../cubit/tracker_cubit.dart';
 import '../cubit/usage_card_cubit.dart';
 import '../locale/localization.dart';
-import '../widget/drawer/card_history.dart';
 import '../widget/app_bar/deck_tracker.dart';
-import '../widget/drawer/create_room.dart';
 import '../widget/deck/insight_view.dart';
-import '../widget/deck/tracker_view.dart';
 import '../widget/deck/switch_mode.dart';
+import '../widget/deck/tracker_view.dart';
+import '../widget/drawer/card_history.dart';
+import '../widget/drawer/create_room.dart';
 import '../widget/wrapper/tracker_listener.dart';
 
 class DeckTrackerPage extends StatefulWidget {

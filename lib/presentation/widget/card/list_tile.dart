@@ -5,10 +5,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import 'slidable_action.dart';
-
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
+
+import 'slidable_action.dart';
 
 class CardListTile extends StatelessWidget {
   final AppLocalization locale;

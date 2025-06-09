@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '@default.dart';
-
 import '../../cubit/deck_cubit.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
+
+import '@default.dart';
 
 class MyDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyDeckAppBar({super.key});

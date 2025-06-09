@@ -1,6 +1,6 @@
-import '@sqlite_service.dart';
-
 import '../../model/deck.dart';
+
+import '@sqlite_service.dart';
 
 class UpdateDeckLocalDatasource {
   final SQLiteService _sqliteService;

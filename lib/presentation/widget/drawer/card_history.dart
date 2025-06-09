@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../constant/ui.dart';
-
-import '../card/list_tile.dart';
-
 import '../../cubit/drawer_cubit.dart';
 import '../../cubit/reader_cubit.dart';
 import '../../locale/localization.dart';
+
+import '../card/list_tile.dart';
+import '../constant/ui.dart';
 
 class CardHistoryDrawer extends StatelessWidget {
   final DrawerCubit drawerCubit;

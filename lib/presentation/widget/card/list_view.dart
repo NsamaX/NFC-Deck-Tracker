@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import 'list_tile.dart';
-
 import '../../cubit/card_cubit.dart';
 import '../../locale/localization.dart';
+
+import 'list_tile.dart';
 
 class CardListView extends StatelessWidget {
   final List<CardEntity> cards;

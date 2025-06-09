@@ -1,6 +1,7 @@
 import 'package:nfc_deck_tracker/data/model/data.dart';
 
-import '../entity/player_action.dart';
+import 'package:nfc_deck_tracker/util/player_action.dart';
+
 import '../entity/data.dart';
 
 class DataMapper {

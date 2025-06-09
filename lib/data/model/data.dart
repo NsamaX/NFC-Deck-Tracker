@@ -1,4 +1,4 @@
-import 'package:nfc_deck_tracker/domain/entity/player_action.dart';
+import 'package:nfc_deck_tracker/util/player_action.dart';
 
 import 'tag.dart';
 

@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
-import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/setting/builder.dart';
 import '../widget/setting/section.dart';
+import '../widget/shared/bottom_navigation_bar.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});

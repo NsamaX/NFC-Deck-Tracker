@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:nfc_deck_tracker/domain/entity/player_action.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/record.dart';
 import 'package:nfc_deck_tracker/domain/entity/usage_card_stats.dart';
+
+import 'package:nfc_deck_tracker/util/player_action.dart';
 
 import '../../locale/localization.dart';
 
@@ -64,7 +65,7 @@ class DeckInsightSummary extends StatelessWidget {
   double _percentagePlayed() {
     final totalCards = (initialDeck.cards ?? []).fold(0, (sum, e) => sum + e.count);
     final playedCardTags = currentRecord.data
-        .where((e) => e.playerAction == PlayerAction.draw)
+        .where((e) => e.playerAction == PlayerAction.take)
         .map((e) => e.tagId)
         .toSet()
         .length;
@@ -75,7 +76,7 @@ class DeckInsightSummary extends StatelessWidget {
   int _unusedCardCount() {
     final allCardNames = (initialDeck.cards ?? []).map((e) => e.card.name).toSet();
     final drawnCardIds = currentRecord.data
-        .where((e) => e.playerAction == PlayerAction.draw)
+        .where((e) => e.playerAction == PlayerAction.take)
         .map((e) => e.cardId)
         .toSet();
     final drawnCardNames = (initialDeck.cards ?? [])

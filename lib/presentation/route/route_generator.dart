@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'route_constant.dart';
-
 import '../page/~index.dart';
+
+import 'route_constant.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {

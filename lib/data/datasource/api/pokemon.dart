@@ -1,9 +1,9 @@
 import 'package:nfc_deck_tracker/.config/game.dart';
 
+import '../../model/card.dart';
+
 import '@service_factory.dart';
 import '&base_api.dart';
-
-import '../../model/card.dart';
 
 class PokemonApi extends BaseApi implements GameApi {
   PokemonApi(

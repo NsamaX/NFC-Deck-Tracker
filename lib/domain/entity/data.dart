@@ -1,4 +1,5 @@
-import 'player_action.dart';
+import 'package:nfc_deck_tracker/util/player_action.dart';
+
 import 'tag.dart';
 
 class DataEntity extends TagEntity {

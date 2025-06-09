@@ -1,6 +1,6 @@
-import '@firestore_service.dart';
-
 import '../../model/record.dart';
+
+import '@firestore_service.dart';
 
 class CreateRecordRemoteDatasource {
   final FirestoreService _firestoreService;

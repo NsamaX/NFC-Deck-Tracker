@@ -1,6 +1,6 @@
-import '@firestore_service.dart';
-
 import '../../model/card.dart';
+
+import '@firestore_service.dart';
 
 class FetchCardRemoteDatasource {
   final FirestoreService _firestoreService;

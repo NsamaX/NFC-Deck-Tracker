@@ -1,6 +1,6 @@
-import '@firestore_service.dart';
-
 import '../../model/deck.dart';
+
+import '@firestore_service.dart';
 
 class CreateDeckRemoteDatasource {
   final FirestoreService _firestoreService;

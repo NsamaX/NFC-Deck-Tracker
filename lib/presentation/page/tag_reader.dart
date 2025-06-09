@@ -11,9 +11,9 @@ import '../cubit/nfc_cubit.dart';
 import '../cubit/reader_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
-import '../widget/shared/bottom_navigation_bar.dart';
-import '../widget/drawer/card_history.dart';
 import '../widget/collection/drawer.dart';
+import '../widget/drawer/card_history.dart';
+import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/specific/nfc_icon.dart';
 import '../widget/wrapper/reader_listener.dart';
 

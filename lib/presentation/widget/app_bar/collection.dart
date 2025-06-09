@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '@default.dart';
+import '../../cubit/collection_cubit.dart';
+import '../../locale/localization.dart';
 
 import '../notification/cupertino_dialog.dart';
 
-import '../../cubit/collection_cubit.dart';
-import '../../locale/localization.dart';
+import '@default.dart';
 
 class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;

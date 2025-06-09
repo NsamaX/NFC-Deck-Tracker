@@ -1,6 +1,6 @@
-import '@sqlite_service.dart';
-
 import '../../model/card.dart';
+
+import '@sqlite_service.dart';
 
 class CreateCardLocalDatasource {
   final SQLiteService _sqliteService;

@@ -1,6 +1,6 @@
-import '@firestore_service.dart';
-
 import '../../model/collection.dart';
+
+import '@firestore_service.dart';
 
 class CreateCollectionRemoteDatasource {
   final FirestoreService _firestoreService;

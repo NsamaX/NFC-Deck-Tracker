@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../card/list_tile.dart';
-
 import '../../cubit/pin_color_cubit.dart';
 import '../../cubit/record_cubit.dart';
 import '../../cubit/tracker_cubit.dart';
 import '../../locale/localization.dart';
+
+import '../card/list_tile.dart';
 
 class DeckTrackerView extends StatelessWidget {
   final RecordCubit recordCubit;

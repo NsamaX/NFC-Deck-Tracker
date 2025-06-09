@@ -12,10 +12,10 @@ import '../cubit/card_cubit.dart';
 import '../locale/localization.dart';
 import '../route/route_constant.dart';
 import '../widget/app_bar/@default.dart';
-import '../widget/text/description_align_center.dart';
-import '../widget/constant/ui.dart';
 import '../widget/card/list_view.dart';
+import '../widget/constant/ui.dart';
 import '../widget/specific/search_bar.dart';
+import '../widget/text/description_align_center.dart';
 
 class BrowseCardPage extends StatefulWidget {
   const BrowseCardPage({super.key});

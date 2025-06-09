@@ -4,15 +4,15 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '@default.dart';
-
-import '../notification/cupertino_dialog.dart';
-import '../notification/snackbar.dart';
-
 import '../../cubit/deck_cubit.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
+
+import '../notification/cupertino_dialog.dart';
+import '../notification/snackbar.dart';
+
+import '@default.dart';
 
 class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;

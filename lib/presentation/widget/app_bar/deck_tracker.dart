@@ -2,10 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '@default.dart';
-
-import '../notification/cupertino_dialog.dart';
-
 import '../../cubit/drawer_cubit.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../cubit/reader_cubit.dart';
@@ -13,6 +9,10 @@ import '../../cubit/record_cubit.dart';
 import '../../cubit/tracker_cubit.dart';
 import '../../cubit/usage_card_cubit.dart';
 import '../../locale/localization.dart';
+
+import '../notification/cupertino_dialog.dart';
+
+import '@default.dart';
 
 class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;

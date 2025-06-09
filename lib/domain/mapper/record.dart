@@ -1,8 +1,8 @@
 import 'package:nfc_deck_tracker/data/model/record.dart';
 
-import 'data.dart';
-
 import '../entity/record.dart';
+
+import 'data.dart';
 
 class RecordMapper {
   static RecordEntity toEntity(RecordModel model) => RecordEntity(

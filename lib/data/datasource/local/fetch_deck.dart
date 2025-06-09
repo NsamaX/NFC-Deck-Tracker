@@ -1,7 +1,7 @@
-import '@sqlite_service.dart';
-
 import '../../model/card.dart';
 import '../../model/deck.dart';
+
+import '@sqlite_service.dart';
 
 class FetchDeckLocalDatasource {
   final SQLiteService _sqliteService;

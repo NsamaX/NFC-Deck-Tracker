@@ -5,8 +5,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:nfc_deck_tracker/.config/setting.dart';
 
-import '../presentation/cubit/application_cubit.dart';
-import '../presentation/route/route_constant.dart';
+import 'package:nfc_deck_tracker/presentation/cubit/application_cubit.dart';
+import 'package:nfc_deck_tracker/presentation/route/route_constant.dart';
 
 Future<String> signInWithGoogle() async {
   final FirebaseAuth auth = FirebaseAuth.instance;

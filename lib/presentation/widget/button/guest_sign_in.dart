@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../util/google_athen.dart';
+import 'package:nfc_deck_tracker/util/google_athen.dart';
 
 class ButtonGuestSignIn extends StatelessWidget {
   final String text;

@@ -4,10 +4,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../cubit/deck_cubit.dart';
 import '../locale/localization.dart';
+import '../widget/app_bar/my_deck.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
-import '../widget/app_bar/my_deck.dart';
 
 class MyDeckPage extends StatefulWidget {
   const MyDeckPage({super.key});

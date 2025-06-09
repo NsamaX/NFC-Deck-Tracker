@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../constant/ui.dart';
-
 import '../../locale/localization.dart';
+
+import '../constant/ui.dart';
 
 class SearchBarWidget extends StatefulWidget {
   final ValueChanged<String> onSearchChanged;

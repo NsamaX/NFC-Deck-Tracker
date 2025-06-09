@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:nfc_deck_tracker/util/google_athen.dart';
+
 import '../../locale/localization.dart';
 
-import '../../../util/google_athen.dart';
 import '../constant/image.dart';
 import '../notification/snackbar.dart';
 

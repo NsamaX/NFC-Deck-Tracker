@@ -1,5 +1,5 @@
 enum PlayerAction {
-  draw,
-  returnToDeck,
+  take,
+  give,
   unknown,
 }

@@ -11,11 +11,11 @@ import '../cubit/card_cubit.dart';
 import '../cubit/deck_cubit.dart';
 import '../cubit/nfc_cubit.dart';
 import '../widget/app_bar/card.dart';
+import '../widget/card/custom_image.dart';
+import '../widget/card/custom_info.dart';
 import '../widget/card/image.dart';
 import '../widget/card/info.dart';
 import '../widget/card/quantity_selector.dart';
-import '../widget/card/custom_image.dart';
-import '../widget/card/custom_info.dart';
 import '../widget/wrapper/writer_listener.dart';
 
 class CardPage extends StatefulWidget {

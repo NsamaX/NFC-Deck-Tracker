@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import '../cubit/deck_cubit.dart';
 import '../locale/localization.dart';
+import '../widget/app_bar/deck_builder.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
-import '../widget/app_bar/deck_builder.dart';
 import '../widget/wrapper/writer_listener.dart';
 
 class DeckBuilderPage extends StatefulWidget {

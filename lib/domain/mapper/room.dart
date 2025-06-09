@@ -1,9 +1,9 @@
 import 'package:nfc_deck_tracker/data/model/room.dart';
 
+import '../entity/room.dart';
+
 import 'card.dart';
 import 'record.dart';
-
-import '../entity/room.dart';
 
 class RoomMapper {
   static RoomEntity toEntity(RoomModel model) => RoomEntity(

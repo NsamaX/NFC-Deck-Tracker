@@ -1,7 +1,8 @@
+import 'package:nfc_deck_tracker/util/player_action.dart';
+
 import '../entity/card.dart';
 import '../entity/deck.dart';
 import '../entity/record.dart';
-import '../entity/player_action.dart';
 import '../entity/usage_card_stats.dart';
 
 class CalculateUsageCardStatsUsecase {
@@ -53,9 +54,9 @@ class CalculateUsageCardStatsUsecase {
         }
       }
 
-      if (log.playerAction == PlayerAction.draw) {
+      if (log.playerAction == PlayerAction.take) {
         drawMap[key] = (drawMap[key] ?? 0) + 1;
-      } else if (log.playerAction == PlayerAction.returnToDeck) {
+      } else if (log.playerAction == PlayerAction.give) {
         returnMap[key] = (returnMap[key] ?? 0) + 1;
       }
     }

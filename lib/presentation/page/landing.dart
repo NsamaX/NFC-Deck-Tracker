@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../locale/localization.dart';
 import '../route/route_constant.dart';
 import '../widget/button/max_width.dart';
-import '../widget/text/description_align_center.dart';
 import '../widget/constant/image.dart';
-import '../widget/text/title_align_center.dart';
 import '../widget/constant/ui.dart';
+import '../widget/text/description_align_center.dart';
+import '../widget/text/title_align_center.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nfc_deck_tracker/util/google_athen.dart';
+
 import '../../cubit/application_cubit.dart';
 import '../../locale/language_manager.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
-
-import '../../../util/google_athen.dart';
 
 class SettingBuilder {
   final BuildContext context;

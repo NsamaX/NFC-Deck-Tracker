@@ -7,9 +7,9 @@ import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 import '@argument.dart';
 
 import '../cubit/collection_cubit.dart';
-import '../widget/constant/image.dart';
 import '../widget/app_bar/collection.dart';
 import '../widget/collection/list_view.dart';
+import '../widget/constant/image.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({super.key});

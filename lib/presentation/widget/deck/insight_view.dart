@@ -10,9 +10,10 @@ import '../../cubit/record_cubit.dart';
 import '../../cubit/usage_card_cubit.dart';
 import '../../locale/localization.dart';
 
+import '../specific/history_list_view.dart';
+
 import 'insight_chart.dart';
 import 'insight_summary.dart';
-import '../specific/history_list_view.dart';
 
 class DeckInsightView extends StatefulWidget {
   final AppLocalization locale;

@@ -5,12 +5,13 @@ import 'package:uuid/uuid.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/data.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
-import 'package:nfc_deck_tracker/domain/entity/player_action.dart';
 import 'package:nfc_deck_tracker/domain/entity/record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/create_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/delete_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_record.dart';
+
+import 'package:nfc_deck_tracker/util/player_action.dart';
 
 part 'record_state.dart';
 
@@ -138,8 +139,8 @@ class RecordCubit extends Cubit<RecordState> {
       );
 
       return switch (last.playerAction) {
-        PlayerAction.draw => true,
-        PlayerAction.returnToDeck => false,
+        PlayerAction.take => true,
+        PlayerAction.give => false,
         _ => null,
       };
     } catch (_) {

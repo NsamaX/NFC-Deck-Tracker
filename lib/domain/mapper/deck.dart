@@ -1,8 +1,8 @@
 import 'package:nfc_deck_tracker/data/model/deck.dart';
 
-import 'card.dart';
-
 import '../entity/deck.dart';
+
+import 'card.dart';
 
 class DeckMapper {
   static DeckEntity toEntity(DeckModel model) => DeckEntity(
