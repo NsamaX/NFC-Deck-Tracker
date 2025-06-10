@@ -37,5 +37,12 @@ class CardEntity extends Equatable {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  List<Object?> get props => [collectionId, cardId];
+  List<Object?> get props => [
+        collectionId,
+        cardId,
+        name, 
+        imageUrl, 
+        description, 
+        additionalData,
+      ];
 }

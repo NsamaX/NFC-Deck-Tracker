@@ -59,21 +59,56 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
         ),
         BlocProvider<CardCubit>(create: (_) => locator<CardCubit>()),
       ],
-      child: _BrowseCardContent(userId: userId, onAdd: onAdd, collectionId: collectionId),
+      child: _BrowseCardContent(
+        userId: userId,
+        onAdd: onAdd,
+        collectionId: collectionId,
+        collectionName: collectionName,
+      ),
     );
   }
 }
 
-class _BrowseCardContent extends StatelessWidget {
+class _BrowseCardContent extends StatefulWidget {
   final String userId;
   final bool onAdd;
   final String collectionId;
+  final String collectionName;
 
   const _BrowseCardContent({
     required this.userId,
     required this.onAdd,
     required this.collectionId,
+    required this.collectionName,
   });
+
+  @override
+  State<_BrowseCardContent> createState() => _BrowseCardContentState();
+}
+
+class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware {
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    locator<RouteObserver<ModalRoute>>().subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    locator<RouteObserver<ModalRoute>>().unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    if (!Game.isSupported(widget.collectionId)) {
+      context.read<SearchCubit>().fetchCard(
+        userId: widget.userId,
+        collectionId: widget.collectionId,
+        collectionName: widget.collectionName,
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -86,13 +121,13 @@ class _BrowseCardContent extends StatelessWidget {
           AppBarMenuItem(
             label: locale.translate('page_search.app_bar'),
           ),
-          !Game.isSupported(collectionId)
+          !Game.isSupported(widget.collectionId)
               ? AppBarMenuItem(
                   label: Icons.add_rounded,
                   action: {
                     'route': RouteConstant.card,
                     'arguments': {
-                      'collectionId': collectionId,
+                      'collectionId': widget.collectionId,
                       'onCustom': true,
                     },
                   },
@@ -128,8 +163,8 @@ class _BrowseCardContent extends StatelessWidget {
               return Expanded(
                 child: CardListView(
                   cards: state.visibleCards,
-                  onAdd: onAdd,
-                  userId: userId,
+                  onAdd: widget.onAdd,
+                  userId: widget.userId,
                 ),
               );
             },

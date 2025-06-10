@@ -5,8 +5,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '@argument.dart';
-
 import '../cubit/card_cubit.dart';
 import '../cubit/deck_cubit.dart';
 import '../cubit/nfc_cubit.dart';
@@ -17,6 +15,8 @@ import '../widget/card/image.dart';
 import '../widget/card/info.dart';
 import '../widget/card/quantity_selector.dart';
 import '../widget/listener/card_writer.dart';
+
+import '@argument.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -93,6 +93,7 @@ class _CardPageContent extends State<_CardContent> {
   Widget build(BuildContext context) {
     final args = getArguments(context);
     final card = args['card'] as CardEntity? ?? CardEntity();
+    final collectionId = args['collectionId'] as String;
     final onCustom = args['onCustom'] ?? false;
     final onNFC = args['onNFC'] ?? false;
     final onAdd = args['onAdd'] ?? false;
@@ -105,6 +106,7 @@ class _CardPageContent extends State<_CardContent> {
           return Scaffold(
             appBar: CardAppBar(
               userId: userId,
+              collectionId: collectionId,
               card: card,
               onNFC: onNFC,
               onAdd: onAdd,

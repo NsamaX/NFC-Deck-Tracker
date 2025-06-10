@@ -18,8 +18,8 @@ Future<void> setupCubit() async {
     setupPinColorCubit();
     setupReaderCubit();
     setupRecordCubit();
+    setupRoomCubit();
     setupSearchCubit();
-    setupSignOutCubit();
     setupTrackerCubit();
     setupUsageCardCubit();
 
@@ -31,6 +31,7 @@ Future<void> setupCubit() async {
 
 void setupApplicationCubit() {
   locator.registerLazySingleton(() => ApplicationCubit(
+    clearLocalDataSourceUsecase: locator<ClearLocalDataSourceUsecase>(),
     initializeSettingUsecase: locator<InitializeSettingUsecase>(),
     updateSettingUsecase: locator<UpdateSettingUsecase>(),
   ));
@@ -95,15 +96,19 @@ void setupRecordCubit() {
   ));
 }
 
-void setupSearchCubit() {
-  locator.registerFactoryParam<SearchCubit, String, void>((collectionId, _) => SearchCubit(
-    fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
+void setupRoomCubit() {
+  locator.registerFactory(() => RoomCubit(
+    closeRoomUsecase: locator<CloseRoomUsecase>(),
+    createRoomUsecase: locator<CreateRoomUsecase>(),
+    fetchRoomUsecase: locator<FetchRoomUsecase>(),
+    joinRoomUsecase: locator<JoinRoomUsecase>(),
+    updateRoomUsecase: locator<UpdateRoomUsecase>(),
   ));
 }
 
-void setupSignOutCubit() {
-  locator.registerLazySingleton(() => SignOutCubit(
-    clearLocalDataSourceUsecase: locator<ClearLocalDataSourceUsecase>(),
+void setupSearchCubit() {
+  locator.registerFactoryParam<SearchCubit, String, void>((collectionId, _) => SearchCubit(
+    fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
   ));
 }
 

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/setting.dart';
 
+import 'package:nfc_deck_tracker/domain/usecase/clear_local_datasource.dart';
 import 'package:nfc_deck_tracker/domain/usecase/initialize_setting.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
 
@@ -13,10 +14,12 @@ import '../route/route_constant.dart';
 part 'application_state.dart';
 
 class ApplicationCubit extends Cubit<ApplicationState> {
+  final ClearLocalDataSourceUsecase clearLocalDataSourceUsecase;
   final InitializeSettingUsecase initializeSettingUsecase;
   final UpdateSettingUsecase updateSettingUsecase;
 
   ApplicationCubit({
+    required this.clearLocalDataSourceUsecase,
     required this.initializeSettingUsecase,
     required this.updateSettingUsecase,
   }) : super(ApplicationState.initialFromConstant());
@@ -72,4 +75,6 @@ class ApplicationCubit extends Cubit<ApplicationState> {
   }) {
     safeEmit(state.copyWith(currentPageIndex: index));
   }
+
+  void signOut() => clearLocalDataSourceUsecase.call();
 }

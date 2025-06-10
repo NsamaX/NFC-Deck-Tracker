@@ -14,6 +14,7 @@ import '@default.dart';
 
 class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;
+  final String collectionId;
   final CardEntity card;
   final bool onNFC;
   final bool onAdd;
@@ -22,6 +23,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CardAppBar({
     Key? key,
     required this.userId,
+    required this.collectionId,
     required this.card,
     required this.onNFC,
     required this.onAdd,
@@ -67,7 +69,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
         rightItem = AppBarMenuItem(
           label: locale.translate('page_card_detail.toggle_done'),
           action: () async {
-            await context.read<CardCubit>().createCard(userId: userId);
+            await context.read<CardCubit>().createCard(userId: userId, collectionId: collectionId);
             AppSnackBar(
               context,
               text: locale.translate('page_card_detail.snack_bar_add'),

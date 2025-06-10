@@ -41,6 +41,7 @@ class SettingBuilder {
               await signInWithGoogle();
             } else {
               await signOutFromGoogle();
+              applicationCubit.signOut();
             }
           },
         },

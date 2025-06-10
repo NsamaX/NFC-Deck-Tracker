@@ -22,7 +22,11 @@ class ReaderCubit extends Cubit<ReaderState> {
     required TagEntity? tag,
   }) async {
     if (state.isLoading || isClosed) return;
-    safeEmit(state.copyWith(isLoading: true));
+    safeEmit(state.copyWith(
+      isLoading: true,
+      errorMessage: '',
+      successMessage: '',
+    ));
 
     if (tag == null) {
       safeEmit(state.copyWith(

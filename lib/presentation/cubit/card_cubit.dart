@@ -25,7 +25,9 @@ class CardCubit extends Cubit<CardState> {
 
   Future<void> createCard({
     required String userId,
+    required String collectionId,
   }) async {
+    safeEmit(state.copyWith(card: state.card.copyWith(collectionId: collectionId)));
     await createCardUsecase(
       userId: userId,
       card: state.card,
