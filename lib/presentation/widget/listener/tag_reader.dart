@@ -7,11 +7,11 @@ import '../../cubit/drawer_cubit.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../cubit/reader_cubit.dart';
 
-class ReaderListener extends StatelessWidget {
+class TagReaderListener extends StatelessWidget {
   final Widget child;
   final Function(String) onTagDetected;
 
-  const ReaderListener({
+  const TagReaderListener({
     super.key, 
     required this.child,
     required this.onTagDetected,

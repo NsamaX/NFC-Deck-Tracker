@@ -16,7 +16,7 @@ import '../widget/card/custom_info.dart';
 import '../widget/card/image.dart';
 import '../widget/card/info.dart';
 import '../widget/card/quantity_selector.dart';
-import '../widget/wrapper/writer_listener.dart';
+import '../widget/listener/card_writer.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -99,7 +99,7 @@ class _CardPageContent extends State<_CardContent> {
     final userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
     final cardCubit = context.read<CardCubit>();
 
-    return WriterListener(
+    return CardWriterListener(
       child: BlocBuilder<NfcCubit, NfcState>(
         builder: (context, state) {
           return Scaffold(

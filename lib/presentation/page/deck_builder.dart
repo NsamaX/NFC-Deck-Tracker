@@ -7,9 +7,9 @@ import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 import '../cubit/deck_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_builder.dart';
+import '../widget/listener/card_writer.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
-import '../widget/wrapper/writer_listener.dart';
 
 class DeckBuilderPage extends StatefulWidget {
   const DeckBuilderPage({super.key});
@@ -45,7 +45,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> {
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
 
-    return WriterListener(
+    return CardWriterListener(
       child: Scaffold(
         appBar: DeckBuilderAppBar(
           userId: userId,

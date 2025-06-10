@@ -22,7 +22,7 @@ import '../widget/deck/switch_mode.dart';
 import '../widget/deck/tracker_view.dart';
 import '../widget/drawer/card_history.dart';
 import '../widget/drawer/create_room.dart';
-import '../widget/wrapper/tracker_listener.dart';
+import '../widget/listener/deck_tracker.dart';
 
 class DeckTrackerPage extends StatefulWidget {
   const DeckTrackerPage({super.key});
@@ -75,7 +75,7 @@ class _DeckTrackerPageContent extends StatelessWidget {
     final usageCardCubit = context.watch<UsageCardCubit>();
     final locale = AppLocalization.of(context);
 
-    return TrackerListener(
+    return DeckTrackerListener(
       child: Scaffold(
         appBar: DeckTrackerAppBar(
           userId: userId,

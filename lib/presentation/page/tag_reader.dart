@@ -13,9 +13,9 @@ import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
 import '../widget/collection/drawer.dart';
 import '../widget/drawer/card_history.dart';
+import '../widget/listener/tag_reader.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/specific/nfc_icon.dart';
-import '../widget/wrapper/reader_listener.dart';
 
 class TagReaderPage extends StatefulWidget {
   const TagReaderPage({super.key});
@@ -76,7 +76,7 @@ class _TagReaderPageContent extends StatelessWidget {
           ),
         ],
       ),
-      body: ReaderListener(
+      body: TagReaderListener(
         onTagDetected: onTagDetected,
         child: GestureDetector(
           onTap: () {

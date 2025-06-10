@@ -7,10 +7,10 @@ import '../../locale/localization.dart';
 
 import '../notification/snackbar.dart';
 
-class WriterListener extends StatelessWidget {
+class CardWriterListener extends StatelessWidget {
   final Widget child;
 
-  const WriterListener({
+  const CardWriterListener({
     super.key,
     required this.child,
   });

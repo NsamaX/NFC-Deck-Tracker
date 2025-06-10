@@ -7,10 +7,10 @@ import '../../cubit/record_cubit.dart';
 import '../../cubit/tracker_cubit.dart';
 import '../../cubit/usage_card_cubit.dart';
 
-class TrackerListener extends StatelessWidget {
+class DeckTrackerListener extends StatelessWidget {
   final Widget child;
 
-  const TrackerListener({super.key, required this.child});
+  const DeckTrackerListener({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {
