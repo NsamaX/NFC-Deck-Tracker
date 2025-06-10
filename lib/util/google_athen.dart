@@ -38,18 +38,13 @@ Future<String> signInWithGoogle() async {
 Future<void> signOutFromGoogle() async {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
+  if (auth.currentUser == null) return;
+
   await auth.signOut();
   await GoogleSignIn().signOut();
 }
 
 Future<void> handleGuestSignIn(BuildContext context) async {
-  final FirebaseAuth auth = FirebaseAuth.instance;
-
-  if (auth.currentUser != null) {
-    await auth.signOut();
-    await GoogleSignIn().signOut();
-  }
-
   context.read<ApplicationCubit>().updateSetting(
     key: Setting.keyLoggedIn,
     value: true,

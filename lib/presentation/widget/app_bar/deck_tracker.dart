@@ -31,7 +31,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
     final navigator = Navigator.of(context);
 
     final drawerCubit = context.read<DrawerCubit>();
-    final nfcCubit = context.read<NfcCubit>();
+    final nfcCubit = context.watch<NfcCubit>();
     final readerCubit = context.read<ReaderCubit>();
     final recordCubit = context.read<RecordCubit>();
     final trackerCubit = context.read<TrackerCubit>();

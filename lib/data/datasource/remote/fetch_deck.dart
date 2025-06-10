@@ -29,7 +29,7 @@ class FetchDeckRemoteDatasource {
       for (final cardDoc in cardSnapshot) {
         final cardData = cardDoc.data();
 
-        final String collectionId = cardData['collectionId'];
+        final String? collectionId = cardData['collectionId'];
         final String cardId = cardData['cardId'];
         final int count = cardData['count'];
 
@@ -61,9 +61,10 @@ class FetchDeckRemoteDatasource {
 
   Future<CardModel?> _fetchCardById({
     required String userId,
-    required String collectionId,
+    required String? collectionId,
     required String cardId,
   }) async {
+    if (collectionId == null) return null;
     final doc = await _firestoreService.getDocument(
       collectionPath: 'users/$userId/collections/$collectionId/cards',
       documentId: cardId,

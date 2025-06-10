@@ -43,7 +43,7 @@ void main() async {
   // await locator<SharedPreferencesService>().clear();
 
   await Future.wait([
-    ApiConfig.loadConfig('development'),
+    ApiConfig.loadConfig('development'), // 'production' for release
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     LanguageManager.loadSupportedLanguages(),
   ]);
