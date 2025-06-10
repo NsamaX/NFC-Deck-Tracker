@@ -114,7 +114,18 @@ class NfcCubit extends Cubit<NfcState> {
       LoggerUtil.addMessage(message: '[Processing] Tag read successfully for card id[${tagEntity.cardId}]');
       LoggerUtil.flushMessages();
     } catch (e) {
-      safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_read_tag'));
+      final message = e.toString();
+
+      if (message.contains('Tag does not support NDEF')) {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_ndef_not_supported'));
+      } else if (message.contains('No NDEF message found')) {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_ndef_parse_failed'));
+      } else if (message.contains('Incomplete tag data')) {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_tag_card_not_found'));
+      } else {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_read_tag'));
+      }
+
       LoggerUtil.addMessage(message: '[Processing] Error reading tag: $e');
       LoggerUtil.flushMessages(isError: true);
     }
@@ -132,7 +143,20 @@ class NfcCubit extends Cubit<NfcState> {
       LoggerUtil.addMessage(message: '[Processing] Tag written successfully for card id[${card.cardId}]');
       LoggerUtil.flushMessages();
     } catch (e) {
-      safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_write_tag'));
+      final message = e.toString();
+
+      if (message.contains('Tag does not support NDEF')) {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_ndef_not_supported'));
+      } else if (message.contains('Tag is read-only')) {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_ndef_not_writable'));
+      } else if (message.contains('Card data is incomplete')) {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_ndef_create_failed'));
+      } else if (message.contains('Data exceeds tag capacity')) {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_ndef_data_too_large'));
+      } else {
+        safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_write_tag'));
+      }
+
       LoggerUtil.addMessage(message: '[Processing] Error writing to tag: $e');
       LoggerUtil.flushMessages(isError: true);
     }

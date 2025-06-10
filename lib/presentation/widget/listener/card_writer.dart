@@ -19,22 +19,24 @@ class CardWriterListener extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<NfcCubit, NfcState>(
       listener: (context, state) async {
-        if (state.successMessage.isNotEmpty) {
+        if (state.errorMessage.isNotEmpty) {
           AppSnackBar(
-            context, 
-            text: AppLocalization.of(context).translate(state.successMessage), 
-            isError: false,
-          );
-        } else if (state.errorMessage.isNotEmpty) {
-          AppSnackBar(
-            context, 
-            text: AppLocalization.of(context).translate(state.errorMessage), 
+            context,
+            text: AppLocalization.of(context).translate(state.errorMessage),
             isError: true,
           );
+
           await context.read<NfcCubit>().restartSession(
             card: context.read<DeckCubit>().state.selectedCard,
           );
+        } else if (state.successMessage.isNotEmpty) {
+          AppSnackBar(
+            context,
+            text: AppLocalization.of(context).translate(state.successMessage),
+            isError: false,
+          );
         }
+
         context.read<NfcCubit>().clearMessages();
       },
       child: child,

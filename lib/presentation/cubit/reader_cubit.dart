@@ -26,7 +26,7 @@ class ReaderCubit extends Cubit<ReaderState> {
 
     if (tag == null) {
       safeEmit(state.copyWith(
-        errorMessage: 'error_tag_not_detected',
+        errorMessage: 'nfc_snack_bar.error_tag_not_detected',
         isLoading: false,
       ));
       return;
@@ -36,25 +36,24 @@ class ReaderCubit extends Cubit<ReaderState> {
       final card = await findCardFromTagUsecase(tag);
       safeEmit(state.copyWith(
         scannedCards: [...state.scannedCards, card!],
+        successMessage: 'nfc_snack_bar.success_read_tag',
         isLoading: false,
       ));
     } catch (e) {
-      String messageKey;
       final errorStr = e.toString();
+      String messageKey;
 
       switch (errorStr) {
-        case 'TAG_NOT_FOUND':
-          messageKey = 'error_tag_not_found';
+        case 'Exception: INVALID_TAG':
+          messageKey = 'nfc_snack_bar.error_card_not_found';
           break;
-        case 'INVALID_TAG':
-          messageKey = 'error_tag_card_found';
-          break;
-        case 'CARD_NOT_FOUND':
-          messageKey = 'error_tag_card_not_found';
+        case 'Exception: GAME_NOT_SUPPORTED':
+          messageKey = 'nfc_snack_bar.error_game_not_supported';
           break;
         default:
-          messageKey = 'error_unknown';
+          messageKey = 'nfc_snack_bar.error_unknown';
       }
+
       safeEmit(state.copyWith(
         errorMessage: messageKey,
         isLoading: false,
@@ -68,9 +67,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     safeEmit(state.copyWith(scannedCards: scannedCards));
   }
 
-  void resetScannedCard() {
-    safeEmit(state.copyWith(scannedCards: []));
-  }
+  void resetScannedCard() => safeEmit(state.copyWith(scannedCards: []));
 
   void clearMessages() => safeEmit(state.copyWith(errorMessage: ''));
 }

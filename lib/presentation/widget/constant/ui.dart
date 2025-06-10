@@ -12,5 +12,5 @@ class UIConstant {
   static const double   searchBarHeight = 42.0;
   static const Duration searchBarTransitionDuration = Duration(milliseconds: 300);
 
-  static const Duration snackBarTransitionDuration = Duration(seconds: 1);
+  static const Duration snackBarTransitionDuration = Duration(seconds: 4);
 }

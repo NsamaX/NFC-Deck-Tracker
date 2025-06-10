@@ -10,29 +10,27 @@ import '../../cubit/usage_card_cubit.dart';
 class DeckTrackerListener extends StatelessWidget {
   final Widget child;
 
-  const DeckTrackerListener({super.key, required this.child});
+  const DeckTrackerListener({
+    super.key,
+    required this.child,
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<NfcCubit, NfcState>(
-      listenWhen: (previous, current) =>
-          previous.lastScannedTag != current.lastScannedTag &&
-          current.lastScannedTag != null,
+      listenWhen: (previous, current) => previous.lastScannedTag != current.lastScannedTag && current.lastScannedTag != null,
       listener: (context, state) async {
-        final trackerCubit = context.read<TrackerCubit>();
-        final readerCubit = context.read<ReaderCubit>();
-        final recordCubit = context.read<RecordCubit>();
-        final usageCardCubit = context.read<UsageCardCubit>();
-
         final tag = state.lastScannedTag!;
 
-        trackerCubit.handleTagScan(tag: tag);
-        readerCubit.scanTag(tag: tag);
-        recordCubit.appendDataToRecord(data: trackerCubit.state.actionLog.last);
+        context.read<TrackerCubit>().handleTagScan(tag: tag);
+        context.read<ReaderCubit>().scanTag(tag: tag);
+        context.read<RecordCubit>().appendDataToRecord(
+          data: context.read<TrackerCubit>().state.actionLog.last,
+        );
 
-        await usageCardCubit.loadUsageStats(
-          deck: trackerCubit.state.originalDeck,
-          record: recordCubit.state.currentRecord,
+        await context.read<UsageCardCubit>().loadUsageStats(
+          deck: context.read<TrackerCubit>().state.originalDeck,
+          record: context.read<RecordCubit>().state.currentRecord,
         );
       },
       child: child,

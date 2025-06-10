@@ -8,6 +8,10 @@ void AppSnackBar(
   required String text,
   bool isError = false,
 }) {
+  final scaffoldMessenger = ScaffoldMessenger.of(context);
+
+  scaffoldMessenger.hideCurrentSnackBar();
+
   final snackBar = SnackBar(
     content: Text(
       text,
@@ -20,5 +24,5 @@ void AppSnackBar(
     behavior: SnackBarBehavior.floating,
   );
 
-  ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  scaffoldMessenger.showSnackBar(snackBar);
 }
