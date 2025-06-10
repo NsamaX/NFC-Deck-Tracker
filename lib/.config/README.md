@@ -149,7 +149,7 @@ assets/image/game/newgame.png
 
 ## ✅ Done!
 
-You’ve successfully registered a new game! 🎉
+You’ve successfully registered a new game!
 Now it will be recognized in the system and available for:
 
 * Card search via API
