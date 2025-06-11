@@ -63,13 +63,12 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     } else if (onCustom) {
       final nameFilled = (cardState.name ?? '').trim().isNotEmpty;
-      final descFilled = (cardState.description ?? '').trim().isNotEmpty;
 
-      if (nameFilled && descFilled) {
+      if (nameFilled) {
         rightItem = AppBarMenuItem(
           label: locale.translate('page_card_detail.toggle_done'),
           action: () async {
-            await context.read<CardCubit>().createCard(userId: userId, collectionId: collectionId);
+            await context.read<CardCubit>().createCard(userId: userId, collectionId: collectionId, locale: locale);
             AppSnackBar(
               context,
               text: locale.translate('page_card_detail.snack_bar_add'),

@@ -6,6 +6,8 @@ import 'package:nfc_deck_tracker/domain/usecase/create_card.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_card.dart';
 import 'package:nfc_deck_tracker/domain/usecase/delete_card.dart';
 
+import '../locale/localization.dart';
+
 part 'card_state.dart';
 
 class CardCubit extends Cubit<CardState> {
@@ -26,8 +28,9 @@ class CardCubit extends Cubit<CardState> {
   Future<void> createCard({
     required String userId,
     required String collectionId,
+    required AppLocalization locale,
   }) async {
-    safeEmit(state.copyWith(card: state.card.copyWith(collectionId: collectionId)));
+    safeEmit(state.copyWith(card: state.card.copyWith(collectionId: collectionId, description: locale.translate('card.no_description'))));
     await createCardUsecase(
       userId: userId,
       card: state.card,

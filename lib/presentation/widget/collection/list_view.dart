@@ -19,6 +19,7 @@ import 'slidable_delete.dart';
 class CollectionListView extends StatelessWidget {
   final List<String> gameKeys;
   final List<String> gameImages;
+  final List<CollectionEntity> collections;
   final String userId;
   final bool onAdd;
 
@@ -26,17 +27,16 @@ class CollectionListView extends StatelessWidget {
     super.key,
     required this.gameKeys,
     required this.gameImages,
+    required this.collections,
     required this.userId,
     this.onAdd = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (context.read<CollectionCubit>().state.collections.isEmpty && gameKeys.isEmpty) return const SizedBox.shrink();
+    if (collections.isEmpty && gameKeys.isEmpty) return const SizedBox.shrink();
 
-    final userCollections = context.read<CollectionCubit>().state.collections
-        .where((e) => !Game.isSupported(e.collectionId))
-        .toList();
+    final userCollections = collections.where((e) => !Game.isSupported(e.collectionId)).toList();
 
     return Padding(
       padding: const EdgeInsets.only(top: 8),
@@ -69,7 +69,9 @@ class CollectionListView extends StatelessWidget {
               userId: userId,
               collectionId: collectionId,
             );
-            if (collectionId == context.read<ApplicationCubit>().state.recentId) context.read<ApplicationCubit>().updateSettingUsecase(key: Setting.keyRecentId, value: '');
+            if (collectionId == context.read<ApplicationCubit>().state.recentId) {
+              context.read<ApplicationCubit>().updateSettingUsecase(key: Setting.keyRecentId, value: '');
+            }
           },
         ),
         child: CollectionItem(

@@ -60,16 +60,8 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
           action: () => drawerCubit.toggleHistoryDrawer(),
         ),
         AppBarMenuItem(
-          label: Icons.refresh_rounded,
-          action: () => _showResetDialog(
-            context: context,
-            locale: locale,
-            navigator: navigator,
-            trackerCubit: trackerCubit,
-            recordCubit: recordCubit,
-            readerCubit: readerCubit,
-            usageCardCubit: usageCardCubit,
-          ),
+          label: Icons.people_rounded,
+          action: () => drawerCubit.toggleFeatureDrawer(),
         ),
         AppBarMenuItem(label: locale.translate('page_deck_tracker.app_bar')),
         toggleNfcItem,
@@ -82,8 +74,16 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
       return [
         AppBarMenuItem.back(),
         AppBarMenuItem(
-          label: Icons.people_rounded,
-          action: () => drawerCubit.toggleFeatureDrawer(),
+          label: Icons.refresh_rounded,
+          action: () => _showResetDialog(
+            context: context,
+            locale: locale,
+            navigator: navigator,
+            trackerCubit: trackerCubit,
+            recordCubit: recordCubit,
+            readerCubit: readerCubit,
+            usageCardCubit: usageCardCubit,
+          ),
         ),
         AppBarMenuItem(label: locale.translate('page_deck_tracker.app_bar')),
         toggleNfcItem,

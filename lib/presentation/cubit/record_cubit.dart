@@ -44,10 +44,13 @@ class RecordCubit extends Cubit<RecordState> {
     safeEmit(state.copyWith(currentRecord: state.currentRecord.copyWith(data: [])));
   }
 
-  void createRecord({
+  Future<void> createRecord({
     required String userId,
   }) async {
     await createRecordUsecase.call(userId: userId, record: state.currentRecord);
+
+    final updatedRecords = [...state.records, state.currentRecord];
+    safeEmit(state.copyWith(records: updatedRecords));
   }
 
   void removeRecord({
@@ -114,19 +117,7 @@ class RecordCubit extends Cubit<RecordState> {
     final newDataList = [...state.currentRecord.data, data];
     final updatedRecord = state.currentRecord.copyWith(data: newDataList);
 
-    final records = [...state.records];
-    final index = records.indexWhere((r) => r.recordId == updatedRecord.recordId);
-
-    if (index >= 0) {
-      records[index] = updatedRecord;
-    } else {
-      records.add(updatedRecord);
-    }
-
-    safeEmit(state.copyWith(
-      currentRecord: updatedRecord,
-      records: records,
-    ));
+    safeEmit(state.copyWith(currentRecord: updatedRecord));
   }
 
   bool? wasLastActionDraw({

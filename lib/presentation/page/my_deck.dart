@@ -18,15 +18,30 @@ class MyDeckPage extends StatefulWidget {
   State<MyDeckPage> createState() => _MyDeckPage();
 }
 
-class _MyDeckPage extends State<MyDeckPage> {
+class _MyDeckPage extends State<MyDeckPage> with RouteAware {
   late final String userId;
 
   @override
   void initState() {
     super.initState();
-
     userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
     context.read<DeckCubit>().fetchDeck(userId: userId);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    locator<RouteObserver<ModalRoute>>().subscribe(this, ModalRoute.of(context)!);
+  }
+
+  @override
+  void dispose() {
+    locator<RouteObserver<ModalRoute>>().unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
     context.read<DeckCubit>().closeEditMode();
   }
 

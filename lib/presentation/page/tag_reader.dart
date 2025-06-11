@@ -11,8 +11,8 @@ import '../cubit/nfc_cubit.dart';
 import '../cubit/reader_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
-import '../widget/collection/drawer.dart';
 import '../widget/drawer/card_history.dart';
+import '../widget/drawer/collection.dart';
 import '../widget/listener/tag_reader.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/specific/nfc_icon.dart';
@@ -108,12 +108,13 @@ class _TagReaderPageContent extends StatelessWidget {
                   );
                 },
               ),
-              BlocBuilder<DrawerCubit, DrawerState>(
-                buildWhen: (prev, curr) => prev.visibleFeatureDrawer != curr.visibleFeatureDrawer,
-                builder: (context, drawerState) {
-                  return BlocBuilder<ApplicationCubit, ApplicationState>(
-                    builder: (context, appState) {
+              BlocBuilder<ApplicationCubit, ApplicationState>(
+                builder: (context, appState) {
+                  return BlocBuilder<DrawerCubit, DrawerState>(
+                    buildWhen: (prev, curr) => prev.visibleFeatureDrawer != curr.visibleFeatureDrawer,
+                    builder: (context, drawerState) {
                       return CollectionDrawer(
+                        key: ValueKey(appState.recentId),
                         isOpen: drawerState.visibleFeatureDrawer,
                         recentId: appState.recentId,
                         recentGame: appState.recentGame,

@@ -28,7 +28,7 @@ class DatabaseConstant {
       additionalData TEXT,
       updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (collectionId, cardId),
-      FOREIGN KEY (collectionId) REFERENCES collections(collectionId)
+      FOREIGN KEY (collectionId) REFERENCES collections(collectionId) ON DELETE CASCADE
     );
     ''',
     '''
@@ -45,7 +45,7 @@ class DatabaseConstant {
       cardId TEXT NOT NULL,
       deckId TEXT NOT NULL,
       count INTEGER NOT NULL,
-      FOREIGN KEY (collectionId, cardId) REFERENCES cards(collectionId, cardId),
+      FOREIGN KEY (collectionId, cardId) REFERENCES cards(collectionId, cardId) ON DELETE CASCADE,
       FOREIGN KEY (deckId) REFERENCES decks(deckId) ON DELETE CASCADE
     );
     ''',

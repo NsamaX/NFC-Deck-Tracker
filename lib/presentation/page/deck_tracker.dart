@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,6 +25,7 @@ import '../widget/deck/tracker_view.dart';
 import '../widget/drawer/card_history.dart';
 import '../widget/drawer/create_room.dart';
 import '../widget/listener/deck_tracker.dart';
+import '../widget/notification/cupertino_dialog.dart';
 
 class DeckTrackerPage extends StatefulWidget {
   const DeckTrackerPage({super.key});
@@ -37,6 +39,32 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   late final String collectionId;
   late final DeckEntity deck;
 
+  bool _hasShownDialog = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!_hasShownDialog) {
+        _hasShownDialog = true;
+
+        final locale = AppLocalization.of(context);
+
+        buildCupertinoAlertDialog(
+          title: locale.translate('page_deck_tracker.dialog_tracker_tutorial_title'),
+          content: locale.translate('page_deck_tracker.dialog_tracker_tutorial_content'),
+          confirmButtonText: locale.translate('common.button_ok'),
+          onPressed: () => context.read<NfcCubit>().startSession(),
+          closeDialog: () => Navigator.of(context, rootNavigator: true).pop(),
+          showDialog: (dialog) => showCupertinoDialog(
+            context: context,
+            builder: (_) => dialog,
+          ),
+        );
+      }
+    });
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -49,13 +77,13 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => locator<DrawerCubit>()),
-        BlocProvider(create: (_) => locator<PinColorCubit>()),
-        BlocProvider(create: (_) => locator<UsageCardCubit>()),
-        BlocProvider(create: (_) => locator<ReaderCubit>(param1: collectionId)),
-        BlocProvider(create: (_) => locator<RecordCubit>(param1: deck.deckId)),
-        BlocProvider(create: (_) => locator<RoomCubit>(param1: deck)),
-        BlocProvider(create: (_) => locator<TrackerCubit>(param1: deck)),
+        BlocProvider.value(value: locator<DrawerCubit>()),
+        BlocProvider.value(value: locator<PinColorCubit>()),
+        BlocProvider.value(value: locator<UsageCardCubit>()),
+        BlocProvider.value(value: locator<ReaderCubit>(param1: collectionId)),
+        BlocProvider.value(value: locator<RecordCubit>(param1: deck.deckId)),
+        BlocProvider.value(value: locator<RoomCubit>(param1: deck)),
+        BlocProvider.value(value: locator<TrackerCubit>(param1: deck)),
       ],
       child: _DeckTrackerPageContent(userId: userId),
     );

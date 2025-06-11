@@ -29,6 +29,7 @@ class CardCustomInfo extends StatelessWidget {
           controller: nameController,
           hintText: locale.translate('card.name'),
           onChanged: (text) => cardCubit.setCardName(name: text),
+          showAsterisk: true,
         ),
         const SizedBox(height: 16.0),
         _buildField(
@@ -55,6 +56,7 @@ class CardCustomInfo extends StatelessWidget {
     required String hintText,
     required void Function(String) onChanged,
     bool isTextArea = false,
+    bool showAsterisk = false,
   }) {
     final theme = Theme.of(context);
 
@@ -101,14 +103,15 @@ class CardCustomInfo extends StatelessWidget {
               children: [
                 const SizedBox(width: 12.0),
                 Expanded(child: textField),
-                Opacity(
-                  opacity: hasText ? 0.2 : 1.0,
-                  child: const Padding(
-                    padding: EdgeInsets.only(top: 4.0),
-                    child: Text("*", style: TextStyle(fontSize: 18, color: Colors.white)),
+                if (showAsterisk)
+                  Opacity(
+                    opacity: hasText ? 0.2 : 1.0,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 4.0),
+                      child: Text("*", style: TextStyle(fontSize: 18, color: Colors.white)),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 4.0),
+                if (showAsterisk) const SizedBox(width: 4.0),
               ],
             ),
             const SizedBox(height: 4.0),

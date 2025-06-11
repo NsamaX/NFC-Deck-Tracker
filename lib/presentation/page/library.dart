@@ -21,8 +21,8 @@ class LibraryPage extends StatefulWidget {
 class _LibraryPageState extends State<LibraryPage> {
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => locator<CollectionCubit>(),
+    return BlocProvider.value(
+      value: locator<CollectionCubit>(),
       child: const _LibraryPageContent(),
     );
   }

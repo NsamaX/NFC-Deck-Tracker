@@ -34,8 +34,8 @@ class _CollectionPageState extends State<CollectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => locator<CollectionCubit>()..fetchCollection(userId: _userId!),
+    return BlocProvider.value(
+      value: locator<CollectionCubit>()..fetchCollection(userId: _userId!),
       child: _CollectionPageContent(userId: _userId!, onAdd: _onAdd!),
     );
   }
@@ -58,6 +58,7 @@ class _CollectionPageContent extends StatelessWidget {
             gameImages: ImageConstant.games.values.toList(),
             userId: userId,
             onAdd: onAdd,
+            collections: state.collections,
           );
         },
       ),

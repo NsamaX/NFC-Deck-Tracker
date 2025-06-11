@@ -32,7 +32,7 @@ class CollectionCubit extends Cubit<CollectionState> {
     required String name,
   }) async {
     await createCollectionUsecase(userId: userId, name: name);
-    fetchCollection(userId: userId);
+    await fetchCollection(userId: userId);
   }
 
   Future<void> deleteCollection({

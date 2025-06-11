@@ -81,86 +81,88 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
       ];
     }
 
-// DeckBuilderAppBar's _buildMenu method
-if (deckState.isEditMode) {
-  // Directly create the TextField, don't wrap it in Expanded here.
-  // The DefaultAppBar's _buildMenuContent will handle the flexible sizing.
-  final Widget nameFieldWidget = TextField(
-    controller: nameController,
-    textAlign: TextAlign.center,
-    style: Theme.of(context).textTheme.titleMedium,
-    decoration: InputDecoration(
-      border: InputBorder.none,
-      hintText: locale.translate('page_deck_create.app_bar'),
-    ),
-    onChanged: (value) {
-      final trimmed = value.trim();
-      deckCubit.setDeckName(
-        name: trimmed.isNotEmpty ? trimmed : locale.translate('page_deck_create.app_bar'),
-      );
-    },
-    onSubmitted: (_) {
-      final trimmed = nameController.text.trim();
-      final newName = trimmed.isNotEmpty
-          ? trimmed
-          : locale.translate('page_deck_create.app_bar');
-
-      deckCubit.setDeckName(name: newName);
-      nameController.text = newName;
-    },
-  );
-
-  return [
-    AppBarMenuItem(
-      label: Icons.nfc_rounded,
-      action: () {
-        if (nfcCubit.state.isSessionActive) {
-          nfcCubit.stopSession();
-          deckCubit.toggleSelectCard(card: CardEntity());
-        } else {
-          nfcCubit.startSession(card: deckState.selectedCard);
-        }
-      },
-    ),
-    AppBarMenuItem(
-      label: Icons.delete_outline_rounded,
-      action: () {
-        buildCupertinoActionDialog(
-          title: locale.translate('page_deck_create.dialog_delete_title'),
-          content: locale.translate('page_deck_create.dialog_delete_content'),
-          cancelButtonText: locale.translate('common.button_cancel'),
-          confirmButtonText: locale.translate('common.button_confirm'),
-          onPressed: () {
-            deckCubit.toggleDeleteDeck();
-            AppSnackBar(context, text: locale.translate('page_deck_create.snack_bar_delete'));
-          },
-          closeDialog: () => Navigator.of(context).pop(),
-          showDialog: (dialog) => showCupertinoDialog(context: context, builder: (_) => dialog),
-        );
-      },
-    ),
-    // Pass the TextField directly as the label
-    AppBarMenuItem(label: nameFieldWidget),
-    AppBarMenuItem(
-      label: Icons.add_rounded,
-      action: {
-        'route': RouteConstant.browse_card,
-        'arguments': {
-          'collectionId': collectionId,
-          'collectionName': collectionId,
-          'onAdd': true,
+    if (deckState.isEditMode) {
+      final Widget nameFieldWidget = TextField(
+        controller: nameController,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.titleMedium,
+        decoration: InputDecoration(
+          border: InputBorder.none,
+          hintText: locale.translate('page_deck_create.app_bar'),
+        ),
+        onChanged: (value) {
+          final trimmed = value.trim();
+          deckCubit.setDeckName(
+            name: trimmed.isNotEmpty ? trimmed : locale.translate('page_deck_create.app_bar'),
+          );
         },
-      },
-    ),
-    AppBarMenuItem(
-      label: locale.translate('page_deck_create.toggle_save'),
-      action: () {
-        deckCubit.saveDeck(userId: userId);
-        deckCubit.closeEditMode();
-      },
-    ),
-  ];
-}
+        onSubmitted: (_) {
+          final trimmed = nameController.text.trim();
+          final newName = trimmed.isNotEmpty
+              ? trimmed
+              : locale.translate('page_deck_create.app_bar');
+
+          deckCubit.setDeckName(name: newName);
+          nameController.text = newName;
+        },
+      );
+
+      return [
+        AppBarMenuItem(
+          label: Icons.nfc_rounded,
+          action: () {
+            if (nfcCubit.state.isSessionActive) {
+              nfcCubit.stopSession();
+              deckCubit.toggleSelectCard(card: CardEntity());
+            } else {
+              nfcCubit.startSession(card: deckState.selectedCard);
+            }
+          },
+        ),
+        AppBarMenuItem(
+          label: Icons.delete_outline_rounded,
+          action: () {
+            buildCupertinoActionDialog(
+              title: locale.translate('page_deck_create.dialog_delete_title'),
+              content: locale.translate('page_deck_create.dialog_delete_content'),
+              cancelButtonText: locale.translate('common.button_cancel'),
+              confirmButtonText: locale.translate('common.button_confirm'),
+              onPressed: () async {
+                await deckCubit.deleteDeck(
+                  locale: locale,
+                  userId: userId,
+                  deckId: deckState.currentDeck.deckId!,
+                );
+                Navigator.of(context).pop();
+                AppSnackBar(context, text: locale.translate('page_deck_create.snack_bar_delete'));
+              },
+              closeDialog: () => Navigator.of(context).pop(),
+              showDialog: (dialog) => showCupertinoDialog(context: context, builder: (_) => dialog),
+            );
+          },
+        ),
+        AppBarMenuItem(label: nameFieldWidget),
+        AppBarMenuItem(
+          label: Icons.add_rounded,
+          action: {
+            'route': RouteConstant.browse_card,
+            'arguments': {
+              'collectionId': collectionId,
+              'collectionName': collectionId,
+              'onAdd': true,
+            },
+          },
+        ),
+        AppBarMenuItem(
+          label: locale.translate('page_deck_create.toggle_save'),
+          action: () {
+            deckCubit.saveDeck(userId: userId);
+            deckCubit.closeEditMode();
+          },
+        ),
+      ];
+    }
+
     return [
       AppBarMenuItem.back(),
       AppBarMenuItem(

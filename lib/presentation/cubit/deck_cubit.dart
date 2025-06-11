@@ -192,8 +192,11 @@ class DeckCubit extends Cubit<DeckState> {
     safeEmit(state.copyWith(currentDeck: state.currentDeck.copyWith(cards: updatedCards)));
   }
 
-  void toggleDeleteDeck() {
-    safeEmit(state.copyWith(currentDeck: state.currentDeck.copyWith(cards: [])));
+  void toggleDeleteDeck({
+    required String userId,
+    required String deckId,
+  }) async {
+    await deleteDeckUsecase(userId: userId, deckId: deckId);
   }
 
   void toggleEditMode() {
