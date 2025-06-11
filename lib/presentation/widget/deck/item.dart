@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nfc_deck_tracker/.config/game.dart';
+
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
 import '../../cubit/deck_cubit.dart';
@@ -61,6 +63,18 @@ class DeckItem extends StatelessWidget {
 
   void _onTap(BuildContext context) async {
     await context.read<DeckCubit>().setDeck(deckId: deck.deckId!);
+    final collectionId = (deck.cards?.isNotEmpty ?? false)
+        ? deck.cards!.first.card.collectionId
+        : Game.dummy;
+
+    await context.read<DeckCubit>().setDeck(deckId: deck.deckId!);
+    context.read<DeckCubit>().fetchCardsInDeck(
+      userId: userId,
+      deckId: deck.deckId!,
+      deckName: deck.name!,
+      collectionId: collectionId!,
+    );
+
     Navigator.of(context).pushNamed(RouteConstant.deck_builder);
   }
 

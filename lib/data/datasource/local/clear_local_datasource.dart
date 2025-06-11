@@ -9,7 +9,6 @@ class ClearLocalDatasource {
 
   Future<void> clear() async {
     await _sqliteService.delete(table: 'decks');
-    await _sqliteService.delete(table: 'cardsInDeck');
     await _sqliteService.delete(table: 'records');
 
     final supportedGames = Game.supportedGameKeys;

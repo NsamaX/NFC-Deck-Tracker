@@ -11,7 +11,7 @@ class GenerateShareDeckClipboardUsecase {
 
     final lines = <String>[
       '$nameLabel: ${deck.name}',
-      totalLabel.replaceAll('{card}', totalCount.toString()),
+      totalLabel.replaceAll('{total}', totalCount.toString()),
       ...cardList.map((e) => '- [${e.count}] ${e.card.name}'),
     ];
 

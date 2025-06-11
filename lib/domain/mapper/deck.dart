@@ -31,3 +31,16 @@ class DeckMapper {
         updatedAt: entity.updatedAt ?? DateTime.now(),
       );
 }
+
+
+class CardInDeckMapper {
+  static CardInDeckEntity toEntity(CardInDeckModel model) => CardInDeckEntity(
+        card: CardMapper.toEntity(model.card),
+        count: model.count,
+      );
+
+  static CardInDeckModel toModel(CardInDeckEntity entity) => CardInDeckModel(
+        card: CardMapper.toModel(entity.card),
+        count: entity.count,
+      );
+}

@@ -97,13 +97,16 @@ void setupRecordCubit() {
 }
 
 void setupRoomCubit() {
-  locator.registerFactory(() => RoomCubit(
-    closeRoomUsecase: locator<CloseRoomUsecase>(),
-    createRoomUsecase: locator<CreateRoomUsecase>(),
-    fetchRoomUsecase: locator<FetchRoomUsecase>(),
-    joinRoomUsecase: locator<JoinRoomUsecase>(),
-    updateRoomUsecase: locator<UpdateRoomUsecase>(),
-  ));
+  locator.registerFactoryParam<RoomCubit, DeckEntity, void>((deck, _) {
+    return RoomCubit(
+      deck: deck,
+      closeRoomUsecase: locator<CloseRoomUsecase>(),
+      createRoomUsecase: locator<CreateRoomUsecase>(),
+      fetchRoomUsecase: locator<FetchRoomUsecase>(),
+      joinRoomUsecase: locator<JoinRoomUsecase>(),
+      updateRoomUsecase: locator<UpdateRoomUsecase>(),
+    );
+  });
 }
 
 void setupSearchCubit() {

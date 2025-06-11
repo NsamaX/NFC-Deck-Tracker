@@ -5,11 +5,12 @@ class AppBarMenuItem {
   final Object? action;
 
   const AppBarMenuItem({
-    required this.label, 
+    required this.label,
     this.action,
   });
 
-  static AppBarMenuItem empty() => const AppBarMenuItem(label: SizedBox(width: 24));
+  // Change this: Return a Container instead of SizedBox
+  static AppBarMenuItem empty() => const AppBarMenuItem(label: SizedBox.shrink()); // Or a simple Container()
 
   static AppBarMenuItem back() => const AppBarMenuItem(label: Icons.arrow_back_ios_new_rounded, action: '/back');
 
@@ -25,6 +26,8 @@ class AppBarMenuItem {
               : theme.textTheme.bodyMedium?.copyWith(color: theme.appBarTheme.iconTheme?.color),
           textAlign: TextAlign.center,
         ),
+      // If the label itself is already a widget, return it directly.
+      // This is crucial if AppBarMenuItem.empty() provides a widget.
       Widget widget => widget,
       _ => const Icon(Icons.error_outline),
     };
@@ -35,7 +38,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
   final List<AppBarMenuItem> menu;
 
   const DefaultAppBar({
-    super.key, 
+    super.key,
     required this.menu,
   });
 
@@ -44,31 +47,51 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       automaticallyImplyLeading: false,
       title: menu.length == 1
-          ? Center(child: _buildMenu(context, menu[0], isTitle: true))
+          ? Center(child: _buildMenuContent(context, menu[0], isTitle: true))
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: menu
                   .asMap()
                   .entries
-                  .map((entry) => _buildMenu(
+                  .map((entry) {
+                    final isTitleItem = _isTitle(entry.key);
+                    return Expanded(
+                      // Using flex: 0 and fit: FlexFit.tight for the empty slot could also work,
+                      // but flex > 0 is usually what you want for distributing space.
+                      // If the item is empty, it should probably take up minimal space unless it's a spacer.
+                      // For truly "empty" items that shouldn't take up any flexible space,
+                      // consider using a const SizedBox.shrink() directly in the Expanded child
+                      // or a very small flex value.
+                      flex: isTitleItem ? 3 : 1,
+                      child: _buildMenuContent(
                         context,
                         entry.value,
-                        isTitle: _isTitle(entry.key),
-                      ))
+                        isTitle: isTitleItem,
+                      ),
+                    );
+                  })
                   .toList(),
             ),
     );
   }
 
-  Widget _buildMenu(BuildContext context, AppBarMenuItem item, {required bool isTitle}) {
+  Widget _buildMenuContent(BuildContext context, AppBarMenuItem item, {required bool isTitle}) {
+    // If the item is supposed to be "empty", you might want to return a constrained box
+    // that doesn't interfere with the flex layout, or a very small widget.
+    // The `SizedBox.shrink()` (or a `Container()` with no dimensions) is often the best.
+    if (item.label is SizedBox && (item.label as SizedBox).width == 24) { // Check for your empty item specifically
+      return GestureDetector(
+        onTap: () => _handleTap(context, item.action),
+        child: const SizedBox.shrink(), // Return a shrinked box for empty items
+      );
+    }
+
     return GestureDetector(
       onTap: () => _handleTap(context, item.action),
-      child: SizedBox(
-        width: isTitle ? 142.0 : 42.0,
+      child: Container(
         height: kToolbarHeight,
-        child: Center(
-          child: item.buildLabel(context, isTitle: isTitle),
-        ),
+        alignment: Alignment.center,
+        child: item.buildLabel(context, isTitle: isTitle),
       ),
     );
   }

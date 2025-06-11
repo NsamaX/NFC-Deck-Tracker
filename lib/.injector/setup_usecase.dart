@@ -79,6 +79,14 @@ void setupDeckUsecase() {
   locator.registerLazySingleton(() => DeleteDeckUsecase(
     deleteDeckRepository: locator<DeleteDeckRepository>(),
   ));
+  locator.registerFactoryParam<FetchCardInDeckUsecase, String, void>((collectionId, _) {
+    return FetchCardInDeckUsecase(
+      // createCardRepository: locator<CreateCardRepository>(),
+      fetchCardInDeckRepository: locator<FetchCardInDeckRepository>(),
+      fetchCardRepository: locator<FetchCardRepository>(param1: collectionId),
+      updateDeckRepository: locator<UpdateDeckRepository>(),
+    );
+  });
   locator.registerLazySingleton(() => FetchDeckUsecase(
     createDeckRepository: locator<CreateDeckRepository>(),
     deleteDeckRepository: locator<DeleteDeckRepository>(),

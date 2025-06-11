@@ -41,7 +41,7 @@ class RecordCubit extends Cubit<RecordState> {
   }
 
   void toggleResetRecord() {
-    safeEmit(state.copyWith(records: []));
+    safeEmit(state.copyWith(currentRecord: state.currentRecord.copyWith(data: [])));
   }
 
   void createRecord({

@@ -34,7 +34,7 @@ class NfcSessionHandler extends RouteObserver<ModalRoute> with WidgetsBindingObs
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    if (route.isFirst) _stopNFCSession(reason: 'Navigated to first page');
+    _stopNFCSession(reason: 'Navigated to first page');
   }
 
   void _stopNFCSession({

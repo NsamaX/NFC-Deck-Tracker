@@ -13,6 +13,7 @@ import '../cubit/nfc_cubit.dart';
 import '../cubit/pin_color_cubit.dart';
 import '../cubit/reader_cubit.dart';
 import '../cubit/record_cubit.dart';
+import '../cubit/room_cubit.dart';
 import '../cubit/tracker_cubit.dart';
 import '../cubit/usage_card_cubit.dart';
 import '../locale/localization.dart';
@@ -53,8 +54,8 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
         BlocProvider(create: (_) => locator<UsageCardCubit>()),
         BlocProvider(create: (_) => locator<ReaderCubit>(param1: collectionId)),
         BlocProvider(create: (_) => locator<RecordCubit>(param1: deck.deckId)),
+        BlocProvider(create: (_) => locator<RoomCubit>(param1: deck)),
         BlocProvider(create: (_) => locator<TrackerCubit>(param1: deck)),
-        BlocProvider(create: (_) => locator<NfcCubit>()),
       ],
       child: _DeckTrackerPageContent(userId: userId),
     );
@@ -72,6 +73,7 @@ class _DeckTrackerPageContent extends StatelessWidget {
     final readerCubit = context.watch<ReaderCubit>();
     final drawerCubit = context.watch<DrawerCubit>();
     final recordCubit = context.watch<RecordCubit>();
+    final roomCubit = context.watch<RoomCubit>();
     final usageCardCubit = context.watch<UsageCardCubit>();
     final locale = AppLocalization.of(context);
 
@@ -79,6 +81,7 @@ class _DeckTrackerPageContent extends StatelessWidget {
       child: Scaffold(
         appBar: DeckTrackerAppBar(
           userId: userId,
+          nfcCubit: context.watch<NfcCubit>(),
         ),
         body: GestureDetector(
           onTap: drawerCubit.closeAllDrawer,
@@ -118,7 +121,10 @@ class _DeckTrackerPageContent extends StatelessWidget {
                 drawerCubit: drawerCubit,
                 readerCubit: readerCubit,
               ),
-              CreateRoomDrawer(userId: userId),
+              CreateRoomDrawer(
+                userId: userId,
+                roomCubit: roomCubit,
+              ),
             ],
           ),
         ),

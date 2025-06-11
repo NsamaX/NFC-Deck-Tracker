@@ -1,4 +1,5 @@
 export 'clear_local_datasource.dart';
+export 'create_card_in_deck.dart';
 export 'create_card.dart';
 export 'create_collection.dart';
 export 'create_deck.dart';
@@ -8,6 +9,7 @@ export 'delete_card.dart';
 export 'delete_collection.dart';
 export 'delete_deck.dart';
 export 'delete_record.dart';
+export 'fetch_card_in_deck.dart';
 export 'fetch_card.dart';
 export 'fetch_collection.dart';
 export 'fetch_deck.dart';

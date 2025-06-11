@@ -16,8 +16,13 @@ import '@default.dart';
 
 class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;
+  final NfcCubit nfcCubit;
 
-  const DeckTrackerAppBar({super.key, required this.userId});
+  const DeckTrackerAppBar({
+    super.key, 
+    required this.userId,
+    required this.nfcCubit
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +36,6 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
     final navigator = Navigator.of(context);
 
     final drawerCubit = context.read<DrawerCubit>();
-    final nfcCubit = context.watch<NfcCubit>();
     final readerCubit = context.read<ReaderCubit>();
     final recordCubit = context.read<RecordCubit>();
     final trackerCubit = context.read<TrackerCubit>();
@@ -123,7 +127,10 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
           text: locale.translate('page_deck_tracker.button_save'),
           onPressed: () {
             recordCubit.createRecord(userId: userId);
+            trackerCubit.toggleResetDeck();
+            recordCubit.toggleResetRecord();
             readerCubit.resetScannedCard();
+            usageCardCubit.resetUsageStats();
             navigator.pop();
           },
         ),

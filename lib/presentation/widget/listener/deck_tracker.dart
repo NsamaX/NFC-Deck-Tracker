@@ -20,18 +20,25 @@ class DeckTrackerListener extends StatelessWidget {
     return BlocListener<NfcCubit, NfcState>(
       listenWhen: (previous, current) => previous.lastScannedTag != current.lastScannedTag && current.lastScannedTag != null,
       listener: (context, state) async {
-        final tag = state.lastScannedTag!;
+        if (state.errorMessage.isNotEmpty) {
+          await context.read<NfcCubit>().restartSession();
+        } else if (state.successMessage.isNotEmpty) {
+          final tag = state.lastScannedTag!;
 
-        context.read<TrackerCubit>().handleTagScan(tag: tag);
-        context.read<ReaderCubit>().scanTag(tag: tag);
-        context.read<RecordCubit>().appendDataToRecord(
-          data: context.read<TrackerCubit>().state.actionLog.last,
-        );
+          context.read<TrackerCubit>().handleTagScan(tag: tag);
+          if (context.read<TrackerCubit>().state.errorMessage.isEmpty) {        
+            context.read<ReaderCubit>().scanTag(tag: tag);
+            context.read<RecordCubit>().appendDataToRecord(
+              data: context.read<TrackerCubit>().state.actionLog.last,
+            );
 
-        await context.read<UsageCardCubit>().loadUsageStats(
-          deck: context.read<TrackerCubit>().state.originalDeck,
-          record: context.read<RecordCubit>().state.currentRecord,
-        );
+            await context.read<UsageCardCubit>().loadUsageStats(
+              deck: context.read<TrackerCubit>().state.originalDeck,
+              record: context.read<RecordCubit>().state.currentRecord,
+            );
+          };
+        }
+        context.read<NfcCubit>().clearMessages();
       },
       child: child,
     );

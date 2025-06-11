@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../cubit/drawer_cubit.dart';
+import '../../cubit/room_cubit.dart';
 import '../../locale/localization.dart';
 
 import '../qr_code/generetor.dart';
@@ -9,10 +10,12 @@ import '../qr_code/scanner.dart';
 
 class CreateRoomDrawer extends StatelessWidget {
   final String userId;
+  final RoomCubit roomCubit;
 
   const CreateRoomDrawer({
     super.key,
     required this.userId,
+    required this.roomCubit,
   });
 
   @override
@@ -30,7 +33,10 @@ class CreateRoomDrawer extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: [
-                _DrawerContainer(userId: userId),
+                _DrawerContainer(
+                  userId: userId,
+                  roomCubit: roomCubit,
+                ),
                 const Positioned(
                   bottom: -20,
                   left: 0,
@@ -51,8 +57,12 @@ class CreateRoomDrawer extends StatelessWidget {
 
 class _DrawerContainer extends StatelessWidget {
   final String userId;
+  final RoomCubit roomCubit;
 
-  const _DrawerContainer({required this.userId});
+  const _DrawerContainer({
+    required this.userId,
+    required this.roomCubit,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -90,7 +100,9 @@ class _DrawerContainer extends StatelessWidget {
             onTap: () {
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (_) => const QRCodeScanner(),
+                  builder: (_) => QRCodeScanner(
+                    roomCubit: roomCubit,
+                  ),
                 ),
               );
             },
@@ -180,6 +192,5 @@ class DoubleTrianglePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant DoubleTrianglePainter oldDelegate) =>
-      color != oldDelegate.color;
+  bool shouldRepaint(covariant DoubleTrianglePainter oldDelegate) => color != oldDelegate.color;
 }

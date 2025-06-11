@@ -18,7 +18,7 @@ class DeckBuilderPage extends StatefulWidget {
   State<DeckBuilderPage> createState() => _DeckBuilderPage();
 }
 
-class _DeckBuilderPage extends State<DeckBuilderPage> {
+class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
   late final TextEditingController nameController;
   late final String userId;
 

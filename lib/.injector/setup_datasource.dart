@@ -63,8 +63,10 @@ void setupCollectionLocalDatasource() {
 }
 
 void setupDeckLocalDatasource() {
+  locator.registerLazySingleton(() => CreateCardInDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => CreateDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => DeleteDeckLocalDatasource(locator<SQLiteService>()));
+  locator.registerLazySingleton(() => FetchCardInDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FetchDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => UpdateDeckLocalDatasource(locator<SQLiteService>()));
 }
@@ -108,6 +110,7 @@ void setupCollectionRemoteDatasource() {
 void setupDeckRemoteDatasource() {
   locator.registerLazySingleton(() => CreateDeckRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => DeleteDeckRemoteDatasource(locator<FirestoreService>()));
+  locator.registerLazySingleton(() => FetchCardInDeckRemoteDatasource(locator<FirestoreService>())); // <- เพิ่มตรงนี้
   locator.registerLazySingleton(() => FetchDeckRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => UpdateDeckRemoteDatasource(locator<FirestoreService>()));
 }

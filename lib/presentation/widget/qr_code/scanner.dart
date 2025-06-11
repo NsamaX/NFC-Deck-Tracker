@@ -1,10 +1,20 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
+import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+
+import '../../cubit/room_cubit.dart';
+
 class QRCodeScanner extends StatefulWidget {
-  const QRCodeScanner({super.key});
+  final RoomCubit roomCubit;
+  
+  QRCodeScanner({
+    super.key,
+    required this.roomCubit,
+  });
 
   @override
   State<QRCodeScanner> createState() => _JoinRoomScannerPageState();
@@ -12,6 +22,7 @@ class QRCodeScanner extends StatefulWidget {
 
 class _JoinRoomScannerPageState extends State<QRCodeScanner> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
+  String? result;
   QRViewController? controller;
 
   @override
@@ -33,7 +44,17 @@ class _JoinRoomScannerPageState extends State<QRCodeScanner> {
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
-      controller.scannedDataStream.listen((scanData) => Navigator.of(context).pop(scanData.code));
+      controller.scannedDataStream.listen((scanData) {
+        setState(() {
+          result = scanData.code;
+        });
+        final List<String> playerIds = [
+          locator<FirebaseAuth>().currentUser?.uid ?? 'me',
+          result ?? '',
+        ];
+        if (playerIds[0] == playerIds[1] || playerIds.isEmpty) return;
+        widget.roomCubit.createRoom(playerIds: playerIds);
+      });
     });
   }
 

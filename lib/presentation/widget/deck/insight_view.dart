@@ -104,6 +104,7 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
                       recordId: record.recordId,
                       deck: widget.trackerCubit.state.originalDeck,
                     );
+                    widget.usageCardCubit.loadUsageStats(deck: widget.trackerCubit.state.originalDeck, record: record);
                     widget.readerCubit.setScannedCard(scannedCards: cards);
                   },
                   'onDel': () {

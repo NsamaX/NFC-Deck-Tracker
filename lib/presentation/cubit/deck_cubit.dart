@@ -3,8 +3,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
+import 'package:nfc_deck_tracker/domain/usecase/fetch_card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/create_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/delete_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_deck.dart';
@@ -96,6 +99,23 @@ class DeckCubit extends Cubit<DeckState> {
     ));
   }
 
+  Future<void> fetchCardsInDeck({
+    required String userId,
+    required String deckId,
+    required String deckName,
+    required String collectionId,
+  }) async {
+    safeEmit(state.copyWith(isLoading: true));
+
+    final fetchCardInDeckUsecase = locator<FetchCardInDeckUsecase>(param1: collectionId);
+    final cards = await fetchCardInDeckUsecase.call(userId: userId, deckId: deckId, deckName: deckName, collectionId: collectionId);
+
+    safeEmit(state.copyWith(
+      currentDeck: state.currentDeck.copyWith(cards: cards),
+      isLoading: false,
+    ));
+  }
+
   Future<void> updateDeck({
     required String userId,
   }) async {
@@ -118,7 +138,7 @@ class DeckCubit extends Cubit<DeckState> {
 
     safeEmit(state.copyWith(
       currentDeck: deck,
-      isNewDeck: hasNoCards,
+      isNewDeck: !hasNoCards,
     ));
   }
 

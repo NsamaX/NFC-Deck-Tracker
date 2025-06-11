@@ -79,6 +79,9 @@ void setupCollectionRepository() {
 }
 
 void setupDeckRepository() {
+  locator.registerLazySingleton(() => CreateCardInDeckRepository(
+    createCardInDeckLocalDatasource: locator<CreateCardInDeckLocalDatasource>(),
+  ));
   locator.registerLazySingleton(() => CreateDeckRepository(
     createDeckLocalDatasource: locator<CreateDeckLocalDatasource>(),
     createDeckRemoteDatasource: locator<CreateDeckRemoteDatasource>(),
@@ -86,6 +89,10 @@ void setupDeckRepository() {
   locator.registerLazySingleton(() => DeleteDeckRepository(
     deleteDeckLocalDatasource: locator<DeleteDeckLocalDatasource>(),
     deleteDeckRemoteDatasource: locator<DeleteDeckRemoteDatasource>(),
+  ));
+  locator.registerLazySingleton(() => FetchCardInDeckRepository(
+    fetchCardInDeckLocalDatasource: locator<FetchCardInDeckLocalDatasource>(),
+    fetchCardInDeckRemoteDatasource: locator<FetchCardInDeckRemoteDatasource>(),
   ));
   locator.registerLazySingleton(() => FetchDeckRepository(
     fetchDeckLocalDatasource: locator<FetchDeckLocalDatasource>(),

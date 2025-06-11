@@ -68,6 +68,6 @@ class TrackerCubit extends Cubit<TrackerState> {
   }
 
   void toggleResetDeck() {
-    safeEmit(state.copyWith(currentDeck: state.originalDeck));
+    safeEmit(state.copyWith(currentDeck: state.originalDeck, actionLog: []));
   }
 }
