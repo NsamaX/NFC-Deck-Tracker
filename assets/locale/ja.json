@@ -131,7 +131,8 @@
     "section_app_info_terms": "利用規約",
     "section_preferences_label": "環境設定",
     "section_preferences_language": "言語",
-    "section_preferences_theme": "テーマ"
+    "section_preferences_dark_mode": "ダークモード",
+    "section_preferences_light_mode": "ライトモード"
   },
   "page_library": {
     "app_bar": "ライブラリ",

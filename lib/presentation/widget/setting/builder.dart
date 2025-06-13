@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nfc_deck_tracker/.config/app.dart';
+
 import 'package:nfc_deck_tracker/util/google_athen.dart';
 
 import '../../cubit/application_cubit.dart';
@@ -32,7 +34,9 @@ class SettingBuilder {
           'route': RouteConstant.library,
         },
         {
-          'icon': user == null ? Icons.login_rounded : Icons.logout_rounded,
+          'icon': user == null 
+              ? Icons.login_rounded 
+              : Icons.logout_rounded,
           'text': user == null
               ? locale.translate('page_setting.section_account_sign_in')
               : locale.translate('page_setting.section_account_sign_out'),
@@ -81,6 +85,18 @@ class SettingBuilder {
           'text': locale.translate('page_setting.section_preferences_language'),
           'info': LanguageManager.getLanguageName(locale.locale.languageCode),
           'route': RouteConstant.language,
+        },
+        {
+          'icon': applicationCubit.state.isDark 
+              ? Icons.dark_mode_rounded 
+              : Icons.light_mode_rounded,
+          'text': applicationCubit.state.isDark 
+              ? locale.translate('page_setting.section_preferences_dark_mode')
+              : locale.translate('page_setting.section_preferences_light_mode'),
+          'onTap': () => applicationCubit.updateSetting(
+            key: App.keyIsDark, 
+            value: !applicationCubit.state.isDark,
+          ),
         },
       ],
     };

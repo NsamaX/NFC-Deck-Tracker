@@ -131,7 +131,8 @@
     "section_app_info_terms": "Terms of Use",
     "section_preferences_label": "Preferences",
     "section_preferences_language": "Language",
-    "section_preferences_theme": "Theme"
+    "section_preferences_dark_mode": "Dark mode",
+    "section_preferences_light_mode": "Light mode"
   },
   "page_library": {
     "app_bar": "Library",

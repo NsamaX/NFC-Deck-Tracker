@@ -131,7 +131,8 @@
     "section_app_info_terms": "เงื่อนไขการใช้งาน",
     "section_preferences_label": "การตั้งค่าทั่วไป",
     "section_preferences_language": "ภาษา",
-    "section_preferences_theme": "ธีม"
+    "section_preferences_dark_mode": "โหมดมืด",
+    "section_preferences_light_mode": "โหมดสว่าง"
   },
   "page_library": {
     "app_bar": "คลัง",
