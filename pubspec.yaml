@@ -59,7 +59,7 @@ flutter:
 
   assets:
     - .env
-    - assets/fonts/
+    - assets/font/
     - assets/image/
     - assets/image/game/
     - assets/locale/
@@ -67,19 +67,19 @@ flutter:
   fonts:
     - family: PlaypenSansThai
       fonts:
-        - asset: assets/fonts/PlaypenSansThai-Thin.ttf
+        - asset: assets/font/PlaypenSansThai-Thin.ttf
           weight: 100
-        - asset: assets/fonts/PlaypenSansThai-ExtraLight.ttf
+        - asset: assets/font/PlaypenSansThai-ExtraLight.ttf
           weight: 200
-        - asset: assets/fonts/PlaypenSansThai-Light.ttf
+        - asset: assets/font/PlaypenSansThai-Light.ttf
           weight: 300
-        - asset: assets/fonts/PlaypenSansThai-Regular.ttf
+        - asset: assets/font/PlaypenSansThai-Regular.ttf
           weight: 400
-        - asset: assets/fonts/PlaypenSansThai-Medium.ttf
+        - asset: assets/font/PlaypenSansThai-Medium.ttf
           weight: 500
-        - asset: assets/fonts/PlaypenSansThai-SemiBold.ttf
+        - asset: assets/font/PlaypenSansThai-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/PlaypenSansThai-Bold.ttf
+        - asset: assets/font/PlaypenSansThai-Bold.ttf
           weight: 700
-        - asset: assets/fonts/PlaypenSansThai-ExtraBold.ttf
+        - asset: assets/font/PlaypenSansThai-ExtraBold.ttf
           weight: 800
