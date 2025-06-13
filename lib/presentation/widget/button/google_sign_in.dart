@@ -29,14 +29,14 @@ class ButtonGoogleSignIn extends StatelessWidget {
         AppSnackBar(
           context,
           text: locale.translate('page_sign_in.snack_bar_sign_in_error_unknow'),
-          isError: true,
+          type: SnackBarType.warning,
         );
         break;
       case 'fail':
         AppSnackBar(
           context,
           text: locale.translate('page_sign_in.snack_bar_sign_in_fail'),
-          isError: true,
+          type: SnackBarType.error,
         );
         break;
     }

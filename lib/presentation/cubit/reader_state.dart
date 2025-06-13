@@ -2,28 +2,32 @@ part of 'reader_cubit.dart';
 
 class ReaderState extends Equatable {
   final bool isLoading;
-  final String errorMessage;
   final String successMessage;
+  final String warningMessage;
+  final String errorMessage;
 
   final List<CardEntity> scannedCards;
 
   const ReaderState({
     this.isLoading = false,
-    this.errorMessage = '',
     this.successMessage = '',
+    this.warningMessage = '',
+    this.errorMessage = '',
     this.scannedCards = const [],
   });
 
   ReaderState copyWith({
     bool? isLoading,
-    String? errorMessage,
     String? successMessage,
+    String? warningMessage,
+    String? errorMessage,
     List<CardEntity>? scannedCards,
   }) {
     return ReaderState(
       isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage ?? this.errorMessage,
       successMessage: successMessage ?? this.successMessage,
+      warningMessage: warningMessage ?? this.warningMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
       scannedCards: scannedCards ?? this.scannedCards,
     );
   }
@@ -31,8 +35,9 @@ class ReaderState extends Equatable {
   @override
   List<Object?> get props => [
         isLoading,
-        errorMessage,
         successMessage,
+        warningMessage,
+        errorMessage,
         scannedCards,
       ];
 }

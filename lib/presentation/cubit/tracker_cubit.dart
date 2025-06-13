@@ -26,7 +26,7 @@ class TrackerCubit extends Cubit<TrackerState> {
   void handleTagScan({required TagEntity tag}) {
     safeEmit(state.copyWith(
       isProcessing: true,
-      errorMessage: '',
+      warningMessage: '',
     ));
 
     final result = trackCardInteractionUsecase(
@@ -37,7 +37,7 @@ class TrackerCubit extends Cubit<TrackerState> {
 
     if (result.errorKey != null) {
       safeEmit(state.copyWith(
-        errorMessage: result.errorKey,
+        warningMessage: result.errorKey,
         isProcessing: false,
       ));
       return;

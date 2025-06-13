@@ -24,13 +24,14 @@ class ReaderCubit extends Cubit<ReaderState> {
     if (state.isLoading || isClosed) return;
     safeEmit(state.copyWith(
       isLoading: true,
-      errorMessage: '',
       successMessage: '',
+      warningMessage: '',
+      errorMessage: '',
     ));
 
     if (tag == null) {
       safeEmit(state.copyWith(
-        errorMessage: 'nfc_snack_bar.error_tag_not_detected',
+        warningMessage: 'nfc_snack_bar.error_tag_not_detected',
         isLoading: false,
       ));
       return;
@@ -45,23 +46,26 @@ class ReaderCubit extends Cubit<ReaderState> {
       ));
     } catch (e) {
       final errorStr = e.toString();
-      String messageKey;
 
       switch (errorStr) {
         case 'Exception: INVALID_TAG':
-          messageKey = 'nfc_snack_bar.error_card_not_found';
-          break;
+          safeEmit(state.copyWith(
+            warningMessage: 'nfc_snack_bar.error_card_not_found',
+            isLoading: false,
+          ));
+          return;
         case 'Exception: GAME_NOT_SUPPORTED':
-          messageKey = 'nfc_snack_bar.error_game_not_supported';
-          break;
+          safeEmit(state.copyWith(
+            errorMessage: 'nfc_snack_bar.error_game_not_supported',
+            isLoading: false,
+          ));
+          return;
         default:
-          messageKey = 'nfc_snack_bar.error_unknown';
+          safeEmit(state.copyWith(
+            errorMessage: 'nfc_snack_bar.error_unknown',
+            isLoading: false,
+          ));
       }
-
-      safeEmit(state.copyWith(
-        errorMessage: messageKey,
-        isLoading: false,
-      ));
     }
   }
 
@@ -73,5 +77,5 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void resetScannedCard() => safeEmit(state.copyWith(scannedCards: []));
 
-  void clearMessages() => safeEmit(state.copyWith(errorMessage: ''));
+  void clearMessages() => safeEmit(state.copyWith(successMessage: '', warningMessage: '', errorMessage: ''));
 }

@@ -23,8 +23,9 @@ class NfcCubit extends Cubit<NfcState> {
     if (state.isSessionBusy) return;
     safeEmit(state.copyWith(
       isSessionBusy: true,
+      successMessage: '',
+      warningMessage: '',
       errorMessage: '',
-      successMessage: '',  
     ));
     LoggerUtil.addMessage(message: '[Session Control] Starting NFC session: ${card == null ? "Read" : "Write"} mode');
     LoggerUtil.flushMessages();
@@ -137,9 +138,19 @@ class NfcCubit extends Cubit<NfcState> {
   }) async {
     try {
       final Ndef ndef = validateNDEF(tag: tag);
+      final List<String> records = parseNDEFRecords(ndef: ndef);
+      final TagEntity tagEntity = createTagEntity(tag: tag, records: records);
+      final bool isSameData = tagEntity.collectionId == card.collectionId && tagEntity.cardId == card.cardId;
+
       final NdefMessage message = createNDEFMessage(card: card);
       await ndef.write(message);
-      safeEmit(state.copyWith(successMessage: 'nfc_snack_bar.success_write_tag'));
+
+      if (isSameData) {
+        safeEmit(state.copyWith(warningMessage: 'nfc_snack_bar.warning_rewrite_card'));
+      } else {      
+        safeEmit(state.copyWith(successMessage: 'nfc_snack_bar.success_write_tag'));
+      }
+
       LoggerUtil.addMessage(message: '[Processing] Tag written successfully for card id[${card.cardId}]');
       LoggerUtil.flushMessages();
     } catch (e) {
@@ -153,6 +164,7 @@ class NfcCubit extends Cubit<NfcState> {
         safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_ndef_create_failed'));
       } else if (message.contains('Data exceeds tag capacity')) {
         safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_ndef_data_too_large'));
+      } else if (message.contains('No NDEF message found') || message.contains('Incomplete tag data')) {
       } else {
         safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_write_tag'));
       }
@@ -162,5 +174,5 @@ class NfcCubit extends Cubit<NfcState> {
     }
   }
 
-  void clearMessages() => safeEmit(state.copyWith(errorMessage: '', successMessage: ''));
+  void clearMessages() => safeEmit(state.copyWith(successMessage: '', warningMessage: '', errorMessage: ''));
 }

@@ -2,7 +2,7 @@ part of 'tracker_cubit.dart';
 
 class TrackerState extends Equatable {
   final bool isProcessing;
-  final String errorMessage;
+  final String warningMessage;
 
   final bool isDialogVisible;
   final bool isAdvancedMode;
@@ -14,7 +14,7 @@ class TrackerState extends Equatable {
 
   const TrackerState({
     this.isProcessing = false,
-    this.errorMessage = '',
+    this.warningMessage = '',
     this.isDialogVisible = false,
     this.isAdvancedMode = false,
     this.isAnalysisMode = false,
@@ -25,7 +25,7 @@ class TrackerState extends Equatable {
 
   TrackerState copyWith({
     bool? isProcessing,
-    String? errorMessage,
+    String? warningMessage,
     bool? isDialogVisible,
     bool? isAdvancedMode,
     bool? isAnalysisMode,
@@ -35,7 +35,7 @@ class TrackerState extends Equatable {
   }) {
     return TrackerState(
       isProcessing: isProcessing ?? this.isProcessing,
-      errorMessage: errorMessage ?? this.errorMessage,
+      warningMessage: warningMessage ?? this.warningMessage,
       isDialogVisible: isDialogVisible ?? this.isDialogVisible,
       isAdvancedMode: isAdvancedMode ?? this.isAdvancedMode,
       isAnalysisMode: isAnalysisMode ?? this.isAnalysisMode,
@@ -48,7 +48,7 @@ class TrackerState extends Equatable {
   @override
   List<Object?> get props => [
         isProcessing,
-        errorMessage,
+        warningMessage,
         isDialogVisible,
         isAdvancedMode,
         isAnalysisMode,

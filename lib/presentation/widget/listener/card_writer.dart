@@ -23,17 +23,23 @@ class CardWriterListener extends StatelessWidget {
           AppSnackBar(
             context,
             text: AppLocalization.of(context).translate(state.errorMessage),
-            isError: true,
+            type: SnackBarType.error,
           );
 
           await context.read<NfcCubit>().restartSession(
             card: context.read<DeckCubit>().state.selectedCard,
           );
+        } else if (state.warningMessage.isNotEmpty) {
+          AppSnackBar(
+            context,
+            text: AppLocalization.of(context).translate(state.warningMessage),
+            type: SnackBarType.warning,
+          );
         } else if (state.successMessage.isNotEmpty) {
           AppSnackBar(
             context,
             text: AppLocalization.of(context).translate(state.successMessage),
-            isError: false,
+            type: SnackBarType.success,
           );
         }
 

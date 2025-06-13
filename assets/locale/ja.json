@@ -18,6 +18,7 @@
   "nfc_snack_bar": {
     "success_read_tag": "NFCタグからカード情報を正常に読み取りました。",
     "success_write_tag": "カード情報をNFCタグに正常に書き込みました。",
+    "warning_rewrite_card": "このカードの情報はすでにタグに書き込まれています。同じデータを再度書き込みます。",
 
     "error_unavailable": "このデバイスではNFCが利用できません。",
     "error_start_session": "NFCセッションを開始できませんでした。もう一度お試しください。",

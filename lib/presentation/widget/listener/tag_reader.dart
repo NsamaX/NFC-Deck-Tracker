@@ -26,17 +26,25 @@ class TagReaderListener extends StatelessWidget {
       listeners: [
         BlocListener<NfcCubit, NfcState>(
           listenWhen: (previous, current) =>
+              previous.lastScannedTag != current.lastScannedTag && current.lastScannedTag != null ||
               previous.errorMessage != current.errorMessage && current.errorMessage.isNotEmpty ||
-              previous.lastScannedTag != current.lastScannedTag && current.lastScannedTag != null,
+              previous.warningMessage != current.warningMessage && current.warningMessage.isNotEmpty ||
+              previous.successMessage != current.successMessage && current.successMessage.isNotEmpty,
           listener: (context, state) async {
             if (state.errorMessage.isNotEmpty) {
               AppSnackBar(
                 context,
                 text: AppLocalization.of(context).translate(state.errorMessage),
-                isError: true,
+                type: SnackBarType.error,
               );
 
               await context.read<NfcCubit>().restartSession();
+            } else if (state.warningMessage.isNotEmpty) {
+              AppSnackBar(
+                context,
+                text: AppLocalization.of(context).translate(state.warningMessage),
+                type: SnackBarType.warning,
+              );
             } else if (state.successMessage.isNotEmpty) {
               onTagDetected.call(state.lastScannedTag?.collectionId ?? Game.dummy);
               context.read<ReaderCubit>().scanTag(tag: state.lastScannedTag!);
@@ -51,9 +59,21 @@ class TagReaderListener extends StatelessWidget {
               AppSnackBar(
                 context,
                 text: AppLocalization.of(context).translate(state.errorMessage),
-                isError: true,
+                type: SnackBarType.error,
+              );
+            } else if (state.warningMessage.isNotEmpty) {
+              AppSnackBar(
+                context,
+                text: AppLocalization.of(context).translate(state.warningMessage),
+                type: SnackBarType.warning,
               );
             } else if (state.successMessage.isNotEmpty) {
+              AppSnackBar(
+                context,
+                text: AppLocalization.of(context).translate(state.successMessage),
+                type: SnackBarType.success,
+              );
+
               if (!context.read<DrawerCubit>().state.visibleHistoryDrawer) {
                 context.read<DrawerCubit>().toggleHistoryDrawer();
               }

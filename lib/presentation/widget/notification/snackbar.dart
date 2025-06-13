@@ -3,14 +3,28 @@ import 'package:flutter/material.dart';
 
 import '../constant/ui.dart';
 
+enum SnackBarType { success, warning, error }
+
 void AppSnackBar(
   BuildContext context, {
   required String text,
-  bool isError = false,
+  SnackBarType type = SnackBarType.success,
 }) {
   final scaffoldMessenger = ScaffoldMessenger.of(context);
-
   scaffoldMessenger.hideCurrentSnackBar();
+
+  Color backgroundColor;
+  switch (type) {
+    case SnackBarType.success:
+      backgroundColor = CupertinoColors.activeGreen;
+      break;
+    case SnackBarType.warning:
+      backgroundColor = CupertinoColors.systemYellow;
+      break;
+    case SnackBarType.error:
+      backgroundColor = CupertinoColors.destructiveRed;
+      break;
+  }
 
   final snackBar = SnackBar(
     content: Text(
@@ -18,9 +32,7 @@ void AppSnackBar(
       style: const TextStyle(color: Colors.white),
     ),
     duration: UIConstant.snackBarTransitionDuration,
-    backgroundColor: isError
-        ? CupertinoColors.destructiveRed
-        : CupertinoColors.activeGreen,
+    backgroundColor: backgroundColor,
     behavior: SnackBarBehavior.floating,
   );
 

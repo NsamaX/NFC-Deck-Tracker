@@ -18,6 +18,7 @@
   "nfc_snack_bar": {
     "success_read_tag": "Card successfully read from the NFC tag.",
     "success_write_tag": "Card information successfully written to the NFC tag.",
+    "warning_rewrite_card": "This card has already been written to the tag. Writing the same data again.",
 
     "error_unavailable": "NFC is not available on this device.",
     "error_start_session": "Unable to start NFC session. Please try again.",

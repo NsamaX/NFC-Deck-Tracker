@@ -79,7 +79,7 @@ class CustomGameTile extends StatelessWidget {
                 const SizedBox(width: 12.0),
                 _buildInfoText(
                   context,
-                  locale.translate('common.updated_at').replaceAll('{date}', formattedDate),
+                  locale.translate('page_collection.last_updated').replaceAll('{date}', formattedDate),
                 ),
               ],
             ),

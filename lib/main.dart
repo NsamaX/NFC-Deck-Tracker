@@ -39,8 +39,8 @@ void main() async {
   await dotenv.load();
   await setupLocator();
 
-  await locator<DatabaseService>().deleteDatabaseFile();
-  await locator<SharedPreferencesService>().clear();
+  // await locator<DatabaseService>().deleteDatabaseFile();
+  // await locator<SharedPreferencesService>().clear();
 
   await Future.wait([
     ApiConfig.loadConfig(kReleaseMode ? 'production' : 'development'),

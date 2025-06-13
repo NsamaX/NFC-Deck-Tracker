@@ -6,6 +6,9 @@ import '../../cubit/reader_cubit.dart';
 import '../../cubit/record_cubit.dart';
 import '../../cubit/tracker_cubit.dart';
 import '../../cubit/usage_card_cubit.dart';
+import '../../locale/localization.dart';
+
+import '../notification/snackbar.dart';
 
 class DeckTrackerListener extends StatelessWidget {
   final Widget child;
@@ -17,29 +20,65 @@ class DeckTrackerListener extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<NfcCubit, NfcState>(
-      listenWhen: (previous, current) => previous.lastScannedTag != current.lastScannedTag && current.lastScannedTag != null,
-      listener: (context, state) async {
-        if (state.errorMessage.isNotEmpty) {
-          await context.read<NfcCubit>().restartSession();
-        } else if (state.successMessage.isNotEmpty) {
-          final tag = state.lastScannedTag!;
+    final localize = AppLocalization.of(context).translate;
 
-          context.read<TrackerCubit>().handleTagScan(tag: tag);
-          if (context.read<TrackerCubit>().state.errorMessage.isEmpty) {        
-            context.read<ReaderCubit>().scanTag(tag: tag);
-            context.read<RecordCubit>().appendDataToRecord(
-              data: context.read<TrackerCubit>().state.actionLog.last,
-            );
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<NfcCubit, NfcState>(
+          listenWhen: (previous, current) =>
+              previous.lastScannedTag != current.lastScannedTag && current.lastScannedTag != null ||
+              previous.errorMessage != current.errorMessage && current.errorMessage.isNotEmpty ||
+              previous.warningMessage != current.warningMessage && current.warningMessage.isNotEmpty,
+          listener: (context, state) async {
+            if (state.errorMessage.isNotEmpty) {
+              AppSnackBar(
+                context,
+                text: localize(state.errorMessage),
+                type: SnackBarType.error,
+              );
 
-            await context.read<UsageCardCubit>().loadUsageStats(
-              deck: context.read<TrackerCubit>().state.originalDeck,
-              record: context.read<RecordCubit>().state.currentRecord,
+              await context.read<NfcCubit>().restartSession();
+            } else if (state.warningMessage.isNotEmpty) {
+              AppSnackBar(
+                context,
+                text: localize(state.warningMessage),
+                type: SnackBarType.warning,
+              );
+            }
+
+            final tag = state.lastScannedTag;
+            if (tag != null) {
+              context.read<TrackerCubit>().handleTagScan(tag: tag);
+
+              if (context.read<TrackerCubit>().state.warningMessage.isEmpty) {
+                context.read<ReaderCubit>().scanTag(tag: tag);
+                context.read<RecordCubit>().appendDataToRecord(
+                  data: context.read<TrackerCubit>().state.actionLog.last,
+                );
+
+                await context.read<UsageCardCubit>().loadUsageStats(
+                  deck: context.read<TrackerCubit>().state.originalDeck,
+                  record: context.read<RecordCubit>().state.currentRecord,
+                );
+              }
+            }
+
+            context.read<NfcCubit>().clearMessages();
+          },
+        ),
+        BlocListener<TrackerCubit, TrackerState>(
+          listenWhen: (previous, current) =>
+              previous.warningMessage != current.warningMessage &&
+              current.warningMessage.isNotEmpty,
+          listener: (context, state) {
+            AppSnackBar(
+              context,
+              text: localize(state.warningMessage),
+              type: SnackBarType.warning,
             );
-          };
-        }
-        context.read<NfcCubit>().clearMessages();
-      },
+          },
+        ),
+      ],
       child: child,
     );
   }
