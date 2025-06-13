@@ -3,12 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
-import 'package:nfc_deck_tracker/.config/setting.dart';
+import 'package:nfc_deck_tracker/.config/app.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/collection.dart';
 
 import '../../cubit/application_cubit.dart';
 import '../../cubit/collection_cubit.dart';
+import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
 
 import 'slidable_delete.dart';
@@ -27,6 +28,7 @@ class CustomGameTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(collection.updatedAt!);
 
@@ -65,7 +67,7 @@ class CustomGameTile extends StatelessWidget {
                     );
                 if (collectionId == context.read<ApplicationCubit>().state.recentId) {
                   context.read<ApplicationCubit>().updateSettingUsecase(
-                        key: Setting.keyRecentId,
+                        key: App.keyRecentId,
                         value: '',
                       );
                 }
@@ -75,7 +77,10 @@ class CustomGameTile extends StatelessWidget {
               children: [
                 _buildImageBox(),
                 const SizedBox(width: 12.0),
-                _buildInfoText(context, formattedDate),
+                _buildInfoText(
+                  context,
+                  locale.translate('common.updated_at').replaceAll('{date}', formattedDate),
+                ),
               ],
             ),
           ),
@@ -87,11 +92,11 @@ class CustomGameTile extends StatelessWidget {
   void _goToSearchPage(BuildContext context) {
     final applicationCubit = context.read<ApplicationCubit>();
     applicationCubit.updateSetting(
-      key: Setting.keyRecentId,
+      key: App.keyRecentId,
       value: collection.collectionId,
     );
     applicationCubit.updateSetting(
-      key: Setting.keyRecentGame,
+      key: App.keyRecentGame,
       value: collection.name,
     );
 

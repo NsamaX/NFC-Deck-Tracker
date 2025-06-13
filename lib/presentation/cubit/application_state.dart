@@ -3,7 +3,7 @@ part of 'application_cubit.dart';
 class ApplicationState extends Equatable {
   final Locale locale;
   final bool isDark;
-  final bool loggedIn;
+  final bool isUserLoggedIn;
   final String recentId;
   final String recentGame;
   final int currentPageIndex;
@@ -11,7 +11,7 @@ class ApplicationState extends Equatable {
   const ApplicationState({
     required this.locale,
     required this.isDark,
-    required this.loggedIn,
+    required this.isUserLoggedIn,
     required this.recentId,
     required this.recentGame,
     required this.currentPageIndex,
@@ -19,9 +19,9 @@ class ApplicationState extends Equatable {
 
   factory ApplicationState.initialFromConstant() {
     return ApplicationState(
-      locale: Locale(Setting.all[Setting.keylocale]),
-      isDark: Setting.all[Setting.keyIsDark],
-      loggedIn: Setting.all[Setting.keyLoggedIn],
+      locale: Locale(App.all[App.keylocale]),
+      isDark: App.all[App.keyIsDark],
+      isUserLoggedIn: App.all[App.keyIsUserLoggedIn],
       recentId: '',
       recentGame: '',
       currentPageIndex: RouteConstant.on_boarding_index,
@@ -31,7 +31,7 @@ class ApplicationState extends Equatable {
   ApplicationState copyWith({
     Locale? locale,
     bool? isDark,
-    bool? loggedIn,
+    bool? isUserLoggedIn,
     String? recentId,
     String? recentGame,
     int? currentPageIndex,
@@ -39,7 +39,7 @@ class ApplicationState extends Equatable {
     return ApplicationState(
       locale: locale ?? this.locale,
       isDark: isDark ?? this.isDark,
-      loggedIn: loggedIn ?? this.loggedIn,
+      isUserLoggedIn: isUserLoggedIn ?? this.isUserLoggedIn,
       recentId: recentId ?? this.recentId,
       recentGame: recentGame ?? this.recentGame,
       currentPageIndex: currentPageIndex ?? this.currentPageIndex,
@@ -50,7 +50,7 @@ class ApplicationState extends Equatable {
   List<Object?> get props => [
         locale,
         isDark,
-        loggedIn,
+        isUserLoggedIn,
         recentId,
         recentGame,
         currentPageIndex,

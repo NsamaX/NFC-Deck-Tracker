@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import 'package:nfc_deck_tracker/.config/setting.dart';
+import 'package:nfc_deck_tracker/.config/app.dart';
 
 import 'package:nfc_deck_tracker/presentation/cubit/application_cubit.dart';
 import 'package:nfc_deck_tracker/presentation/route/route_constant.dart';
@@ -46,7 +46,7 @@ Future<void> signOutFromGoogle() async {
 
 Future<void> handleGuestSignIn(BuildContext context) async {
   context.read<ApplicationCubit>().updateSetting(
-    key: Setting.keyLoggedIn,
+    key: App.keyIsUserLoggedIn,
     value: true,
   );
 

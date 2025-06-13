@@ -99,7 +99,8 @@
   "page_collection": {
     "app_bar": "Games",
     "toggle_new": "New",
-    "dialog_create_title": "Collection Name"
+    "dialog_create_title": "Collection Name",
+    "last_updated": "Last Updated {date}"
   },
   "page_search": {
     "app_bar": "Search",

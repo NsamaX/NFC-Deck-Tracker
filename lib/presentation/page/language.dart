@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.config/setting.dart';
+import 'package:nfc_deck_tracker/.config/app.dart';
 
 import '../cubit/application_cubit.dart';
 import '../locale/language_manager.dart';
@@ -36,7 +36,7 @@ class LanguagePage extends StatelessWidget {
               'text': name,
               'onTap': () {
                 context.read<ApplicationCubit>().updateSetting(
-                  key: Setting.keylocale,
+                  key: App.keylocale,
                   value: code,
                 );
               },

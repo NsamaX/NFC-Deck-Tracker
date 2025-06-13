@@ -99,7 +99,8 @@
   "page_collection": {
     "app_bar": "コレクション",
     "toggle_new": "新規作成",
-    "dialog_create_title": "コレクション名"
+    "dialog_create_title": "コレクション名",
+    "last_updated": "最終更新 {date}"
   },
   "page_search": {
     "app_bar": "検索",

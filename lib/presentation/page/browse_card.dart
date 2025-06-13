@@ -56,9 +56,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
               collectionName: collectionName,
             ),
         ),
-        BlocProvider<CardCubit>.value(
-          value: locator<CardCubit>(),
-        ),
+        BlocProvider<CardCubit>.value(value: locator<CardCubit>()),
       ],
       child: _BrowseCardContent(
         userId: userId,

@@ -39,8 +39,8 @@ void main() async {
   await dotenv.load();
   await setupLocator();
 
-  // await locator<DatabaseService>().deleteDatabaseFile();
-  // await locator<SharedPreferencesService>().clear();
+  await locator<DatabaseService>().deleteDatabaseFile();
+  await locator<SharedPreferencesService>().clear();
 
   await Future.wait([
     ApiConfig.loadConfig(kReleaseMode ? 'production' : 'development'),
@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           theme: AppTheme(state.isDark),
           onGenerateRoute: RouteGenerator.generateRoute,
           initialRoute: RouteGenerator.getInitialRoute(
-            loggedIn: state.loggedIn,
+            loggedIn: state.isUserLoggedIn,
           ),
           navigatorObservers: [
             routeObserver,

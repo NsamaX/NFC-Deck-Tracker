@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// ignore: unused_import
 import 'package:google_fonts/google_fonts.dart';
 
 import 'color.dart';
@@ -28,6 +29,7 @@ class AppTextStyles {
     color: color,
     fontSize: fontSize,
     fontWeight: isBold ? FontWeight.bold : FontWeight.normal,
-    fontFamily: GoogleFonts.inter().fontFamily,
+    // fontFamily: GoogleFonts.inter().fontFamily,
+    fontFamily: 'PlaypenSansThai',
   );
 }
