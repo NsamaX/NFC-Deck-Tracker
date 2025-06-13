@@ -85,7 +85,7 @@ class CardListTile extends StatelessWidget {
               bottomRight: Radius.circular(12.0),
             ),
             child: Slidable(
-              key: ValueKey(card!.cardId ?? UniqueKey()),
+              key: ValueKey(card!.cardId),
               endActionPane: isTrack && changeCardColor != null
                   ? buildCardSlidablePinColor(
                       context: context,

@@ -48,8 +48,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<SearchCubit>(
-          create: (_) => locator<SearchCubit>(
+        BlocProvider<SearchCubit>.value(value: locator<SearchCubit>(
             param1: Game.isSupported(collectionId) ? collectionId : Game.dummy,
           )..fetchCard(
               userId: userId,

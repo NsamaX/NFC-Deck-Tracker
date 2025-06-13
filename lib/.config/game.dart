@@ -13,8 +13,6 @@ class Game {
     },
     'production': {
       dummy   : '',
-      pokemon : '',
-      vanguard: '',
     },
   };
 

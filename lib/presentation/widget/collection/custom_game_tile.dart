@@ -1,30 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:intl/intl.dart';
 
 import 'package:nfc_deck_tracker/.config/setting.dart';
 
+import 'package:nfc_deck_tracker/domain/entity/collection.dart';
+
 import '../../cubit/application_cubit.dart';
+import '../../cubit/collection_cubit.dart';
 import '../../route/route_constant.dart';
 
-class CollectionItem extends StatelessWidget {
-  final String collectionId;
-  final String collectionName;
-  final String description;
-  final String? imagePath;
+import 'slidable_delete.dart';
+
+class CustomGameTile extends StatelessWidget {
+  final CollectionEntity collection;
+  final String userId;
   final bool onAdd;
 
-  const CollectionItem({
+  const CustomGameTile({
     super.key,
-    required this.collectionId,
-    required this.collectionName,
-    required this.description,
-    this.imagePath,
-    this.onAdd = false,
+    required this.collection,
+    required this.userId,
+    required this.onAdd,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(collection.updatedAt!);
 
     return GestureDetector(
       onTap: () => _goToSearchPage(context),
@@ -43,13 +47,38 @@ class CollectionItem extends StatelessWidget {
             ),
           ],
         ),
-        padding: const EdgeInsets.symmetric(horizontal: 12.0),
-        child: Row(
-          children: [
-            _buildImageBox(),
-            const SizedBox(width: 12.0),
-            _buildInfoText(context),
-          ],
+        padding: const EdgeInsets.only(left: 12.0),
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(12.0),
+            bottomRight: Radius.circular(12.0),
+          ),
+          child: Slidable(
+            key: ValueKey(collection.collectionId),
+            endActionPane: buildCollectionSlidableDelete(
+              context: context,
+              collection: collection,
+              onDelete: (collectionId) {
+                context.read<CollectionCubit>().deleteCollection(
+                      userId: userId,
+                      collectionId: collectionId,
+                    );
+                if (collectionId == context.read<ApplicationCubit>().state.recentId) {
+                  context.read<ApplicationCubit>().updateSettingUsecase(
+                        key: Setting.keyRecentId,
+                        value: '',
+                      );
+                }
+              },
+            ),
+            child: Row(
+              children: [
+                _buildImageBox(),
+                const SizedBox(width: 12.0),
+                _buildInfoText(context, formattedDate),
+              ],
+            ),
+          ),
         ),
       ),
     );
@@ -59,18 +88,18 @@ class CollectionItem extends StatelessWidget {
     final applicationCubit = context.read<ApplicationCubit>();
     applicationCubit.updateSetting(
       key: Setting.keyRecentId,
-      value: collectionId,
+      value: collection.collectionId,
     );
     applicationCubit.updateSetting(
       key: Setting.keyRecentGame,
-      value: collectionName,
+      value: collection.name,
     );
 
     Navigator.of(context).pushReplacementNamed(
       RouteConstant.browse_card,
       arguments: {
-        'collectionId': collectionId,
-        'collectionName': collectionName,
+        'collectionId': collection.collectionId,
+        'collectionName': collection.name,
         'onAdd': onAdd,
       },
     );
@@ -86,14 +115,12 @@ class CollectionItem extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: imagePath != null
-            ? Image.asset(imagePath!, fit: BoxFit.cover)
-            : const Icon(Icons.inbox_rounded, color: Colors.black, size: 24),
+        child: const Icon(Icons.inbox_rounded, color: Colors.black, size: 24),
       ),
     );
   }
 
-  Widget _buildInfoText(BuildContext context) {
+  Widget _buildInfoText(BuildContext context, String formattedDate) {
     final theme = Theme.of(context);
 
     return Expanded(
@@ -102,14 +129,14 @@ class CollectionItem extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
-            collectionName,
+            collection.name,
             style: theme.textTheme.bodyMedium,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
           ),
           const SizedBox(height: 4),
           Text(
-            description.cleanSlashComment(),
+            formattedDate,
             style: theme.textTheme.bodySmall,
             overflow: TextOverflow.ellipsis,
             maxLines: 1,
@@ -118,8 +145,4 @@ class CollectionItem extends StatelessWidget {
       ),
     );
   }
-}
-
-extension on String {
-  String cleanSlashComment() => contains('//') ? split('//')[1] : this;
 }

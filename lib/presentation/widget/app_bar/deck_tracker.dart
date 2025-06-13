@@ -60,8 +60,45 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
           action: () => drawerCubit.toggleHistoryDrawer(),
         ),
         AppBarMenuItem(
-          label: Icons.people_rounded,
-          action: () => drawerCubit.toggleFeatureDrawer(),
+          label: Icons.refresh_rounded,
+          action: () => {
+            buildCupertinoMultipleChoicesDialog(
+              title: locale.translate('page_deck_tracker.dialog_reset_deck_title'),
+              content: locale.translate('page_deck_tracker.dialog_reset_deck_content'),
+              choices: [
+                DialogChoice(
+                  text: locale.translate('page_deck_tracker.button_reset'),
+                  onPressed: () {
+                    trackerCubit.toggleResetDeck();
+                    recordCubit.toggleResetRecord();
+                    readerCubit.resetScannedCard();
+                    usageCardCubit.resetUsageStats();
+                    navigator.pop();
+                  },
+                ),
+                DialogChoice(
+                  text: locale.translate('page_deck_tracker.button_save'),
+                  onPressed: () {
+                    recordCubit.createRecord(userId: userId);
+                    trackerCubit.toggleResetDeck();
+                    recordCubit.toggleResetRecord();
+                    readerCubit.resetScannedCard();
+                    usageCardCubit.resetUsageStats();
+                    navigator.pop();
+                  },
+                ),
+                DialogChoice(
+                  text: locale.translate('common.button_cancel'),
+                  isCancel: true,
+                  onPressed: () => navigator.pop(),
+                ),
+              ],
+              showDialog: (dialog) => showCupertinoDialog(
+                context: navigator.context,
+                builder: (_) => dialog,
+              ),
+            ),
+          },
         ),
         AppBarMenuItem(label: locale.translate('page_deck_tracker.app_bar')),
         toggleNfcItem,
@@ -74,16 +111,8 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
       return [
         AppBarMenuItem.back(),
         AppBarMenuItem(
-          label: Icons.refresh_rounded,
-          action: () => _showResetDialog(
-            context: context,
-            locale: locale,
-            navigator: navigator,
-            trackerCubit: trackerCubit,
-            recordCubit: recordCubit,
-            readerCubit: readerCubit,
-            usageCardCubit: usageCardCubit,
-          ),
+          label: Icons.people_rounded,
+          action: () => drawerCubit.toggleFeatureDrawer(),
         ),
         AppBarMenuItem(label: locale.translate('page_deck_tracker.app_bar')),
         toggleNfcItem,
@@ -98,53 +127,6 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ];
     }
-  }
-
-  void _showResetDialog({
-    required BuildContext context,
-    required AppLocalization locale,
-    required NavigatorState navigator,
-    required TrackerCubit trackerCubit,
-    required RecordCubit recordCubit,
-    required ReaderCubit readerCubit,
-    required UsageCardCubit usageCardCubit,
-  }) {
-    buildCupertinoMultipleChoicesDialog(
-      title: locale.translate('page_deck_tracker.dialog_reset_deck_title'),
-      content: locale.translate('page_deck_tracker.dialog_reset_deck_content'),
-      choices: [
-        DialogChoice(
-          text: locale.translate('page_deck_tracker.button_reset'),
-          onPressed: () {
-            trackerCubit.toggleResetDeck();
-            recordCubit.toggleResetRecord();
-            readerCubit.resetScannedCard();
-            usageCardCubit.resetUsageStats();
-            navigator.pop();
-          },
-        ),
-        DialogChoice(
-          text: locale.translate('page_deck_tracker.button_save'),
-          onPressed: () {
-            recordCubit.createRecord(userId: userId);
-            trackerCubit.toggleResetDeck();
-            recordCubit.toggleResetRecord();
-            readerCubit.resetScannedCard();
-            usageCardCubit.resetUsageStats();
-            navigator.pop();
-          },
-        ),
-        DialogChoice(
-          text: locale.translate('common.button_cancel'),
-          isCancel: true,
-          onPressed: () => navigator.pop(),
-        ),
-      ],
-      showDialog: (dialog) => showCupertinoDialog(
-        context: navigator.context,
-        builder: (_) => dialog,
-      ),
-    );
   }
 
   @override

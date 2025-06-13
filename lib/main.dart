@@ -39,11 +39,11 @@ void main() async {
   await dotenv.load();
   await setupLocator();
 
-  await locator<DatabaseService>().deleteDatabaseFile();
-  await locator<SharedPreferencesService>().clear();
+  // await locator<DatabaseService>().deleteDatabaseFile();
+  // await locator<SharedPreferencesService>().clear();
 
   await Future.wait([
-    ApiConfig.loadConfig('development'), // 'production' for release
+    ApiConfig.loadConfig(kReleaseMode ? 'production' : 'development'),
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     LanguageManager.loadSupportedLanguages(),
   ]);
@@ -97,9 +97,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<NfcCubit>.value(value: nfcCubit),
-        BlocProvider(create: (_) => locator<DeckCubit>()),
-        BlocProvider(create: (_) => locator<ApplicationCubit>()),
+        BlocProvider.value(value: nfcCubit),
+        BlocProvider.value(value: locator<DeckCubit>()),
+        BlocProvider.value(value: locator<ApplicationCubit>()),
       ],
       child: BlocBuilder<ApplicationCubit, ApplicationState>(
         builder: (context, state) => MaterialApp(
