@@ -127,7 +127,7 @@ class CardItem extends StatelessWidget {
       child: Icon(
         Icons.image_not_supported,
         size: 36,
-        color: theme.colorScheme.opacityText,
+        color: theme.colorScheme.opacity_text,
       ),
     );
   }

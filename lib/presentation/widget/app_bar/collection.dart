@@ -36,6 +36,7 @@ class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
         label: locale.translate('page_collection.toggle_new'),
         action: () {
           buildCupertinoTextFieldDialog(
+            theme: Theme.of(context),
             title: locale.translate('page_collection.dialog_create_title'),
             cancelButtonText: locale.translate('common.button_cancel'),
             confirmButtonText: locale.translate('common.button_ok'),

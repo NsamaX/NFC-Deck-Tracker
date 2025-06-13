@@ -9,7 +9,7 @@ class AppButtonStyles {
   AppButtonStyles(this.isDark);
 
   ButtonStyle get elevatedButton => ButtonStyle(
-    backgroundColor: WidgetStateProperty.all(isDark ? AppColor.darkText : AppColor.lightText),
+    backgroundColor: WidgetStateProperty.all(isDark ? AppColor.dark_text : AppColor.light_text),
     textStyle: WidgetStateProperty.all(AppTextStyles(isDark).bodyLarge),
   );
 }

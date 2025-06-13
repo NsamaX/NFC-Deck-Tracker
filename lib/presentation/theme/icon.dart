@@ -7,13 +7,13 @@ class AppIconThemes {
 
   AppIconThemes(this.isDark);
 
-  IconThemeData get appBarIcon => const IconThemeData(
-    color: AppColor.primaryColor,
-    size: 24,
-  );
+  IconThemeData get appBarIcon => IconThemeData(
+        color: isDark ? AppColor.dark_core : AppColor.light_core,
+        size: 24,
+      );
 
   IconThemeData get defaultIcon => IconThemeData(
-    color: isDark ? AppColor.darkText : AppColor.lightText,
-    size: 16,
-  );
+        color: isDark ? AppColor.dark_text : AppColor.light_text,
+        size: 16,
+      );
 }

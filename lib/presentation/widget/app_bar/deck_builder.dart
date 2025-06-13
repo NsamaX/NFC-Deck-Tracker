@@ -123,6 +123,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: Icons.delete_outline_rounded,
           action: () {
             buildCupertinoActionDialog(
+              theme: Theme.of(context),
               title: locale.translate('page_deck_create.dialog_delete_title'),
               content: locale.translate('page_deck_create.dialog_delete_content'),
               cancelButtonText: locale.translate('common.button_cancel'),

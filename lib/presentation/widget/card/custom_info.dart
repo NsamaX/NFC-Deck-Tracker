@@ -65,7 +65,7 @@ class CardCustomInfo extends StatelessWidget {
       builder: (context, value, _) {
         final hasText = value.text.isNotEmpty;
         final hintStyle = TextStyle(
-          color: Colors.white.withAlpha((hasText ? 255 : (0.2 * 255)).toInt()),
+          color: theme.textTheme.bodySmall!.color!.withAlpha((hasText ? 255 : (0.2 * 255)).toInt()),
         );
 
         final textField = TextField(
@@ -88,7 +88,7 @@ class CardCustomInfo extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             decoration: BoxDecoration(
               border: Border.all(
-                color: Colors.white.withAlpha((0.2 * 255).toInt()),
+                color: theme.textTheme.bodySmall!.color!.withAlpha((hasText ? 255 : (0.2 * 255)).toInt()),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(8.0),
@@ -120,7 +120,7 @@ class CardCustomInfo extends StatelessWidget {
               child: Container(
                 width: double.infinity,
                 height: 1,
-                color: theme.colorScheme.opacityText,
+                color: theme.colorScheme.opacity_text,
               ),
             ),
           ],

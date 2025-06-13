@@ -10,8 +10,8 @@ class AppTextStyles {
   AppTextStyles(this.isDark);
 
   Color get _textColor => isDark 
-      ? AppColor.darkText 
-      : AppColor.lightText;
+      ? AppColor.dark_text
+      : AppColor.light_text;
 
   TextStyle get titleLarge  => _textStyle(color: _textColor, fontSize: 60, isBold: true);
   TextStyle get titleMedium => _textStyle(color: _textColor, fontSize: 20, isBold: true);

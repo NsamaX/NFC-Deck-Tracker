@@ -63,6 +63,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: Icons.refresh_rounded,
           action: () => {
             buildCupertinoMultipleChoicesDialog(
+              theme: Theme.of(context),
               title: locale.translate('page_deck_tracker.dialog_reset_deck_title'),
               content: locale.translate('page_deck_tracker.dialog_reset_deck_content'),
               choices: [

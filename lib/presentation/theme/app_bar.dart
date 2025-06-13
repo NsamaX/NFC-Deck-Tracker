@@ -10,8 +10,8 @@ class AppBarStyles {
   AppBarStyles(this.isDark);
 
   AppBarTheme get appBarTheme => AppBarTheme(
-    backgroundColor: isDark ? AppColor.darkBG_3 : AppColor.lightBG_3,
+    backgroundColor: isDark ? AppColor.dark_3 : AppColor.light_2,
     iconTheme: AppIconThemes(isDark).appBarIcon,
-    titleTextStyle: AppTextStyles(isDark).titleSmall.copyWith(color: AppColor.primaryColor),
+    titleTextStyle: AppTextStyles(isDark).titleSmall,
   );
 }

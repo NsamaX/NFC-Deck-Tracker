@@ -1,19 +1,31 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  static const Color primaryColor   = Color.fromARGB(255, 140, 200, 255);
-  static const Color secondaryColor = Color.fromARGB(255, 255, 255, 140);
-  static const Color tertiaryColor  = Color.fromARGB(255, 255, 160, 140);
 
-  static const Color darkBG_1       = Color.fromARGB(255, 15, 15, 15);
-  static const Color darkBG_2       = Color.fromARGB(255, 30, 30, 30);
-  static const Color darkBG_3       = Color.fromARGB(255, 45, 45, 45);
+  // Shared
+  static const Color active       = Color(0xFF2196F3);
+  static const Color success      = Color(0xFF12BA63);
+  static const Color warning      = Color(0xFFE6A800);
+  static const Color error        = Color(0xFFC91B1B);
 
-  static const Color lightBG_1      = Color.fromARGB(255, 250, 250, 250);
-  static const Color lightBG_2      = Color.fromARGB(255, 240, 240, 240);
-  static const Color lightBG_3      = Color.fromARGB(255, 225, 225, 225);
+  static const Color pin_color_1  = Color(0xFF8FD0FF);
+  static const Color pin_color_2  = Color(0xFFFDFF8F);
+  static const Color pin_color_3  = Color(0xFFFF9E8F);
 
-  static const Color darkText       = Color.fromARGB(255, 255, 255, 255);
-  static const Color lightText      = Color.fromARGB(255, 33, 33, 33);
-  static const Color opacityText    = Color.fromARGB(255, 120, 120, 120);
+  static const Color opacity_text = Color(0xFFB0B0B0);
+
+  // Dark Theme
+  static const Color dark_core    = Color(0xFF8FD0FF);
+  static const Color dark_text    = Color(0xFFFFFFFF);
+  static const Color dark_1       = Color(0xFF101010);
+  static const Color dark_2       = Color(0xFF1E1E1E);
+  static const Color dark_3       = Color(0xFF292929);
+
+  // Light Theme
+  static const Color light_core   = Color(0xFF2196F3);
+  static const Color light_text   = Color(0xFF000000);
+  static const Color light_1      = Color(0xFFFFFFFF);
+  static const Color light_2      = Color(0xFFFAFAFA);
+  static const Color light_3      = Color(0xFFD9D9D9);
+
 }

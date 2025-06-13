@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+
+import '../../theme/@theme.dart';
 
 import '../constant/ui.dart';
 
@@ -10,19 +11,20 @@ void AppSnackBar(
   required String text,
   SnackBarType type = SnackBarType.success,
 }) {
+  final theme = Theme.of(context);
   final scaffoldMessenger = ScaffoldMessenger.of(context);
   scaffoldMessenger.hideCurrentSnackBar();
 
   Color backgroundColor;
   switch (type) {
     case SnackBarType.success:
-      backgroundColor = CupertinoColors.activeGreen;
+      backgroundColor = theme.colorScheme.success;
       break;
     case SnackBarType.warning:
-      backgroundColor = CupertinoColors.systemYellow;
+      backgroundColor = theme.colorScheme.warning;
       break;
     case SnackBarType.error:
-      backgroundColor = CupertinoColors.destructiveRed;
+      backgroundColor = theme.colorScheme.error;
       break;
   }
 

@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import '../../theme/@theme.dart';
+
 class DialogChoice {
   final String text;
   final bool isCancel;
@@ -14,6 +16,7 @@ class DialogChoice {
 }
 
 void buildCupertinoAlertDialog({
+  required ThemeData theme,
   required String title,
   required String content,
   required String confirmButtonText,
@@ -22,12 +25,13 @@ void buildCupertinoAlertDialog({
   required void Function(Widget dialog) showDialog,
 }) {
   _buildShowDialog(
+    theme: theme,
     title: title,
     content: content,
     actions: [
       _buildActionDialog(
         text: confirmButtonText,
-        color: CupertinoColors.activeBlue,
+        color: theme.colorScheme.active,
         onPressed: () {
           closeDialog();
           onPressed?.call();
@@ -39,6 +43,7 @@ void buildCupertinoAlertDialog({
 }
 
 void buildCupertinoActionDialog({
+  required ThemeData theme,
   required String title,
   required String content,
   required String cancelButtonText,
@@ -48,17 +53,18 @@ void buildCupertinoActionDialog({
   required void Function(Widget dialog) showDialog,
 }) {
   _buildShowDialog(
+    theme: theme,
     title: title,
     content: content,
     actions: [
       _buildActionDialog(
         text: cancelButtonText,
-        color: CupertinoColors.destructiveRed,
+        color: theme.colorScheme.error,
         onPressed: closeDialog,
       ),
       _buildActionDialog(
         text: confirmButtonText,
-        color: CupertinoColors.activeBlue,
+        color: theme.colorScheme.active,
         onPressed: () {
           closeDialog();
           onPressed();
@@ -70,18 +76,22 @@ void buildCupertinoActionDialog({
 }
 
 void buildCupertinoMultipleChoicesDialog({
+  required ThemeData theme,
   required String title,
   required String content,
   required List<DialogChoice> choices,
   required void Function(Widget dialog) showDialog,
 }) {
   _buildShowDialog(
+    theme: theme,
     title: title,
     content: content,
     actions: choices.map((choice) {
       return _buildActionDialog(
         text: choice.text,
-        color: choice.isCancel ? CupertinoColors.destructiveRed : CupertinoColors.activeBlue,
+        color: choice.isCancel
+            ? theme.colorScheme.error
+            : theme.colorScheme.active,
         onPressed: choice.onPressed,
       );
     }).toList(),
@@ -90,6 +100,7 @@ void buildCupertinoMultipleChoicesDialog({
 }
 
 void buildCupertinoTextFieldDialog({
+  required ThemeData theme,
   required String title,
   required String cancelButtonText,
   required String confirmButtonText,
@@ -124,8 +135,8 @@ void buildCupertinoTextFieldDialog({
           onPressed: closeDialog,
           child: Text(
             cancelButtonText,
-            style: const TextStyle(
-              color: CupertinoColors.destructiveRed,
+            style: TextStyle(
+              color: theme.colorScheme.error,
               fontSize: 12.0,
               fontWeight: FontWeight.w100,
             ),
@@ -138,8 +149,8 @@ void buildCupertinoTextFieldDialog({
           },
           child: Text(
             confirmButtonText,
-            style: const TextStyle(
-              color: CupertinoColors.activeBlue,
+            style: TextStyle(
+              color: theme.colorScheme.active,
               fontSize: 12.0,
               fontWeight: FontWeight.w100,
             ),
@@ -151,25 +162,27 @@ void buildCupertinoTextFieldDialog({
 }
 
 void _buildShowDialog({
+  required ThemeData theme,
   required String title,
   required String content,
   required List<Widget> actions,
   required void Function(Widget dialog) showDialog,
 }) {
   final dialog = CupertinoAlertDialog(
-    title: _buildTitleDialog(text: title),
-    content: _buildContentDialog(text: content),
+    title: _buildTitleDialog(theme: theme, text: title),
+    content: _buildContentDialog(theme: theme, text: content),
     actions: actions,
   );
   showDialog(dialog);
 }
 
 Widget _buildTitleDialog({
+  required ThemeData theme,
   required String text,
 }) {
   return Text(
     text,
-    style: const TextStyle(
+    style: TextStyle(
       color: Colors.black,
       fontSize: 16.0,
       fontWeight: FontWeight.bold,
@@ -178,11 +191,12 @@ Widget _buildTitleDialog({
 }
 
 Widget _buildContentDialog({
+  required ThemeData theme,
   required String text,
 }) {
   return Text(
     text,
-    style: const TextStyle(
+    style: TextStyle(
       color: Colors.black,
       fontSize: 12.0,
       fontWeight: FontWeight.w100,

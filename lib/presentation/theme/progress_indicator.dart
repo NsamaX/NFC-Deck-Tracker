@@ -8,8 +8,8 @@ class AppProgressIndicatorStyles {
   AppProgressIndicatorStyles(this.isDark);
 
   ProgressIndicatorThemeData get progressIndicatorTheme => ProgressIndicatorThemeData(
-    color: AppColor.primaryColor,
-    refreshBackgroundColor: isDark ? AppColor.darkBG_3 : AppColor.lightBG_3,
-    circularTrackColor: isDark ? AppColor.darkBG_2 : AppColor.lightBG_2,
+    color: isDark ? AppColor.dark_core : AppColor.light_core,
+    refreshBackgroundColor: isDark ? AppColor.dark_3 : AppColor.light_3,
+    circularTrackColor: isDark ? AppColor.dark_2 : AppColor.light_2,
   );
 }

@@ -51,6 +51,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
         final locale = AppLocalization.of(context);
 
         buildCupertinoAlertDialog(
+          theme: Theme.of(context),
           title: locale.translate('page_deck_tracker.dialog_tracker_tutorial_title'),
           content: locale.translate('page_deck_tracker.dialog_tracker_tutorial_content'),
           confirmButtonText: locale.translate('common.button_ok'),

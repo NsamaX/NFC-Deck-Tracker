@@ -45,8 +45,8 @@ class DeckSwitchMode extends StatelessWidget {
             child: Container(
               width: _width,
               height: _height,
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: theme.iconTheme.color,
                 borderRadius: _radius,
               ),
             ),

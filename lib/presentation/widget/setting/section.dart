@@ -43,7 +43,7 @@ class SettingSection extends StatelessWidget {
       child: Text(
         title,
         style: theme.textTheme.bodyMedium?.copyWith(
-          color: theme.colorScheme.primary,
+          color: theme.appBarTheme.iconTheme?.color,
         ),
       ),
     );
@@ -73,7 +73,7 @@ class SettingSection extends StatelessWidget {
           color: theme.appBarTheme.backgroundColor,
           border: Border(
             bottom: BorderSide(
-              color: theme.colorScheme.opacityText,
+              color: theme.colorScheme.opacity_text,
               width: 1.0,
             ),
           ),
@@ -90,9 +90,9 @@ class SettingSection extends StatelessWidget {
             ),
             Row(
               children: [
-                if (info != null) Text(info, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.opacityText)),
+                if (info != null) Text(info, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.opacity_text)),
                 if (info != null) const SizedBox(width: 6.0),
-                if (route != null) Icon(Icons.arrow_forward_ios_rounded, color: theme.colorScheme.opacityText),
+                if (route != null) Icon(Icons.arrow_forward_ios_rounded, color: theme.colorScheme.opacity_text),
               ],
             ),
           ],

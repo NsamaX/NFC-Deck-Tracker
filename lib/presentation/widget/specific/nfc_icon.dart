@@ -17,8 +17,8 @@ class NfcIcon extends StatelessWidget {
     final theme = Theme.of(context);
 
     final color = isSessionActive
-        ? theme.colorScheme.primary
-        : theme.appBarTheme.backgroundColor ?? Colors.grey;
+        ? theme.bottomNavigationBarTheme.selectedItemColor ?? Colors.black
+        : theme.bottomNavigationBarTheme.unselectedItemColor ?? Colors.black;
 
     return Center(
       child: GestureDetector(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../locale/localization.dart';
+import '../../theme/@theme.dart';
 
 import '../constant/ui.dart';
 
@@ -60,9 +61,9 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 onChanged: widget.onSearchChanged,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                  prefixIcon: Icon(Icons.search, color: theme.colorScheme.opacity_text),
                   hintText: locale.translate('page_search.search_hint_text'),
-                  hintStyle: theme.textTheme.bodyMedium?.copyWith(color: Colors.grey),
+                  hintStyle: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.opacity_text),
                   contentPadding: const EdgeInsets.only(bottom: 12.0),
                 ),
                 style: theme.textTheme.bodyMedium?.copyWith(color: Colors.black),
@@ -80,7 +81,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                     child: Text(
                       locale.translate('common.button_cancel'),
                       style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.primaryColor,
+                        color: theme.appBarTheme.iconTheme?.color,
                       ),
                     ),
                   )

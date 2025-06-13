@@ -65,14 +65,14 @@ class SettingLanguage extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.appBarTheme.backgroundColor,
           border: Border(
-            bottom: BorderSide(color: theme.colorScheme.opacityText, width: 1.0),
+            bottom: BorderSide(color: theme.colorScheme.opacity_text, width: 1.0),
           ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             if (text != null) Text(text, style: theme.textTheme.bodySmall),
-            if (mark) Icon(Icons.check_rounded, size: 18.0, color: theme.colorScheme.opacityText),
+            if (mark) Icon(Icons.check_rounded, size: 18.0, color: theme.colorScheme.opacity_text),
           ],
         ),
       ),

@@ -56,7 +56,7 @@ class CardQuantityControl extends StatelessWidget {
       child: Center(
         child: Text(
           count.toString(),
-          style: theme.textTheme.bodyMedium?.copyWith(color: theme.primaryColor),
+          style: theme.textTheme.bodyMedium?.copyWith(color: theme.textTheme.bodyMedium?.color),
           textAlign: TextAlign.center,
         ),
       ),
@@ -82,7 +82,7 @@ class CardQuantityControl extends StatelessWidget {
         child: Icon(
           icon,
           size: _buttonSize / 1.5,
-          color: theme.primaryColor,
+          color: theme.textTheme.bodyMedium?.color,
         ),
       ),
     );

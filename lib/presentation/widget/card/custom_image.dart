@@ -55,7 +55,7 @@ class CardCustomImage extends StatelessWidget {
     final locale = AppLocalization.of(context);
 
     return DottedBorder(
-      color: Colors.white.withAlpha((0.2 * 255).toInt()),
+      color: theme.textTheme.bodySmall!.color!.withAlpha((0.2 * 255).toInt()),
       borderType: BorderType.RRect,
       radius: const Radius.circular(16.0),
       dashPattern: const [14.0, 24.0],
@@ -64,7 +64,7 @@ class CardCustomImage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Icon(Icons.upload_rounded, size: 36.0, color: Colors.grey),
+            Icon(Icons.upload_rounded, size: 36.0, color: theme.iconTheme.color),
             const SizedBox(height: 8.0),
             Text(locale.translate('page_card_detail.upload_image'), style: theme.textTheme.bodyMedium),
           ],

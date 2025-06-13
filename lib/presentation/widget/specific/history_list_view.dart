@@ -42,7 +42,7 @@ class HistoryListView extends StatelessWidget {
       child: Text(
         title,
         style: theme.textTheme.bodyMedium?.copyWith(
-          color: theme.colorScheme.primary,
+          color: theme.appBarTheme.iconTheme?.color,
         ),
       ),
     );
@@ -64,7 +64,7 @@ class HistoryListView extends StatelessWidget {
       decoration: BoxDecoration(
         color: theme.appBarTheme.backgroundColor,
         border: Border(
-          bottom: BorderSide(color: theme.colorScheme.opacityText, width: 1.0),
+          bottom: BorderSide(color: theme.colorScheme.opacity_text, width: 1.0),
         ),
       ),
       child: Row(
@@ -73,9 +73,9 @@ class HistoryListView extends StatelessWidget {
           if (text != null) Text(text, style: theme.textTheme.bodySmall),
           Row(
             children: [
-              if (info != null) Text(info, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.opacityText)),
+              if (info != null) Text(info, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.opacity_text)),
               if (info != null) const SizedBox(width: 6),
-              if (pop) Icon(Icons.arrow_outward_rounded, size: 16, color: theme.colorScheme.opacityText),
+              if (pop) Icon(Icons.arrow_outward_rounded, size: 16, color: theme.colorScheme.opacity_text),
             ],
           ),
         ],

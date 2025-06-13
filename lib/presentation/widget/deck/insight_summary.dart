@@ -41,7 +41,7 @@ class DeckInsightSummary extends StatelessWidget {
         children: [
           Text(
             locale.translate('page_deck_tracker.summerize_title'),
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.primaryColor),
+            style: theme.textTheme.bodyMedium?.copyWith(color: theme.appBarTheme.iconTheme?.color),
           ),
           const SizedBox(height: 8.0),
           ...[
