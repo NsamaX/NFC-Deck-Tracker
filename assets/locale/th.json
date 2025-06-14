@@ -103,8 +103,9 @@
     "dialog_create_title": "ชื่อคอลเลกชัน",
     "last_updated": "อัปเดตล่าสุดเมื่อ {date}"
   },
-  "page_search": {
+  "page_browse_card": {
     "app_bar": "ค้นหา",
+    "toggle_create": "สร้าง",
     "search_hint_text": "กรอกชื่อการ์ด",
     "empty_collection": "ไม่มีการ์ดในคลัง",
     "error_fetch_card": "ดึงข้อมูลการ์ดไม่สำเร็จ กรุณาลองใหม่ภายหลัง",
@@ -112,9 +113,8 @@
   },
   "page_card_detail": {
     "app_bar_card": "ข้อมูลการ์ด",
-    "app_bar_custom": "การ์ดกำหนดเอง",
+    "app_bar_custom": "กำหนดเอง",
     "toggle_add": "เพิ่ม",
-    "toggle_done": "เสร็จสิ้น",
     "snack_bar_add": "เพิ่มการ์ดลงในเด็คของคุณเรียบร้อยแล้ว!",
     "upload_image": "อัปโหลดรูปภาพ"
   },

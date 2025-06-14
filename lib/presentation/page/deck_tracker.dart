@@ -149,6 +149,7 @@ class _DeckTrackerPageContent extends StatelessWidget {
               CardHistoryDrawer(
                 drawerCubit: drawerCubit,
                 readerCubit: readerCubit,
+                onNfc: false,
               ),
               CreateRoomDrawer(
                 userId: userId,

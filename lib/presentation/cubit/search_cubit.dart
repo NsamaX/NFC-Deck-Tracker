@@ -44,13 +44,13 @@ class SearchCubit extends Cubit<SearchState> {
 
       if (loadedCards.isEmpty && !isClosed) {
         emit(state.copyWith(
-          errorMessage: 'page_search.empty_collection',
+          errorMessage: 'page_browse_card.empty_collection',
         ));
       }
     } catch (_) {
       if (!isClosed) {
         emit(state.copyWith(
-          errorMessage: 'page_search.error_fetch_card',
+          errorMessage: 'page_browse_card.error_fetch_card',
           isLoading: false,
         ));
       }
@@ -78,7 +78,7 @@ class SearchCubit extends Cubit<SearchState> {
     emit(state.copyWith(
       visibleCards: results,
       errorMessage: results.isEmpty
-          ? 'page_search.empty_search_result'
+          ? 'page_browse_card.empty_search_result'
           : '',
     ));
   }

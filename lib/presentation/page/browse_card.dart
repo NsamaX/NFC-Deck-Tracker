@@ -118,11 +118,11 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
         menu: [
           AppBarMenuItem.back(),
           AppBarMenuItem(
-            label: locale.translate('page_search.app_bar'),
+            label: locale.translate('page_browse_card.app_bar'),
           ),
           !Game.isSupported(widget.collectionId)
               ? AppBarMenuItem(
-                  label: Icons.add_rounded,
+                  label: locale.translate('page_browse_card.toggle_create'),
                   action: {
                     'route': RouteConstant.card,
                     'arguments': {

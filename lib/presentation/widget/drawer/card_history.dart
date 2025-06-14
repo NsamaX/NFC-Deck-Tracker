@@ -12,11 +12,13 @@ import '../constant/ui.dart';
 class CardHistoryDrawer extends StatelessWidget {
   final DrawerCubit drawerCubit;
   final ReaderCubit readerCubit;
+  final bool onNfc;
 
   const CardHistoryDrawer({
     super.key,
     required this.drawerCubit,
     required this.readerCubit,
+    this.onNfc = true,
   });
 
   @override
@@ -55,6 +57,7 @@ class CardHistoryDrawer extends StatelessWidget {
             navigator: Navigator.of(context),
             card: reversedCards[index],
             lightTheme: true,
+            onNFC: onNfc,
           ),
         ),
       ),

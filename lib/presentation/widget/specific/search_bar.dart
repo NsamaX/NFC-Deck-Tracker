@@ -62,7 +62,7 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   prefixIcon: Icon(Icons.search, color: theme.colorScheme.opacity_text),
-                  hintText: locale.translate('page_search.search_hint_text'),
+                  hintText: locale.translate('page_browse_card.search_hint_text'),
                   hintStyle: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.opacity_text),
                   contentPadding: const EdgeInsets.only(bottom: 12.0),
                 ),

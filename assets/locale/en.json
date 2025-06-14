@@ -103,8 +103,9 @@
     "dialog_create_title": "Collection Name",
     "last_updated": "Last Updated {date}"
   },
-  "page_search": {
+  "page_browse_card": {
     "app_bar": "Search",
+    "toggle_create": "Create",
     "search_hint_text": "Enter card name",
     "empty_collection": "No card in collection.",
     "error_fetch_card": "Failed to fetch card data. Please try again later.",
@@ -112,9 +113,8 @@
   },
   "page_card_detail": {
     "app_bar_card": "Card Info",
-    "app_bar_custom": "Custom Card",
+    "app_bar_custom": "Custom",
     "toggle_add": "Add",
-    "toggle_done": "Done",
     "snack_bar_add": "Card successfully added to your deck!",
     "upload_image": "Upload Image"
   },

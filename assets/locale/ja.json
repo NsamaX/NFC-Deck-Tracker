@@ -103,8 +103,9 @@
     "dialog_create_title": "コレクション名",
     "last_updated": "最終更新 {date}"
   },
-  "page_search": {
+  "page_browse_card": {
     "app_bar": "検索",
+    "toggle_create": "作成",
     "search_hint_text": "カード名を入力",
     "empty_collection": "コレクションにカードがありません。",
     "error_fetch_card": "カードデータの取得に失敗しました。後でもう一度お試しください。",
@@ -112,9 +113,8 @@
   },
   "page_card_detail": {
     "app_bar_card": "カード情報",
-    "app_bar_custom": "カスタムカード",
+    "app_bar_custom": "カスタム",
     "toggle_add": "追加",
-    "toggle_done": "完了",
     "snack_bar_add": "カードがデッキに追加されました！",
     "upload_image": "画像をアップロード"
   },
