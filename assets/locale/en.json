@@ -94,6 +94,10 @@
     "summarize_unused_card": "Unused {unused} Cards",
     "history_title": "History"
   },
+  "page_join_room": {
+    "app_bar": "Join Room",
+    "tip": "Scan the QR Code on the\nDeck Tracker page to join the room"
+  },
   "page_card_reader": {
     "app_bar": "Read Tag"
   },

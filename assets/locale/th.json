@@ -94,6 +94,10 @@
     "summarize_unused_card": "ไม่ได้ใช้ {unused} การ์ด",
     "history_title": "ประวัติ"
   },
+  "page_join_room": {
+    "app_bar": "เข้าร่วมห้อง",
+    "tip": "สแกน QR Code บนหน้า\nตัวติดตามเด็คเพื่อเข้าร่วมห้อง"
+  },
   "page_card_reader": {
     "app_bar": "อ่านแท็ก"
   },

@@ -94,8 +94,12 @@
     "summarize_unused_card": "未使用カード：{unused}枚",
     "history_title": "履歴"
   },
+  "page_join_room": {
+    "app_bar": "ルーム参加"
+  },
   "page_card_reader": {
-    "app_bar": "タグ読み取り"
+    "app_bar": "タグ読み取り",
+    "tip": "デッキトラッカーページのQRコードをスキャンして\nルームに参加します。"
   },
   "page_collection": {
     "app_bar": "コレクション",

@@ -7,10 +7,13 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 
 import '../../cubit/room_cubit.dart';
+import '../../locale/localization.dart';
+
+import '../app_bar/@default.dart';
 
 class QRCodeScanner extends StatefulWidget {
   final RoomCubit roomCubit;
-  
+
   QRCodeScanner({
     super.key,
     required this.roomCubit,
@@ -60,16 +63,17 @@ class _JoinRoomScannerPageState extends State<QRCodeScanner> {
 
   @override
   Widget build(BuildContext context) {
+    final locale = AppLocalization.of(context);
+
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.close, color: Theme.of(context).appBarTheme.iconTheme?.color),
-          onPressed: () => Navigator.of(context).pop(),
+      appBar: DefaultAppBar(menu: [
+        AppBarMenuItem.back(),
+        AppBarMenuItem(
+          label: locale.translate('page_join_room.app_bar'),
         ),
-      ),
+        AppBarMenuItem.empty(),
+      ]),
       body: Stack(
         alignment: Alignment.center,
         children: [
@@ -77,11 +81,18 @@ class _JoinRoomScannerPageState extends State<QRCodeScanner> {
             key: qrKey,
             onQRViewCreated: _onQRViewCreated,
             overlay: QrScannerOverlayShape(
-              borderColor: Colors.blue,
+              borderColor: Colors.white,
               borderRadius: 10,
-              borderLength: 30,
-              borderWidth: 6,
-              cutOutSize: 250,
+              borderLength: 20,
+              borderWidth: 10,
+              cutOutSize: MediaQuery.of(context).size.width * 0.8,
+            ),
+          ),
+          Positioned(
+            bottom: 16,
+            child: Text(
+              locale.translate('page_join_room.tip'),
+              textAlign: TextAlign.center,
             ),
           ),
         ],
