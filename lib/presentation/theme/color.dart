@@ -12,7 +12,7 @@ class AppColor {
   static const Color pin_color_2  = Color(0xFFFDFF8F);
   static const Color pin_color_3  = Color(0xFFFF9E8F);
 
-  static const Color opacity_text = Color(0xFFB0B0B0);
+  static const Color opacity_text = Color(0xFFAEAEAE);
 
   // Dark Theme
   static const Color dark_core    = Color(0xFF8FD0FF);
@@ -26,6 +26,6 @@ class AppColor {
   static const Color light_text   = Color(0xFF000000);
   static const Color light_1      = Color(0xFFFFFFFF);
   static const Color light_2      = Color(0xFFFAFAFA);
-  static const Color light_3      = Color(0xFFD9D9D9);
+  static const Color light_3      = Color(0xFFF0F0F0);
 
 }

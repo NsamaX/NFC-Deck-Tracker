@@ -84,11 +84,12 @@ class DeckItem extends StatelessWidget {
       right: -2,
       child: GestureDetector(
         onTap: () => _onDelete(context),
-        child: const SizedBox(
+        child: SizedBox(
           width: 30,
           height: 30,
           child: Icon(
             Icons.close_rounded, 
+            color: Theme.of(context).appBarTheme.iconTheme?.color,
             size: 26,
           ),
         ),
