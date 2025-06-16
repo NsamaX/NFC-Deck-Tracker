@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -31,7 +30,7 @@ class FirestoreService {
 
       return result.docs;
     } catch (e) {
-      debugPrint('❌ Failed to query Firestore collection "$collectionPath": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to query Firestore collection "$collectionPath": $e');
       return [];
     }
   }
@@ -45,7 +44,7 @@ class FirestoreService {
       if (!doc.exists) return null;
       return doc;
     } catch (e) {
-      debugPrint('❌ Failed to get document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to get document "$documentId" in "$collectionPath": $e');
       return null;
     }
   }
@@ -58,10 +57,10 @@ class FirestoreService {
   }) async {
     try {
       await firestore.collection(collectionPath).doc(documentId).set(data, SetOptions(merge: merge));
-      debugPrint('📝 Set document "$documentId" in "$collectionPath" successfully');
+      LoggerUtil.debugMessage(message: '📝 Set document "$documentId" in "$collectionPath" successfully');
       return true;
     } catch (e) {
-      debugPrint('❌ Failed to set document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to set document "$documentId" in "$collectionPath": $e');
       return false;
     }
   }
@@ -73,10 +72,10 @@ class FirestoreService {
   }) async {
     try {
       await firestore.collection(collectionPath).doc(documentId).update(data);
-      debugPrint('🔔 Updated document "$documentId" in "$collectionPath" successfully');
+      LoggerUtil.debugMessage(message: '🔔 Updated document "$documentId" in "$collectionPath" successfully');
       return true;
     } catch (e) {
-      debugPrint('❌ Failed to update document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to update document "$documentId" in "$collectionPath": $e');
       return false;
     }
   }
@@ -96,10 +95,10 @@ class FirestoreService {
       };
 
       await firestore.collection(collectionPath).doc(documentId).update(fieldUpdate);
-      debugPrint('${remove ? '➖ Removed' : '➕ Added'} values in "$fieldName" of "$documentId"');
+      LoggerUtil.debugMessage(message: '${remove ? '➖ Removed' : '➕ Added'} values in "$fieldName" of "$documentId"');
       return true;
     } catch (e) {
-      debugPrint('❌ Failed to update array field "$fieldName" in "$documentId": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to update array field "$fieldName" in "$documentId": $e');
       return false;
     }
   }
@@ -110,10 +109,10 @@ class FirestoreService {
   }) async {
     try {
       await firestore.collection(collectionPath).doc(documentId).delete();
-      debugPrint('🗑️ Deleted document "$documentId" from "$collectionPath" successfully');
+      LoggerUtil.debugMessage(message: '🗑️ Deleted document "$documentId" from "$collectionPath" successfully');
       return true;
     } catch (e) {
-      debugPrint('❌ Failed to delete document "$documentId" from "$collectionPath": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to delete document "$documentId" from "$collectionPath": $e');
       return false;
     }
   }
@@ -130,10 +129,10 @@ class FirestoreService {
       await ref.putFile(File(imagePath));
       final url = await ref.getDownloadURL();
 
-      debugPrint('📤 Uploaded image → $url');
+      LoggerUtil.debugMessage(message: '📤 Uploaded image → $url');
       return url;
     } catch (e) {
-      debugPrint('❌ Failed to upload image "$imagePath": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to upload image "$imagePath": $e');
       return null;
     }
   }

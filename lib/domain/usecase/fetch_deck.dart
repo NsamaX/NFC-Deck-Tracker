@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/create_deck.dart';
 import 'package:nfc_deck_tracker/data/repository/delete_deck.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_deck.dart';
 import 'package:nfc_deck_tracker/data/repository/update_deck.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/deck.dart';
 import '../mapper/deck.dart';
@@ -53,12 +53,12 @@ class FetchDeckUsecase {
       if (local == null) {
         await createDeckRepository.createLocalDeck(deck: DeckMapper.toModel(remote));
         localList.add(remote);
-        debugPrint('📥 Imported remote deck → local: ${remote.deckId}');
+        LoggerUtil.debugMessage(message: '📥 Imported remote deck → local: ${remote.deckId}');
       } else if (remote.updatedAt!.isAfter(local.updatedAt!)) {
         await updateDeckRepository.updateLocalDeck(deck: DeckMapper.toModel(remote));
         final index = localList.indexWhere((d) => d.deckId == remote.deckId);
         if (index != -1) localList[index] = remote;
-        debugPrint('📥 Updated local deck from remote: ${remote.deckId}');
+        LoggerUtil.debugMessage(message: '📥 Updated local deck from remote: ${remote.deckId}');
       }
     }
   }
@@ -77,9 +77,9 @@ class FetchDeckUsecase {
         await updateDeckRepository.updateLocalDeck(deck: DeckMapper.toModel(updated));
         final index = localList.indexWhere((d) => d.deckId == updated.deckId);
         if (index != -1) localList[index] = updated;
-        debugPrint('📤 Synced local deck → remote: ${deck.deckId}');
+        LoggerUtil.debugMessage(message: '📤 Synced local deck → remote: ${deck.deckId}');
       } else {
-        debugPrint('⚠️ Failed to sync local → remote: ${deck.deckId}');
+        LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${deck.deckId}');
       }
     }
   }
@@ -96,9 +96,9 @@ class FetchDeckUsecase {
       final success = await deleteDeckRepository.deleteLocalDeck(deckId: deck.deckId!);
       if (success) {
         localList.removeWhere((d) => d.deckId == deck.deckId);
-        debugPrint('🗑️ Deleted local deck not found in remote: ${deck.deckId}');
+        LoggerUtil.debugMessage(message: '🗑️ Deleted local deck not found in remote: ${deck.deckId}');
       } else {
-        debugPrint('⚠️ Failed to delete local-only deck: ${deck.deckId}');
+        LoggerUtil.debugMessage(message: '⚠️ Failed to delete local-only deck: ${deck.deckId}');
       }
     }
   }

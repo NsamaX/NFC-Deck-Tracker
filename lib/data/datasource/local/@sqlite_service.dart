@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:sqflite/sqflite.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -14,7 +13,7 @@ class SQLiteService {
     try {
       return _databaseService.database;
     } catch (e) {
-      debugPrint('❌ Failed to get database instance: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to get database instance: $e');
       rethrow;
     }
   }
@@ -43,7 +42,7 @@ class SQLiteService {
 
       return result;
     } catch (e) {
-      debugPrint('❌ Failed to execute raw query: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to execute raw query: $e');
       return [];
     }
   }
@@ -74,7 +73,7 @@ class SQLiteService {
 
       return result;
     } catch (e) {
-      debugPrint('❌ Failed to query table "$table": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to query table "$table": $e');
       return [];
     }
   }
@@ -97,9 +96,9 @@ class SQLiteService {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
-      debugPrint('📝 Inserted data into "$table" successfully');
+      LoggerUtil.debugMessage(message: '📝 Inserted data into "$table" successfully');
     } catch (e) {
-      debugPrint('❌ Failed to insert data into "$table": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to insert data into "$table": $e');
     }
   }
 
@@ -137,9 +136,9 @@ class SQLiteService {
         }
       });
 
-      debugPrint('📝 Inserted batch data into "$table" successfully');
+      LoggerUtil.debugMessage(message: '📝 Inserted batch data into "$table" successfully');
     } catch (e) {
-      debugPrint('❌ Failed to insert batch into "$table": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to insert batch into "$table": $e');
     }
   }
 
@@ -164,9 +163,9 @@ class SQLiteService {
         whereArgs: whereArgs,
       );
 
-      debugPrint('🔔 Updated data in "$table" successfully');
+      LoggerUtil.debugMessage(message: '🔔 Updated data in "$table" successfully');
     } catch (e) {
-      debugPrint('❌ Failed to update data in "$table": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to update data in "$table": $e');
     }
   }
 
@@ -189,13 +188,13 @@ class SQLiteService {
         whereArgs: whereArgs,
       );
 
-      debugPrint(
+      LoggerUtil.debugMessage(message: 
         where == null
             ? '🗑️ Deleted all data from "$table"'
             : '🗑️ Deleted data from "$table" with condition: $where');
       return true;
     } catch (e) {
-      debugPrint('❌ Failed to delete data from "$table": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to delete data from "$table": $e');
       return false;
     }
   }
@@ -216,7 +215,7 @@ class SQLiteService {
         throw Exception('Table "$table" does not exist.');
       }
     } catch (e) {
-      debugPrint('❌ Table check failed for "$table": $e');
+      LoggerUtil.debugMessage(message: '❌ Table check failed for "$table": $e');
       rethrow;
     }
   }

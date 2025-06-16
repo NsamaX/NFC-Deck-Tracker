@@ -4,6 +4,8 @@ import 'package:nfc_deck_tracker/data/repository/~index.dart';
 
 import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import 'setup_locator.dart';
 
 Future<void> setupUsecase() async {
@@ -16,9 +18,9 @@ Future<void> setupUsecase() async {
     setupRoomUsecase();
     setupSettingUsecase();
 
-    debugPrint('✔️ Usecase registered successfully.');
+    LoggerUtil.debugMessage(message: '✔️ Usecase registered successfully.');
   } catch (e) {
-    debugPrint('❌ Failed to register UseCase: $e');
+    LoggerUtil.debugMessage(message: '❌ Failed to register UseCase: $e');
   }
 }
 

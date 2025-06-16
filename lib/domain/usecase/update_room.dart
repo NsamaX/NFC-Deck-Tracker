@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/update_room.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/card.dart';
 import '../entity/room.dart';
@@ -33,7 +33,7 @@ class UpdateRoomUsecase {
     );
 
     if (!success) {
-      debugPrint('⚠️ Failed to update room "$roomId"');
+      LoggerUtil.debugMessage(message: '⚠️ Failed to update room "$roomId"');
     }
   }
 }

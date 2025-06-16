@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/delete_card.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/card.dart';
 import '../mapper/card.dart';
@@ -26,7 +26,7 @@ class DeleteCardUsecase {
       );
 
       if (!remoteSuccess) {
-        debugPrint('⚠️ Remote delete failed, local already removed');
+        LoggerUtil.debugMessage(message: '⚠️ Remote delete failed, local already removed');
       }
     }
   }

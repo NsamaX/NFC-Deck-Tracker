@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import 'language_manager.dart';
 import 'localization.dart';
 
@@ -13,7 +15,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
     final bool isSupported = LanguageManager.supportedLanguages.contains(locale.languageCode);
 
     if (!isSupported) {
-      debugPrint('🚫 Unsupported locale: ${locale.languageCode}');
+      LoggerUtil.debugMessage(message: '🚫 Unsupported locale: ${locale.languageCode}');
     }
 
     return isSupported;

@@ -1,5 +1,3 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
@@ -8,6 +6,8 @@ import 'package:nfc_deck_tracker/data/model/deck.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_card_in_deck.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_card.dart';
 import 'package:nfc_deck_tracker/data/repository/update_deck.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/deck.dart';
 import '../mapper/card.dart';
@@ -41,11 +41,11 @@ class FetchCardInDeckUsecase {
             final apiCard = await gameApi.findCard(cardId: model.card.cardId);
             remoteCards.add(apiCard);
           } catch (_) {
-            debugPrint("⚠️ ไม่พบการ์ด ${model.card.cardId} ใน GameApi");
+            LoggerUtil.debugMessage(message: '⚠️ ไม่พบการ์ด ${model.card.cardId} ใน GameApi');
           }
         }
       } catch (_) {
-        debugPrint("❌ GameApi ไม่พร้อมสำหรับ $collectionId");
+        LoggerUtil.debugMessage(message: '❌ GameApi ไม่พร้อมสำหรับ $collectionId');
       }
     } else {
       try {
@@ -54,7 +54,7 @@ class FetchCardInDeckUsecase {
           collectionId: collectionId,
         );
       } catch (_) {
-        debugPrint("⚠️ ไม่สามารถโหลดการ์ดจาก remote collection: $collectionId");
+        LoggerUtil.debugMessage(message: '⚠️ ไม่สามารถโหลดการ์ดจาก remote collection: $collectionId');
       }
     }
 

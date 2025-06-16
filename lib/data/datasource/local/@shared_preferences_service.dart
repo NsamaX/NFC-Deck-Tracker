@@ -1,5 +1,6 @@
-import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 class SharedPreferencesService {
   final SharedPreferences _sharedPreferences;
@@ -13,12 +14,12 @@ class SharedPreferencesService {
       final dynamic value = _sharedPreferences.get(key);
 
       if (value == null) {
-        debugPrint('❓ Key "$key" not found');
+        LoggerUtil.debugMessage(message: '❓ Key "$key" not found');
       }
 
       return value;
     } catch (e) {
-      debugPrint('❌ Failed to retrieve string for key "$key": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to retrieve string for key "$key": $e');
       return null;
     }
   }
@@ -44,12 +45,12 @@ class SharedPreferencesService {
       }
 
       if (success) {
-        debugPrint('📝 Saved value for key "$key" value "$value" successfully');
+        LoggerUtil.debugMessage(message: '📝 Saved value for key "$key" value "$value" successfully');
       } else {
-        debugPrint('❌ Failed to save value for key "$key"');
+        LoggerUtil.debugMessage(message: '❌ Failed to save value for key "$key"');
       }
     } catch (e) {
-      debugPrint('❌ Failed to save string for key "$key": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to save string for key "$key": $e');
     }
   }
 
@@ -57,9 +58,9 @@ class SharedPreferencesService {
     try {
       await _sharedPreferences.clear();
 
-      debugPrint('🧹 Cleared all SharedPreferences data successfully');
+      LoggerUtil.debugMessage(message: '🧹 Cleared all SharedPreferences data successfully');
     } catch (e) {
-      debugPrint('❌ Failed to clear SharedPreferences: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to clear SharedPreferences: $e');
     }
   }
 }

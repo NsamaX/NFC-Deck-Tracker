@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/remote/@firestore_service.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import 'setup_locator.dart';
 
 Future<void> setupFirestore() async {
@@ -13,8 +15,8 @@ Future<void> setupFirestore() async {
       storage: FirebaseStorage.instance,
     ));
 
-    debugPrint('✔️ Firestore registered successfully.');
+    LoggerUtil.debugMessage(message: '✔️ Firestore registered successfully.');
   } catch (e) {
-    debugPrint('❌ Failed to register Firestore: $e');
+    LoggerUtil.debugMessage(message: '❌ Failed to register Firestore: $e');
   }
 }

@@ -5,6 +5,8 @@ import 'package:nfc_deck_tracker/data/datasource/local/~index.dart';
 import 'package:nfc_deck_tracker/data/datasource/remote/~index.dart';
 import 'package:nfc_deck_tracker/data/repository/~index.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import 'setup_locator.dart';
 
 Future<void> setupRepository() async {
@@ -19,9 +21,9 @@ Future<void> setupRepository() async {
     setupSettingRepository();
     setupUploadImageRepository();
 
-    debugPrint('✔️ Repository registered successfully.');
+    LoggerUtil.debugMessage(message: '✔️ Repository registered successfully.');
   } catch (e) {
-    debugPrint('❌ Failed to register Repository: $e');
+    LoggerUtil.debugMessage(message: '❌ Failed to register Repository: $e');
   }
 }
 

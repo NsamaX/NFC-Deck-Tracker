@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/data/repository/create_collection.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/collection.dart';
 import '../mapper/collection.dart';
@@ -36,7 +37,7 @@ class CreateCollectionUsecase {
       );
 
       if (!remoteSuccess) {
-        debugPrint('⚠️ Remote create failed, saved as local only');
+        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, saved as local only');
       }
     } else {
       final localOnly = newCollection.copyWith(isSynced: false);

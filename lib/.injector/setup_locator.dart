@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import 'setup_cubit.dart';
 import 'setup_database.dart';
 import 'setup_datasource.dart';
@@ -15,7 +17,7 @@ final GetIt locator = GetIt.instance;
 
 Future<void> setupLocator() async {
   try {
-    debugPrint('⚙️ Setting up Service Locator...');
+    LoggerUtil.debugMessage(message: '⚙️ Setting up Service Locator...');
 
     await setupDatabase();
     await setupSqlite();
@@ -29,8 +31,8 @@ Future<void> setupLocator() async {
 
     await locator.allReady();
 
-    debugPrint('👌 Service Locator setup completed successfully.');
+    LoggerUtil.debugMessage(message: '👌 Service Locator setup completed successfully.');
   } catch (e) {
-    debugPrint('❌ Failed to setup Service Locator: $e');
+    LoggerUtil.debugMessage(message: '❌ Failed to setup Service Locator: $e');
   }
 }

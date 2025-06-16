@@ -22,6 +22,7 @@ import 'presentation/locale/localization_delegate.dart';
 import 'presentation/route/route_generator.dart';
 import 'presentation/theme/@theme.dart';
 
+import 'util/logger.dart';
 import 'util/nfc_session_handler.dart';
 
 // ignore_for_file: unused_import
@@ -75,7 +76,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
     nfcSessionHandler = NfcSessionHandler(nfcCubit: nfcCubit)..startObserving();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      debugPrint('📱 Starting app in ${kReleaseMode ? 'release' : 'debug'} mode');
+      LoggerUtil.debugMessage(message: '📱 Starting app');
     });
   }
 

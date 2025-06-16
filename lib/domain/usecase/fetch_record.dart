@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/create_record.dart';
 import 'package:nfc_deck_tracker/data/repository/delete_record.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_record.dart';
 import 'package:nfc_deck_tracker/data/repository/update_record.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/record.dart';
 import '../mapper/record.dart';
@@ -56,14 +56,14 @@ class FetchRecordUsecase {
       if (local == null) {
         await createRecordRepository.createLocalRecord(record: RecordMapper.toModel(remote));
         localList.add(remote);
-        debugPrint('📥 Imported remote record → local: ${remote.recordId}');
+        LoggerUtil.debugMessage(message: '📥 Imported remote record → local: ${remote.recordId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
         await updateRecordRepository.updateLocalRecord(record: RecordMapper.toModel(remote));
         final index = localList.indexWhere((r) => r.recordId == remote.recordId);
         if (index != -1) localList[index] = remote;
-        debugPrint('📥 Updated local record from remote: ${remote.recordId}');
+        LoggerUtil.debugMessage(message: '📥 Updated local record from remote: ${remote.recordId}');
       }
     }
   }
@@ -79,9 +79,9 @@ class FetchRecordUsecase {
         await updateRecordRepository.updateLocalRecord(record: RecordMapper.toModel(updated));
         final index = localList.indexWhere((r) => r.recordId == updated.recordId);
         if (index != -1) localList[index] = updated;
-        debugPrint('📤 Synced local record → remote: ${record.recordId}');
+        LoggerUtil.debugMessage(message: '📤 Synced local record → remote: ${record.recordId}');
       } else {
-        debugPrint('⚠️ Failed to sync local → remote: ${record.recordId}');
+        LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${record.recordId}');
       }
     }
   }
@@ -98,9 +98,9 @@ class FetchRecordUsecase {
       final success = await deleteRecordRepository.deleteLocalRecord(recordId: record.recordId);
       if (success) {
         localList.removeWhere((r) => r.recordId == record.recordId);
-        debugPrint('🗑️ Deleted local record not found in remote: ${record.recordId}');
+        LoggerUtil.debugMessage(message: '🗑️ Deleted local record not found in remote: ${record.recordId}');
       } else {
-        debugPrint('⚠️ Failed to delete local-only record: ${record.recordId}');
+        LoggerUtil.debugMessage(message: '⚠️ Failed to delete local-only record: ${record.recordId}');
       }
     }
   }

@@ -1,9 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'setup_locator.dart';
+import 'package:nfc_deck_tracker/util/logger.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+import 'setup_locator.dart';
 
 Future<void> setupMisc() async {
   try {
@@ -17,8 +18,8 @@ Future<void> setupMisc() async {
 
     locator.registerLazySingleton<RouteObserver<ModalRoute>>(() => RouteObserver<ModalRoute>());
 
-    debugPrint('✔️ Miscellaneous services registered successfully.');
+    LoggerUtil.debugMessage(message: '✔️ Miscellaneous services registered successfully.');
   } catch (e) {
-    debugPrint('❌ Failed to register Miscellaneous services: $e');
+    LoggerUtil.debugMessage(message: '❌ Failed to register Miscellaneous services: $e');
   }
 }

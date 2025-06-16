@@ -5,6 +5,8 @@ import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
 
 import 'package:nfc_deck_tracker/presentation/cubit/~index.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import 'setup_locator.dart';
 
 Future<void> setupCubit() async {
@@ -23,9 +25,9 @@ Future<void> setupCubit() async {
     setupTrackerCubit();
     setupUsageCardCubit();
 
-    debugPrint('✔️ Cubit registered successfully.');
+    LoggerUtil.debugMessage(message: '✔️ Cubit registered successfully.');
   } catch (e) {
-    debugPrint('❌ Failed to register Cubit: $e');
+    LoggerUtil.debugMessage(message: '❌ Failed to register Cubit: $e');
   }
 }
 

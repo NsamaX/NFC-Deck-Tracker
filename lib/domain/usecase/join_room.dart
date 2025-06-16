@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/join_room.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 class JoinRoomUsecase {
   final JoinRoomRepository joinRoomRepository;
@@ -19,7 +19,7 @@ class JoinRoomUsecase {
     );
 
     if (!success) {
-      debugPrint('⚠️ Failed to join room "$roomId"');
+      LoggerUtil.debugMessage(message: '⚠️ Failed to join room "$roomId"');
     }
   }
 }

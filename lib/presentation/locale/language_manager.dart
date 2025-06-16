@@ -1,8 +1,9 @@
 import 'dart:collection';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 class LanguageManager {
   static const String _localePath = 'assets/locale';
@@ -30,19 +31,19 @@ class LanguageManager {
           langMap[lang] = langData['language_name'] ?? lang;
         } catch (e) {
           langMap[lang] = lang;
-          debugPrint('❗ Failed to load language file for "$lang": $e');
+          LoggerUtil.debugMessage(message: '❗ Failed to load language file for "$lang": $e');
         }
       }
 
       supportedLanguages = UnmodifiableListView(languages);
       languageNames = UnmodifiableMapView(langMap);
 
-      debugPrint('💬 Supported languages loaded: ${supportedLanguages.join(", ")}');
+      LoggerUtil.debugMessage(message: '💬 Supported languages loaded: ${supportedLanguages.join(", ")}');
     } catch (e) {
       supportedLanguages = UnmodifiableListView([]);
       languageNames = UnmodifiableMapView({});
 
-      debugPrint('❌ Failed to load supported languages: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to load supported languages: $e');
     }
   }
 
@@ -52,7 +53,7 @@ class LanguageManager {
     final String name = languageNames[code] ?? '[Unknown Language]';
 
     if (name == '[Unknown Language]') {
-      debugPrint('❓ Unknown language code: "$code"');
+      LoggerUtil.debugMessage(message: '❓ Unknown language code: "$code"');
     }
 
     return name;

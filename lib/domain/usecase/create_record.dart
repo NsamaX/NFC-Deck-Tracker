@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/create_record.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/record.dart';
 import '../mapper/record.dart';
@@ -30,7 +30,7 @@ class CreateRecordUsecase {
       );
 
       if (!remoteSuccess) {
-        debugPrint('⚠️ Remote create failed, saved as local only');
+        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, saved as local only');
       }
     } else {
       final localOnly = record.copyWith(isSynced: false);

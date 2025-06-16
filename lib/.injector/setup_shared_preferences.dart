@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/local/@shared_preferences_service.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import 'setup_locator.dart';
 
 Future<void> setupSharedPreferences() async {
@@ -12,8 +14,8 @@ Future<void> setupSharedPreferences() async {
       return SharedPreferencesService(sharedPreferences);
     });
 
-    debugPrint('✔️ SharedPreferences registered successfully.');
+    LoggerUtil.debugMessage(message: '✔️ SharedPreferences registered successfully.');
   } catch (e) {
-    debugPrint('❌ Failed to register SharedPreferences: $e');
+    LoggerUtil.debugMessage(message: '❌ Failed to register SharedPreferences: $e');
   }
 }

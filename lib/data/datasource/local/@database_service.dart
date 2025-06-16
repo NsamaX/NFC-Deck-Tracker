@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '&database_constant.dart';
 
@@ -36,10 +37,10 @@ class DatabaseService {
 
       await _configureDatabase(db);
 
-      debugPrint('📂 Database initialized successfully');
+      LoggerUtil.debugMessage(message: '📂 Database initialized successfully');
       return db;
     } catch (e) {
-      debugPrint('❌ Failed to initialize the database: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to initialize the database: $e');
       rethrow;
     }
   }
@@ -58,9 +59,9 @@ class DatabaseService {
 
       await batch.commit();
 
-      debugPrint('🛠️ Tables created successfully');
+      LoggerUtil.debugMessage(message: '🛠️ Tables created successfully');
     } catch (e) {
-      debugPrint('❌ Failed to create tables: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to create tables: $e');
     }
   }
 
@@ -71,7 +72,7 @@ class DatabaseService {
   ) async {
     try {
       if (oldVersion < _dbVersion) {
-        debugPrint('🔄 Migrating database from v$oldVersion to v$newVersion...');
+        LoggerUtil.debugMessage(message: '🔄 Migrating database from v$oldVersion to v$newVersion...');
 
         final List<String> _migrations = DatabaseConstant.migrations;
         final Batch batch = db.batch();
@@ -82,10 +83,10 @@ class DatabaseService {
 
         await batch.commit();
 
-        debugPrint('🔔 Database migrated successfully');
+        LoggerUtil.debugMessage(message: '🔔 Database migrated successfully');
       }
     } catch (e) {
-      debugPrint('❌ Database migration failed: $e');
+      LoggerUtil.debugMessage(message: '❌ Database migration failed: $e');
     }
   }
 
@@ -96,9 +97,9 @@ class DatabaseService {
       await db.rawQuery('PRAGMA foreign_keys = ON');
       await db.rawQuery('PRAGMA journal_mode = WAL');
 
-      debugPrint('🔧 Database configured successfully');
+      LoggerUtil.debugMessage(message: '🔧 Database configured successfully');
     } catch (e) {
-      debugPrint('❌ Failed to configure database: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to configure database: $e');
     }
   }
 
@@ -109,9 +110,9 @@ class DatabaseService {
       await db?.close();
       _database = null;
 
-      debugPrint('🔒 Database closed successfully.');
+      LoggerUtil.debugMessage(message: '🔒 Database closed successfully.');
     } catch (e) {
-      debugPrint('❌ Failed to close database: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to close database: $e');
     }
   }
 
@@ -123,9 +124,9 @@ class DatabaseService {
       await closeDatabase();
       await deleteDatabase(path);
 
-      debugPrint('🗑️ Database "$_db" deleted successfully.');
+      LoggerUtil.debugMessage(message: '🗑️ Database "$_db" deleted successfully.');
     } catch (e) {
-      debugPrint('❌ Failed to delete database "$_db": $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to delete database "$_db": $e');
     }
   }
 }

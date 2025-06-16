@@ -1,5 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+
+import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+
+import 'package:nfc_deck_tracker/util/google_athen.dart';
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../locale/localization.dart';
 import '../route/route_constant.dart';
@@ -17,20 +22,17 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  final GoogleSignIn _googleSignIn = GoogleSignIn();
-
   @override
   void initState() {
     super.initState();
-
-    _signOutIfNeeded();
+    _signOutIfLoggedIn();
   }
 
-  Future<void> _signOutIfNeeded() async {
-    final isSignedIn = await _googleSignIn.isSignedIn();
-    if (isSignedIn) {
-      await _googleSignIn.signOut();
-      debugPrint('User signed out from Google');
+  Future<void> _signOutIfLoggedIn() async {
+    final user = locator<FirebaseAuth>().currentUser;
+    if (user != null) {
+      await signOutFromGoogle();
+      LoggerUtil.debugMessage(message: 'User signed out automatically on LandingPage');
     }
   }
 

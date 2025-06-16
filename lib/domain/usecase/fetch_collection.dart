@@ -1,9 +1,9 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/create_collection.dart';
 import 'package:nfc_deck_tracker/data/repository/delete_collection.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_collection.dart';
 import 'package:nfc_deck_tracker/data/repository/update_collection.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/collection.dart';
 import '../mapper/collection.dart';
@@ -55,7 +55,7 @@ class FetchCollectionUsecase {
           collection: CollectionMapper.toModel(remote),
         );
         localList.add(remote);
-        debugPrint('📥 Imported remote → local: ${remote.collectionId}');
+        LoggerUtil.debugMessage(message: '📥 Imported remote → local: ${remote.collectionId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
@@ -64,7 +64,7 @@ class FetchCollectionUsecase {
         );
         final index = localList.indexWhere((c) => c.collectionId == remote.collectionId);
         if (index != -1) localList[index] = remote;
-        debugPrint('📥 Updated local from remote: ${remote.collectionId}');
+        LoggerUtil.debugMessage(message: '📥 Updated local from remote: ${remote.collectionId}');
       }
     }
   }
@@ -82,9 +82,9 @@ class FetchCollectionUsecase {
         );
         final index = localList.indexWhere((c) => c.collectionId == updated.collectionId);
         if (index != -1) localList[index] = updated;
-        debugPrint('📤 Synced local → remote: ${collection.collectionId}');
+        LoggerUtil.debugMessage(message: '📤 Synced local → remote: ${collection.collectionId}');
       } else {
-        debugPrint('⚠️ Failed to sync local → remote: ${collection.collectionId}');
+        LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${collection.collectionId}');
       }
     }
   }
@@ -103,9 +103,9 @@ class FetchCollectionUsecase {
       );
       if (success) {
         localList.removeWhere((c) => c.collectionId == collection.collectionId);
-        debugPrint('🗑️ Deleted local not found in remote: ${collection.collectionId}');
+        LoggerUtil.debugMessage(message: '🗑️ Deleted local not found in remote: ${collection.collectionId}');
       } else {
-        debugPrint('⚠️ Failed to delete local-only collection: ${collection.collectionId}');
+        LoggerUtil.debugMessage(message: '⚠️ Failed to delete local-only collection: ${collection.collectionId}');
       }
     }
   }

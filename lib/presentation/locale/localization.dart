@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 class AppLocalization {
   static const String _localePath = 'assets/locale';
 
@@ -19,10 +21,10 @@ class AppLocalization {
 
       _localizedStrings.addAll(json.decode(jsonString));
 
-      debugPrint('🔄 Localization loaded: ${locale.languageCode}');
+      LoggerUtil.debugMessage(message: '🔄 Localization loaded: ${locale.languageCode}');
     } catch (e) {
       _localizedStrings.clear();
-      debugPrint('❌ Failed to load localization: $e');
+      LoggerUtil.debugMessage(message: '❌ Failed to load localization: $e');
     }
   }
 
@@ -42,12 +44,12 @@ class AppLocalization {
       ).toString();
 
       if (result.startsWith('[Missing')) {
-        debugPrint('❗ Key not found: "$key"');
+        LoggerUtil.debugMessage(message: '❗ Key not found: "$key"');
       }
 
       return result;
     } catch (e) {
-      debugPrint('❌ Translation error: $e');
+      LoggerUtil.debugMessage(message: '❌ Translation error: $e');
       return '[Error: $key]';
     }
   }

@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/delete_record.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 class DeleteRecordUsecase {
   final DeleteRecordRepository deleteRecordRepository;
@@ -22,7 +22,7 @@ class DeleteRecordUsecase {
       );
 
       if (!remoteSuccess) {
-        debugPrint('⚠️ Remote delete failed, local already removed');
+        LoggerUtil.debugMessage(message: '⚠️ Remote delete failed, local already removed');
       }
     }
   }

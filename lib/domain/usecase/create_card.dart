@@ -1,9 +1,10 @@
-import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/data/repository/check_duplicate_name.dart';
 import 'package:nfc_deck_tracker/data/repository/create_card.dart';
 import 'package:nfc_deck_tracker/data/repository/upload_image.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/card.dart';
 import '../mapper/card.dart';
@@ -60,7 +61,7 @@ class CreateCardUsecase {
       );
 
       if (!success) {
-        debugPrint('⚠️ Remote create failed, will not save locally');
+        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, will not save locally');
         return;
       }
     }

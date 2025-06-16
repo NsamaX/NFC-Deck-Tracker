@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/create_room.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/room.dart';
 import '../mapper/room.dart';
@@ -20,7 +20,7 @@ class CreateRoomUsecase {
     );
 
     if (!success) {
-      debugPrint('⚠️ Failed to create room remotely');
+      LoggerUtil.debugMessage(message: '⚠️ Failed to create room remotely');
     }
   }
 }

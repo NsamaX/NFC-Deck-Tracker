@@ -1,6 +1,6 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/update_deck.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/deck.dart';
 import '../mapper/deck.dart';
@@ -30,7 +30,7 @@ class UpdateDeckUsecase {
       );
 
       if (!success) {
-        debugPrint('⚠️ Remote update failed, saved as local only');
+        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, saved as local only');
       }
     } else {
       final localOnly = deck.copyWith(isSynced: false);

@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/data/repository/update_card.dart';
 import 'package:nfc_deck_tracker/data/repository/upload_image.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/card.dart';
 import '../mapper/card.dart';
@@ -44,7 +44,7 @@ class UpdateCardUsecase {
       );
 
       if (!success) {
-        debugPrint('⚠️ Remote update failed, saved as local only');
+        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, saved as local only');
       }
     }
   }

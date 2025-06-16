@@ -99,7 +99,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         cb();
         break;
       default:
-        debugPrint('Unknown action type: $action');
+        break;
     }
   }
 
