@@ -8,7 +8,14 @@ import 'package:nfc_deck_tracker/.config/app.dart';
 import 'package:nfc_deck_tracker/presentation/cubit/application_cubit.dart';
 import 'package:nfc_deck_tracker/presentation/route/route_constant.dart';
 
-Future<String> signInWithGoogle() async {
+enum SignInStatus {
+  success,
+  cancelled,
+  fail,
+  unknown,
+}
+
+Future<SignInStatus> signInWithGoogle() async {
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   try {
@@ -16,7 +23,7 @@ Future<String> signInWithGoogle() async {
     await googleSignIn.signOut();
 
     final GoogleSignInAccount? googleUser = await googleSignIn.signIn();
-    if (googleUser == null) return 'cancelled';
+    if (googleUser == null) return SignInStatus.cancelled;
 
     final googleAuth = await googleUser.authentication;
     final credential = GoogleAuthProvider.credential(
@@ -27,11 +34,11 @@ Future<String> signInWithGoogle() async {
     final userCredential = await auth.signInWithCredential(credential);
     final user = userCredential.user;
 
-    if (user == null) return 'fail';
+    if (user == null) return SignInStatus.fail;
 
-    return 'success';
+    return SignInStatus.success;
   } catch (e) {
-    return 'unknown';
+    return SignInStatus.unknown;
   }
 }
 

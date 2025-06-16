@@ -21,21 +21,30 @@ class ButtonGoogleSignIn extends StatelessWidget {
   Future<void> _handleGoogleSignIn(BuildContext context) async {
     final locale = AppLocalization.of(context);
 
-    switch (await signInWithGoogle()) {
-      case 'success':
+    final result = await signInWithGoogle();
+
+    switch (result) {
+      case SignInStatus.success:
         handleGuestSignIn(context);
         break;
-      case 'cancelled':
+      case SignInStatus.cancelled:
         AppSnackBar(
           context,
-          text: locale.translate('page_sign_in.snack_bar_sign_in_error_unknow'),
+          text: locale.translate('page_sign_in.snack_bar_sign_in_cancelled'),
           type: SnackBarType.warning,
         );
         break;
-      case 'fail':
+      case SignInStatus.fail:
         AppSnackBar(
           context,
           text: locale.translate('page_sign_in.snack_bar_sign_in_fail'),
+          type: SnackBarType.error,
+        );
+        break;
+      case SignInStatus.unknown:
+        AppSnackBar(
+          context,
+          text: locale.translate('page_sign_in.snack_bar_sign_in_error_unknow'),
           type: SnackBarType.error,
         );
         break;
