@@ -51,11 +51,9 @@ class ServiceFactory {
 
   static final Map<String, GameApi Function(String baseUrl)> _apiRegistry = {
     Game.pokemon: (baseUrl) => PokemonApi(baseUrl),
-    Game.vanguard: (baseUrl) => VanguardApi(baseUrl),
   };
 
   static final Map<String, PagingStrategy Function()> _pagingRegistry = {
     Game.pokemon: () => PokemonPagingStrategy(),
-    Game.vanguard: () => VanguardPagingStrategy(),
   };
 }
