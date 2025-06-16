@@ -2,9 +2,9 @@ class App {
   // User settings
   static const String keyLocale           = 'locale';
   static const String keyIsDark           = 'isDark';
-  static const String keyIsLoggedIn       = 'isLoggedIn';
 
-  // Recently selected data
+  // App state
+  static const String keyIsLoggedIn       = 'isLoggedIn';
   static const String keyRecentId         = 'recentId';
   static const String keyRecentGame       = 'recentGame';
 
