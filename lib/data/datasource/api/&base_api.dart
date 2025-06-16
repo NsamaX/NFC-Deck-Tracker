@@ -2,6 +2,8 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 abstract class BaseApi {
   final String baseUrl;
   final http.Client client;
@@ -21,6 +23,9 @@ abstract class BaseApi {
     Map<String, String>? queryParams,
   ]) async {
     final Uri url = _buildUrl(path, queryParams);
+
+    LoggerUtil.addMessage(message: 'Sending GET request to: $url');
+    LoggerUtil.flushMessages();
 
     try {
       final http.Response response = await client.get(

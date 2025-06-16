@@ -13,6 +13,7 @@
     "ability": "Ability",
     "no_name": "No name",
     "no_description": "No description",
+    "no_image": "No image",
     "no_result": "No cards found matching your search."
   },
   "nfc_snack_bar": {

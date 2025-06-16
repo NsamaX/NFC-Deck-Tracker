@@ -15,7 +15,7 @@ class VanguardApi extends BaseApi implements GameApi {
     required String cardId,
   }) async {
     final response = await getRequest('cards/$cardId');
-    final cardData = decodeResponse(response);
+    final cardData = decodeResponse(response)['data'] as Map<String, dynamic>;
 
     return _parseCardData(cardData);
   }

@@ -58,7 +58,7 @@ class CardImage extends StatelessWidget {
     return _buildPlaceholder(
       context,
       icon: Icons.image_not_supported,
-      text: locale.translate('text.no_card_image'),
+      text: locale.translate('card.no_image'),
     );
   }
 

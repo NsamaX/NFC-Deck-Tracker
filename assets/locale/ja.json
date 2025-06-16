@@ -13,6 +13,7 @@
     "ability": "能力",
     "no_name": "名称なし",
     "no_description": "説明なし",
+    "no_image": "画像なし",
     "no_result": "検索条件に一致するカードが見つかりませんでした。"
   },
   "nfc_snack_bar": {
