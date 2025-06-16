@@ -61,7 +61,7 @@ class MyApp extends StatefulWidget {
   State<MyApp> createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+class _MyAppState extends State<MyApp> {
   final RouteObserver<ModalRoute> routeObserver = locator<RouteObserver<ModalRoute>>();
 
   late final NfcCubit nfcCubit;
@@ -70,8 +70,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addObserver(this);
-
     nfcCubit = locator<NfcCubit>();
     nfcSessionHandler = NfcSessionHandler(nfcCubit: nfcCubit)..startObserving();
 
@@ -82,16 +80,8 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     nfcSessionHandler.stopObservingAndDispose();
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
-      nfcSessionHandler.stopObservingAndDispose();
-    }
   }
 
   @override
