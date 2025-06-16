@@ -24,6 +24,7 @@ Future<void> setupUsecase() async {
 
 void setupCardUsecase() {
   locator.registerLazySingleton(() => CreateCardUsecase(
+    checkDuplicateNameRepository: locator<CheckDuplicateNameRepository>(),
     createCardRepository: locator<CreateCardRepository>(),
     uploadImageRepository: locator<UploadImageRepository>(),
   ));

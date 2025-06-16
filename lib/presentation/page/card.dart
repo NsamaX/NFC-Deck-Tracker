@@ -120,6 +120,7 @@ class _CardPageContent extends State<_CardContent> {
                   const SizedBox(height: 24.0),
                   CardCustomInfo(
                     cardCubit: cardCubit,
+                    collectionId: collectionId,
                     nameController: nameController,
                     descriptionController: descriptionController,
                     abilityController: abilityController,

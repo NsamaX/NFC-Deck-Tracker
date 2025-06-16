@@ -46,6 +46,7 @@ void setupServiceFactoryRemoteDatasource() {
 }
 
 void setupCardLocalDatasource() {
+  locator.registerLazySingleton(() => CheckDuplicateNameLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => CreateCardLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => DeleteCardLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FetchCardLocalDatasource(locator<SQLiteService>()));

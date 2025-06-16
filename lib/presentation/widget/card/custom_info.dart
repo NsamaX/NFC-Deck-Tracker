@@ -6,6 +6,7 @@ import '../../theme/@theme.dart';
 
 class CardCustomInfo extends StatelessWidget {
   final CardCubit cardCubit;
+  final String collectionId;
   final TextEditingController nameController;
   final TextEditingController descriptionController;
   final TextEditingController abilityController;
@@ -13,6 +14,7 @@ class CardCustomInfo extends StatelessWidget {
   const CardCustomInfo({
     super.key,
     required this.cardCubit,
+    required this.collectionId,
     required this.nameController,
     required this.descriptionController,
     required this.abilityController,

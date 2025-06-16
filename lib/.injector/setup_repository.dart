@@ -26,6 +26,9 @@ Future<void> setupRepository() async {
 }
 
 void setupCardRepository() {
+  locator.registerLazySingleton(() => CheckDuplicateNameRepository(
+    checkDuplicateNameLocalDatasource: locator<CheckDuplicateNameLocalDatasource>(),
+  ));
   locator.registerLazySingleton(() => CreateCardRepository(
     createCardLocalDatasource: locator<CreateCardLocalDatasource>(),
     createCardRemoteDatasource: locator<CreateCardRemoteDatasource>(),
