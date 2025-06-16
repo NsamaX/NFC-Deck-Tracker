@@ -3,7 +3,7 @@ part of 'application_cubit.dart';
 class ApplicationState extends Equatable {
   final Locale locale;
   final bool isDark;
-  final bool isUserLoggedIn;
+  final bool keyIsLoggedIn;
   final String recentId;
   final String recentGame;
   final int currentPageIndex;
@@ -11,7 +11,7 @@ class ApplicationState extends Equatable {
   const ApplicationState({
     required this.locale,
     required this.isDark,
-    required this.isUserLoggedIn,
+    required this.keyIsLoggedIn,
     required this.recentId,
     required this.recentGame,
     required this.currentPageIndex,
@@ -19,9 +19,9 @@ class ApplicationState extends Equatable {
 
   factory ApplicationState.initialFromConstant() {
     return ApplicationState(
-      locale: Locale(App.all[App.keylocale]),
+      locale: Locale(App.all[App.keyLocale]),
       isDark: App.all[App.keyIsDark],
-      isUserLoggedIn: App.all[App.keyIsUserLoggedIn],
+      keyIsLoggedIn: App.all[App.keyIsLoggedIn],
       recentId: '',
       recentGame: '',
       currentPageIndex: RouteConstant.on_boarding_index,
@@ -31,7 +31,7 @@ class ApplicationState extends Equatable {
   ApplicationState copyWith({
     Locale? locale,
     bool? isDark,
-    bool? isUserLoggedIn,
+    bool? keyIsLoggedIn,
     String? recentId,
     String? recentGame,
     int? currentPageIndex,
@@ -39,7 +39,7 @@ class ApplicationState extends Equatable {
     return ApplicationState(
       locale: locale ?? this.locale,
       isDark: isDark ?? this.isDark,
-      isUserLoggedIn: isUserLoggedIn ?? this.isUserLoggedIn,
+      keyIsLoggedIn: keyIsLoggedIn ?? this.keyIsLoggedIn,
       recentId: recentId ?? this.recentId,
       recentGame: recentGame ?? this.recentGame,
       currentPageIndex: currentPageIndex ?? this.currentPageIndex,
@@ -50,7 +50,7 @@ class ApplicationState extends Equatable {
   List<Object?> get props => [
         locale,
         isDark,
-        isUserLoggedIn,
+        keyIsLoggedIn,
         recentId,
         recentGame,
         currentPageIndex,

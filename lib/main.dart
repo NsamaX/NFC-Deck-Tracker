@@ -110,7 +110,7 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
           theme: AppTheme(state.isDark),
           onGenerateRoute: RouteGenerator.generateRoute,
           initialRoute: RouteGenerator.getInitialRoute(
-            loggedIn: state.isUserLoggedIn,
+            loggedIn: state.keyIsLoggedIn,
           ),
           navigatorObservers: [
             routeObserver,

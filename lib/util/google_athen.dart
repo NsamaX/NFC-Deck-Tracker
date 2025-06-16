@@ -46,7 +46,7 @@ Future<void> signOutFromGoogle() async {
 
 Future<void> handleGuestSignIn(BuildContext context) async {
   context.read<ApplicationCubit>().updateSetting(
-    key: App.keyIsUserLoggedIn,
+    key: App.keyIsLoggedIn,
     value: true,
   );
 
