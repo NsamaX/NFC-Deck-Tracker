@@ -32,16 +32,27 @@ service cloud.firestore {
 
     // Publicly shared rooms for gameplay
     match /rooms/{roomId} {
+      // Create: must be signed in and playerIds has exactly 2 players, and includes the creator
       allow create: if request.auth != null
-                    && request.resource.data.playerIds.size() <= 2
+                    && request.resource.data.playerIds.size() == 2
                     && request.resource.data.playerIds.hasAny([request.auth.uid]);
 
-      allow read, update, delete: if request.auth != null && request.auth.uid in resource.data.playerIds;
+      // Read: only allowed when both players confirmed
+      allow read: if request.auth != null
+                  && request.auth.uid in resource.data.playerIds
+                  && resource.data.confirmed[resource.data.playerIds[0]] == true
+                  && resource.data.confirmed[resource.data.playerIds[1]] == true;
 
+      // Write (update/delete): allowed if signed in and is a player
+      allow update, delete: if request.auth != null
+                            && request.auth.uid in resource.data.playerIds;
+
+      // Subcollection: records
       match /records/{recordId} {
         allow read, write: if request.auth != null && request.auth.uid in resource.data.playerIds;
       }
 
+      // Subcollection: cards
       match /cards/{cardId} {
         allow read, write: if request.auth != null && request.auth.uid in resource.data.playerIds;
       }
