@@ -7,9 +7,9 @@ class CloseRoomRepository {
     required this.closeRoomRemoteDatasource,
   });
 
-  Future<void> close({
+  Future<bool> close({
     required String roomId,
   }) async {
-    await closeRoomRemoteDatasource.close(roomId: roomId);
+    return await closeRoomRemoteDatasource.close(roomId: roomId);
   }
 }
