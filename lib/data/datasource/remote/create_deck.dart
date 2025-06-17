@@ -14,24 +14,11 @@ class CreateDeckRemoteDatasource {
     if (deck.cards.isEmpty) return false;
 
     final deckPath = 'users/$userId/decks';
-    final cardsList = deck.toJsonForCardsInDeck();
-    final Map<String, List<Map<String, dynamic>>> groupedCards = {};
 
-    for (var card in cardsList) {
-      final collectionId = card['collectionId'];
-      final cardData = {
-        'cardId': card['cardId'],
-        'count': card['count'],
-      };
+    final cardsList = deck.cards.map((cardInDeck) => cardInDeck.toJson()).toList();
 
-      if (!groupedCards.containsKey(collectionId)) {
-        groupedCards[collectionId] = [];
-      }
-
-      groupedCards[collectionId]!.add(cardData);
-    }
-
-    final deckData = deck.toJsonForRemote()..addAll({'cards': groupedCards});
+    final deckData = deck.toJsonForRemote()
+      ..addAll({'cards': cardsList});
 
     final deckInserted = await _firestoreService.insert(
       collectionPath: deckPath,

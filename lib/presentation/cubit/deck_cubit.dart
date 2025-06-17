@@ -101,15 +101,13 @@ class DeckCubit extends Cubit<DeckState> {
   }
 
   Future<void> fetchCardsInDeck({
-    required String userId,
     required String deckId,
-    required String deckName,
     required String collectionId,
   }) async {
     safeEmit(state.copyWith(isLoading: true));
 
     final fetchCardInDeckUsecase = locator<FetchCardInDeckUsecase>(param1: collectionId);
-    final cards = await fetchCardInDeckUsecase.call(userId: userId, deckId: deckId, deckName: deckName, collectionId: collectionId);
+    final cards = await fetchCardInDeckUsecase.call(deckId: deckId, collectionId: collectionId);
 
     safeEmit(state.copyWith(
       currentDeck: state.currentDeck.copyWith(cards: cards),

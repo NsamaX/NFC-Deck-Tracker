@@ -46,6 +46,7 @@ class DatabaseConstant {
       cardId TEXT NOT NULL,
       deckId TEXT NOT NULL,
       count INTEGER NOT NULL,
+      PRIMARY KEY (deckId, collectionId, cardId),
       FOREIGN KEY (collectionId, cardId) REFERENCES cards(collectionId, cardId) ON DELETE CASCADE,
       FOREIGN KEY (deckId) REFERENCES decks(deckId) ON DELETE CASCADE
     );

@@ -11,10 +11,7 @@ class UpdateDeckRemoteDatasource {
     required String userId,
     required DeckModel deck,
   }) async {
-    final cardsJson = deck.cards.map((cardInDeck) => {
-      'cardId': cardInDeck.card.cardId,
-      'count': cardInDeck.count,
-    }).toList();
+    final cardsJson = deck.cards.map((cardInDeck) => cardInDeck.toJson()).toList();
 
     final deckData = deck.toJsonForRemote()
       ..remove('deckId')

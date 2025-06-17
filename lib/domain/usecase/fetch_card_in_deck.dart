@@ -3,10 +3,7 @@ import 'package:nfc_deck_tracker/.config/game.dart';
 import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
 import 'package:nfc_deck_tracker/data/model/card.dart';
 import 'package:nfc_deck_tracker/data/model/card_in_deck.dart';
-import 'package:nfc_deck_tracker/data/model/deck.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_card_in_deck.dart';
-import 'package:nfc_deck_tracker/data/repository/fetch_card.dart';
-import 'package:nfc_deck_tracker/data/repository/update_deck.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
@@ -15,22 +12,16 @@ import '../mapper/card.dart';
 
 class FetchCardInDeckUsecase {
   final FetchCardInDeckRepository fetchCardInDeckRepository;
-  final FetchCardRepository fetchCardRepository;
-  final UpdateDeckRepository updateDeckRepository;
 
   FetchCardInDeckUsecase({
     required this.fetchCardInDeckRepository,
-    required this.fetchCardRepository,
-    required this.updateDeckRepository,
   });
 
   Future<List<CardInDeckEntity>> call({
-    required String userId,
     required String deckId,
-    required String deckName,
     required String collectionId,
   }) async {
-    final localCardModels = await fetchCardInDeckRepository.fetchForLocal(deckId: deckId);
+    final localCardModels = await fetchCardInDeckRepository.fetch(deckId: deckId);
 
     List<CardModel> remoteCards = [];
 
@@ -42,20 +33,15 @@ class FetchCardInDeckUsecase {
             final apiCard = await gameApi.find(cardId: model.card.cardId);
             remoteCards.add(apiCard);
           } catch (_) {
-            LoggerUtil.debugMessage(message: '⚠️ ไม่พบการ์ด ${model.card.cardId} ใน GameApi');
+            LoggerUtil.debugMessage(
+              message: '⚠️ Card ${model.card.cardId} not found in Game API',
+            );
           }
         }
       } catch (_) {
-        LoggerUtil.debugMessage(message: '❌ GameApi ไม่พร้อมสำหรับ $collectionId');
-      }
-    } else {
-      try {
-        remoteCards = await fetchCardRepository.fetchForRemote(
-          userId: userId,
-          collectionId: collectionId,
+        LoggerUtil.debugMessage(
+          message: '❌ Game API is not available for $collectionId',
         );
-      } catch (_) {
-        LoggerUtil.debugMessage(message: '⚠️ ไม่สามารถโหลดการ์ดจาก remote collection: $collectionId');
       }
     }
 
@@ -73,16 +59,11 @@ class FetchCardInDeckUsecase {
       ));
     }
 
-    final syncDeck = DeckModel(
-      deckId: deckId,
-      name: deckName,
-      cards: updatedCards,
-      isSynced: true,
-      updatedAt: DateTime.now(),
-    );
-
-    await updateDeckRepository.updateForLocal(deck: syncDeck);
-
-    return syncDeck.cards.map((c) => CardInDeckEntity(card: CardMapper.toEntity(c.card), count: c.count)).toList();
+    return updatedCards
+        .map((c) => CardInDeckEntity(
+              card: CardMapper.toEntity(c.card),
+              count: c.count,
+            ))
+        .toList();
   }
 }

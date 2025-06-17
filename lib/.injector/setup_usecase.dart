@@ -85,8 +85,6 @@ void setupDeckUsecase() {
   locator.registerFactoryParam<FetchCardInDeckUsecase, String, void>((collectionId, _) {
     return FetchCardInDeckUsecase(
       fetchCardInDeckRepository: locator<FetchCardInDeckRepository>(),
-      fetchCardRepository: locator<FetchCardRepository>(param1: collectionId),
-      updateDeckRepository: locator<UpdateDeckRepository>(),
     );
   });
   locator.registerLazySingleton(() => FetchDeckUsecase(
