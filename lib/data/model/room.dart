@@ -7,7 +7,7 @@ class RoomModel {
   final List<CardModel> cards;
   final RecordModel record;
 
-  RoomModel({
+  const RoomModel({
     required this.roomId,
     required this.playerIds,
     required this.cards,
@@ -19,7 +19,7 @@ class RoomModel {
         json['playerIds'] == null ||
         json['cards'] == null ||
         json['record'] == null) {
-      throw FormatException('Missing required fields');
+      throw FormatException('Missing required fields in RoomModel');
     }
 
     return RoomModel(

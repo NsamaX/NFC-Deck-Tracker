@@ -26,8 +26,13 @@ class CardModel {
         json['cardId'] == null ||
         json['name'] == null ||
         json['updatedAt'] == null) {
-      throw FormatException('Missing required fields');
+      throw FormatException('Missing required fields in CardModel');
     }
+
+    final rawAdditionalData = json['additionalData'];
+    final parsedAdditionalData = rawAdditionalData is String
+        ? jsonDecode(rawAdditionalData)
+        : rawAdditionalData;
 
     return CardModel(
       collectionId: json['collectionId'],
@@ -35,9 +40,7 @@ class CardModel {
       name: json['name'],
       imageUrl: json['imageUrl'],
       description: json['description'],
-      additionalData: json['additionalData'] is String
-          ? jsonDecode(json['additionalData'])
-          : json['additionalData'],
+      additionalData: parsedAdditionalData,
       isSynced: (json['isSynced'] == true || json['isSynced'] == 1),
       updatedAt: DateTime.parse(json['updatedAt']),
     );

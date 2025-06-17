@@ -32,14 +32,12 @@ class DeckEntity extends Equatable {
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
-  static var empty = DeckEntity(
-    deckId: '',
-    name: '',
-    cards: const [],
-    isSynced: false,
-    updatedAt: DateTime.now(),
-  );
-
   @override
-  List<Object?> get props => [deckId, name, cards, isSynced, updatedAt];
+  List<Object?> get props => [
+        deckId,
+        name,
+        cards,
+        isSynced,
+        updatedAt,
+      ];
 }

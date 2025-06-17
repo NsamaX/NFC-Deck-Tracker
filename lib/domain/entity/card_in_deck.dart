@@ -21,5 +21,8 @@ class CardInDeckEntity extends Equatable {
       );
 
   @override
-  List<Object?> get props => [card, count];
+  List<Object?> get props => [
+        card,
+        count,
+      ];
 }

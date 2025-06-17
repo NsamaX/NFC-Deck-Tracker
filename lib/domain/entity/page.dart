@@ -1,4 +1,6 @@
-class PageEntity {
+import 'package:equatable/equatable.dart';
+
+class PageEntity extends Equatable {
   final String collectionId;
   final Map<String, dynamic> paging;
 
@@ -10,8 +12,15 @@ class PageEntity {
   PageEntity copyWith({
     String? collectionId,
     Map<String, dynamic>? paging,
-  }) => PageEntity(
+  }) =>
+      PageEntity(
         collectionId: collectionId ?? this.collectionId,
         paging: paging ?? this.paging,
       );
+
+  @override
+  List<Object?> get props => [
+        collectionId,
+        paging,
+      ];
 }

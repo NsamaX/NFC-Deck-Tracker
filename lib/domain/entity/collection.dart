@@ -1,4 +1,6 @@
-class CollectionEntity {
+import 'package:equatable/equatable.dart';
+
+class CollectionEntity extends Equatable {
   final String collectionId;
   final String name;
   final bool? isSynced;
@@ -16,10 +18,19 @@ class CollectionEntity {
     String? name,
     bool? isSynced,
     DateTime? updatedAt,
-  }) => CollectionEntity(
+  }) =>
+      CollectionEntity(
         collectionId: collectionId ?? this.collectionId,
         name: name ?? this.name,
         isSynced: isSynced ?? this.isSynced,
         updatedAt: updatedAt ?? this.updatedAt,
       );
+
+  @override
+  List<Object?> get props => [
+        collectionId,
+        name,
+        isSynced,
+        updatedAt,
+      ];
 }

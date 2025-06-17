@@ -1,4 +1,6 @@
-class TagEntity {
+import 'package:equatable/equatable.dart';
+
+class TagEntity extends Equatable {
   final String tagId;
   final String collectionId;
   final String cardId;
@@ -13,9 +15,17 @@ class TagEntity {
     String? tagId,
     String? collectionId,
     String? cardId,
-  }) => TagEntity(
+  }) =>
+      TagEntity(
         tagId: tagId ?? this.tagId,
         collectionId: collectionId ?? this.collectionId,
         cardId: cardId ?? this.cardId,
       );
+
+  @override
+  List<Object?> get props => [
+        tagId,
+        collectionId,
+        cardId,
+      ];
 }

@@ -16,7 +16,7 @@ class CollectionModel {
         json['name'] == null ||
         json['isSynced'] == null ||
         json['updatedAt'] == null) {
-      throw FormatException('Missing required fields');
+      throw FormatException('Missing required fields in CollectionModel');
     }
 
     return CollectionModel(

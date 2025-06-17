@@ -26,13 +26,11 @@ class RecordModel {
         json['data'] == null ||
         json['isSynced'] == null ||
         json['updatedAt'] == null) {
-      throw FormatException('Missing required fields');
+      throw FormatException('Missing required fields in RecordModel');
     }
 
     final rawData = json['data'];
-    final parsedData = rawData is String
-        ? jsonDecode(rawData)
-        : rawData;
+    final parsedData = rawData is String ? jsonDecode(rawData) : rawData;
 
     return RecordModel(
       recordId: json['recordId'],

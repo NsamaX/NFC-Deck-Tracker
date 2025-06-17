@@ -1,7 +1,9 @@
+import 'package:equatable/equatable.dart';
+
 import 'card.dart';
 import 'record.dart';
 
-class RoomEntity {
+class RoomEntity extends Equatable {
   final String roomId;
   final List<String> playerIds;
   final List<CardEntity> cards;
@@ -19,10 +21,19 @@ class RoomEntity {
     List<String>? playerIds,
     List<CardEntity>? cards,
     RecordEntity? record,
-  }) => RoomEntity(
+  }) =>
+      RoomEntity(
         roomId: roomId ?? this.roomId,
         playerIds: playerIds ?? this.playerIds,
         cards: cards ?? this.cards,
         record: record ?? this.record,
       );
+
+  @override
+  List<Object?> get props => [
+        roomId,
+        playerIds,
+        cards,
+        record,
+      ];
 }

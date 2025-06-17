@@ -1,6 +1,8 @@
+import 'package:equatable/equatable.dart';
+
 import 'data.dart';
 
-class RecordEntity {
+class RecordEntity extends Equatable {
   final String deckId;
   final String recordId;
   final DateTime createdAt;
@@ -24,7 +26,8 @@ class RecordEntity {
     List<DataEntity>? data,
     bool? isSynced,
     DateTime? updatedAt,
-  }) => RecordEntity(
+  }) =>
+      RecordEntity(
         deckId: deckId ?? this.deckId,
         recordId: recordId ?? this.recordId,
         createdAt: createdAt ?? this.createdAt,
@@ -32,4 +35,14 @@ class RecordEntity {
         isSynced: isSynced ?? this.isSynced,
         updatedAt: updatedAt ?? this.updatedAt,
       );
+
+  @override
+  List<Object?> get props => [
+        deckId,
+        recordId,
+        createdAt,
+        data,
+        isSynced,
+        updatedAt,
+      ];
 }

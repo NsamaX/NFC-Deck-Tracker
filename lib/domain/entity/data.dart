@@ -1,8 +1,10 @@
+import 'package:equatable/equatable.dart';
+
 import 'package:nfc_deck_tracker/util/player_action.dart';
 
 import 'tag.dart';
 
-class DataEntity extends TagEntity {
+class DataEntity extends TagEntity with EquatableMixin {
   final String location;
   final PlayerAction playerAction;
   final DateTime timestamp;
@@ -27,7 +29,8 @@ class DataEntity extends TagEntity {
     String? location,
     PlayerAction? playerAction,
     DateTime? timestamp,
-  }) => DataEntity(
+  }) =>
+      DataEntity(
         tagId: tagId ?? this.tagId,
         collectionId: collectionId ?? this.collectionId,
         cardId: cardId ?? this.cardId,
@@ -35,4 +38,14 @@ class DataEntity extends TagEntity {
         playerAction: playerAction ?? this.playerAction,
         timestamp: timestamp ?? this.timestamp,
       );
+
+  @override
+  List<Object?> get props => [
+        tagId,
+        collectionId,
+        cardId,
+        location,
+        playerAction,
+        timestamp,
+      ];
 }
