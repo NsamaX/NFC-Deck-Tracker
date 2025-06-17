@@ -7,7 +7,7 @@ class JoinRoomRepository {
     required this.joinRoomRemoteDatasource,
   });
 
-  Future<bool> joinRoom({
+  Future<bool> join({
     required String roomId,
     required String playerId,
   }) async {

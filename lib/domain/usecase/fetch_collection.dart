@@ -22,7 +22,7 @@ class FetchCollectionUsecase {
   });
 
   Future<List<CollectionEntity>> call({required String userId}) async {
-    final localModels = await fetchCollectionRepository.fetchLocal();
+    final localModels = await fetchCollectionRepository.fetchForLocal();
     final localList = localModels.map(CollectionMapper.toEntity).toList();
     final localMap = {for (final col in localList) col.collectionId: col};
 
@@ -30,7 +30,7 @@ class FetchCollectionUsecase {
     Map<String, CollectionEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteModels = await fetchCollectionRepository.fetchRemote(userId: userId);
+      final remoteModels = await fetchCollectionRepository.fetchForRemote(userId: userId);
       remoteList = remoteModels.map(CollectionMapper.toEntity).toList();
       remoteMap = {for (final col in remoteList) col.collectionId: col};
 
@@ -51,7 +51,7 @@ class FetchCollectionUsecase {
       final local = localMap[remote.collectionId];
 
       if (local == null) {
-        await createCollectionRepository.createLocal(
+        await createCollectionRepository.createForLocal(
           collection: CollectionMapper.toModel(remote),
         );
         localList.add(remote);
@@ -59,7 +59,7 @@ class FetchCollectionUsecase {
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
-        await updateCollectionRepository.updateLocal(
+        await updateCollectionRepository.updateForLocal(
           collection: CollectionMapper.toModel(remote),
         );
         final index = localList.indexWhere((c) => c.collectionId == remote.collectionId);
@@ -71,13 +71,13 @@ class FetchCollectionUsecase {
 
   Future<void> _syncLocalToRemote(String userId, List<CollectionEntity> localList) async {
     for (final collection in localList.where((c) => c.isSynced != true)) {
-      final success = await createCollectionRepository.createRemote(
+      final success = await createCollectionRepository.createForRemote(
         userId: userId,
         collection: CollectionMapper.toModel(collection),
       );
       if (success) {
         final updated = collection.copyWith(isSynced: true);
-        await updateCollectionRepository.updateLocal(
+        await updateCollectionRepository.updateForLocal(
           collection: CollectionMapper.toModel(updated),
         );
         final index = localList.indexWhere((c) => c.collectionId == updated.collectionId);
@@ -98,7 +98,7 @@ class FetchCollectionUsecase {
     ).toList();
 
     for (final collection in toRemove) {
-      final success = await deleteCollectionRepository.deleteLocal(
+      final success = await deleteCollectionRepository.deleteForLocal(
         collectionId: collection.collectionId,
       );
       if (success) {

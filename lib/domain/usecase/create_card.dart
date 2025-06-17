@@ -55,7 +55,7 @@ class CreateCardUsecase {
     final cardModel = CardMapper.toModel(updatedCard);
 
     if (userId.isNotEmpty) {
-      final success = await createCardRepository.createRemote(
+      final success = await createCardRepository.createForRemote(
         userId: userId,
         card: cardModel,
       );
@@ -66,6 +66,6 @@ class CreateCardUsecase {
       }
     }
 
-    await createCardRepository.createLocal(card: cardModel);
+    await createCardRepository.createForLocal(card: cardModel);
   }
 }

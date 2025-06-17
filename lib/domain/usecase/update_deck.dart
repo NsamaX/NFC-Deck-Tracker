@@ -19,13 +19,13 @@ class UpdateDeckUsecase {
     final deckModel = DeckMapper.toModel(deck);
 
     if (userId.isNotEmpty) {
-      final success = await updateDeckRepository.updateRemote(
+      final success = await updateDeckRepository.updateForRemote(
         userId: userId,
         deck: deckModel,
       );
 
       final syncedDeck = deck.copyWith(isSynced: success);
-      await updateDeckRepository.updateLocal(
+      await updateDeckRepository.updateForLocal(
         deck: DeckMapper.toModel(syncedDeck),
       );
 
@@ -34,7 +34,7 @@ class UpdateDeckUsecase {
       }
     } else {
       final localOnly = deck.copyWith(isSynced: false);
-      await updateDeckRepository.updateLocal(
+      await updateDeckRepository.updateForLocal(
         deck: DeckMapper.toModel(localOnly),
       );
     }

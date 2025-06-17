@@ -11,7 +11,7 @@ class FindCardRepository {
     required this.gameApi,
   });
 
-  Future<CardModel> findApi({
+  Future<CardModel> findForApi({
     required String collectionId,
     required String cardId,
   }) async {
@@ -19,7 +19,7 @@ class FindCardRepository {
     return await gameApi.find(cardId: cardId);
   }
 
-  Future<CardModel?> findLocal({
+  Future<CardModel?> findForLocal({
     required String collectionId, 
     required String cardId,
   }) async {

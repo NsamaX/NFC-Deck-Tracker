@@ -19,13 +19,13 @@ class UpdateRecordUsecase {
     final recordModel = RecordMapper.toModel(record);
 
     if (userId.isNotEmpty) {
-      final success = await updateRecordRepository.updateRemote(
+      final success = await updateRecordRepository.updateForRemote(
         userId: userId,
         record: recordModel,
       );
 
       final syncedRecord = record.copyWith(isSynced: success);
-      await updateRecordRepository.updateLocal(
+      await updateRecordRepository.updateForLocal(
         record: RecordMapper.toModel(syncedRecord),
       );
 
@@ -34,7 +34,7 @@ class UpdateRecordUsecase {
       }
     } else {
       final localOnly = record.copyWith(isSynced: false);
-      await updateRecordRepository.updateLocal(
+      await updateRecordRepository.updateForLocal(
         record: RecordMapper.toModel(localOnly),
       );
     }

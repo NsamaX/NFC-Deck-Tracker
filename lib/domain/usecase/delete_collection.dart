@@ -13,12 +13,12 @@ class DeleteCollectionUsecase {
     required String userId,
     required String collectionId,
   }) async {
-    await deleteCollectionRepository.deleteLocal(
+    await deleteCollectionRepository.deleteForLocal(
       collectionId: collectionId,
     );
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await deleteCollectionRepository.deleteRemote(
+      final remoteSuccess = await deleteCollectionRepository.deleteForRemote(
         userId: userId,
         collectionId: collectionId,
       );

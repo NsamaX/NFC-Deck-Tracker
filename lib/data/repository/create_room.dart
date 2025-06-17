@@ -8,7 +8,7 @@ class CreateRoomRepository {
     required this.createRoomRemoteDatasource,
   });
 
-  Future<bool> createRoom({
+  Future<bool> createForRoom({
     required RoomModel room,
   }) async {
     return await createRoomRemoteDatasource.create(room: room);

@@ -30,7 +30,7 @@ class FetchCardInDeckUsecase {
     required String deckName,
     required String collectionId,
   }) async {
-    final localCardModels = await fetchCardInDeckRepository.fetchLocal(deckId: deckId);
+    final localCardModels = await fetchCardInDeckRepository.fetchForLocal(deckId: deckId);
 
     List<CardModel> remoteCards = [];
 
@@ -50,7 +50,7 @@ class FetchCardInDeckUsecase {
       }
     } else {
       try {
-        remoteCards = await fetchCardRepository.fetchRemote(
+        remoteCards = await fetchCardRepository.fetchForRemote(
           userId: userId,
           collectionId: collectionId,
         );
@@ -81,7 +81,7 @@ class FetchCardInDeckUsecase {
       updatedAt: DateTime.now(),
     );
 
-    await updateDeckRepository.updateLocal(deck: syncDeck);
+    await updateDeckRepository.updateForLocal(deck: syncDeck);
 
     return syncDeck.cards.map((c) => CardInDeckEntity(card: CardMapper.toEntity(c.card), count: c.count)).toList();
   }

@@ -19,13 +19,13 @@ class CreateRecordUsecase {
     final recordModel = RecordMapper.toModel(record);
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await createRecordRepository.createRemote(
+      final remoteSuccess = await createRecordRepository.createForRemote(
         userId: userId,
         record: recordModel,
       );
 
       final syncedRecord = record.copyWith(isSynced: remoteSuccess);
-      await createRecordRepository.createLocal(
+      await createRecordRepository.createForLocal(
         record: RecordMapper.toModel(syncedRecord),
       );
 
@@ -34,7 +34,7 @@ class CreateRecordUsecase {
       }
     } else {
       final localOnly = record.copyWith(isSynced: false);
-      await createRecordRepository.createLocal(
+      await createRecordRepository.createForLocal(
         record: RecordMapper.toModel(localOnly),
       );
     }

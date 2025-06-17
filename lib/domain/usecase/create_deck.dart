@@ -19,13 +19,13 @@ class CreateDeckUsecase {
     final deckModel = DeckMapper.toModel(deck);
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await createDeckRepository.createRemote(
+      final remoteSuccess = await createDeckRepository.createForRemote(
         userId: userId,
         deck: deckModel,
       );
 
       final syncedDeck = deck.copyWith(isSynced: remoteSuccess);
-      await createDeckRepository.createLocal(
+      await createDeckRepository.createForLocal(
         deck: DeckMapper.toModel(syncedDeck),
       );
 
@@ -34,7 +34,7 @@ class CreateDeckUsecase {
       }
     } else {
       final localOnly = deck.copyWith(isSynced: false);
-      await createDeckRepository.createLocal(
+      await createDeckRepository.createForLocal(
         deck: DeckMapper.toModel(localOnly),
       );
     }

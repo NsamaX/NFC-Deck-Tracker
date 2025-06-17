@@ -44,7 +44,7 @@ import '../mapper/card.dart';
   }) async {
     final int effectiveBatchSize = batchSize ?? (kReleaseMode ? 5 : 1);
 
-    final localCards = await fetchCardRepository.fetchLocal(collectionId: collectionId);
+    final localCards = await fetchCardRepository.fetchForLocal(collectionId: collectionId);
     final combinedCards = [...localCards];
 
     final bool isFirstLoad = localCards.isEmpty;
@@ -53,7 +53,7 @@ import '../mapper/card.dart';
     if (isFirstLoad) {
       LoggerUtil.addMessage(message: '[Local] No cards found for $collectionId');
 
-      await createCollectionRepository.createLocal(
+      await createCollectionRepository.createForLocal(
         collection: CollectionModel(
           collectionId: collectionId,
           name: collectionName,
@@ -96,7 +96,7 @@ import '../mapper/card.dart';
         final String pageKey = _normalizeKey(page: page);
 
         try {
-          final apiCards = await fetchCardRepository.fetchApi(page: page);
+          final apiCards = await fetchCardRepository.fetchForApi(page: page);
 
           if (apiCards.isNotEmpty) {
             await saveCardRepository.save(cards: apiCards);
@@ -123,7 +123,7 @@ import '../mapper/card.dart';
       LoggerUtil.addMessage(message: '[Remote] Fetching cards from remote (custom collection)');
 
       try {
-        final remoteCards = await fetchCardRepository.fetchRemote(
+        final remoteCards = await fetchCardRepository.fetchForRemote(
           userId: userId,
           collectionId: collectionId,
         );

@@ -14,10 +14,10 @@ class DeleteCardUsecase {
     required String collectionId,
     required String cardId,
   }) async {
-    await deleteCardRepository.deleteLocal(collectionId: collectionId, cardId: cardId);
+    await deleteCardRepository.deleteForLocal(collectionId: collectionId, cardId: cardId);
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await deleteCardRepository.deleteRemote(
+      final remoteSuccess = await deleteCardRepository.deleteForRemote(
         userId: userId,
         collectionId: collectionId,
         cardId: cardId,

@@ -25,7 +25,7 @@ class FetchRecordUsecase {
     required String userId,
     required String deckId,
   }) async {
-    final localModels = await fetchRecordRepository.fetchLocal(deckId: deckId);
+    final localModels = await fetchRecordRepository.fetchForLocal(deckId: deckId);
     final localList = localModels.map(RecordMapper.toEntity).toList();
     final localMap = {for (final r in localList) r.recordId: r};
 
@@ -33,7 +33,7 @@ class FetchRecordUsecase {
     Map<String, RecordEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteModels = await fetchRecordRepository.fetchRemote(userId: userId, deckId: deckId);
+      final remoteModels = await fetchRecordRepository.fetchForRemote(userId: userId, deckId: deckId);
       remoteList = remoteModels.map(RecordMapper.toEntity).toList();
       remoteMap = {for (final r in remoteList) r.recordId: r};
 
@@ -54,13 +54,13 @@ class FetchRecordUsecase {
       final local = localMap[remote.recordId];
 
       if (local == null) {
-        await createRecordRepository.createLocal(record: RecordMapper.toModel(remote));
+        await createRecordRepository.createForLocal(record: RecordMapper.toModel(remote));
         localList.add(remote);
         LoggerUtil.debugMessage(message: '📥 Imported remote record → local: ${remote.recordId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
-        await updateRecordRepository.updateLocal(record: RecordMapper.toModel(remote));
+        await updateRecordRepository.updateForLocal(record: RecordMapper.toModel(remote));
         final index = localList.indexWhere((r) => r.recordId == remote.recordId);
         if (index != -1) localList[index] = remote;
         LoggerUtil.debugMessage(message: '📥 Updated local record from remote: ${remote.recordId}');
@@ -70,13 +70,13 @@ class FetchRecordUsecase {
 
   Future<void> _syncLocalToRemote(String userId, List<RecordEntity> localList) async {
     for (final record in localList.where((r) => r.isSynced != true)) {
-      final success = await createRecordRepository.createRemote(
+      final success = await createRecordRepository.createForRemote(
         userId: userId,
         record: RecordMapper.toModel(record),
       );
       if (success) {
         final updated = record.copyWith(isSynced: true);
-        await updateRecordRepository.updateLocal(record: RecordMapper.toModel(updated));
+        await updateRecordRepository.updateForLocal(record: RecordMapper.toModel(updated));
         final index = localList.indexWhere((r) => r.recordId == updated.recordId);
         if (index != -1) localList[index] = updated;
         LoggerUtil.debugMessage(message: '📤 Synced local record → remote: ${record.recordId}');
@@ -95,7 +95,7 @@ class FetchRecordUsecase {
     ).toList();
 
     for (final record in toRemove) {
-      final success = await deleteRecordRepository.deleteLocal(recordId: record.recordId);
+      final success = await deleteRecordRepository.deleteForLocal(recordId: record.recordId);
       if (success) {
         localList.removeWhere((r) => r.recordId == record.recordId);
         LoggerUtil.debugMessage(message: '🗑️ Deleted local record not found in remote: ${record.recordId}');

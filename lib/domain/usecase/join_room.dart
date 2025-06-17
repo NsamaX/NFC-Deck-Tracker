@@ -13,7 +13,7 @@ class JoinRoomUsecase {
     required String roomId,
     required String playerId,
   }) async {
-    final success = await joinRoomRepository.joinRoom(
+    final success = await joinRoomRepository.join(
       roomId: roomId,
       playerId: playerId,
     );

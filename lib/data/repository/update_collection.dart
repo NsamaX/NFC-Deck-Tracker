@@ -11,13 +11,13 @@ class UpdateCollectionRepository {
     required this.updateCollectionRemoteDatasource,
   });
 
-  Future<void> updateLocal({
+  Future<void> updateForLocal({
     required CollectionModel collection,
   }) async {
     await updateCollectionLocalDatasource.update(collection: collection);
   }
 
-  Future<bool> updateRemote({
+  Future<bool> updateForRemote({
     required String userId,
     required CollectionModel collection,
   }) async {

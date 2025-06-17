@@ -11,13 +11,13 @@ class UpdateCardRepository {
     required this.updateCardRemoteDatasource,
   });
 
-  Future<void> updateLocal({
+  Future<void> updateForLocal({
     required CardModel card,
   }) async {
     await updateCardLocalDatasource.update(card: card);
   }
 
-  Future<bool> updateRemote({
+  Future<bool> updateForRemote({
     required String userId,
     required CardModel card,
   }) async {

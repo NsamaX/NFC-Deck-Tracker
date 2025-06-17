@@ -11,13 +11,13 @@ class UpdateDeckRepository {
     required this.updateDeckRemoteDatasource,
   });
 
-  Future<void> updateLocal({
+  Future<void> updateForLocal({
     required DeckModel deck,
   }) async {
     await updateDeckLocalDatasource.update(deck: deck);
   }
 
-  Future<bool> updateRemote({
+  Future<bool> updateForRemote({
     required String userId,
     required DeckModel deck,
   }) async {

@@ -11,13 +11,13 @@ class CreateRecordRepository {
     required this.createRecordRemoteDatasource,
   });
 
-  Future<void> createLocal({
+  Future<void> createForLocal({
     required RecordModel record,
   }) async {
     await createRecordLocalDatasource.create(record: record);
   }
 
-  Future<bool> createRemote({
+  Future<bool> createForRemote({
     required String userId,
     required RecordModel record,
   }) async {

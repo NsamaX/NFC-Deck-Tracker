@@ -35,10 +35,10 @@ class UpdateCardUsecase {
     final updatedCard = card.copyWith(imageUrl: finalImageUrl);
     final cardModel = CardMapper.toModel(updatedCard);
 
-    await updateCardRepository.updateLocal(card: cardModel);
+    await updateCardRepository.updateForLocal(card: cardModel);
 
     if (userId.isNotEmpty) {
-      final success = await updateCardRepository.updateRemote(
+      final success = await updateCardRepository.updateForRemote(
         userId: userId,
         card: cardModel,
       );

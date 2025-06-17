@@ -13,10 +13,10 @@ class DeleteDeckUsecase {
     required String userId,
     required String deckId,
   }) async {
-    await deleteDeckRepository.deleteLocal(deckId: deckId);
+    await deleteDeckRepository.deleteForLocal(deckId: deckId);
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await deleteDeckRepository.deleteRemote(
+      final remoteSuccess = await deleteDeckRepository.deleteForRemote(
         userId: userId,
         deckId: deckId,
       );

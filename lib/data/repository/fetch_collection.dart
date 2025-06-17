@@ -11,11 +11,11 @@ class FetchCollectionRepository {
     required this.fetchCollectionRemoteDatasource,
   });
 
-  Future<List<CollectionModel>> fetchLocal() async {
+  Future<List<CollectionModel>> fetchForLocal() async {
     return await fetchCollectionLocalDatasource.fetch();
   }
 
-  Future<List<CollectionModel>> fetchRemote({
+  Future<List<CollectionModel>> fetchForRemote({
     required String userId,
   }) async {
     return await fetchCollectionRemoteDatasource.fetch(userId: userId);

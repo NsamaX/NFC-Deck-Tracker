@@ -10,14 +10,14 @@ class DeleteCardRepository {
     required this.deleteCardRemoteDatasource,
   });
 
-  Future<void> deleteLocal({
+  Future<void> deleteForLocal({
     required String collectionId,
     required String cardId,
   }) async {
     await deleteCardLocalDatasource.delete(collectionId: collectionId, cardId: cardId);
   }
 
-  Future<bool> deleteRemote({
+  Future<bool> deleteForRemote({
     required String userId,
     required String collectionId,
     required String cardId,

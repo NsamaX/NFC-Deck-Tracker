@@ -10,13 +10,13 @@ class DeleteDeckRepository {
     required this.deleteDeckRemoteDatasource,
   });
 
-  Future<bool> deleteLocal({
+  Future<bool> deleteForLocal({
     required String deckId,
   }) async {
     return await deleteDeckLocalDatasource.delete(deckId: deckId);
   }
 
-  Future<bool> deleteRemote({
+  Future<bool> deleteForRemote({
     required String userId,
     required String deckId,
   }) async {

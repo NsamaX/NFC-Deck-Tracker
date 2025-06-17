@@ -10,13 +10,13 @@ class DeleteRecordRepository {
     required this.deleteRecordRemoteDatasource,
   });
 
-  Future<bool> deleteLocal({
+  Future<bool> deleteForLocal({
     required String recordId,
   }) async {
     return await deleteRecordLocalDatasource.delete(recordId: recordId);
   }
 
-  Future<bool> deleteRemote({
+  Future<bool> deleteForRemote({
     required String userId,
     required String recordId,
   }) async {
