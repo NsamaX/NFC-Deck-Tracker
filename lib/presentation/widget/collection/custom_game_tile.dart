@@ -3,11 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
-import 'package:nfc_deck_tracker/.config/app.dart';
-
 import 'package:nfc_deck_tracker/domain/entity/collection.dart';
 
-import '../../cubit/application_cubit.dart';
 import '../../cubit/collection_cubit.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
@@ -33,7 +30,14 @@ class CustomGameTile extends StatelessWidget {
     final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(collection.updatedAt!);
 
     return GestureDetector(
-      onTap: () => _goToSearchPage(context),
+      onTap: () => Navigator.of(context).pushReplacementNamed(
+        RouteConstant.browse_card,
+        arguments: {
+          'collectionId': collection.collectionId,
+          'collectionName': collection.name,
+          'onAdd': onAdd,
+        },
+      ),
       child: Container(
         margin: const EdgeInsets.only(bottom: 6.0),
         height: 60.0,
@@ -65,12 +69,6 @@ class CustomGameTile extends StatelessWidget {
                       userId: userId,
                       collectionId: collectionId,
                     );
-                if (collectionId == context.read<ApplicationCubit>().state.recentId) {
-                  context.read<ApplicationCubit>().updateSettingUsecase(
-                        key: App.keyRecentId,
-                        value: '',
-                      );
-                }
               },
             ),
             child: Row(
@@ -86,27 +84,6 @@ class CustomGameTile extends StatelessWidget {
           ),
         ),
       ),
-    );
-  }
-
-  void _goToSearchPage(BuildContext context) {
-    final applicationCubit = context.read<ApplicationCubit>();
-    applicationCubit.updateSetting(
-      key: App.keyRecentId,
-      value: collection.collectionId,
-    );
-    applicationCubit.updateSetting(
-      key: App.keyRecentGame,
-      value: collection.name,
-    );
-
-    Navigator.of(context).pushReplacementNamed(
-      RouteConstant.browse_card,
-      arguments: {
-        'collectionId': collection.collectionId,
-        'collectionName': collection.name,
-        'onAdd': onAdd,
-      },
     );
   }
 

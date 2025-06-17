@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
@@ -93,7 +94,7 @@ class CardListTile extends StatelessWidget {
                       backgroundColor: backgroundColor,
                       changeCardColor: changeCardColor!,
                     )
-                  : (!isTrack && onDelete != null)
+                  : (!isTrack && onDelete != null && !Game.isSupported(game: card!.collectionId!))
                       ? buildCardSlidableDelete(
                           context: context,
                           card: card!,

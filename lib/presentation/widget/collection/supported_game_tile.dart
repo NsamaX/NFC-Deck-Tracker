@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:nfc_deck_tracker/.config/app.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/api/@api_config.dart';
 
+import '../../cubit/application_cubit.dart';
 import '../../route/route_constant.dart';
 
 class SupportedGameTile extends StatelessWidget {
@@ -51,6 +55,15 @@ class SupportedGameTile extends StatelessWidget {
   }
 
   void _goToSearchPage(BuildContext context) {
+    final applicationCubit = context.read<ApplicationCubit>();
+    applicationCubit.updateSetting(
+      key: App.keyRecentId,
+      value: gameKey,
+    );
+    applicationCubit.updateSetting(
+      key: App.keyRecentGame,
+      value: gameKey,
+    );
     Navigator.of(context).pushReplacementNamed(
       RouteConstant.browse_card,
       arguments: {

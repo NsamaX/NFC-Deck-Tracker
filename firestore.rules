@@ -19,11 +19,6 @@ service cloud.firestore {
       // decks
       match /decks/{deckId} {
         allow read, write: if request.auth != null && request.auth.uid == userId;
-
-        // cards within deck (using collectionId as documentId)
-        match /cards/{collectionId} {
-          allow read, write: if request.auth != null && request.auth.uid == userId;
-        }
       }
 
       // records

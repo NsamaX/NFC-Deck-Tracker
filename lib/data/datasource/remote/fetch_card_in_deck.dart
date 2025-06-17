@@ -12,52 +12,38 @@ class FetchCardInDeckRemoteDatasource {
     required String userId,
     required String deckId,
   }) async {
-    final cardSnapshot = await _firestoreService.queryCollection(
-      collectionPath: 'users/$userId/decks/$deckId/cards',
+    final deckDoc = await _firestoreService.getDocument(
+      collectionPath: 'users/$userId/decks',
+      documentId: deckId,
     );
 
-    final List<CardInDeckModel> cards = [];
+    if (deckDoc == null || deckDoc.data() == null) return [];
 
-    for (final cardDoc in cardSnapshot) {
-      final cardData = cardDoc.data();
+    final deckData = deckDoc.data()!;
+    final cardsMap = deckData['cards'] ?? {};
 
-      final String? collectionId = cardData['collectionId'];
-      final String cardId = cardData['cardId'];
-      final int count = cardData['count'];
+    if (cardsMap.isEmpty) return [];
 
-      final CardModel? card = await _fetchCardById(
-        userId: userId,
-        collectionId: collectionId,
-        cardId: cardId,
-      );
+    final collectionId = cardsMap.keys.first;
+    final List<dynamic> cardList = cardsMap[collectionId];
 
-      if (card != null) {
-        cards.add(CardInDeckModel(
-          card: card,
-          count: count,
-        ));
+    final List<CardInDeckModel> result = [];
+
+    for (final cardItem in cardList) {
+      try {
+        final cardData = cardItem['card'];
+        final count = cardItem['count'];
+
+        if (cardData == null || count == null) continue;
+
+        final card = CardModel.fromJson(cardData);
+
+        result.add(CardInDeckModel(card: card, count: count));
+      } catch (e) {
+        continue;
       }
     }
 
-    return cards;
-  }
-
-  Future<CardModel?> _fetchCardById({
-    required String userId,
-    required String? collectionId,
-    required String cardId,
-  }) async {
-    if (collectionId == null) return null;
-
-    final doc = await _firestoreService.getDocument(
-      collectionPath: 'users/$userId/collections/$collectionId/cards',
-      documentId: cardId,
-    );
-
-    if (doc != null && doc.data() != null) {
-      return CardModel.fromJson(doc.data()!);
-    }
-
-    return null;
+    return result;
   }
 }
