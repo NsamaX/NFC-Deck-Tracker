@@ -81,6 +81,8 @@
     "dialog_tracker_tutorial_content": "ゲーム中にカードをスキャンしてデッキを管理できます。スキャンするとカードがデッキから取り除かれ、再スキャンすると再び追加されます。「OK」を押して続けてください。",
     "dialog_reset_deck_title": "リセットしますか？",
     "dialog_reset_deck_content": "ゲームを保存するか、リセットだけを行うか選択できます。",
+    "dialog_room_feature_title": "サインインが必要です",
+    "dialog_room_feature_content": "この機能を使用するにはサインインが必要です。ルームの作成や参加は、サインインしているユーザーのみ可能です。",
     "snack_bar_not_part_of_current_deck": "このカードは現在のデッキに含まれていません。",
     "button_reset": "リセット",
     "button_save": "保存",

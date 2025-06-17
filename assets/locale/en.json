@@ -81,6 +81,8 @@
     "dialog_tracker_tutorial_content": "You can scan your cards while playing to manage your deck. Each scan updates your deck's status—scanned cards are removed, and rescanned cards are added back. Press 'OK' to continue.",
     "dialog_reset_deck_title": "Would you like to reset?",
     "dialog_reset_deck_content": "You can choose to save your game or just reset.",
+    "dialog_room_feature_title": "Sign in Required",
+    "dialog_room_feature_content": "Please sign in to use this feature. Creating or joining a room is only available to signed-in users.",
     "snack_bar_not_part_of_current_deck": "This card is not part of the current deck.",
     "button_reset": "Reset",
     "button_save": "Save",

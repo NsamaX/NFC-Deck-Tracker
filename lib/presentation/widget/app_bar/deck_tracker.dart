@@ -113,7 +113,20 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem.back(),
         AppBarMenuItem(
           label: Icons.people_rounded,
-          action: () => drawerCubit.toggleFeatureDrawer(),
+          action: () => userId.isEmpty 
+              ? buildCupertinoAlertDialog(
+                  theme: Theme.of(context),
+                  title: locale.translate('page_deck_tracker.dialog_room_feature_title'),
+                  content: locale.translate('page_deck_tracker.dialog_room_feature_content'),
+                  confirmButtonText: locale.translate('common.button_ok'),
+                  onPressed: () {},
+                  closeDialog: () => navigator.pop(),
+                  showDialog: (dialog) => showCupertinoDialog(
+                    context: context,
+                    builder: (_) => dialog,
+                  ),
+                ) 
+              : drawerCubit.toggleFeatureDrawer(),
         ),
         AppBarMenuItem(label: locale.translate('page_deck_tracker.app_bar')),
         toggleNfcItem,
