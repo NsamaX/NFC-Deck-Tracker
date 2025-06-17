@@ -100,9 +100,6 @@ void setupDeckRepository() {
     fetchDeckLocalDatasource: locator<FetchDeckLocalDatasource>(),
     fetchDeckRemoteDatasource: locator<FetchDeckRemoteDatasource>(),
   ));
-  locator.registerLazySingleton(() => LoadCardInDeckRepository(
-    loadCardInDeckLocalDatasource: locator<LoadCardInDeckLocalDatasource>(),
-  ));
   locator.registerLazySingleton(() => UpdateDeckRepository(
     updateDeckLocalDatasource: locator<UpdateDeckLocalDatasource>(),
     updateDeckRemoteDatasource: locator<UpdateDeckRemoteDatasource>(),

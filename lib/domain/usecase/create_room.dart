@@ -15,7 +15,7 @@ class CreateRoomUsecase {
   Future<void> call({
     required RoomEntity room,
   }) async {
-    final success = await createRoomRepository.createForRoom(
+    final success = await createRoomRepository.create(
       room: RoomMapper.toModel(room),
     );
 

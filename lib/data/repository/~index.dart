@@ -21,7 +21,6 @@ export 'fetch_used_card_distinct.dart';
 export 'find_card.dart';
 export 'find_page.dart';
 export 'join_room.dart';
-export 'load_card_in_deck.dart';
 export 'load_setting.dart';
 export 'save_card.dart';
 export 'save_setting.dart';

@@ -68,7 +68,6 @@ void setupDeckLocalDatasource() {
   locator.registerLazySingleton(() => DeleteDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FetchCardInDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FetchDeckLocalDatasource(locator<SQLiteService>()));
-  locator.registerLazySingleton(() => LoadCardInDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => UpdateDeckLocalDatasource(locator<SQLiteService>()));
 }
 
