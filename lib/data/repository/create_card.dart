@@ -11,16 +11,16 @@ class CreateCardRepository {
     required this.createCardRemoteDatasource,
   });
 
-  Future<void> createLocalCard({
+  Future<void> createLocal({
     required CardModel card,
   }) async {
-    await createCardLocalDatasource.createCard(card: card);
+    await createCardLocalDatasource.create(card: card);
   }
 
-  Future<bool> createRemoteCard({
+  Future<bool> createRemote({
     required String userId,
     required CardModel card,
   }) async {
-    return await createCardRemoteDatasource.createCard(userId: userId, card: card);
+    return await createCardRemoteDatasource.create(userId: userId, card: card);
   }
 }

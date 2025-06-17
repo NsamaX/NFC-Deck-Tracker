@@ -1,13 +1,13 @@
 import 'package:nfc_deck_tracker/data/repository/clear_local_datasource.dart';
 
-class ClearLocalDataSourceUsecase {
-  final ClearLocalDataSourceRepository clearLocalDataSourceRepository;
+class ClearUserDataUsecase {
+  final ClearUserDataRepository clearUserDataRepository;
 
-  ClearLocalDataSourceUsecase({
-    required this.clearLocalDataSourceRepository,
+  ClearUserDataUsecase({
+    required this.clearUserDataRepository,
   });
 
   Future<void> call() async {
-    await clearLocalDataSourceRepository.clear();
+    await clearUserDataRepository.clear();
   }
 }

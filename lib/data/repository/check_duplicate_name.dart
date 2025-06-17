@@ -7,10 +7,10 @@ class CheckDuplicateNameRepository {
     required this.checkDuplicateNameLocalDatasource,
   });
 
-  Future<int> countDuplicateCardNames({
+  Future<int> check({
     required String collectionId,
     required String name,
   }) async {
-    return await checkDuplicateNameLocalDatasource.countDuplicateCardNames(collectionId: collectionId, name: name);
+    return await checkDuplicateNameLocalDatasource.check(collectionId: collectionId, name: name);
   }
 }

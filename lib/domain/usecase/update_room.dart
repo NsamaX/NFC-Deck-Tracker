@@ -27,7 +27,7 @@ class UpdateRoomUsecase {
     final uniqueCards = uniqueCardsMap.values.toList();
     final deduplicatedRoom = updatedRoom.copyWith(cards: uniqueCards);
 
-    final success = await updateRoomRepository.updateRoomRecord(
+    final success = await updateRoomRepository.update(
       roomId: roomId,
       updatedRoom: RoomMapper.toModel(deduplicatedRoom),
     );

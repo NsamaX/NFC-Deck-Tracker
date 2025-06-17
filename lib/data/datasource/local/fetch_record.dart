@@ -7,7 +7,7 @@ class FetchRecordLocalDatasource {
 
   FetchRecordLocalDatasource(this._sqliteService);
 
-  Future<List<RecordModel>> fetchRecord({
+  Future<List<RecordModel>> fetch({
     required String deckId,
   }) async {
     final result = await _sqliteService.getTable(

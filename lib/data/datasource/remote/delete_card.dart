@@ -5,7 +5,7 @@ class DeleteCardRemoteDatasource {
 
   DeleteCardRemoteDatasource(this._firestoreService);
 
-  Future<bool> deleteCard({
+  Future<bool> delete({
     required String userId,
     required String collectionId,
     required String cardId,

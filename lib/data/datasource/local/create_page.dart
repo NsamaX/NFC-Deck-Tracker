@@ -7,7 +7,7 @@ class CreatePageLocalDatasource {
 
   CreatePageLocalDatasource(this._sqliteService);
 
-  Future<void> createPage({
+  Future<void> create({
     required PageModel page,
   }) async {
     await _sqliteService.insert(

@@ -5,7 +5,7 @@ class CheckDuplicateNameLocalDatasource {
 
   CheckDuplicateNameLocalDatasource(this._sqliteService);
 
-  Future<int> countDuplicateCardNames({
+  Future<int> check({
     required String collectionId,
     required String name,
   }) async {

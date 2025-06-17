@@ -7,7 +7,7 @@ class CreateCollectionRemoteDatasource {
 
   CreateCollectionRemoteDatasource(this._firestoreService);
 
-  Future<bool> createCollection({
+  Future<bool> create({
     required String userId,
     required CollectionModel collection,
   }) async {

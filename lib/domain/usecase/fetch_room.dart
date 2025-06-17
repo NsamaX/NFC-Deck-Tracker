@@ -14,7 +14,7 @@ class FetchRoomUsecase {
     required String roomId,
     required String playerId,
   }) async {
-    final models = await fetchRoomRepository.fetchRoomRecords(
+    final models = await fetchRoomRepository.fetch(
       roomId: roomId,
       playerId: playerId,
     );

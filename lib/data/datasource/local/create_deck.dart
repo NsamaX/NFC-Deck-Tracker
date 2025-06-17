@@ -7,7 +7,7 @@ class CreateDeckLocalDatasource {
 
   CreateDeckLocalDatasource(this._sqliteService);
 
-  Future<void> createDeck({
+  Future<void> create({
     required DeckModel deck,
   }) async {
     await _sqliteService.insert(

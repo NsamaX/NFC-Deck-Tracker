@@ -19,13 +19,13 @@ class UpdateCollectionUsecase {
     final collectionModel = CollectionMapper.toModel(collection);
 
     if (userId.isNotEmpty) {
-      final success = await updateCollectionRepository.updateRemoteCollection(
+      final success = await updateCollectionRepository.updateRemote(
         userId: userId,
         collection: collectionModel,
       );
 
       final syncedCollection = collection.copyWith(isSynced: success);
-      await updateCollectionRepository.updateLocalCollection(
+      await updateCollectionRepository.updateLocal(
         collection: CollectionMapper.toModel(syncedCollection),
       );
 
@@ -34,7 +34,7 @@ class UpdateCollectionUsecase {
       }
     } else {
       final localOnly = collection.copyWith(isSynced: false);
-      await updateCollectionRepository.updateLocalCollection(
+      await updateCollectionRepository.updateLocal(
         collection: CollectionMapper.toModel(localOnly),
       );
     }

@@ -17,10 +17,10 @@ class DeleteCardUsecase {
     required CardEntity card,
   }) async {
     final cardModel = CardMapper.toModel(card);
-    await deleteCardRepository.deleteLocalCard(card: cardModel);
+    await deleteCardRepository.deleteLocal(card: cardModel);
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await deleteCardRepository.deleteRemoteCard(
+      final remoteSuccess = await deleteCardRepository.deleteRemote(
         userId: userId,
         card: cardModel,
       );

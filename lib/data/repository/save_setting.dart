@@ -7,10 +7,10 @@ class SaveSettingRepository {
     required this.saveSettingLocalDatasource,
   });
 
-  Future<void> saveSetting({
+  Future<void> save({
     required String key,
     required dynamic value,
   }) async {
-    await saveSettingLocalDatasource.saveSetting(key: key, value: value);
+    await saveSettingLocalDatasource.save(key: key, value: value);
   }
 }

@@ -7,7 +7,7 @@ class UpdateRecordRemoteDatasource {
 
   UpdateRecordRemoteDatasource(this._firestoreService);
 
-  Future<bool> updateRecord({
+  Future<bool> update({
     required String userId,
     required RecordModel record,
   }) async {

@@ -7,7 +7,7 @@ class UpdateCardLocalDatasource {
 
   UpdateCardLocalDatasource(this._sqliteService);
 
-  Future<void> updateCard({
+  Future<void> update({
     required CardModel card,
   }) async {
     await _sqliteService.update(

@@ -7,7 +7,7 @@ class FetchCollectionRemoteDatasource {
 
   FetchCollectionRemoteDatasource(this._firestoreService);
 
-  Future<List<CollectionModel>> fetchCollection({
+  Future<List<CollectionModel>> fetch({
     required String userId,
   }) async {
     final snapshot = await _firestoreService.queryCollection(

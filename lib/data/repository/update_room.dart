@@ -8,10 +8,10 @@ class UpdateRoomRepository {
     required this.updateRoomRemoteDatasource,
   });
 
-  Future<bool> updateRoomRecord({
+  Future<bool> update({
     required String roomId,
     required RoomModel updatedRoom,
   }) async {
-    return await updateRoomRemoteDatasource.updateRoomRecord(roomId: roomId, updatedRoom: updatedRoom);
+    return await updateRoomRemoteDatasource.update(roomId: roomId, updatedRoom: updatedRoom);
   }
 }

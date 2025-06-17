@@ -11,16 +11,16 @@ class FetchRecordRepository {
     required this.fetchRecordRemoteDatasource,
   });
 
-  Future<List<RecordModel>> fetchLocalRecord({
+  Future<List<RecordModel>> fetchLocal({
     required String deckId,
   }) async {
-    return await fetchRecordLocalDatasource.fetchRecord(deckId: deckId);
+    return await fetchRecordLocalDatasource.fetch(deckId: deckId);
   }
 
-  Future<List<RecordModel>> fetchRemoteRecord({
+  Future<List<RecordModel>> fetchRemote({
     required String userId,
     required String deckId,
   }) async {
-    return await fetchRecordRemoteDatasource.fetchRecord(userId: userId, deckId: deckId);
+    return await fetchRecordRemoteDatasource.fetch(userId: userId, deckId: deckId);
   }
 }

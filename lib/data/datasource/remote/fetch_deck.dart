@@ -7,7 +7,7 @@ class FetchDeckRemoteDatasource {
 
   FetchDeckRemoteDatasource(this._firestoreService);
 
-  Future<List<DeckModel>> fetchDeck({
+  Future<List<DeckModel>> fetch({
     required String userId,
   }) async {
     final snapshot = await _firestoreService.queryCollection(

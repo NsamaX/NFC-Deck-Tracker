@@ -7,7 +7,7 @@ class SaveCardLocalDatasource {
 
   SaveCardLocalDatasource(this._sqliteService);
 
-  Future<void> saveCard({
+  Future<void> save({
     required List<CardModel> cards,
   }) async {
     final cardsJson = cards.map((card) => card.toJson()).toList();

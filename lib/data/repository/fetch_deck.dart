@@ -11,13 +11,13 @@ class FetchDeckRepository {
     required this.fetchDeckRemoteDatasource,
   });
 
-  Future<List<DeckModel>> fetchLocalDeck() async {
-    return await fetchDeckLocalDatasource.fetchDeck();
+  Future<List<DeckModel>> fetchLocal() async {
+    return await fetchDeckLocalDatasource.fetch();
   }
 
-  Future<List<DeckModel>> fetchRemoteDeck({
+  Future<List<DeckModel>> fetchRemote({
     required String userId,
   }) async {
-    return await fetchDeckRemoteDatasource.fetchDeck(userId: userId);
+    return await fetchDeckRemoteDatasource.fetch(userId: userId);
   }
 }

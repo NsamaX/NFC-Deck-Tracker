@@ -7,7 +7,7 @@ class FindCardLocalDatasource {
 
   FindCardLocalDatasource(this._sqliteService);
 
-  Future<CardModel?> findCard({
+  Future<CardModel?> find({
     required String collectionId, 
     required String cardId,
   }) async {

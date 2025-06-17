@@ -11,7 +11,7 @@ class FetchUsedCardDistinctUsecase {
   });
 
   Future<List<CardEntity>> call() async {
-    final collectionModels = await fetchUsedCardDistinctRepository.fetchUsedCardDistinct();
+    final collectionModels = await fetchUsedCardDistinctRepository.fetch();
     return collectionModels.map(CardMapper.toEntity).toList();
   }
 }

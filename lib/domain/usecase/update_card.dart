@@ -22,7 +22,7 @@ class UpdateCardUsecase {
     String? finalImageUrl = card.imageUrl;
 
     if (userId.isNotEmpty && card.imageUrl?.isNotEmpty == true) {
-      final uploadedUrl = await uploadImageRepository.uploadCardImage(
+      final uploadedUrl = await uploadImageRepository.upload(
         userId: userId,
         imagePath: card.imageUrl!,
       );
@@ -35,10 +35,10 @@ class UpdateCardUsecase {
     final updatedCard = card.copyWith(imageUrl: finalImageUrl);
     final cardModel = CardMapper.toModel(updatedCard);
 
-    await updateCardRepository.updateLocalCard(card: cardModel);
+    await updateCardRepository.updateLocal(card: cardModel);
 
     if (userId.isNotEmpty) {
-      final success = await updateCardRepository.updateRemoteCard(
+      final success = await updateCardRepository.updateRemote(
         userId: userId,
         card: cardModel,
       );

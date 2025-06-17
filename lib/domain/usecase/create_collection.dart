@@ -26,13 +26,13 @@ class CreateCollectionUsecase {
     final collectionModel = CollectionMapper.toModel(newCollection);
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await createCollectionRepository.createRemoteCollection(
+      final remoteSuccess = await createCollectionRepository.createRemote(
         userId: userId,
         collection: collectionModel,
       );
 
       final synced = newCollection.copyWith(isSynced: remoteSuccess);
-      await createCollectionRepository.createLocalCollection(
+      await createCollectionRepository.createLocal(
         collection: CollectionMapper.toModel(synced),
       );
 
@@ -41,7 +41,7 @@ class CreateCollectionUsecase {
       }
     } else {
       final localOnly = newCollection.copyWith(isSynced: false);
-      await createCollectionRepository.createLocalCollection(
+      await createCollectionRepository.createLocal(
         collection: CollectionMapper.toModel(localOnly),
       );
     }

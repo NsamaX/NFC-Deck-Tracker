@@ -16,7 +16,7 @@ class FindCardFromTagUsecase {
       throw Exception('INVALID_TAG');
     }
 
-    final localCard = await findCardRepository.findLocalCard(
+    final localCard = await findCardRepository.findLocal(
       collectionId: tag.collectionId,
       cardId: tag.cardId,
     );
@@ -26,7 +26,7 @@ class FindCardFromTagUsecase {
     }
 
     try {
-      final apiCard = await findCardRepository.findApiCard(collectionId: tag.collectionId, cardId: tag.cardId);
+      final apiCard = await findCardRepository.findApi(collectionId: tag.collectionId, cardId: tag.cardId);
       return CardMapper.toEntity(apiCard);
     } catch (e) {
       throw Exception('GAME_NOT_SUPPORTED');

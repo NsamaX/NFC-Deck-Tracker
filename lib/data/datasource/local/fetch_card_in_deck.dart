@@ -8,7 +8,7 @@ class FetchCardInDeckLocalDatasource {
 
   FetchCardInDeckLocalDatasource(this._sqliteService);
 
-  Future<List<CardInDeckModel>> fetchCardInDeck({
+  Future<List<CardInDeckModel>> fetch({
     required String deckId,
   }) async {
     final List<Map<String, dynamic>> cardLinks = await _sqliteService.getTable(

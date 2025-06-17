@@ -7,7 +7,7 @@ class FetchCardRemoteDatasource {
 
   FetchCardRemoteDatasource(this._firestoreService);
 
-  Future<List<CardModel>> fetchCard({
+  Future<List<CardModel>> fetch({
     required String userId,
     required String collectionId,
   }) async {

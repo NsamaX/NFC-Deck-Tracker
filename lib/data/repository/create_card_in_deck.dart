@@ -8,9 +8,9 @@ class CreateCardInDeckRepository {
     required this.createCardInDeckLocalDatasource,
   });
 
-  Future<void> createCardInDeck({
+  Future<void> create({
     required DeckModel deck,
   }) async {
-    await createCardInDeckLocalDatasource.createCardInDeck(deck: deck);
+    await createCardInDeckLocalDatasource.create(deck: deck);
   }
 }

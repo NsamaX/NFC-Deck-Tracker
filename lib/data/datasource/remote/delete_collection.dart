@@ -5,7 +5,7 @@ class DeleteCollectionRemoteDatasource {
 
   DeleteCollectionRemoteDatasource(this._firestoreService);
 
-  Future<bool> deleteCollection({
+  Future<bool> delete({
     required String userId,
     required String collectionId,
   }) async {

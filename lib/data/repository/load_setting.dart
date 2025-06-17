@@ -7,9 +7,9 @@ class LoadSettingRepository {
     required this.loadSettingLocalDatasource,
   });
 
-  Future<dynamic> loadSetting({
+  Future<dynamic> load({
     required String key,
   }) async {
-    return await loadSettingLocalDatasource.loadSetting(key: key);
+    return await loadSettingLocalDatasource.load(key: key);
   }
 }

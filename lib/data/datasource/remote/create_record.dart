@@ -7,7 +7,7 @@ class CreateRecordRemoteDatasource {
 
   CreateRecordRemoteDatasource(this._firestoreService);
 
-  Future<bool> createRecord({
+  Future<bool> create({
     required String userId,
     required RecordModel record,
   }) async {

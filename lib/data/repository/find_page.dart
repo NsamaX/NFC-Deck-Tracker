@@ -7,9 +7,9 @@ class FindPageRepository {
     required this.findPageLocalDatasource,
   });
 
-  Future<Map<String, dynamic>> findPage({
+  Future<Map<String, dynamic>> find({
     required String collectionId,
   }) async {
-    return await findPageLocalDatasource.findPage(collectionId: collectionId);
+    return await findPageLocalDatasource.find(collectionId: collectionId);
   }
 }

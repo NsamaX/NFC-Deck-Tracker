@@ -7,7 +7,7 @@ class UpdateDeckLocalDatasource {
 
   UpdateDeckLocalDatasource(this._sqliteService);
 
-  Future<void> updateDeck({
+  Future<void> update({
     required DeckModel deck,
   }) async {
     final List<CardInDeckModel> cards = deck.cards;

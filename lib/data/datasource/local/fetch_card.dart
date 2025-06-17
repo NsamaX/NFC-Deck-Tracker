@@ -7,7 +7,7 @@ class FetchCardLocalDatasource {
 
   FetchCardLocalDatasource(this._sqliteService);
 
-  Future<List<CardModel>> fetchCard({
+  Future<List<CardModel>> fetch({
     required String collectionId,
   }) async {
     final result = await _sqliteService.getTable(

@@ -5,7 +5,7 @@ class DeleteRecordLocalDatasource {
 
   DeleteRecordLocalDatasource(this._sqliteService);
 
-  Future<bool> deleteRecord({
+  Future<bool> delete({
     required String recordId,
   }) async {
     return await _sqliteService.delete(

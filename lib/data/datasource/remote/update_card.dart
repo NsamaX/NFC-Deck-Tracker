@@ -7,7 +7,7 @@ class UpdateCardRemoteDatasource {
 
   UpdateCardRemoteDatasource(this._firestoreService);
 
-  Future<bool> updateCard({
+  Future<bool> update({
     required String userId,
     required CardModel card,
   }) async {

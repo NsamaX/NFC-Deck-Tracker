@@ -11,6 +11,6 @@ class UpdateSettingUsecase {
     required String key,
     required dynamic value,
   }) async {
-    await saveSettingRepository.saveSetting(key: key, value: value);
+    await saveSettingRepository.save(key: key, value: value);
   }
 }

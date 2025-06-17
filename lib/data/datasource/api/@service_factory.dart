@@ -6,12 +6,12 @@ import '~index.dart';
 import '../../model/card.dart';
 
 abstract class GameApi {
-  Future<CardModel> findCard({
-    required String cardId,
+  Future<List<CardModel>> fetch({
+    required Map<String, dynamic> page,
   });
 
-  Future<List<CardModel>> fetchCard({
-    required Map<String, dynamic> page,
+  Future<CardModel> find({
+    required String cardId,
   });
 }
 

@@ -14,22 +14,22 @@ class FetchCardRepository {
     required this.fetchCardRemoteDatasource,
   });
 
-  Future<List<CardModel>> fetchApiCard({
+  Future<List<CardModel>> fetchApi({
     required Map<String, dynamic> page,
   }) async {
-    return await gameApi.fetchCard(page: page);
+    return await gameApi.fetch(page: page);
   }
 
-  Future<List<CardModel>> fetchLocalCard({
+  Future<List<CardModel>> fetchLocal({
     required String collectionId,
   }) async {
-    return await fetchCardLocalDatasource.fetchCard(collectionId: collectionId);
+    return await fetchCardLocalDatasource.fetch(collectionId: collectionId);
   }
 
-  Future<List<CardModel>> fetchRemoteCard({
+  Future<List<CardModel>> fetchRemote({
     required String userId,
     required String collectionId,
   }) async {
-    return await fetchCardRemoteDatasource.fetchCard(userId: userId, collectionId: collectionId);
+    return await fetchCardRemoteDatasource.fetch(userId: userId, collectionId: collectionId);
   }
 }

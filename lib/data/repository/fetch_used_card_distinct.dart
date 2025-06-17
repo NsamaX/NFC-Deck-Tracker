@@ -8,7 +8,7 @@ class FetchUsedCardDistinctRepository {
     required this.fetchUsedCardDistinctLocalDatasource,
   });
 
-  Future<List<CardModel>> fetchUsedCardDistinct() async {
-    return await fetchUsedCardDistinctLocalDatasource.fetchUsedCardDistinct();
+  Future<List<CardModel>> fetch() async {
+    return await fetchUsedCardDistinctLocalDatasource.fetch();
   }
 }

@@ -11,17 +11,9 @@ class PokemonApi extends BaseApi implements GameApi {
   ) : super(baseUrl);
 
   @override
-  Future<CardModel> findCard({
-    required String cardId,
+  Future<List<CardModel>> fetch({
+    required Map<String, dynamic> page,
   }) async {
-    final response = await getRequest('cards/$cardId');
-    final data = decodeResponse(response)['data'] as Map<String, dynamic>;
-
-    return _parseData(data: data);
-  }
-
-  @override
-  Future<List<CardModel>> fetchCard({required Map<String, dynamic> page}) async {
     final Map<String, String> queryParams = page.map(
       (k, v) => MapEntry(k, v.toString()),
     );
@@ -31,6 +23,16 @@ class PokemonApi extends BaseApi implements GameApi {
     final List<dynamic> data = body['data'] ?? [];
 
     return _filterData(data: data);
+  }
+
+  @override
+  Future<CardModel> find({
+    required String cardId,
+  }) async {
+    final response = await getRequest('cards/$cardId');
+    final data = decodeResponse(response)['data'] as Map<String, dynamic>;
+
+    return _parseData(data: data);
   }
 
   CardModel _parseData({

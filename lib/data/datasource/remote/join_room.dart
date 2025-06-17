@@ -5,7 +5,7 @@ class JoinRoomRemoteDatasource {
 
   JoinRoomRemoteDatasource(this._firestoreService);
 
-  Future<bool> joinRoom({
+  Future<bool> join({
     required String roomId,
     required String playerId,
   }) async {

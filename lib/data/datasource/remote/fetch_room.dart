@@ -7,7 +7,7 @@ class FetchRoomRemoteDatasource {
 
   FetchRoomRemoteDatasource(this._firestoreService);
 
-  Future<List<RecordModel>> fetchRoomRecords({
+  Future<List<RecordModel>> fetch({
     required String roomId,
     required String playerId,
   }) async {

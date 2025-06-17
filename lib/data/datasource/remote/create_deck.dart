@@ -7,7 +7,7 @@ class CreateDeckRemoteDatasource {
 
   CreateDeckRemoteDatasource(this._firestoreService);
 
-  Future<bool> createDeck({
+  Future<bool> create({
     required String userId,
     required DeckModel deck,
   }) async {

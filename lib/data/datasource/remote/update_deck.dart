@@ -7,7 +7,7 @@ class UpdateDeckRemoteDatasource {
 
   UpdateDeckRemoteDatasource(this._firestoreService);
 
-  Future<bool> updateDeck({
+  Future<bool> update({
     required String userId,
     required DeckModel deck,
   }) async {

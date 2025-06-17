@@ -13,10 +13,10 @@ class DeleteRecordUsecase {
     required String userId,
     required String recordId,
   }) async {
-    await deleteRecordRepository.deleteLocalRecord(recordId: recordId);
+    await deleteRecordRepository.deleteLocal(recordId: recordId);
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await deleteRecordRepository.deleteRemoteRecord(
+      final remoteSuccess = await deleteRecordRepository.deleteRemote(
         userId: userId,
         recordId: recordId,
       );

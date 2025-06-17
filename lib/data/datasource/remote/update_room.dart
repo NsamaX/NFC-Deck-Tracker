@@ -7,7 +7,7 @@ class UpdateRoomRemoteDatasource {
 
   UpdateRoomRemoteDatasource(this._firestoreService);
 
-  Future<bool> updateRoomRecord({
+  Future<bool> update({
     required String roomId,
     required RoomModel updatedRoom,
   }) async {

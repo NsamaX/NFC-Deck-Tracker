@@ -11,6 +11,6 @@ class JoinRoomRepository {
     required String roomId,
     required String playerId,
   }) async {
-    return await joinRoomRemoteDatasource.joinRoom(roomId: roomId, playerId: playerId);
+    return await joinRoomRemoteDatasource.join(roomId: roomId, playerId: playerId);
   }
 }

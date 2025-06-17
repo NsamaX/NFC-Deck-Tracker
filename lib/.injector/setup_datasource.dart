@@ -73,7 +73,7 @@ void setupDeckLocalDatasource() {
 }
 
 void setupLocalDatasource() {
-  locator.registerLazySingleton(() => ClearLocalDatasource(locator<SQLiteService>()));
+  locator.registerLazySingleton(() => ClearUserDataLocalDatasource(locator<SQLiteService>()));
 }
 
 void setupPageLocalDatasource() {

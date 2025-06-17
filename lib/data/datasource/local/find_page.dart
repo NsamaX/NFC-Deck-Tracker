@@ -7,7 +7,7 @@ class FindPageLocalDatasource {
 
   FindPageLocalDatasource(this._sqliteService);
 
-  Future<Map<String, dynamic>> findPage({
+  Future<Map<String, dynamic>> find({
     required String collectionId,
   }) async {
     final result = await _sqliteService.getTable(

@@ -28,7 +28,7 @@ class CreateCardUsecase {
     String finalImageUrl = card.imageUrl ?? '';
 
     if (userId.isNotEmpty && card.imageUrl?.isNotEmpty == true) {
-      final uploadedUrl = await uploadImageRepository.uploadCardImage(
+      final uploadedUrl = await uploadImageRepository.upload(
         userId: userId,
         imagePath: card.imageUrl!,
       );
@@ -38,7 +38,7 @@ class CreateCardUsecase {
       }
     }
 
-    final duplicateCount = await checkDuplicateNameRepository.countDuplicateCardNames(
+    final duplicateCount = await checkDuplicateNameRepository.check(
       collectionId: card.collectionId!,
       name: card.name!,
     );
@@ -55,7 +55,7 @@ class CreateCardUsecase {
     final cardModel = CardMapper.toModel(updatedCard);
 
     if (userId.isNotEmpty) {
-      final success = await createCardRepository.createRemoteCard(
+      final success = await createCardRepository.createRemote(
         userId: userId,
         card: cardModel,
       );
@@ -66,6 +66,6 @@ class CreateCardUsecase {
       }
     }
 
-    await createCardRepository.createLocalCard(card: cardModel);
+    await createCardRepository.createLocal(card: cardModel);
   }
 }

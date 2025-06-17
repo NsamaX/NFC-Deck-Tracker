@@ -11,16 +11,16 @@ class FetchCardInDeckRepository {
     required this.fetchCardInDeckRemoteDatasource,
   });
 
-  Future<List<CardInDeckModel>> fetchLocalDeck({
+  Future<List<CardInDeckModel>> fetchLocal({
     required String deckId,
   }) async {
-    return await fetchCardInDeckLocalDatasource.fetchCardInDeck(deckId: deckId);
+    return await fetchCardInDeckLocalDatasource.fetch(deckId: deckId);
   }
 
-  Future<List<CardInDeckModel>> fetchRemoteDeck({
+  Future<List<CardInDeckModel>> fetchRemote({
     required String userId,
     required String deckId,
   }) async {
-    return await fetchCardInDeckRemoteDatasource.fetchCardInDeck(userId: userId, deckId: deckId);
+    return await fetchCardInDeckRemoteDatasource.fetch(userId: userId, deckId: deckId);
   }
 }

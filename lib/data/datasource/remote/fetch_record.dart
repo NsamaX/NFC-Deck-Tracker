@@ -7,7 +7,7 @@ class FetchRecordRemoteDatasource {
 
   FetchRecordRemoteDatasource(this._firestoreService);
 
-  Future<List<RecordModel>> fetchRecord({
+  Future<List<RecordModel>> fetch({
     required String userId,
     required String deckId,
   }) async {

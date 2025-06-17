@@ -14,12 +14,12 @@ import '../route/route_constant.dart';
 part 'application_state.dart';
 
 class ApplicationCubit extends Cubit<ApplicationState> {
-  final ClearLocalDataSourceUsecase clearLocalDataSourceUsecase;
+  final ClearUserDataUsecase clearUserDataUsecase;
   final InitializeSettingUsecase initializeSettingUsecase;
   final UpdateSettingUsecase updateSettingUsecase;
 
   ApplicationCubit({
-    required this.clearLocalDataSourceUsecase,
+    required this.clearUserDataUsecase,
     required this.initializeSettingUsecase,
     required this.updateSettingUsecase,
   }) : super(ApplicationState.initialFromConstant());
@@ -76,5 +76,5 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     safeEmit(state.copyWith(currentPageIndex: index));
   }
 
-  void signOut() => clearLocalDataSourceUsecase.call();
+  void signOut() => clearUserDataUsecase.call();
 }

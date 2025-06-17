@@ -1,13 +1,13 @@
-import '../datasource/local/clear_local_datasource.dart';
+import '../datasource/local/clear_user_data.dart';
 
-class ClearLocalDataSourceRepository {
-  final ClearLocalDatasource clearLocalDatasource;
+class ClearUserDataRepository {
+  final ClearUserDataLocalDatasource clearUserDataLocalDatasource;
 
-  ClearLocalDataSourceRepository({
-    required this.clearLocalDatasource,
+  ClearUserDataRepository({
+    required this.clearUserDataLocalDatasource,
   });
 
   Future<void> clear() async {
-    await clearLocalDatasource.clear();
+    await clearUserDataLocalDatasource.clear();
   }
 }

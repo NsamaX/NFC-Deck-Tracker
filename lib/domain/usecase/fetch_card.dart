@@ -44,7 +44,7 @@ import '../mapper/card.dart';
   }) async {
     final int effectiveBatchSize = batchSize ?? (kReleaseMode ? 5 : 1);
 
-    final localCards = await fetchCardRepository.fetchLocalCard(collectionId: collectionId);
+    final localCards = await fetchCardRepository.fetchLocal(collectionId: collectionId);
     final combinedCards = [...localCards];
 
     final bool isFirstLoad = localCards.isEmpty;
@@ -53,7 +53,7 @@ import '../mapper/card.dart';
     if (isFirstLoad) {
       LoggerUtil.addMessage(message: '[Local] No cards found for $collectionId');
 
-      await createCollectionRepository.createLocalCollection(
+      await createCollectionRepository.createLocal(
         collection: CollectionModel(
           collectionId: collectionId,
           name: collectionName,
@@ -62,7 +62,7 @@ import '../mapper/card.dart';
         ),
       );
 
-      await createPageRepository.createPage(
+      await createPageRepository.create(
         page: PageModel(
           collectionId: collectionId,
           paging: {},
@@ -73,7 +73,7 @@ import '../mapper/card.dart';
     }
 
     if (isSupportedGame) {
-      final Map<String, dynamic> localPageMap = await findPageRepository.findPage(collectionId: collectionId);
+      final Map<String, dynamic> localPageMap = await findPageRepository.find(collectionId: collectionId);
       final PagingStrategy pageStrategy = ServiceFactory.create(collectionId: collectionId);
 
       final Map<String, dynamic> pageMap = Map<String, dynamic>.from(localPageMap);
@@ -96,17 +96,17 @@ import '../mapper/card.dart';
         final String pageKey = _normalizeKey(page: page);
 
         try {
-          final apiCards = await fetchCardRepository.fetchApiCard(page: page);
+          final apiCards = await fetchCardRepository.fetchApi(page: page);
 
           if (apiCards.isNotEmpty) {
-            await saveCardRepository.saveCard(cards: apiCards);
+            await saveCardRepository.save(cards: apiCards);
             combinedCards.addAll(apiCards);
             LoggerUtil.addMessage(message: '[API] Loaded page: ${jsonEncode(page)} → ${apiCards.length} cards');
           } else {
             LoggerUtil.addMessage(message: '[API] Page has no more cards: ${jsonEncode(page)}');
             pageMap[pageKey] = true;
 
-            await updatePageRepository.updatePage(
+            await updatePageRepository.update(
               page: PageModel(
                 collectionId: collectionId,
                 paging: pageMap,
@@ -123,13 +123,13 @@ import '../mapper/card.dart';
       LoggerUtil.addMessage(message: '[Remote] Fetching cards from remote (custom collection)');
 
       try {
-        final remoteCards = await fetchCardRepository.fetchRemoteCard(
+        final remoteCards = await fetchCardRepository.fetchRemote(
           userId: userId,
           collectionId: collectionId,
         );
 
         if (remoteCards.isNotEmpty) {
-          await saveCardRepository.saveCard(cards: remoteCards);
+          await saveCardRepository.save(cards: remoteCards);
           combinedCards.addAll(remoteCards);
           LoggerUtil.addMessage(message: '[Remote] Cards loaded from remote Firestore');
         } else {

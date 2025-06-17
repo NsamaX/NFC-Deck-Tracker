@@ -7,7 +7,7 @@ class CreateCardRemoteDatasource {
 
   CreateCardRemoteDatasource(this._firestoreService);
 
-  Future<bool> createCard({
+  Future<bool> create({
     required String userId,
     required CardModel card,
   }) async {

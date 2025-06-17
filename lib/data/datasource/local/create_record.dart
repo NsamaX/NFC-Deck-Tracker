@@ -7,7 +7,7 @@ class CreateRecordLocalDatasource {
 
   CreateRecordLocalDatasource(this._sqliteService);
 
-  Future<void> createRecord({
+  Future<void> create({
     required RecordModel record,
   }) async {
     await _sqliteService.insert(

@@ -10,6 +10,6 @@ class CloseRoomUsecase {
   Future<void> call({
     required String roomId,
   }) async {
-    await closeRoomRepository.closeRoom(roomId: roomId);
+    await closeRoomRepository.close(roomId: roomId);
   }
 }

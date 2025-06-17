@@ -8,10 +8,10 @@ class FetchRoomRepository {
     required this.fetchRoomRemoteDatasource,
   });
 
-  Future<List<RecordModel>> fetchRoomRecords({
+  Future<List<RecordModel>> fetch({
     required String roomId,
     required String playerId,
   }) async {
-    return await fetchRoomRemoteDatasource.fetchRoomRecords(roomId: roomId, playerId: playerId);
+    return await fetchRoomRemoteDatasource.fetch(roomId: roomId, playerId: playerId);
   }
 }

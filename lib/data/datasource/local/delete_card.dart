@@ -7,7 +7,7 @@ class DeleteCardLocalDatasource {
 
   DeleteCardLocalDatasource(this._sqliteService);
 
-  Future<void> deleteCard({
+  Future<void> delete({
     required CardModel card,
   }) async {
     await _sqliteService.delete(

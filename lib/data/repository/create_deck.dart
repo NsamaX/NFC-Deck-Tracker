@@ -11,16 +11,16 @@ class CreateDeckRepository {
     required this.createDeckRemoteDatasource,
   });
 
-  Future<void> createLocalDeck({
+  Future<void> createLocal({
     required DeckModel deck,
   }) async {
-    await createDeckLocalDatasource.createDeck(deck: deck);
+    await createDeckLocalDatasource.create(deck: deck);
   }
 
-  Future<bool> createRemoteDeck({
+  Future<bool> createRemote({
     required String userId,
     required DeckModel deck,
   }) async {
-    return await createDeckRemoteDatasource.createDeck(userId: userId, deck: deck);
+    return await createDeckRemoteDatasource.create(userId: userId, deck: deck);
   }
 }

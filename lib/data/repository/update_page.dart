@@ -8,9 +8,9 @@ class UpdatePageRepository {
     required this.updatePageLocalDatasource,
   });
 
-  Future<void> updatePage({
+  Future<void> update({
     required PageModel page,
   }) async {
-    await updatePageLocalDatasource.updatePage(page: page);
+    await updatePageLocalDatasource.update(page: page);
   }
 }

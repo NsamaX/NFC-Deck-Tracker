@@ -7,7 +7,7 @@ class UploadImageRemoteDatasource {
 
   UploadImageRemoteDatasource(this._firestoreService);
 
-  Future<String?> uploadCardImage({
+  Future<String?> upload({
     required String userId,
     required String imagePath,
   }) async {

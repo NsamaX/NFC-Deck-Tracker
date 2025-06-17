@@ -8,9 +8,9 @@ class CreatePageRepository {
     required this.createPageLocalDatasource,
   });
 
-  Future<void> createPage({
+  Future<void> create({
     required PageModel page,
   }) async {
-    await createPageLocalDatasource.createPage(page: page);
+    await createPageLocalDatasource.create(page: page);
   }
 }

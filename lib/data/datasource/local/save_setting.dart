@@ -5,7 +5,7 @@ class SaveSettingLocalDatasource {
 
   SaveSettingLocalDatasource(this._sharedPreferencesService);
 
-  Future<void> saveSetting({
+  Future<void> save({
     required String key,
     required dynamic value,
   }) async {

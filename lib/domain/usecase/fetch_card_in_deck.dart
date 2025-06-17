@@ -29,7 +29,7 @@ class FetchCardInDeckUsecase {
     required String deckName,
     required String collectionId,
   }) async {
-    final localCardModels = await fetchCardInDeckRepository.fetchLocalDeck(deckId: deckId);
+    final localCardModels = await fetchCardInDeckRepository.fetchLocal(deckId: deckId);
 
     List<CardModel> remoteCards = [];
 
@@ -38,7 +38,7 @@ class FetchCardInDeckUsecase {
         final gameApi = ServiceFactory.create<GameApi>(collectionId: collectionId);
         for (final model in localCardModels) {
           try {
-            final apiCard = await gameApi.findCard(cardId: model.card.cardId);
+            final apiCard = await gameApi.find(cardId: model.card.cardId);
             remoteCards.add(apiCard);
           } catch (_) {
             LoggerUtil.debugMessage(message: '⚠️ ไม่พบการ์ด ${model.card.cardId} ใน GameApi');
@@ -49,7 +49,7 @@ class FetchCardInDeckUsecase {
       }
     } else {
       try {
-        remoteCards = await fetchCardRepository.fetchRemoteCard(
+        remoteCards = await fetchCardRepository.fetchRemote(
           userId: userId,
           collectionId: collectionId,
         );
@@ -80,7 +80,7 @@ class FetchCardInDeckUsecase {
       updatedAt: DateTime.now(),
     );
 
-    await updateDeckRepository.updateLocalDeck(deck: syncDeck);
+    await updateDeckRepository.updateLocal(deck: syncDeck);
 
     return syncDeck.cards.map((c) => CardInDeckEntity(card: CardMapper.toEntity(c.card), count: c.count)).toList();
   }

@@ -1,5 +1,5 @@
 export 'check_duplicate_name.dart';
-export 'clear_local_datasource.dart';
+export 'clear_user_data.dart';
 export 'create_card_in_deck.dart';
 export 'create_card.dart';
 export 'create_collection.dart';

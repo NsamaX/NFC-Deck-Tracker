@@ -11,16 +11,16 @@ class CreateCollectionRepository {
     required this.createCollectionRemoteDatasource,
   });
 
-  Future<void> createLocalCollection({
+  Future<void> createLocal({
     required CollectionModel collection,
   }) async {
-    await createCollectionLocalDatasource.createCollection(collection: collection);
+    await createCollectionLocalDatasource.create(collection: collection);
   }
 
-  Future<bool> createRemoteCollection({
+  Future<bool> createRemote({
     required String userId,
     required CollectionModel collection,
   }) async {
-    return await createCollectionRemoteDatasource.createCollection(userId: userId, collection: collection);
+    return await createCollectionRemoteDatasource.create(userId: userId, collection: collection);
   }
 } 

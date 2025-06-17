@@ -14,12 +14,12 @@ class InitializeSettingUsecase {
     final updatedValues = <String, dynamic>{};
 
     for (final entry in defaultSettings.entries) {
-      final dynamic value = await loadSettingRepository.loadSetting(key: entry.key);
+      final dynamic value = await loadSettingRepository.load(key: entry.key);
 
       if (value == null) {
         if (entry.key == 'loggedIn' || entry.key == 'recentId' || entry.key == 'recentGame') continue;
 
-        await saveSettingRepository.saveSetting(key: entry.key, value: entry.value);
+        await saveSettingRepository.save(key: entry.key, value: entry.value);
         updatedValues[entry.key] = entry.value;
       } else {
         updatedValues[entry.key] = value;

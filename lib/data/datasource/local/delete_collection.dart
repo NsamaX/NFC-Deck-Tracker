@@ -5,7 +5,7 @@ class DeleteCollectionLocalDatasource {
 
   DeleteCollectionLocalDatasource(this._sqliteService);
 
-  Future<bool> deleteCollection({
+  Future<bool> delete({
     required String collectionId,
   }) async {
     return await _sqliteService.delete(

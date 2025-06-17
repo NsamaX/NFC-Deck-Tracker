@@ -7,7 +7,7 @@ class FetchUsedCardDistinctLocalDatasource {
 
   FetchUsedCardDistinctLocalDatasource(this._sqliteService);
 
-  Future<List<CardModel>> fetchUsedCardDistinct() async {
+  Future<List<CardModel>> fetch() async {
     final result = await _sqliteService.queryTable(
       sql: 
       """

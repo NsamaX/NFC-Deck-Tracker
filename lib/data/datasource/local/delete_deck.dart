@@ -5,7 +5,7 @@ class DeleteDeckLocalDatasource {
 
   DeleteDeckLocalDatasource(this._sqliteService);
 
-  Future<bool> deleteDeck({
+  Future<bool> delete({
     required String deckId,
   }) async {
     return await _sqliteService.delete(

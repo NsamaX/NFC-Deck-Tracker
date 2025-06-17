@@ -22,7 +22,7 @@ class FetchDeckUsecase {
   });
 
   Future<List<DeckEntity>> call({required String userId}) async {
-    final localModels = await fetchDeckRepository.fetchLocalDeck();
+    final localModels = await fetchDeckRepository.fetchLocal();
     final localList = localModels.map(DeckMapper.toEntity).toList();
     final localMap = {for (final deck in localList) deck.deckId!: deck};
 
@@ -30,7 +30,7 @@ class FetchDeckUsecase {
     Map<String, DeckEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteModels = await fetchDeckRepository.fetchRemoteDeck(userId: userId);
+      final remoteModels = await fetchDeckRepository.fetchRemote(userId: userId);
       remoteList = remoteModels.map(DeckMapper.toEntity).toList();
       remoteMap = {for (final deck in remoteList) deck.deckId!: deck};
 
@@ -51,11 +51,11 @@ class FetchDeckUsecase {
       final local = localMap[remote.deckId];
 
       if (local == null) {
-        await createDeckRepository.createLocalDeck(deck: DeckMapper.toModel(remote));
+        await createDeckRepository.createLocal(deck: DeckMapper.toModel(remote));
         localList.add(remote);
         LoggerUtil.debugMessage(message: '📥 Imported remote deck → local: ${remote.deckId}');
       } else if (remote.updatedAt!.isAfter(local.updatedAt!)) {
-        await updateDeckRepository.updateLocalDeck(deck: DeckMapper.toModel(remote));
+        await updateDeckRepository.updateLocal(deck: DeckMapper.toModel(remote));
         final index = localList.indexWhere((d) => d.deckId == remote.deckId);
         if (index != -1) localList[index] = remote;
         LoggerUtil.debugMessage(message: '📥 Updated local deck from remote: ${remote.deckId}');
@@ -68,13 +68,13 @@ class FetchDeckUsecase {
     List<DeckEntity> localList,
   ) async {
     for (final deck in localList.where((d) => d.isSynced != true)) {
-      final success = await createDeckRepository.createRemoteDeck(
+      final success = await createDeckRepository.createRemote(
         userId: userId,
         deck: DeckMapper.toModel(deck),
       );
       if (success) {
         final updated = deck.copyWith(isSynced: true);
-        await updateDeckRepository.updateLocalDeck(deck: DeckMapper.toModel(updated));
+        await updateDeckRepository.updateLocal(deck: DeckMapper.toModel(updated));
         final index = localList.indexWhere((d) => d.deckId == updated.deckId);
         if (index != -1) localList[index] = updated;
         LoggerUtil.debugMessage(message: '📤 Synced local deck → remote: ${deck.deckId}');
@@ -93,7 +93,7 @@ class FetchDeckUsecase {
     ).toList();
 
     for (final deck in toRemove) {
-      final success = await deleteDeckRepository.deleteLocalDeck(deckId: deck.deckId!);
+      final success = await deleteDeckRepository.deleteLocal(deckId: deck.deckId!);
       if (success) {
         localList.removeWhere((d) => d.deckId == deck.deckId);
         LoggerUtil.debugMessage(message: '🗑️ Deleted local deck not found in remote: ${deck.deckId}');

@@ -7,7 +7,7 @@ class FetchCollectionLocalDatasource {
 
   FetchCollectionLocalDatasource(this._sqliteService);
 
-  Future<List<CollectionModel>> fetchCollection() async {
+  Future<List<CollectionModel>> fetch() async {
     final result = await _sqliteService.getTable(
       table: 'collections',
     );

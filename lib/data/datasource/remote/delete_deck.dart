@@ -5,7 +5,7 @@ class DeleteDeckRemoteDatasource {
 
   DeleteDeckRemoteDatasource(this._firestoreService);
 
-  Future<bool> deleteDeck({
+  Future<bool> delete({
     required String userId,
     required String deckId,
   }) async {

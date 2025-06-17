@@ -7,7 +7,7 @@ class UpdateCollectionLocalDatasource {
 
   UpdateCollectionLocalDatasource(this._sqliteService);
 
-  Future<void> updateCollection({
+  Future<void> update({
     required CollectionModel collection,
   }) async {
     await _sqliteService.update(

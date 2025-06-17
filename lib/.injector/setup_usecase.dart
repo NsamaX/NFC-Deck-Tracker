@@ -84,7 +84,6 @@ void setupDeckUsecase() {
   ));
   locator.registerFactoryParam<FetchCardInDeckUsecase, String, void>((collectionId, _) {
     return FetchCardInDeckUsecase(
-      // createCardRepository: locator<CreateCardRepository>(),
       fetchCardInDeckRepository: locator<FetchCardInDeckRepository>(),
       fetchCardRepository: locator<FetchCardRepository>(param1: collectionId),
       updateDeckRepository: locator<UpdateDeckRepository>(),
@@ -106,8 +105,8 @@ void setupDeckUsecase() {
 }
 
 void setupLocalUsecase() {
-  locator.registerLazySingleton(() => ClearLocalDataSourceUsecase(
-    clearLocalDataSourceRepository: locator<ClearLocalDataSourceRepository>(),
+  locator.registerLazySingleton(() => ClearUserDataUsecase(
+    clearUserDataRepository: locator<ClearUserDataRepository>(),
   ));
 }
 

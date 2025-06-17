@@ -5,7 +5,7 @@ class CloseRoomRemoteDatasource {
 
   CloseRoomRemoteDatasource(this._firestoreService);
 
-  Future<void> closeRoom({
+  Future<void> close({
     required String roomId,
   }) async {
     await _firestoreService.delete(

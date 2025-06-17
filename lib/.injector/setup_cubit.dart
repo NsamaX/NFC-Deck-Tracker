@@ -33,7 +33,7 @@ Future<void> setupCubit() async {
 
 void setupApplicationCubit() {
   locator.registerLazySingleton(() => ApplicationCubit(
-    clearLocalDataSourceUsecase: locator<ClearLocalDataSourceUsecase>(),
+    clearUserDataUsecase: locator<ClearUserDataUsecase>(),
     initializeSettingUsecase: locator<InitializeSettingUsecase>(),
     updateSettingUsecase: locator<UpdateSettingUsecase>(),
   ));

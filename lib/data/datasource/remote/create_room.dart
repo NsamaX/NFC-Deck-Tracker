@@ -7,7 +7,7 @@ class CreateRoomRemoteDatasource {
 
   CreateRoomRemoteDatasource(this._firestoreService);
 
-  Future<bool> createRoom({
+  Future<bool> create({
     required RoomModel room,
   }) async {
     return await _firestoreService.insert(

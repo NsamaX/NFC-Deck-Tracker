@@ -5,7 +5,7 @@ class LoadSettingLocalDatasource {
 
   LoadSettingLocalDatasource(this._sharedPreferencesService);
 
-  Future<dynamic> loadSetting({
+  Future<dynamic> load({
     required String key,
   }) async {
     return await _sharedPreferencesService.load(key: key);

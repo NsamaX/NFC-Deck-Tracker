@@ -7,7 +7,7 @@ class FetchDeckLocalDatasource {
 
   FetchDeckLocalDatasource(this._sqliteService);
 
-  Future<List<DeckModel>> fetchDeck() async {
+  Future<List<DeckModel>> fetch() async {
     final result = await _sqliteService.getTable(
       table: 'decks',
     );

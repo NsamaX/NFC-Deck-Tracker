@@ -4,14 +4,14 @@ import '@service_factory.dart';
 
 class DummyApi extends GameApi {
   @override
-  Future<List<CardModel>> fetchCard({
+  Future<List<CardModel>> fetch({
     required Map<String, dynamic> page,
   }) {
     throw Exception('❗ DummyApi.fetchCard() is not implemented');
   }
 
   @override
-  Future<CardModel> findCard({
+  Future<CardModel> find({
     required String cardId,
   }) {
     throw Exception('❗ DummyApi.findCard() is not implemented');

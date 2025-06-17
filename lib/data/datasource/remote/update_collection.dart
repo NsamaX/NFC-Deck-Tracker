@@ -7,7 +7,7 @@ class UpdateCollectionRemoteDatasource {
 
   UpdateCollectionRemoteDatasource(this._firestoreService);
 
-  Future<bool> updateCollection({
+  Future<bool> update({
     required String userId,
     required CollectionModel collection,
   }) async {

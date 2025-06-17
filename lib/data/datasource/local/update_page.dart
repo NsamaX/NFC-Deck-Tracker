@@ -7,7 +7,7 @@ class UpdatePageLocalDatasource {
 
   UpdatePageLocalDatasource(this._sqliteService);
 
-  Future<void> updatePage({
+  Future<void> update({
     required PageModel page,
   }) async {
     await _sqliteService.update(

@@ -7,10 +7,10 @@ class UploadImageRepository {
     required this.uploadImageRemoteDatasource,
   });
 
-  Future<String?> uploadCardImage({
+  Future<String?> upload({
     required String userId,
     required String imagePath,
   }) async {
-    return await uploadImageRemoteDatasource.uploadCardImage(userId: userId, imagePath: imagePath);
+    return await uploadImageRemoteDatasource.upload(userId: userId, imagePath: imagePath);
   }
 }

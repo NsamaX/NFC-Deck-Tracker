@@ -7,7 +7,7 @@ class CreateCardLocalDatasource {
 
   CreateCardLocalDatasource(this._sqliteService);
 
-  Future<void> createCard({
+  Future<void> create({
     required CardModel card,
   }) async {
     await _sqliteService.insert(

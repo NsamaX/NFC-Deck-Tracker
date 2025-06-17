@@ -8,9 +8,9 @@ class SaveCardRepository {
     required this.saveCardLocalDatasource,
   });
 
-  Future<void> saveCard({
+  Future<void> save({
     required List<CardModel> cards,
   }) async {
-    await saveCardLocalDatasource.saveCard(cards: cards);
+    await saveCardLocalDatasource.save(cards: cards);
   }
 }

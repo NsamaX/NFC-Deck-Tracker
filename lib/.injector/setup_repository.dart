@@ -159,8 +159,8 @@ void setupPageRepository() {
 }
 
 void setupLocalRepository() {
-  locator.registerLazySingleton(() => ClearLocalDataSourceRepository(
-    clearLocalDatasource: locator<ClearLocalDatasource>(),
+  locator.registerLazySingleton(() => ClearUserDataRepository(
+    clearUserDataLocalDatasource: locator<ClearUserDataLocalDatasource>(),
   ));
 }
 

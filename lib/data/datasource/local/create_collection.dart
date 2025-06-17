@@ -7,7 +7,7 @@ class CreateCollectionLocalDatasource {
 
   CreateCollectionLocalDatasource(this._sqliteService);
 
-  Future<void> createCollection({
+  Future<void> create({
     required CollectionModel collection,
   }) async {
     await _sqliteService.insert(

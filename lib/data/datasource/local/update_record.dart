@@ -7,7 +7,7 @@ class UpdateRecordLocalDatasource {
 
   UpdateRecordLocalDatasource(this._sqliteService);
 
-  Future<void> updateRecord({
+  Future<void> update({
     required RecordModel record,
   }) async {
     await _sqliteService.update(
