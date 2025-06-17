@@ -13,8 +13,7 @@ class CreateDeckRemoteDatasource {
   }) async {
     if (deck.cards.isEmpty) return false;
 
-    final collectionId = deck.cards.first.card.collectionId;
-    final deckPath = 'users/$userId/collections/$collectionId/decks';
+    final deckPath = 'users/$userId/decks';
     final cardsPath = '$deckPath/${deck.deckId}/cards';
 
     final deckInserted = await _firestoreService.insert(
@@ -28,7 +27,7 @@ class CreateDeckRemoteDatasource {
     for (final cardInDeck in deck.cards) {
       final inserted = await _firestoreService.insert(
         collectionPath: cardsPath,
-        documentId: cardInDeck.card.cardId,
+        documentId: cardInDeck.card.collectionId,
         data: {
           'cardId': cardInDeck.card.cardId,
           'count': cardInDeck.count,

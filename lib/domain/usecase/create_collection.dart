@@ -18,32 +18,33 @@ class CreateCollectionUsecase {
     required String userId,
     required String name,
   }) async {
+    final String collectionId = const Uuid().v4();
+    final DateTime now = DateTime.now();
+
     final newCollection = CollectionEntity(
-      collectionId: const Uuid().v4(),
+      collectionId: collectionId,
       name: name,
+      updatedAt: now,
     );
 
-    final collectionModel = CollectionMapper.toModel(newCollection);
-
+    bool synced = false;
     if (userId.isNotEmpty) {
       final remoteSuccess = await createCollectionRepository.createForRemote(
         userId: userId,
-        collection: collectionModel,
+        collection: CollectionMapper.toModel(
+          newCollection.copyWith(isSynced: true),
+        ),
       );
 
-      final synced = newCollection.copyWith(isSynced: remoteSuccess);
-      await createCollectionRepository.createForLocal(
-        collection: CollectionMapper.toModel(synced),
-      );
-
-      if (!remoteSuccess) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, saved as local only');
+      if (remoteSuccess) {
+        synced = true;
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, will fallback to local-only');
       }
-    } else {
-      final localOnly = newCollection.copyWith(isSynced: false);
-      await createCollectionRepository.createForLocal(
-        collection: CollectionMapper.toModel(localOnly),
-      );
     }
+
+    final finalEntity = newCollection.copyWith(isSynced: synced);
+    final collectionModel = CollectionMapper.toModel(finalEntity);
+    await createCollectionRepository.createForLocal(collection: collectionModel);
   }
 }

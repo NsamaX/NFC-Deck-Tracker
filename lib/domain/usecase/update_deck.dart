@@ -16,27 +16,27 @@ class UpdateDeckUsecase {
     required String userId,
     required DeckEntity deck,
   }) async {
-    final deckModel = DeckMapper.toModel(deck);
+    final DateTime now = DateTime.now();
+    final updatedDeck = deck.copyWith(updatedAt: now);
 
+    bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await updateDeckRepository.updateForRemote(
+      final remoteSuccess = await updateDeckRepository.updateForRemote(
         userId: userId,
-        deck: deckModel,
+        deck: DeckMapper.toModel(
+          updatedDeck.copyWith(isSynced: true),
+        ),
       );
 
-      final syncedDeck = deck.copyWith(isSynced: success);
-      await updateDeckRepository.updateForLocal(
-        deck: DeckMapper.toModel(syncedDeck),
-      );
-
-      if (!success) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, saved as local only');
+      if (remoteSuccess) {
+        synced = true;
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, will fallback to local-only');
       }
-    } else {
-      final localOnly = deck.copyWith(isSynced: false);
-      await updateDeckRepository.updateForLocal(
-        deck: DeckMapper.toModel(localOnly),
-      );
     }
+
+    final finalEntity = updatedDeck.copyWith(isSynced: synced);
+    final deckModel = DeckMapper.toModel(finalEntity);
+    await updateDeckRepository.updateForLocal(deck: deckModel);
   }
 }

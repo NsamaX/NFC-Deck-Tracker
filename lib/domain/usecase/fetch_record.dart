@@ -37,15 +37,15 @@ class FetchRecordUsecase {
       remoteList = remoteModels.map(RecordMapper.toEntity).toList();
       remoteMap = {for (final r in remoteList) r.recordId: r};
 
-      await _importRemoteToLocal(remoteList, localMap, localList);
-      await _syncLocalToRemote(userId, localList);
+      await _importOrUpdateFromRemote(remoteList, localMap, localList);
+      await _syncLocalToRemote(userId, localList, remoteMap);
       await _removeDeletedRemoteRecords(remoteMap, localList);
     }
 
     return localList;
   }
 
-  Future<void> _importRemoteToLocal(
+  Future<void> _importOrUpdateFromRemote(
     List<RecordEntity> remoteList,
     Map<String, RecordEntity> localMap,
     List<RecordEntity> localList,
@@ -68,20 +68,45 @@ class FetchRecordUsecase {
     }
   }
 
-  Future<void> _syncLocalToRemote(String userId, List<RecordEntity> localList) async {
-    for (final record in localList.where((r) => r.isSynced != true)) {
-      final success = await createRecordRepository.createForRemote(
-        userId: userId,
-        record: RecordMapper.toModel(record),
-      );
-      if (success) {
-        final updated = record.copyWith(isSynced: true);
-        await updateRecordRepository.updateForLocal(record: RecordMapper.toModel(updated));
-        final index = localList.indexWhere((r) => r.recordId == updated.recordId);
-        if (index != -1) localList[index] = updated;
-        LoggerUtil.debugMessage(message: '📤 Synced local record → remote: ${record.recordId}');
-      } else {
-        LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${record.recordId}');
+  Future<void> _syncLocalToRemote(
+    String userId,
+    List<RecordEntity> localList,
+    Map<String, RecordEntity> remoteMap,
+  ) async {
+    for (final local in localList) {
+      final remote = remoteMap[local.recordId];
+
+      if (local.isSynced != true) {
+        final success = await createRecordRepository.createForRemote(
+          userId: userId,
+          record: RecordMapper.toModel(local.copyWith(isSynced: true)),
+        );
+
+        if (success) {
+          final updated = local.copyWith(isSynced: true);
+          await updateRecordRepository.updateForLocal(record: RecordMapper.toModel(updated));
+          final index = localList.indexWhere((r) => r.recordId == updated.recordId);
+          if (index != -1) localList[index] = updated;
+          LoggerUtil.debugMessage(message: '📤 Synced local record → remote: ${local.recordId}');
+        } else {
+          LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${local.recordId}');
+        }
+      }
+
+      else if (remote != null &&
+          local.updatedAt != null &&
+          remote.updatedAt != null &&
+          local.updatedAt!.isAfter(remote.updatedAt!)) {
+        final success = await updateRecordRepository.updateForRemote(
+          userId: userId,
+          record: RecordMapper.toModel(local.copyWith(isSynced: true)),
+        );
+
+        if (success) {
+          LoggerUtil.debugMessage(message: '🔁 Updated remote with newer local: ${local.recordId}');
+        } else {
+          LoggerUtil.debugMessage(message: '⚠️ Failed to update newer local → remote: ${local.recordId}');
+        }
       }
     }
   }

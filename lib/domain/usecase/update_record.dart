@@ -16,27 +16,27 @@ class UpdateRecordUsecase {
     required String userId,
     required RecordEntity record,
   }) async {
-    final recordModel = RecordMapper.toModel(record);
+    final DateTime now = DateTime.now();
+    final updatedRecord = record.copyWith(updatedAt: now);
 
+    bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await updateRecordRepository.updateForRemote(
+      final remoteSuccess = await updateRecordRepository.updateForRemote(
         userId: userId,
-        record: recordModel,
+        record: RecordMapper.toModel(
+          updatedRecord.copyWith(isSynced: true),
+        ),
       );
 
-      final syncedRecord = record.copyWith(isSynced: success);
-      await updateRecordRepository.updateForLocal(
-        record: RecordMapper.toModel(syncedRecord),
-      );
-
-      if (!success) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, saved as local only');
+      if (remoteSuccess) {
+        synced = true;
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, will fallback to local-only');
       }
-    } else {
-      final localOnly = record.copyWith(isSynced: false);
-      await updateRecordRepository.updateForLocal(
-        record: RecordMapper.toModel(localOnly),
-      );
     }
+
+    final finalEntity = updatedRecord.copyWith(isSynced: synced);
+    final recordModel = RecordMapper.toModel(finalEntity);
+    await updateRecordRepository.updateForLocal(record: recordModel);
   }
 }

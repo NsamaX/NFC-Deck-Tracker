@@ -16,27 +16,27 @@ class UpdateCollectionUsecase {
     required String userId,
     required CollectionEntity collection,
   }) async {
-    final collectionModel = CollectionMapper.toModel(collection);
+    final DateTime now = DateTime.now();
+    final updatedCollection = collection.copyWith(updatedAt: now);
 
+    bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await updateCollectionRepository.updateForRemote(
+      final remoteSuccess = await updateCollectionRepository.updateForRemote(
         userId: userId,
-        collection: collectionModel,
+        collection: CollectionMapper.toModel(
+          updatedCollection.copyWith(isSynced: true),
+        ),
       );
 
-      final syncedCollection = collection.copyWith(isSynced: success);
-      await updateCollectionRepository.updateForLocal(
-        collection: CollectionMapper.toModel(syncedCollection),
-      );
-
-      if (!success) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, saved as local only');
+      if (remoteSuccess) {
+        synced = true;
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, will fallback to local-only');
       }
-    } else {
-      final localOnly = collection.copyWith(isSynced: false);
-      await updateCollectionRepository.updateForLocal(
-        collection: CollectionMapper.toModel(localOnly),
-      );
     }
+
+    final finalEntity = updatedCollection.copyWith(isSynced: synced);
+    final collectionModel = CollectionMapper.toModel(finalEntity);
+    await updateCollectionRepository.updateForLocal(collection: collectionModel);
   }
 }

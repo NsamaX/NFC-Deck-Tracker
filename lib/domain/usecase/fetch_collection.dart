@@ -34,15 +34,15 @@ class FetchCollectionUsecase {
       remoteList = remoteModels.map(CollectionMapper.toEntity).toList();
       remoteMap = {for (final col in remoteList) col.collectionId: col};
 
-      await _importRemoteToLocal(remoteList, localMap, localList);
-      await _syncLocalToRemote(userId, localList);
-      await _removeDeletedRemoteCollections(remoteMap, localList);
+      await _importOrUpdateFromRemote(remoteList, localMap, localList);
+      await _syncLocalToRemote(userId, localList, remoteMap);
+      await _removeLocalIfDeletedFromRemote(remoteMap, localList);
     }
 
     return localList;
   }
 
-  Future<void> _importRemoteToLocal(
+  Future<void> _importOrUpdateFromRemote(
     List<CollectionEntity> remoteList,
     Map<String, CollectionEntity> localMap,
     List<CollectionEntity> localList,
@@ -69,27 +69,51 @@ class FetchCollectionUsecase {
     }
   }
 
-  Future<void> _syncLocalToRemote(String userId, List<CollectionEntity> localList) async {
-    for (final collection in localList.where((c) => c.isSynced != true)) {
-      final success = await createCollectionRepository.createForRemote(
-        userId: userId,
-        collection: CollectionMapper.toModel(collection),
-      );
-      if (success) {
-        final updated = collection.copyWith(isSynced: true);
-        await updateCollectionRepository.updateForLocal(
-          collection: CollectionMapper.toModel(updated),
+  Future<void> _syncLocalToRemote(
+    String userId,
+    List<CollectionEntity> localList,
+    Map<String, CollectionEntity> remoteMap,
+  ) async {
+    for (final local in localList) {
+      final remote = remoteMap[local.collectionId];
+
+      if (local.isSynced != true) {
+        final success = await createCollectionRepository.createForRemote(
+          userId: userId,
+          collection: CollectionMapper.toModel(local.copyWith(isSynced: true)),
         );
-        final index = localList.indexWhere((c) => c.collectionId == updated.collectionId);
-        if (index != -1) localList[index] = updated;
-        LoggerUtil.debugMessage(message: '📤 Synced local → remote: ${collection.collectionId}');
-      } else {
-        LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${collection.collectionId}');
+
+        if (success) {
+          final updated = local.copyWith(isSynced: true);
+          await updateCollectionRepository.updateForLocal(
+            collection: CollectionMapper.toModel(updated),
+          );
+          final index = localList.indexWhere((c) => c.collectionId == updated.collectionId);
+          if (index != -1) localList[index] = updated;
+          LoggerUtil.debugMessage(message: '📤 Synced local → remote: ${local.collectionId}');
+        } else {
+          LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${local.collectionId}');
+        }
+
+      } else if (remote != null &&
+          local.updatedAt != null &&
+          remote.updatedAt != null &&
+          local.updatedAt!.isAfter(remote.updatedAt!)) {
+        final success = await updateCollectionRepository.updateForRemote(
+          userId: userId,
+          collection: CollectionMapper.toModel(local.copyWith(isSynced: true)),
+        );
+
+        if (success) {
+          LoggerUtil.debugMessage(message: '🔁 Updated remote with newer local: ${local.collectionId}');
+        } else {
+          LoggerUtil.debugMessage(message: '⚠️ Failed to update newer local → remote: ${local.collectionId}');
+        }
       }
     }
   }
 
-  Future<void> _removeDeletedRemoteCollections(
+  Future<void> _removeLocalIfDeletedFromRemote(
     Map<String, CollectionEntity> remoteMap,
     List<CollectionEntity> localList,
   ) async {

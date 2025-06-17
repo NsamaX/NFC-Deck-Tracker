@@ -20,6 +20,7 @@ class UpdateCardUsecase {
     required CardEntity card,
   }) async {
     String? finalImageUrl = card.imageUrl;
+    final DateTime now = DateTime.now();
 
     if (userId.isNotEmpty && card.imageUrl?.isNotEmpty == true) {
       final uploadedUrl = await uploadImageRepository.upload(
@@ -32,20 +33,29 @@ class UpdateCardUsecase {
       }
     }
 
-    final updatedCard = card.copyWith(imageUrl: finalImageUrl);
-    final cardModel = CardMapper.toModel(updatedCard);
+    final updatedCard = card.copyWith(
+      imageUrl: finalImageUrl,
+      updatedAt: now,
+    );
 
-    await updateCardRepository.updateForLocal(card: cardModel);
-
+    bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await updateCardRepository.updateForRemote(
+      final remoteSuccess = await updateCardRepository.updateForRemote(
         userId: userId,
-        card: cardModel,
+        card: CardMapper.toModel(
+          updatedCard.copyWith(isSynced: true),
+        ),
       );
 
-      if (!success) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, saved as local only');
+      if (remoteSuccess) {
+        synced = true;
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, will fallback to local-only');
       }
     }
+
+    final finalEntity = updatedCard.copyWith(isSynced: synced);
+    final cardModel = CardMapper.toModel(finalEntity);
+    await updateCardRepository.updateForLocal(card: cardModel);
   }
 }

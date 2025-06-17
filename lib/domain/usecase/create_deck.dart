@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import 'package:nfc_deck_tracker/data/repository/create_deck.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -16,27 +18,32 @@ class CreateDeckUsecase {
     required String userId,
     required DeckEntity deck,
   }) async {
-    final deckModel = DeckMapper.toModel(deck);
+    final String deckId = const Uuid().v4();
+    final DateTime now = DateTime.now();
 
+    final updatedDeck = deck.copyWith(
+      deckId: deckId,
+      updatedAt: now,
+    );
+
+    bool synced = false;
     if (userId.isNotEmpty) {
       final remoteSuccess = await createDeckRepository.createForRemote(
         userId: userId,
-        deck: deckModel,
+        deck: DeckMapper.toModel(
+          updatedDeck.copyWith(isSynced: true),
+        ),
       );
 
-      final syncedDeck = deck.copyWith(isSynced: remoteSuccess);
-      await createDeckRepository.createForLocal(
-        deck: DeckMapper.toModel(syncedDeck),
-      );
-
-      if (!remoteSuccess) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, saved as local only');
+      if (remoteSuccess) {
+        synced = true;
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, will fallback to local-only');
       }
-    } else {
-      final localOnly = deck.copyWith(isSynced: false);
-      await createDeckRepository.createForLocal(
-        deck: DeckMapper.toModel(localOnly),
-      );
     }
+
+    final finalEntity = updatedDeck.copyWith(isSynced: synced);
+    final deckModel = DeckMapper.toModel(finalEntity);
+    await createDeckRepository.createForLocal(deck: deckModel);
   }
 }

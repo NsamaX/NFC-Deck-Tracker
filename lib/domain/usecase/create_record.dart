@@ -1,3 +1,5 @@
+import 'package:uuid/uuid.dart';
+
 import 'package:nfc_deck_tracker/data/repository/create_record.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -16,27 +18,33 @@ class CreateRecordUsecase {
     required String userId,
     required RecordEntity record,
   }) async {
-    final recordModel = RecordMapper.toModel(record);
+    final String recordId = const Uuid().v4();
+    final DateTime now = DateTime.now();
+
+    final updatedRecord = record.copyWith(
+      recordId: recordId,
+      updatedAt: now,
+    );
+
+    bool synced = false;
 
     if (userId.isNotEmpty) {
       final remoteSuccess = await createRecordRepository.createForRemote(
         userId: userId,
-        record: recordModel,
+        record: RecordMapper.toModel(
+          updatedRecord.copyWith(isSynced: true),
+        ),
       );
 
-      final syncedRecord = record.copyWith(isSynced: remoteSuccess);
-      await createRecordRepository.createForLocal(
-        record: RecordMapper.toModel(syncedRecord),
-      );
-
-      if (!remoteSuccess) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, saved as local only');
+      if (remoteSuccess) {
+        synced = true;
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, will fallback to local-only');
       }
-    } else {
-      final localOnly = record.copyWith(isSynced: false);
-      await createRecordRepository.createForLocal(
-        record: RecordMapper.toModel(localOnly),
-      );
     }
+
+    final finalEntity = updatedRecord.copyWith(isSynced: synced);
+    final recordModel = RecordMapper.toModel(finalEntity);
+    await createRecordRepository.createForLocal(record: recordModel);
   }
 }

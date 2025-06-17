@@ -24,7 +24,8 @@ class CreateCardUsecase {
     required String userId,
     required CardEntity card,
   }) async {
-    final String cardId = card.cardId ?? const Uuid().v4();
+    final String cardId = const Uuid().v4();
+    final DateTime now = DateTime.now();
     String finalImageUrl = card.imageUrl ?? '';
 
     if (userId.isNotEmpty && card.imageUrl?.isNotEmpty == true) {
@@ -50,22 +51,27 @@ class CreateCardUsecase {
       cardId: cardId,
       imageUrl: finalImageUrl,
       name: newName,
+      updatedAt: now,
     );
 
-    final cardModel = CardMapper.toModel(updatedCard);
-
+    bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await createCardRepository.createForRemote(
+      final remoteSuccess = await createCardRepository.createForRemote(
         userId: userId,
-        card: cardModel,
+        card: CardMapper.toModel(
+          updatedCard.copyWith(isSynced: true),
+        ),
       );
 
-      if (!success) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, will not save locally');
-        return;
+      if (remoteSuccess) {
+        synced = true;
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, will fallback to local-only');
       }
     }
 
+    final finalEntity = updatedCard.copyWith(isSynced: synced);
+    final cardModel = CardMapper.toModel(finalEntity);
     await createCardRepository.createForLocal(card: cardModel);
   }
 }
