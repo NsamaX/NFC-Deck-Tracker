@@ -34,15 +34,15 @@ class FetchDeckUsecase {
       remoteList = remoteModels.map(DeckMapper.toEntity).toList();
       remoteMap = {for (final deck in remoteList) deck.deckId!: deck};
 
-      await _importOrUpdateFromRemote(remoteList, localMap, localList);
-      await _syncUnsyncedLocalToRemote(userId, localList, remoteMap);
-      await _removeLocalIfDeletedFromRemote(remoteMap, localList);
+      await _importRemoteToLocal(remoteList, localMap, localList);
+      await _syncLocalToRemote(userId, localList);
+      await _removeDeletedRemoteDecks(remoteMap, localList);
     }
 
     return localList;
   }
 
-  Future<void> _importOrUpdateFromRemote(
+  Future<void> _importRemoteToLocal(
     List<DeckEntity> remoteList,
     Map<String, DeckEntity> localMap,
     List<DeckEntity> localList,
@@ -63,46 +63,28 @@ class FetchDeckUsecase {
     }
   }
 
-  Future<void> _syncUnsyncedLocalToRemote(
+  Future<void> _syncLocalToRemote(
     String userId,
     List<DeckEntity> localList,
-    Map<String, DeckEntity> remoteMap,
   ) async {
-    for (final local in localList) {
-      final remote = remoteMap[local.deckId];
-
-      if (local.isSynced != true) {
-        final success = await createDeckRepository.createForRemote(
-          userId: userId,
-          deck: DeckMapper.toModel(local.copyWith(isSynced: true)),
-        );
-
-        if (success) {
-          final updated = local.copyWith(isSynced: true);
-          await updateDeckRepository.updateForLocal(deck: DeckMapper.toModel(updated));
-          final index = localList.indexWhere((d) => d.deckId == updated.deckId);
-          if (index != -1) localList[index] = updated;
-          LoggerUtil.debugMessage(message: '📤 Synced local deck → remote: ${local.deckId}');
-        } else {
-          LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${local.deckId}');
-        }
-
-      } else if (remote != null && local.updatedAt!.isAfter(remote.updatedAt!)) {
-        final success = await updateDeckRepository.updateForRemote(
-          userId: userId,
-          deck: DeckMapper.toModel(local.copyWith(isSynced: true)),
-        );
-
-        if (success) {
-          LoggerUtil.debugMessage(message: '🔁 Updated remote with newer local: ${local.deckId}');
-        } else {
-          LoggerUtil.debugMessage(message: '⚠️ Failed to update newer local → remote: ${local.deckId}');
-        }
+    for (final deck in localList.where((d) => d.isSynced != true)) {
+      final success = await createDeckRepository.createForRemote(
+        userId: userId,
+        deck: DeckMapper.toModel(deck),
+      );
+      if (success) {
+        final updated = deck.copyWith(isSynced: true);
+        await updateDeckRepository.updateForLocal(deck: DeckMapper.toModel(updated));
+        final index = localList.indexWhere((d) => d.deckId == updated.deckId);
+        if (index != -1) localList[index] = updated;
+        LoggerUtil.debugMessage(message: '📤 Synced local deck → remote: ${deck.deckId}');
+      } else {
+        LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${deck.deckId}');
       }
     }
   }
 
-  Future<void> _removeLocalIfDeletedFromRemote(
+  Future<void> _removeDeletedRemoteDecks(
     Map<String, DeckEntity> remoteMap,
     List<DeckEntity> localList,
   ) async {
