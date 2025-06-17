@@ -1,7 +1,6 @@
 export 'check_duplicate_name.dart';
 export 'clear_local_datasource.dart';
 export 'close_room.dart';
-export 'create_card_in_deck.dart';
 export 'create_card.dart';
 export 'create_collection.dart';
 export 'create_deck.dart';
@@ -22,6 +21,7 @@ export 'fetch_used_card_distinct.dart';
 export 'find_card.dart';
 export 'find_page.dart';
 export 'join_room.dart';
+export 'load_card_in_deck.dart';
 export 'load_setting.dart';
 export 'save_card.dart';
 export 'save_setting.dart';

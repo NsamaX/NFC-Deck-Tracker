@@ -58,6 +58,6 @@ class CardListView extends StatelessWidget {
 
   void _deleteCard(CardCubit cubit, String userId, String cardId) {
     final card = cards.firstWhere((c) => c.cardId == cardId);
-    cubit.deleteCard(userId: userId, card: card);
+    cubit.deleteCard(userId: userId, collectionId: card.collectionId!, cardId: card.cardId!);
   }
 }

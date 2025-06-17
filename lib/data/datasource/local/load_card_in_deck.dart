@@ -2,10 +2,10 @@ import '../../model/deck.dart';
 
 import '@sqlite_service.dart';
 
-class CreateCardInDeckLocalDatasource {
+class LoadCardInDeckLocalDatasource {
   final SQLiteService _sqliteService;
 
-  CreateCardInDeckLocalDatasource(this._sqliteService);
+  LoadCardInDeckLocalDatasource(this._sqliteService);
 
   Future<void> create({
     required DeckModel deck,

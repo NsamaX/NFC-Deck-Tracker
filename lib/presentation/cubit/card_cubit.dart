@@ -39,9 +39,10 @@ class CardCubit extends Cubit<CardState> {
 
   Future<void> deleteCard({
     required String userId,
-    required CardEntity card,
+    required String collectionId,
+    required String cardId,
   }) async {
-    await deleteCardUsecase(userId: userId, card: card);
+    await deleteCardUsecase(userId: userId, collectionId: collectionId, cardId: cardId);
   }
 
   Future<void> updateCard({

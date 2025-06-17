@@ -1,5 +1,3 @@
-import '../../model/card.dart';
-
 import '@sqlite_service.dart';
 
 class DeleteCardLocalDatasource {
@@ -8,12 +6,13 @@ class DeleteCardLocalDatasource {
   DeleteCardLocalDatasource(this._sqliteService);
 
   Future<void> delete({
-    required CardModel card,
+    required String collectionId,
+    required String cardId,
   }) async {
     await _sqliteService.delete(
-      table: 'cards', 
-      where: 'collectionId = ? AND cardId = ?', 
-      whereArgs: [card.collectionId, card.cardId],
+      table: 'cards',
+      where: 'collectionId = ? AND cardId = ?',
+      whereArgs: [collectionId, cardId],
     );
   }
 }

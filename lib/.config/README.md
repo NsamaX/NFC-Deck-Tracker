@@ -48,8 +48,8 @@ Create a new file named `{your_game}.dart` (e.g., `newgame.dart`) with:
 
 * A class implementing `GameApi`:
 
-  * `findCard(...)`
-  * `fetchCard(...)`
+  * `fetch(...)`
+  * `find(...)`
 
 * A class implementing `PagingStrategy`:
 
@@ -60,21 +60,7 @@ class NewGameApi extends BaseApi implements GameApi {
   NewGameApi(String baseUrl) : super(baseUrl);
 
   @override
-  Future<CardModel> findCard({required String cardId}) async {
-    final response = await getRequest('cards/$cardId');
-    final data = decodeResponse(response);
-    return CardModel(
-      cardId: data['id'] ?? '',
-      collectionId: Game.newgame,
-      name: data['name'] ?? '',
-      imageUrl: data['image'] ?? '',
-      updatedAt: DateTime.now(),
-      additionalData: {}, // Customize as needed
-    );
-  }
-
-  @override
-  Future<List<CardModel>> fetchCard({required Map<String, dynamic> page}) async {
+  Future<List<CardModel>> fetch({required Map<String, dynamic> page}) async {
     final response = await getRequest('cards', page.map((k, v) => MapEntry(k, v.toString())));
     final body = decodeResponse(response);
     final List<dynamic> results = body['data'] ?? [];
@@ -89,6 +75,20 @@ class NewGameApi extends BaseApi implements GameApi {
     )).toList();
   }
 }
+
+  @override
+  Future<CardModel> find({required String cardId}) async {
+    final response = await getRequest('cards/$cardId');
+    final data = decodeResponse(response);
+    return CardModel(
+      cardId: data['id'] ?? '',
+      collectionId: Game.newgame,
+      name: data['name'] ?? '',
+      imageUrl: data['image'] ?? '',
+      updatedAt: DateTime.now(),
+      additionalData: {}, // Customize as needed
+    );
+  }
 
 class NewGamePagingStrategy implements PagingStrategy {
   @override
@@ -161,7 +161,7 @@ Now it will be recognized in the system and available for:
 
 ## 🧪 Recommended Testing Checklist
 
-* [ ] API returns valid data for both `findCard` and `fetchCard`
+* [ ] API returns valid data for both `find` and `fetch`
 * [ ] Cards are correctly saved to local storage
 * [ ] Game appears in `Game.supportedGameKeys`
 * [ ] Game-specific image asset exists (`/assets/image/game/{game}.png`)

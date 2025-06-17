@@ -1,6 +1,5 @@
 import '../datasource/local/delete_card.dart';
 import '../datasource/remote/delete_card.dart';
-import '../model/card.dart';
 
 class DeleteCardRepository {
   final DeleteCardLocalDatasource deleteCardLocalDatasource;
@@ -12,15 +11,17 @@ class DeleteCardRepository {
   });
 
   Future<void> deleteLocal({
-    required CardModel card,
+    required String collectionId,
+    required String cardId,
   }) async {
-    await deleteCardLocalDatasource.delete(card: card);
+    await deleteCardLocalDatasource.delete(collectionId: collectionId, cardId: cardId);
   }
 
   Future<bool> deleteRemote({
     required String userId,
-    required CardModel card,
+    required String collectionId,
+    required String cardId,
   }) async {
-    return await deleteCardRemoteDatasource.delete(userId: userId, collectionId: card.collectionId, cardId: card.cardId);
+    return await deleteCardRemoteDatasource.delete(userId: userId, collectionId: collectionId, cardId: cardId);
   }
 }

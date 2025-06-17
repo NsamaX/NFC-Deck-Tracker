@@ -8,7 +8,7 @@ class ClearUserDataLocalDatasource {
   ClearUserDataLocalDatasource(this._sqliteService);
 
   Future<void> clear() async {
-    final deleteTables = ['decks', 'records', 'collections'];
+    final deleteTables = ['collections', 'decks', 'records'];
 
     for (final table in deleteTables) {
       if (table == 'collections') {

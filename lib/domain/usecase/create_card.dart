@@ -44,7 +44,7 @@ class CreateCardUsecase {
     );
 
     final isDuplicate = duplicateCount > 0;
-    final newName = isDuplicate ? '${card.name} [${duplicateCount + 1}]' : card.name;
+    final newName = isDuplicate ? '${card.name} [${duplicateCount}]' : card.name;
 
     final updatedCard = card.copyWith(
       cardId: cardId,
