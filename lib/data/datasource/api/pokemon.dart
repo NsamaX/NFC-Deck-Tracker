@@ -15,15 +15,13 @@ class PokemonApi extends BaseApi implements GameApi {
     required String cardId,
   }) async {
     final response = await getRequest('cards/$cardId');
-    final cardData = decodeResponse(response)['data'] as Map<String, dynamic>;
+    final data = decodeResponse(response)['data'] as Map<String, dynamic>;
 
-    return _parseCardData(cardData);
+    return _parseData(data: data);
   }
 
   @override
-  Future<List<CardModel>> fetchCard({
-    required Map<String, dynamic> page,
-  }) async {
+  Future<List<CardModel>> fetchCard({required Map<String, dynamic> page}) async {
     final Map<String, String> queryParams = page.map(
       (k, v) => MapEntry(k, v.toString()),
     );
@@ -32,49 +30,49 @@ class PokemonApi extends BaseApi implements GameApi {
     final body = decodeResponse(response);
     final List<dynamic> data = body['data'] ?? [];
 
-    return _filterCardData(data);
+    return _filterData(data: data);
   }
 
-  CardModel _parseCardData(
-    Map<String, dynamic> cardData,
-  ) {
-    final types = (cardData['types'] as List<dynamic>?)?.cast<String>() ?? [];
-    final hp = int.tryParse(cardData['hp']?.toString() ?? '') ?? 0;
+  CardModel _parseData({
+    required Map<String, dynamic> data,
+  }) {
+    final types = (data['types'] as List<dynamic>?)?.cast<String>() ?? [];
+    final hp = int.tryParse(data['hp']?.toString() ?? '') ?? 0;
 
     return CardModel(
-      cardId: cardData['id']?.toString() ?? '',
+      cardId: data['id']?.toString() ?? '',
       collectionId: Game.pokemon,
-      name: cardData['name'] ?? '',
-      imageUrl: cardData['images']?['large'] ?? '',
+      name: data['name'] ?? '',
+      imageUrl: data['images']?['large'] ?? '',
       description: 'Type: ${types.join(', ')}, HP: $hp',
       additionalData: {
-        'flavorText': cardData['flavorText'] ?? '',
-        'supertype': cardData['supertype'] ?? '',
-        'subtypes': (cardData['subtypes'] as List<dynamic>?)?.cast<String>() ?? [],
+        'flavorText': data['flavorText'] ?? '',
+        'supertype': data['supertype'] ?? '',
+        'subtypes': (data['subtypes'] as List<dynamic>?)?.cast<String>() ?? [],
         'hp': hp,
         'types': types,
-        'evolvesFrom': cardData['evolvesFrom'] ?? '',
-        'attacks': cardData['attacks'] ?? [],
-        'weaknesses': cardData['weaknesses'] ?? [],
-        'resistances': cardData['resistances'] ?? [],
-        'retreatCost': (cardData['retreatCost'] as List<dynamic>?)?.cast<String>() ?? [],
-        'convertedRetreatCost': cardData['convertedRetreatCost'] ?? 0,
-        'rarity': cardData['rarity'] ?? '',
-        'artist': cardData['artist'] ?? '',
-        'set': cardData['set']?['name'] ?? '',
-        'series': cardData['set']?['series'] ?? '',
-        'nationalPokedexNumbers': (cardData['nationalPokedexNumbers'] as List<dynamic>?)?.cast<int>() ?? [],
+        'evolvesFrom': data['evolvesFrom'] ?? '',
+        'attacks': data['attacks'] ?? [],
+        'weaknesses': data['weaknesses'] ?? [],
+        'resistances': data['resistances'] ?? [],
+        'retreatCost': (data['retreatCost'] as List<dynamic>?)?.cast<String>() ?? [],
+        'convertedRetreatCost': data['convertedRetreatCost'] ?? 0,
+        'rarity': data['rarity'] ?? '',
+        'artist': data['artist'] ?? '',
+        'set': data['set']?['name'] ?? '',
+        'series': data['set']?['series'] ?? '',
+        'nationalPokedexNumbers': (data['nationalPokedexNumbers'] as List<dynamic>?)?.cast<int>() ?? [],
       },
       updatedAt: DateTime.now(),
     );
   }
 
-  List<CardModel> _filterCardData(
-    List<dynamic> cardsData,
-  ) {
-    return cardsData
+  List<CardModel> _filterData({
+    required List<dynamic> data,
+  }) {
+    return data
         .where((card) => card['supertype'] == 'Pokémon')
-        .map((cardData) => _parseCardData(cardData))
+        .map((data) => _parseData(data: data))
         .toList();
   }
 }

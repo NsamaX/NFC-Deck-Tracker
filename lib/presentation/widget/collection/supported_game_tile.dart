@@ -19,7 +19,7 @@ class SupportedGameTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final description = ApiConfig.getBaseUrl(gameKey);
+    final description = ApiConfig.getBaseUrl(key: gameKey);
 
     return GestureDetector(
       onTap: () => _goToSearchPage(context),

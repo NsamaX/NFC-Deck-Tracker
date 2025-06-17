@@ -26,7 +26,9 @@ class Game {
       .toList();
   }
 
-  static bool isSupported(String gameKey) {
-    return gameKey != dummy && supportedGameKeys.contains(gameKey);
+  static bool isSupported({
+    required String game,
+  }) {
+    return game != dummy && supportedGameKeys.contains(game);
   }
 }

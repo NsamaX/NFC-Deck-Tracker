@@ -23,12 +23,14 @@ abstract class PagingStrategy {
 }
 
 class ServiceFactory {
-  static T create<T>({ required String collectionId }) {
+  static T create<T>({
+    required String collectionId,
+  }) {
     if (collectionId == Game.dummy) {
       return _createDummy<T>();
     }
 
-    final String baseUrl = ApiConfig.getBaseUrl(collectionId);
+    final String baseUrl = ApiConfig.getBaseUrl(key: collectionId);
 
     if (T == GameApi) {
       final creator = _apiRegistry[collectionId];

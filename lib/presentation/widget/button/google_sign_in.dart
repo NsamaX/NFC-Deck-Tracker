@@ -25,7 +25,7 @@ class ButtonGoogleSignIn extends StatelessWidget {
 
     switch (result) {
       case SignInStatus.success:
-        handleGuestSignIn(context);
+        handleGuestSignIn(context: context);
         break;
       case SignInStatus.cancelled:
         AppSnackBar(

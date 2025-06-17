@@ -48,7 +48,7 @@ import '../mapper/card.dart';
     final combinedCards = [...localCards];
 
     final bool isFirstLoad = localCards.isEmpty;
-    final bool isSupportedGame = Game.isSupported(collectionId);
+    final bool isSupportedGame = Game.isSupported(game: collectionId);
 
     if (isFirstLoad) {
       LoggerUtil.addMessage(message: '[Local] No cards found for $collectionId');

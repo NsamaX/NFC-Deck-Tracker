@@ -111,7 +111,7 @@ void setupCollectionRemoteDatasource() {
 void setupDeckRemoteDatasource() {
   locator.registerLazySingleton(() => CreateDeckRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => DeleteDeckRemoteDatasource(locator<FirestoreService>()));
-  locator.registerLazySingleton(() => FetchCardInDeckRemoteDatasource(locator<FirestoreService>())); // <- เพิ่มตรงนี้
+  locator.registerLazySingleton(() => FetchCardInDeckRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => FetchDeckRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => UpdateDeckRemoteDatasource(locator<FirestoreService>()));
 }

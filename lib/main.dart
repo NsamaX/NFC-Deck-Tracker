@@ -44,7 +44,7 @@ void main() async {
   // await locator<SharedPreferencesService>().clear();
 
   await Future.wait([
-    ApiConfig.loadConfig(kReleaseMode ? 'production' : 'development'),
+    ApiConfig.loadConfig(environment: kReleaseMode ? 'production' : 'development'),
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     LanguageManager.loadSupportedLanguages(),
   ]);

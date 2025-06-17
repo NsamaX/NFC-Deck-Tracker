@@ -27,7 +27,7 @@ class CollectionListView extends StatelessWidget {
   Widget build(BuildContext context) {
     if (collections.isEmpty && gameKeys.isEmpty) return const SizedBox.shrink();
 
-    final userCollections = collections.where((e) => !Game.isSupported(e.collectionId)).toList();
+    final userCollections = collections.where((e) => !Game.isSupported(game: e.collectionId)).toList();
 
     return Padding(
       padding: const EdgeInsets.only(top: 8),

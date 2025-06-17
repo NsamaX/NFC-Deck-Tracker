@@ -18,7 +18,7 @@ class ButtonGuestSignIn extends StatelessWidget {
       width: double.infinity,
       height: 46.0,
       child: ElevatedButton(
-        onPressed: () => handleGuestSignIn(context),
+        onPressed: () => handleGuestSignIn(context: context),
         child: Text(
           text,
           style: theme.textTheme.bodyMedium?.copyWith(

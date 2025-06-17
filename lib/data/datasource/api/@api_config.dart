@@ -6,7 +6,9 @@ class ApiConfig {
   static String? _currentEnvironment;
   static Map<String, String>? _baseUrls;
 
-  static Future<void> loadConfig(String environment) async {
+  static Future<void> loadConfig({
+    required String environment,
+  }) async {
     try {
       if (_currentEnvironment == environment && _baseUrls != null) {
         LoggerUtil.debugMessage(message: 'ℹ️ API config for "$environment" is already loaded.');
@@ -30,7 +32,9 @@ class ApiConfig {
     }
   }
 
-  static String getBaseUrl(String key) {
+  static String getBaseUrl({
+    required String key,
+  }) {
     if (_baseUrls == null || _currentEnvironment == null) {
       LoggerUtil.debugMessage(message: '❗ ApiConfig not initialized. Call loadConfig() first.');
       throw StateError('ApiConfig not initialized. Call loadConfig() first.');

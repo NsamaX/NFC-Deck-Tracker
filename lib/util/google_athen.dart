@@ -51,7 +51,9 @@ Future<void> signOutFromGoogle() async {
   await GoogleSignIn().signOut();
 }
 
-Future<void> handleGuestSignIn(BuildContext context) async {
+Future<void> handleGuestSignIn({
+  required BuildContext context,
+}) async {
   context.read<ApplicationCubit>().updateSetting(
     key: App.keyIsLoggedIn,
     value: true,
