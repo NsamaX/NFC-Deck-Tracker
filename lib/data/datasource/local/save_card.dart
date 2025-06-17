@@ -10,7 +10,7 @@ class SaveCardLocalDatasource {
   Future<void> save({
     required List<CardModel> cards,
   }) async {
-    final cardsJson = cards.map((card) => card.toJson()).toList();
+    final cardsJson = cards.map((card) => card.toJsonForLocal()).toList();
     await _sqliteService.insertBatch(
       table: 'cards',
       dataList: cardsJson,

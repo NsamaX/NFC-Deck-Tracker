@@ -1,3 +1,4 @@
+import '../../model/card_in_deck.dart';
 import '../../model/deck.dart';
 
 import '@sqlite_service.dart';

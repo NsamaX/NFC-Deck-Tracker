@@ -12,7 +12,7 @@ class CreateCollectionLocalDatasource {
   }) async {
     await _sqliteService.insert(
       table: 'collections',
-      data: collection.toJson(),
+      data: collection.toJsonForLocal(),
     );
   }
 }

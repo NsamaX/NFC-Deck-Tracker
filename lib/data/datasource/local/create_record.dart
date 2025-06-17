@@ -12,7 +12,7 @@ class CreateRecordLocalDatasource {
   }) async {
     await _sqliteService.insert(
       table: 'records',
-      data: record.toJson(),
+      data: record.toJsonForLocal(),
     );
   }
 }

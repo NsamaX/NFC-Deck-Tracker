@@ -11,7 +11,7 @@ class UpdateCardRemoteDatasource {
     required String userId,
     required CardModel card,
   }) async {
-    final cardData = card.toJson()
+    final cardData = card.toJsonForRemote()
       ..remove('collectionId')
       ..remove('cardId');
 

@@ -20,7 +20,7 @@ class CreateDeckRemoteDatasource {
     final deckInserted = await _firestoreService.insert(
       collectionPath: deckPath,
       documentId: deck.deckId,
-      data: deck.toJsonForDeck(),
+      data: deck.toJsonForRemote(),
     );
 
     if (!deckInserted) return false;

@@ -2,6 +2,7 @@ import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
 import 'package:nfc_deck_tracker/data/model/card.dart';
+import 'package:nfc_deck_tracker/data/model/card_in_deck.dart';
 import 'package:nfc_deck_tracker/data/model/deck.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_card_in_deck.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_card.dart';
@@ -9,7 +10,7 @@ import 'package:nfc_deck_tracker/data/repository/update_deck.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import '../entity/deck.dart';
+import '../entity/card_in_deck.dart';
 import '../mapper/card.dart';
 
 class FetchCardInDeckUsecase {

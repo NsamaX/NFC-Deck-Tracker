@@ -12,7 +12,7 @@ class UpdateCollectionLocalDatasource {
   }) async {
     await _sqliteService.update(
       table: 'collections',
-      data: collection.toJson(),
+      data: collection.toJsonForLocal(),
       where: 'collectionId = ?',
       whereArgs: [collection.collectionId],
     );

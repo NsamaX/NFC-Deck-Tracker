@@ -11,7 +11,7 @@ class UpdateRecordRemoteDatasource {
     required String userId,
     required RecordModel record,
   }) async {
-    final recordData = record.toJson()..remove('recordId');
+    final recordData = record.toJsonForRemote()..remove('recordId');
 
     return await _firestoreService.update(
       collectionPath: 'users/$userId/records',

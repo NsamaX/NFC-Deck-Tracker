@@ -14,11 +14,14 @@ class PageModel {
       throw FormatException('Missing required field: collectionId');
     }
 
+    final rawPaging = json['paging'];
+    final parsedPaging = rawPaging is String
+        ? jsonDecode(rawPaging)
+        : rawPaging ?? {};
+
     return PageModel(
       collectionId: json['collectionId'],
-      paging: json['paging'] != null
-          ? Map<String, dynamic>.from(json['paging'])
-          : {},
+      paging: Map<String, dynamic>.from(parsedPaging),
     );
   }
 

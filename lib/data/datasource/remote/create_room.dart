@@ -13,7 +13,7 @@ class CreateRoomRemoteDatasource {
     return await _firestoreService.insert(
       collectionPath: 'rooms',
       documentId: room.roomId,
-      data: room.toJson(),
+      data: room.toJsonForRemote(),
     );
   }
 }

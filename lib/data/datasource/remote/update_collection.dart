@@ -11,7 +11,7 @@ class UpdateCollectionRemoteDatasource {
     required String userId,
     required CollectionModel collection,
   }) async {
-    final collectionData = collection.toJson()..remove('collectionId');
+    final collectionData = collection.toJsonForRemote()..remove('collectionId');
 
     return await _firestoreService.update(
       collectionPath: 'users/$userId/collections',

@@ -12,7 +12,7 @@ class CreateDeckLocalDatasource {
   }) async {
     await _sqliteService.insert(
       table: 'decks', 
-      data: deck.toJsonForDeck(),
+      data: deck.toJsonForLocal(),
     );
 
     await _sqliteService.insertBatch(

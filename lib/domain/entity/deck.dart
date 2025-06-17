@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'card.dart';
+import 'card_in_deck.dart';
 
 class DeckEntity extends Equatable {
   final String? deckId;
@@ -23,7 +23,8 @@ class DeckEntity extends Equatable {
     List<CardInDeckEntity>? cards,
     bool? isSynced,
     DateTime? updatedAt,
-  }) => DeckEntity(
+  }) =>
+      DeckEntity(
         deckId: deckId ?? this.deckId,
         name: name ?? this.name,
         cards: cards ?? this.cards,
@@ -41,25 +42,4 @@ class DeckEntity extends Equatable {
 
   @override
   List<Object?> get props => [deckId, name, cards, isSynced, updatedAt];
-}
-
-class CardInDeckEntity extends Equatable {
-  final CardEntity card;
-  final int count;
-
-  const CardInDeckEntity({
-    required this.card,
-    required this.count,
-  });
-
-  CardInDeckEntity copyWith({
-    CardEntity? card,
-    int? count,
-  }) => CardInDeckEntity(
-        card: card ?? this.card,
-        count: count ?? this.count,
-      );
-
-  @override
-  List<Object?> get props => [card, count];
 }

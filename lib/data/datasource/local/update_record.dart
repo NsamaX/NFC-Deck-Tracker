@@ -12,7 +12,7 @@ class UpdateRecordLocalDatasource {
   }) async {
     await _sqliteService.update(
       table: 'records',
-      data: record.toJson(),
+      data: record.toJsonForLocal(),
       where: 'recordId = ?',
       whereArgs: [record.recordId],
     );

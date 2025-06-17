@@ -65,6 +65,7 @@ class PokemonApi extends BaseApi implements GameApi {
         'series': data['set']?['series'] ?? '',
         'nationalPokedexNumbers': (data['nationalPokedexNumbers'] as List<dynamic>?)?.cast<int>() ?? [],
       },
+      isSynced: true,
       updatedAt: DateTime.now(),
     );
   }

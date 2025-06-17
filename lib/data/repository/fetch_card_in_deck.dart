@@ -1,6 +1,6 @@
 import '../datasource/local/fetch_card_in_deck.dart';
 import '../datasource/remote/fetch_card_in_deck.dart';
-import '../model/deck.dart';
+import '../model/card_in_deck.dart';
 
 class FetchCardInDeckRepository {
   final FetchCardInDeckLocalDatasource fetchCardInDeckLocalDatasource;

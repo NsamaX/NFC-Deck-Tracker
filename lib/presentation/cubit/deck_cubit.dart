@@ -5,6 +5,7 @@ import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 
+import 'package:nfc_deck_tracker/domain/entity/card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_card_in_deck.dart';

@@ -10,6 +10,7 @@ class CardMapper {
         imageUrl: model.imageUrl,
         description: model.description,
         additionalData: model.additionalData,
+        isSynced: model.isSynced,
         updatedAt: model.updatedAt,
       );
 
@@ -20,6 +21,7 @@ class CardMapper {
         imageUrl: entity.imageUrl,
         description: entity.description,
         additionalData: entity.additionalData,
+        isSynced: entity.isSynced ?? false,
         updatedAt: entity.updatedAt ?? DateTime.now(),
       );
 }

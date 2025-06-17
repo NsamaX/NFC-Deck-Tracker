@@ -1,4 +1,4 @@
-import '../entity/deck.dart';
+import '../entity/card_in_deck.dart';
 
 class FilterDeckCardsUsecase {
   List<CardInDeckEntity> call(List<CardInDeckEntity> cards) {

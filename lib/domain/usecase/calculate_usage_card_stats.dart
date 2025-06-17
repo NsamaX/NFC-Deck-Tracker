@@ -1,6 +1,7 @@
 import 'package:nfc_deck_tracker/util/player_action.dart';
 
 import '../entity/card.dart';
+import '../entity/card_in_deck.dart';
 import '../entity/deck.dart';
 import '../entity/record.dart';
 import '../entity/usage_card_stats.dart';

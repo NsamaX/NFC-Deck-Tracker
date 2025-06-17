@@ -41,17 +41,26 @@ class RecordModel {
       data: (parsedData as List)
           .map((item) => DataModel.fromJson(item))
           .toList(),
-      isSynced: json['isSynced'] == 1,
+      isSynced: (json['isSynced'] == true || json['isSynced'] == 1),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJsonForLocal() => {
         'recordId': recordId,
         'deckId': deckId,
         'createdAt': createdAt.toIso8601String(),
         'data': json.encode(data.map((item) => item.toJson()).toList()),
         'isSynced': isSynced ? 1 : 0,
+        'updatedAt': updatedAt.toIso8601String(),
+      };
+
+  Map<String, dynamic> toJsonForRemote() => {
+        'recordId': recordId,
+        'deckId': deckId,
+        'createdAt': createdAt.toIso8601String(),
+        'data': data.map((item) => item.toJson()).toList(),
+        'isSynced': isSynced,
         'updatedAt': updatedAt.toIso8601String(),
       };
 }

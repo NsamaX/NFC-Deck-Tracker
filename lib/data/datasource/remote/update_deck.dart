@@ -11,7 +11,7 @@ class UpdateDeckRemoteDatasource {
     required String userId,
     required DeckModel deck,
   }) async {
-    final deckData = deck.toJsonForDeck()..remove('deckId');
+    final deckData = deck.toJsonForRemote()..remove('deckId');
     final deckUpdated = await _firestoreService.update(
       collectionPath: 'users/$userId/decks',
       documentId: deck.deckId,

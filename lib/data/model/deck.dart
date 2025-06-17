@@ -1,4 +1,4 @@
-import 'card.dart';
+import 'card_in_deck.dart';
 
 class DeckModel {
   final String deckId;
@@ -27,51 +27,31 @@ class DeckModel {
       deckId: json['deckId'],
       name: json['name'],
       cards: [],
-      isSynced: json['isSynced'] == 1,
+      isSynced: (json['isSynced'] == true || json['isSynced'] == 1),
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }
 
-  Map<String, dynamic> toJsonForDeck() => {
+  Map<String, dynamic> toJsonForLocal() => {
         'deckId': deckId,
         'name': name,
         'isSynced': isSynced ? 1 : 0,
         'updatedAt': updatedAt.toIso8601String(),
       };
 
+  Map<String, dynamic> toJsonForRemote() => {
+        'deckId': deckId,
+        'name': name,
+        'isSynced': isSynced,
+        'updatedAt': updatedAt.toIso8601String(),
+      };
+
   List<Map<String, dynamic>> toJsonForCardsInDeck() {
     return cards.map((cardInDeck) => {
-      'collectionId': cardInDeck.card.collectionId,
-      'cardId': cardInDeck.card.cardId,
-      'deckId': deckId,
-      'count': cardInDeck.count,
-    }).toList();
+          'collectionId': cardInDeck.card.collectionId,
+          'cardId': cardInDeck.card.cardId,
+          'deckId': deckId,
+          'count': cardInDeck.count,
+        }).toList();
   }
-}
-
-class CardInDeckModel {
-  final CardModel card;
-  final int count;
-
-  const CardInDeckModel({
-    required this.card,
-    required this.count,
-  });
-
-  factory CardInDeckModel.fromJson(Map<String, dynamic> json) {
-    if (json['card'] == null || 
-        json['count'] == null) {
-      throw FormatException('Missing required fields in CardInDeckModel');
-    }
-
-    return CardInDeckModel(
-      card: CardModel.fromJson(json['card']),
-      count: json['count'],
-    );
-  }
-
-  Map<String, dynamic> toJson() => {
-        'card': card.toJson(),
-        'count': count,
-      };
 }

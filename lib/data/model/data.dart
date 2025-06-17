@@ -36,7 +36,7 @@ class DataModel extends TagModel {
       cardId: json['cardId'],
       location: json['location'],
       playerAction: PlayerAction.values.firstWhere(
-        (e) => e.name == json['action'],
+        (e) => e.name.toLowerCase() == json['action'].toString().toLowerCase(),
         orElse: () => PlayerAction.unknown,
       ),
       timestamp: DateTime.parse(json['timestamp']),

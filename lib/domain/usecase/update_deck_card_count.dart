@@ -1,5 +1,5 @@
 import '../entity/card.dart';
-import '../entity/deck.dart';
+import '../entity/card_in_deck.dart';
 
 class UpdateDeckCardCountUsecase {
   List<CardInDeckEntity> addCard({

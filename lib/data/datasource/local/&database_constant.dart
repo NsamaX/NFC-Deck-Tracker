@@ -26,6 +26,7 @@ class DatabaseConstant {
       imageUrl TEXT,
       description TEXT,
       additionalData TEXT,
+      isSynced INTEGER NOT NULL DEFAULT 0 CHECK (isSynced IN (0, 1)),
       updatedAt DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       PRIMARY KEY (collectionId, cardId),
       FOREIGN KEY (collectionId) REFERENCES collections(collectionId) ON DELETE CASCADE

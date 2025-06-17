@@ -14,7 +14,7 @@ class CreateCollectionRemoteDatasource {
     return await _firestoreService.insert(
       collectionPath: 'users/$userId/collections',
       documentId: collection.collectionId,
-      data: collection.toJson(),
+      data: collection.toJsonForRemote(),
     );
   }
 }

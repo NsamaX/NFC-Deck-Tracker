@@ -1,5 +1,5 @@
 import '../../model/card.dart';
-import '../../model/deck.dart';
+import '../../model/card_in_deck.dart';
 
 import '@firestore_service.dart';
 

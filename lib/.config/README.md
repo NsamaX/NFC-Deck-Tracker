@@ -70,8 +70,9 @@ class NewGameApi extends BaseApi implements GameApi {
       collectionId: Game.newgame,
       name: e['name'],
       imageUrl: e['image'],
-      updatedAt: DateTime.now(),
       additionalData: {},
+      isSynced: true,
+      updatedAt: DateTime.now(),
     )).toList();
   }
 }
@@ -85,8 +86,9 @@ class NewGameApi extends BaseApi implements GameApi {
       collectionId: Game.newgame,
       name: data['name'] ?? '',
       imageUrl: data['image'] ?? '',
+      additionalData: {},
+      isSynced: true,
       updatedAt: DateTime.now(),
-      additionalData: {}, // Customize as needed
     );
   }
 

@@ -24,18 +24,18 @@ class RoomModel {
 
     return RoomModel(
       roomId: json['roomId'],
-      playerIds: json['playerIds'],
+      playerIds: List<String>.from(json['playerIds']),
       cards: (json['cards'] as List<dynamic>)
           .map((item) => CardModel.fromJson(item))
           .toList(),
-      record: json['record'],
+      record: RecordModel.fromJson(json['record']),
     );
   }
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJsonForRemote() => {
         'roomId': roomId,
         'playerIds': playerIds,
-        'cards': cards.map((e) => e.toJson()).toList(),
-        'record': record.toJson(),
+        'cards': cards.map((e) => e.toJsonForRemote()).toList(),
+        'record': record.toJsonForRemote(),
       };
 }

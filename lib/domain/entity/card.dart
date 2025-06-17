@@ -7,6 +7,7 @@ class CardEntity extends Equatable {
   final String? imageUrl;
   final String? description;
   final Map<String, dynamic>? additionalData;
+  final bool? isSynced;
   final DateTime? updatedAt;
 
   const CardEntity({
@@ -16,6 +17,7 @@ class CardEntity extends Equatable {
     this.imageUrl,
     this.description,
     this.additionalData,
+    this.isSynced,
     this.updatedAt,
   });
 
@@ -26,23 +28,29 @@ class CardEntity extends Equatable {
     String? imageUrl,
     String? description,
     Map<String, dynamic>? additionalData,
+    bool? isSynced,
     DateTime? updatedAt,
-  }) => CardEntity(
+  }) =>
+      CardEntity(
         collectionId: collectionId ?? this.collectionId,
         cardId: cardId ?? this.cardId,
         name: name ?? this.name,
         imageUrl: imageUrl ?? this.imageUrl,
         description: description ?? this.description,
         additionalData: additionalData ?? this.additionalData,
+        isSynced: isSynced ?? this.isSynced,
         updatedAt: updatedAt ?? this.updatedAt,
       );
 
+  @override
   List<Object?> get props => [
         collectionId,
         cardId,
-        name, 
-        imageUrl, 
-        description, 
+        name,
+        imageUrl,
+        description,
         additionalData,
+        isSynced,
+        updatedAt,
       ];
 }

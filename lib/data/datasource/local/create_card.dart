@@ -12,7 +12,7 @@ class CreateCardLocalDatasource {
   }) async {
     await _sqliteService.insert(
       table: 'cards',
-      data: card.toJson(),
+      data: card.toJsonForLocal(),
     );
   }
 }

@@ -15,8 +15,8 @@ class UpdateRoomRemoteDatasource {
       collectionPath: 'rooms',
       documentId: roomId,
       data: {
-        'cards': updatedRoom.cards.map((e) => e.toJson()).toList(),
-        'record': updatedRoom.record.toJson(),
+        'cards': updatedRoom.cards.map((e) => e.toJsonForRemote()).toList(),
+        'record': updatedRoom.record.toJsonForRemote(),
       },
     );
   }
