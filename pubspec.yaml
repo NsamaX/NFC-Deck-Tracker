@@ -24,6 +24,7 @@ dependencies:
   # Storage & Local Database
   shared_preferences: ^2.3.3
   sqflite: ^2.4.1
+  # supabase_flutter: ^1.10.24
 
   # State Management & DI
   flutter_bloc: ^8.1.6

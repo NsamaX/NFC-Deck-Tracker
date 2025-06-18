@@ -122,15 +122,25 @@ class FirestoreService {
     required String imagePath,
   }) async {
     try {
+      final file = File(imagePath);
+      if (!file.existsSync()) {
+        LoggerUtil.debugMessage(message: '❌ File does not exist at path: $imagePath');
+        return null;
+      }
+
       final uniqueId = const Uuid().v4();
       final ext = imagePath.split('.').last;
       final ref = storage.ref().child('users/$userId/images/$uniqueId.$ext');
 
-      await ref.putFile(File(imagePath));
-      final url = await ref.getDownloadURL();
-
-      LoggerUtil.debugMessage(message: '📤 Uploaded image → $url');
-      return url;
+      try {
+        final uploadTask = await ref.putFile(file);
+        final snapshot = await uploadTask.ref.getDownloadURL();
+        LoggerUtil.debugMessage(message: '📤 Uploaded image → $snapshot');
+        return snapshot;
+      } catch (e) {
+        LoggerUtil.debugMessage(message: '❌ Failed to upload image: $e');
+        return null;
+      }
     } catch (e) {
       LoggerUtil.debugMessage(message: '❌ Failed to upload image "$imagePath": $e');
       return null;
