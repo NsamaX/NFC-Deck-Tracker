@@ -51,11 +51,13 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     required dynamic value,
   }) {
     switch (key) {
-      case App.keyLocale:         return state.copyWith(locale: Locale(value));
-      case App.keyIsDark:         return state.copyWith(isDark: value);
-      case App.keyIsLoggedIn: return state.copyWith(keyIsLoggedIn: value);
-      case App.keyRecentId:       return state.copyWith(recentId: value);
-      case App.keyRecentGame:     return state.copyWith(recentGame: value);
+      case App.keyLocale:          return state.copyWith(locale: Locale(value));
+      case App.keyIsDark:          return state.copyWith(isDark: value);
+      case App.keyIsLoggedIn:      return state.copyWith(keyIsLoggedIn: value);
+      case App.keyRecentId:        return state.copyWith(recentId: value);
+      case App.keyRecentGame:      return state.copyWith(recentGame: value);
+      case App.keyTutorialNFCIcon: return state.copyWith(tutorialNfcIcon: value);
+      case App.keyTutorialHowTo:   return state.copyWith(tutorialHowTo: value);
       default: return state;
     }
   }

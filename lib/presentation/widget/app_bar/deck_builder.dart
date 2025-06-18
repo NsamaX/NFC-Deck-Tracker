@@ -2,8 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nfc_deck_tracker/.config/app.dart';
+
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
+import '../../cubit/application_cubit.dart';
 import '../../cubit/deck_cubit.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../locale/localization.dart';
@@ -11,6 +14,7 @@ import '../../route/route_constant.dart';
 
 import '../notification/cupertino_dialog.dart';
 import '../notification/snackbar.dart';
+import '../specific/tutorail_nfc_icon.dart';
 
 import '@default.dart';
 
@@ -33,6 +37,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   List<AppBarMenuItem> _buildMenu(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final applicationCubit = context.read<ApplicationCubit>();
     final deckCubit = context.read<DeckCubit>();
     final nfcCubit = context.read<NfcCubit>();
     final deckState = context.watch<DeckCubit>().state;
@@ -75,7 +80,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         AppBarMenuItem(
-          label: locale.translate('page_deck_create.toggle_save'),
+          label: locale.translate('page_deck_builder.toggle_save'),
           action: () => deckCubit.saveDeck(userId: userId),
         ),
       ];
@@ -88,19 +93,19 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: Theme.of(context).textTheme.titleMedium,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: locale.translate('page_deck_create.app_bar'),
+          hintText: locale.translate('page_deck_builder.app_bar'),
         ),
         onChanged: (value) {
           final trimmed = value.trim();
           deckCubit.setDeckName(
-            name: trimmed.isNotEmpty ? trimmed : locale.translate('page_deck_create.app_bar'),
+            name: trimmed.isNotEmpty ? trimmed : locale.translate('page_deck_builder.app_bar'),
           );
         },
         onSubmitted: (_) {
           final trimmed = nameController.text.trim();
           final newName = trimmed.isNotEmpty
               ? trimmed
-              : locale.translate('page_deck_create.app_bar');
+              : locale.translate('page_deck_builder.app_bar');
 
           deckCubit.setDeckName(name: newName);
           nameController.text = newName;
@@ -124,8 +129,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           action: () {
             buildCupertinoActionDialog(
               theme: Theme.of(context),
-              title: locale.translate('page_deck_create.dialog_delete_title'),
-              content: locale.translate('page_deck_create.dialog_delete_content'),
+              title: locale.translate('page_deck_builder.dialog_delete_title'),
+              content: locale.translate('page_deck_builder.dialog_delete_content'),
               cancelButtonText: locale.translate('common.button_cancel'),
               confirmButtonText: locale.translate('common.button_confirm'),
               onPressed: () async {
@@ -135,7 +140,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
                   deckId: deckState.currentDeck.deckId!,
                 );
                 Navigator.of(context).pop();
-                AppSnackBar(context, text: locale.translate('page_deck_create.snack_bar_delete'));
+                AppSnackBar(context, text: locale.translate('page_deck_builder.snack_bar_delete'));
               },
               closeDialog: () => Navigator.of(context).pop(),
               showDialog: (dialog) => showCupertinoDialog(context: context, builder: (_) => dialog),
@@ -155,7 +160,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           },
         ),
         AppBarMenuItem(
-          label: locale.translate('page_deck_create.toggle_save'),
+          label: locale.translate('page_deck_builder.toggle_save'),
           action: () {
             deckCubit.saveDeck(userId: userId);
             deckCubit.closeEditMode();
@@ -170,7 +175,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         label: Icons.ios_share_rounded,
         action: () {
           deckCubit.toggleShare(locale: locale);
-          AppSnackBar(context, text: locale.translate('page_deck_create.snack_bar_share'));
+          AppSnackBar(context, text: locale.translate('page_deck_builder.snack_bar_share'));
         },
       ),
       AppBarMenuItem(label: deckName),
@@ -179,8 +184,20 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         action: RouteConstant.deck_tracker,
       ),
       AppBarMenuItem(
-        label: locale.translate('page_deck_create.toggle_edit'),
-        action: () => deckCubit.toggleEditMode(),
+        label: locale.translate('page_deck_builder.toggle_edit'),
+        action: () {
+          deckCubit.toggleEditMode();
+          if (!applicationCubit.state.tutorialNfcIcon) {
+            showGeneralDialog(
+              context: context,
+              barrierDismissible: true,
+              barrierLabel: "Tutorial",
+              transitionDuration: const Duration(milliseconds: 200),
+              pageBuilder: (_, __, ___) => const TutorailNFCIcon(),
+            );
+            applicationCubit.updateSetting(key: App.keyTutorialNFCIcon, value: true);
+          }
+        }
       ),
     ];
   }

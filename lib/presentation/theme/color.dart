@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class AppColor {
 
   // Shared
+  static const Color tutorial     = Color(0xFF1C1C2A);
   static const Color active       = Color(0xFF2196F3);
   static const Color success      = Color(0xFF12BA63);
   static const Color warning      = Color(0xFFE6A800);

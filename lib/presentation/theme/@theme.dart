@@ -9,6 +9,7 @@ import 'progress_indicator.dart';
 import 'text.dart';
 
 extension CustomColorScheme on ColorScheme {
+  Color get tutorial     => AppColor.tutorial;
   Color get active       => AppColor.active;
   Color get success      => AppColor.success;
   Color get warning      => AppColor.warning;

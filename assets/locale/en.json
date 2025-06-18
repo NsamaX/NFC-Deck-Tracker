@@ -61,10 +61,12 @@
     "app_bar": "My Decks",
     "empty_message": "Tap the icon on the top left\nto create a deck."
   },
-  "page_deck_create": {
+  "page_deck_builder": {
     "app_bar": "New Deck",
     "toggle_save": "Save",
     "toggle_edit": "Edit",
+    "tutorail_nfc_icon": "Users can tap the icon to select cards of interest from the deck. Once the selection is complete, they can write the card information to an NFC tag for use within the application.",
+    "tutorail_how_nfc": "To write to or read from an NFC tag, please place the tag near the NFC reader area of your phone and wait a moment until the process is complete. Once completed successfully, a snackbar will appear to notify the user.",
     "dialog_delete_title": "Delete All Cards",
     "dialog_delete_content": "Are you sure you want to delete all cards in this deck? This action cannot be undone.",
     "snack_bar_delete": "All cards in the deck deleted successfully.",

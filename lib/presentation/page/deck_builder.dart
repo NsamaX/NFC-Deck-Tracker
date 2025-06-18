@@ -57,7 +57,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
 
             if (deck.cards?.isEmpty ?? true) {
               return DescriptionAlignCenter(
-                text: locale.translate('page_deck_create.empty_message'),
+                text: locale.translate('page_deck_builder.empty_message'),
                 bottomNavHeight: true,
               );
             }

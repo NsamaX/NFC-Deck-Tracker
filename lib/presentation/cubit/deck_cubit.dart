@@ -50,7 +50,7 @@ class DeckCubit extends Cubit<DeckState> {
     safeEmit(state.copyWith(
       currentDeck: DeckEntity(
         deckId: Uuid().v4(),
-        name: locale.translate('page_deck_create.app_bar'),
+        name: locale.translate('page_deck_builder.app_bar'),
         cards: const [],
       ),
       isNewDeck: true,
@@ -89,7 +89,7 @@ class DeckCubit extends Cubit<DeckState> {
     final updatedDecks = state.decks.where((d) => d.deckId != deckId).toList();
     final newDeck = DeckEntity(
       deckId: Uuid().v4(),
-      name: locale.translate('page_deck_create.app_bar'),
+      name: locale.translate('page_deck_builder.app_bar'),
       cards: const [],
     );
 
@@ -211,8 +211,8 @@ class DeckCubit extends Cubit<DeckState> {
   }) {
     final text = generateShareDeckClipboardUsecase(
       deck: state.currentDeck,
-      nameLabel: locale.translate('page_deck_create.clipboard_deck_name'),
-      totalLabel: locale.translate('page_deck_create.clipboard_total_cards'),
+      nameLabel: locale.translate('page_deck_builder.clipboard_deck_name'),
+      totalLabel: locale.translate('page_deck_builder.clipboard_total_cards'),
     );
 
     Clipboard.setData(ClipboardData(text: text));
