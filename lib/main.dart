@@ -41,7 +41,7 @@ void main() async {
   await setupLocator();
 
   // await locator<DatabaseService>().deleteDatabaseFile();
-  await locator<SharedPreferencesService>().clear();
+  // await locator<SharedPreferencesService>().clear();
 
   await Future.wait([
     ApiConfig.loadConfig(environment: kReleaseMode ? 'production' : 'development'),

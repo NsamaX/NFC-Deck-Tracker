@@ -44,7 +44,7 @@ class DeckCubit extends Cubit<DeckState> {
     if (!isClosed) emit(newState);
   }
 
-  Future<void> createNewDeck({
+  Future<void> createEmptyDeck({
     required AppLocalization locale,
   }) async {
     safeEmit(state.copyWith(
@@ -57,6 +57,26 @@ class DeckCubit extends Cubit<DeckState> {
     ));
   }
 
+  Future<void> createDeck({
+    required String userId,
+  }) async {
+    safeEmit(state.copyWith(isLoading: true));
+    try {
+      final filteredCards = filterDeckCardsUsecase(state.currentDeck.cards ?? []);
+      final newDeck = state.currentDeck.copyWith(cards: filteredCards);
+
+      await createDeckUsecase(userId: userId, deck: newDeck);
+      await fetchDeck(userId: userId);
+
+      safeEmit(state.copyWith(
+        isNewDeck: false,
+        selectedCard: CardEntity(),
+      ));
+    } finally {
+      safeEmit(state.copyWith(isLoading: false));
+    }
+  }
+
   Future<void> saveDeck({
     required String userId,
   }) async {
@@ -65,12 +85,9 @@ class DeckCubit extends Cubit<DeckState> {
       final filteredCards = filterDeckCardsUsecase(state.currentDeck.cards ?? []);
       final updatedDeck = state.currentDeck.copyWith(cards: filteredCards);
 
-      safeEmit(state.copyWith(currentDeck: updatedDeck));
-      await createDeckUsecase(userId: userId, deck: updatedDeck);
-      await fetchDeck(userId: userId);
+      await updateDeckUsecase(userId: userId, deck: updatedDeck);
 
       safeEmit(state.copyWith(
-        isNewDeck: false,
         selectedCard: CardEntity(),
       ));
     } finally {
@@ -133,12 +150,8 @@ class DeckCubit extends Cubit<DeckState> {
     required String deckId,
   }) async {
     final deck = state.decks.firstWhere((d) => d.deckId == deckId);
-    final hasNoCards = (deck.cards == null || deck.cards!.isEmpty);
 
-    safeEmit(state.copyWith(
-      currentDeck: deck,
-      isNewDeck: !hasNoCards,
-    ));
+    safeEmit(state.copyWith(currentDeck: deck));
   }
 
   void setDeckName({

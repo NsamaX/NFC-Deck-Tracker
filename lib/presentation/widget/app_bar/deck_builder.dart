@@ -81,7 +81,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_save'),
-          action: () => deckCubit.saveDeck(userId: userId),
+          action: () => deckCubit.createDeck(userId: userId),
         ),
       ];
     }

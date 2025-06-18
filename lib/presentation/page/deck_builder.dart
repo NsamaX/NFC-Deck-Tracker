@@ -7,6 +7,7 @@ import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
 import '../cubit/deck_cubit.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_builder.dart';
+import '../widget/deck/total_card_in_deck.dart';
 import '../widget/listener/card_writer.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
@@ -62,11 +63,22 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
               );
             }
 
-            return DeckOrCardGridView(
-              userId: userId,
-              items: deck.cards!
-                  .map((e) => MapEntry(e.card, e.count))
-                  .toList(),
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(right: 12.0, top: 8.0),
+                  child: TotalCardInDeck(),
+                ),
+                Expanded(
+                  child: DeckOrCardGridView(
+                    userId: userId,
+                    items: deck.cards!
+                        .map((e) => MapEntry(e.card, e.count))
+                        .toList(),
+                  ),
+                ),
+              ],
             );
           },
         ),
