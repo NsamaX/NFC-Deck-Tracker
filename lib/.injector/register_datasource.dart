@@ -30,15 +30,15 @@ Future<void> registerDataSource() async {
     _roomRemoteDatasource();
     _uploadImageRemoteDatasource();
 
-    LoggerUtil.debugMessage(message: '✔️ DataSource registered successfully.');
+    LoggerUtil.debugMessage('✔️ DataSource registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage(message: '❌ Failed to register DataSource: $e');
+    LoggerUtil.debugMessage('❌ Failed to register DataSource: $e');
   }
 }
 
 void _serviceFactoryRemoteDatasource() {
   locator.registerFactoryParam<GameApi, String, void>((collectionId, _) {
-    return ServiceFactory.create(collectionId: collectionId);
+    return ServiceFactory.create(collectionId);
   });
 }
 

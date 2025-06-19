@@ -1,12 +1,11 @@
 import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
-import 'package:nfc_deck_tracker/data/model/card.dart';
-import 'package:nfc_deck_tracker/data/model/card_in_deck.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_card_in_deck.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
+import '../entity/card.dart';
 import '../entity/card_in_deck.dart';
 import '../mapper/card.dart';
 
@@ -23,7 +22,7 @@ class FetchCardInDeckUsecase {
   }) async {
     final localCardModels = await fetchCardInDeckRepository.fetch(deckId: deckId);
 
-    List<CardModel> remoteCards = [];
+    List<CardEntity> remoteCardEntities = [];
 
     if (GameConfig.isSupported(collectionId)) {
       try {
@@ -31,7 +30,7 @@ class FetchCardInDeckUsecase {
         for (final model in localCardModels) {
           try {
             final apiCard = await gameApi.find(model.card.cardId);
-            remoteCards.add(apiCard);
+            remoteCardEntities.add(CardMapper.toEntity(apiCard));
           } catch (_) {
             LoggerUtil.debugMessage('⚠️ Card ${model.card.cardId} not found in Game API');
           }
@@ -41,25 +40,22 @@ class FetchCardInDeckUsecase {
       }
     }
 
-    final List<CardInDeckModel> updatedCards = [];
+    final List<CardInDeckEntity> result = [];
 
     for (final local in localCardModels) {
-      final match = remoteCards.firstWhere(
-        (r) => r.cardId == local.card.cardId,
-        orElse: () => local.card,
+      final localEntity = CardMapper.toEntity(local.card);
+
+      final match = remoteCardEntities.firstWhere(
+        (r) => r.cardId == localEntity.cardId,
+        orElse: () => localEntity,
       );
 
-      updatedCards.add(CardInDeckModel(
+      result.add(CardInDeckEntity(
         card: match,
         count: local.count,
       ));
     }
 
-    return updatedCards
-        .map((c) => CardInDeckEntity(
-              card: CardMapper.toEntity(c.card),
-              count: c.count,
-            ))
-        .toList();
+    return result;
   }
 }

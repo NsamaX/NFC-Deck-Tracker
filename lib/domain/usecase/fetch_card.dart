@@ -1,11 +1,10 @@
 import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
-import 'package:nfc_deck_tracker/data/model/collection.dart';
-import 'package:nfc_deck_tracker/data/model/page.dart';
 import 'package:nfc_deck_tracker/data/repository/create_collection.dart';
 import 'package:nfc_deck_tracker/data/repository/create_page.dart';
 import 'package:nfc_deck_tracker/data/repository/fetch_card.dart';
@@ -16,7 +15,11 @@ import 'package:nfc_deck_tracker/data/repository/update_page.dart';
 import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../entity/card.dart';
+import '../entity/collection.dart';
+import '../entity/page.dart';
 import '../mapper/card.dart';
+import '../mapper/collection.dart';
+import '../mapper/page.dart';
 
 class FetchCardUsecase {
   final CreateCollectionRepository createCollectionRepository;
@@ -58,18 +61,22 @@ class FetchCardUsecase {
       LoggerUtil.addMessage('[Local] No cards found for $collectionId');
 
       await createCollectionRepository.createForLocal(
-        collection: CollectionModel(
-          collectionId: collectionId,
-          name: collectionName,
-          isSynced: isSupportedGame,
-          updatedAt: DateTime.now(),
+        collection: CollectionMapper.toModel(
+          CollectionEntity(
+            collectionId: collectionId,
+            name: collectionName,
+            isSynced: isSupportedGame,
+            updatedAt: DateTime.now(),
+          ),
         ),
       );
 
       await createPageRepository.create(
-        page: PageModel(
-          collectionId: collectionId,
-          paging: {},
+        page: PageMapper.toModel(
+          PageEntity(
+            collectionId: collectionId,
+            paging: {},
+          ),
         ),
       );
     } else {
@@ -114,9 +121,11 @@ class FetchCardUsecase {
             pageMap[pageKey] = true;
 
             await updatePageRepository.update(
-              page: PageModel(
-                collectionId: collectionId,
-                paging: pageMap,
+              page: PageMapper.toModel(
+                PageEntity(
+                  collectionId: collectionId,
+                  paging: pageMap,
+                ),
               ),
             );
           }

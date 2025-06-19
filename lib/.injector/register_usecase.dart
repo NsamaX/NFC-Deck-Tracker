@@ -17,9 +17,9 @@ Future<void> registerUsecase() async {
     _roomUsecase();
     _settingUsecase();
 
-    LoggerUtil.debugMessage(message: '✔️ Usecase registered successfully.');
+    LoggerUtil.debugMessage('✔️ Usecase registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage(message: '❌ Failed to register UseCase: $e');
+    LoggerUtil.debugMessage('❌ Failed to register UseCase: $e');
   }
 }
 

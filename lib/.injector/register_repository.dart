@@ -21,9 +21,9 @@ Future<void> registerRepository() async {
     _settingRepository();
     _uploadImageRepository();
 
-    LoggerUtil.debugMessage(message: '✔️ Repository registered successfully.');
+    LoggerUtil.debugMessage('✔️ Repository registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage(message: '❌ Failed to register Repository: $e');
+    LoggerUtil.debugMessage('❌ Failed to register Repository: $e');
   }
 }
 

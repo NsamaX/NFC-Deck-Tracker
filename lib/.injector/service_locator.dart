@@ -13,7 +13,7 @@ final GetIt locator = GetIt.instance;
 
 Future<void> initServiceLocator() async {
   try {
-    LoggerUtil.debugMessage(message: '⚙️ Setting up Service Locator...');
+    LoggerUtil.debugMessage('⚙️ Setting up Service Locator...');
 
     await registerService();
     await registerDataSource();
@@ -23,8 +23,8 @@ Future<void> initServiceLocator() async {
 
     await locator.allReady();
 
-    LoggerUtil.debugMessage(message: '👌 Service Locator register completed successfully.');
+    LoggerUtil.debugMessage('👌 Service Locator register completed successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage(message: '❌ Failed to register Service Locator: $e');
+    LoggerUtil.debugMessage('❌ Failed to register Service Locator: $e');
   }
 }

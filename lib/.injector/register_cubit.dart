@@ -24,9 +24,9 @@ Future<void> registerCubit() async {
     _trackerCubit();
     _usageCardCubit();
 
-    LoggerUtil.debugMessage(message: '✔️ Cubit registered successfully.');
+    LoggerUtil.debugMessage('✔️ Cubit registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage(message: '❌ Failed to register Cubit: $e');
+    LoggerUtil.debugMessage('❌ Failed to register Cubit: $e');
   }
 }
 

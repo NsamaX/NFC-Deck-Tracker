@@ -22,9 +22,9 @@ Future<void> registerService() async {
     await _Sqlite();
     await _Firestore();
 
-    LoggerUtil.debugMessage(message: '✔️ All services registered successfully.');
+    LoggerUtil.debugMessage('✔️ All services registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage(message: '❌ Failed to setup services: $e');
+    LoggerUtil.debugMessage('❌ Failed to setup services: $e');
   }
 }
 
