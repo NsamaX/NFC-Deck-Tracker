@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/nfc/nfc_cubit.dart';
+import '../../cubit/nfc_cubit.dart';
 import '../../cubit/reader.dart';
 import '../../cubit/record.dart';
 import '../../cubit/tracker.dart';

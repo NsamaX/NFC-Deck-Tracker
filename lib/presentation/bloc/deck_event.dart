@@ -6,7 +6,6 @@ abstract class DeckEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-// --- Fetching ---
 class FetchDeckEvent extends DeckEvent {
   final String userId;
   const FetchDeckEvent({required this.userId});
@@ -24,7 +23,6 @@ class FetchCardInDeckEvent extends DeckEvent {
   List<Object?> get props => [deckId];
 }
 
-// --- Card Management ---
 class AddCardEvent extends DeckEvent {
   final CardEntity card;
   final int quantity;
@@ -54,7 +52,6 @@ class SelectCardEvent extends DeckEvent {
   List<Object?> get props => [card];
 }
 
-// --- Deck Management ---
 class DefaultDeckEvent extends DeckEvent {
   final AppLocalization locale;
   const DefaultDeckEvent({required this.locale});
@@ -94,7 +91,6 @@ class UpdateDeckEvent extends DeckEvent {
   List<Object?> get props => [userId];
 }
 
-// --- Setters ---
 class SetCurrentDeckEvent extends DeckEvent {
   final String deckId;
   const SetCurrentDeckEvent({required this.deckId});
@@ -119,7 +115,6 @@ class SetCardQuantityEvent extends DeckEvent {
   List<Object?> get props => [quantity];
 }
 
-// --- UI / UX Toggles ---
 class ToggleShareEvent extends DeckEvent {
   final AppLocalization locale;
   const ToggleShareEvent({required this.locale});

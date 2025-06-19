@@ -32,7 +32,7 @@ Future<void> registerDataSource() async {
 
     LoggerUtil.debugMessage('✔️ DataSource registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage('❌ Failed to register DataSource: $e');
+    LoggerUtil.debugMessage('❌ Failed to register datasource: $e');
   }
 }
 

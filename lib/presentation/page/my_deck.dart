@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
-import '../bloc/deck/deck_bloc.dart';
+import '../bloc/deck_bloc.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/my_deck.dart';
 import '../widget/shared/bottom_navigation_bar.dart';

@@ -23,7 +23,7 @@ Future<void> registerRepository() async {
 
     LoggerUtil.debugMessage('✔️ Repository registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage('❌ Failed to register Repository: $e');
+    LoggerUtil.debugMessage('❌ Failed to register repository: $e');
   }
 }
 

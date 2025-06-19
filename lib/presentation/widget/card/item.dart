@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../../bloc/nfc/nfc_cubit.dart';
-import '../../bloc/deck/deck_bloc.dart';
+import '../../bloc/deck_bloc.dart';
+import '../../cubit/nfc_cubit.dart';
 import '../../route/route_constant.dart';
 import '../../theme/@theme.dart';
 

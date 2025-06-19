@@ -3,6 +3,7 @@ import 'package:get_it/get_it.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
+import 'register_bloc.dart';
 import 'register_cubit.dart';
 import 'register_datasource.dart';
 import 'register_repository.dart';
@@ -19,12 +20,13 @@ Future<void> initServiceLocator() async {
     await registerDataSource();
     await registerRepository();
     await registerUsecase();
+    await registerBloc();
     await registerCubit();
 
     await locator.allReady();
 
-    LoggerUtil.debugMessage('👌 Service Locator register completed successfully.');
+    LoggerUtil.debugMessage('👌 Service locator register completed successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage('❌ Failed to register Service Locator: $e');
+    LoggerUtil.debugMessage('❌ Failed to register service locator: $e');
   }
 }

@@ -19,7 +19,7 @@ Future<void> registerUsecase() async {
 
     LoggerUtil.debugMessage('✔️ Usecase registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage('❌ Failed to register UseCase: $e');
+    LoggerUtil.debugMessage('❌ Failed to register usecase: $e');
   }
 }
 
@@ -81,11 +81,9 @@ void _deckUsecase() {
   locator.registerLazySingleton(() => DeleteDeckUsecase(
     deleteDeckRepository: locator<DeleteDeckRepository>(),
   ));
-  locator.registerFactoryParam<FetchCardInDeckUsecase, String, void>((collectionId, _) {
-    return FetchCardInDeckUsecase(
-      fetchCardInDeckRepository: locator<FetchCardInDeckRepository>(),
-    );
-  });
+  locator.registerLazySingleton(() => FetchCardInDeckUsecase(
+    fetchCardInDeckRepository: locator<FetchCardInDeckRepository>(),
+  ));
   locator.registerLazySingleton(() => FetchDeckUsecase(
     createDeckRepository: locator<CreateDeckRepository>(),
     deleteDeckRepository: locator<DeleteDeckRepository>(),

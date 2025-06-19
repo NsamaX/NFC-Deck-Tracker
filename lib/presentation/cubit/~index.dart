@@ -3,6 +3,7 @@ export 'browse_card.dart';
 export 'card.dart';
 export 'collection.dart';
 export 'drawer.dart';
+export 'nfc_cubit.dart';
 export 'pin_color.dart';
 export 'reader.dart';
 export 'record.dart';

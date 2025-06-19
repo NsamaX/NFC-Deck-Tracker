@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../../bloc/deck/deck_bloc.dart';
+import '../../bloc/deck_bloc.dart';
 
 class CardQuantityControl extends StatelessWidget {
   final CardEntity card;

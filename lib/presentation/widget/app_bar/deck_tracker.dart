@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/nfc/nfc_cubit.dart';
 import '../../cubit/drawer.dart';
+import '../../cubit/nfc_cubit.dart';
 import '../../cubit/reader.dart';
 import '../../cubit/record.dart';
 import '../../cubit/tracker.dart';

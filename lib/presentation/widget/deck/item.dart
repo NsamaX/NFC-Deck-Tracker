@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
-import '../../bloc/deck/deck_bloc.dart';
+import '../../bloc/deck_bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
 

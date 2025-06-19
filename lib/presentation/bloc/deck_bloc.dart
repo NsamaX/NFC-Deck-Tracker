@@ -13,7 +13,7 @@ import 'package:nfc_deck_tracker/domain/usecase/generate_share_deck_clipboard.da
 import 'package:nfc_deck_tracker/domain/usecase/update_card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 
-import '../../locale/localization.dart';
+import '../locale/localization.dart';
 
 part 'deck_event.dart';
 part 'deck_state.dart';
@@ -37,7 +37,6 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
     required this.updateDeckUsecase,
   }) : super(const DeckState()) {
 
-    // --- Fetching ---
     on<FetchDeckEvent>((event, emit) async {
       final deck = await fetchDeckUsecase(userId: event.userId);
       emit(state.copyWith(decks: deck));
@@ -48,7 +47,6 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       emit(state.copyWith(currentDeck: state.currentDeck.copyWith(cards: cards)));
     });
 
-    // --- Card Management ---
     on<AddCardEvent>((event, emit) async {
       final cards = await updateCardInDeckUsecase.call(
         cardInDeck: state.currentDeck.cards ?? [],
@@ -71,7 +69,6 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       emit(state.copyWith(selectedCard: event.card));
     });
 
-    // --- Deck Management ---
     on<DefaultDeckEvent>((event, emit) {
       final deck = DeckEntity(
         deckId: const Uuid().v4(),
@@ -97,7 +94,6 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       );
     });
 
-    // --- Setters ---
     on<SetCurrentDeckEvent>((event, emit) {
       emit(state.copyWith(
         currentDeck: state.decks.firstWhere((deck) => deck.deckId == event.deckId),
@@ -113,7 +109,6 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
       emit(state.copyWith(cardQuantity: event.quantity));
     });
 
-    // --- UI / UX Toggles ---
     on<ToggleShareEvent>((event, emit) async {
       final text = await generateShareDeckClipboardUsecase(
         deck: state.currentDeck,

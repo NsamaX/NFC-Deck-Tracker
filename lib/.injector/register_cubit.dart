@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
-import 'package:nfc_deck_tracker/presentation/bloc/~index.dart';
 import 'package:nfc_deck_tracker/presentation/cubit/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -14,7 +13,6 @@ Future<void> registerCubit() async {
     _applicationCubit();
     _cardCubit();
     _collectionCubit();
-    _deckCubit();
     _drawerCubit();
     _nfcCubit();
     _pinColorCubit();
@@ -27,7 +25,7 @@ Future<void> registerCubit() async {
 
     LoggerUtil.debugMessage('✔️ Cubit registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage('❌ Failed to register Cubit: $e');
+    LoggerUtil.debugMessage('❌ Failed to register cubit: $e');
   }
 }
 
@@ -53,17 +51,6 @@ void _collectionCubit() {
     deleteCollectionUsecase: locator<DeleteCollectionUsecase>(),
     fetchCollectionUsecase: locator<FetchCollectionUsecase>(),
     fetchUsedCardDistinctUsecase: locator<FetchUsedCardDistinctUsecase>(),
-  ));
-}
-
-void _deckCubit() {
-  locator.registerLazySingleton(() => DeckBloc(
-    createDeckUsecase: locator<CreateDeckUsecase>(),
-    deleteDeckUsecase: locator<DeleteDeckUsecase>(),
-    fetchCardInDeckUsecase: locator<FetchCardInDeckUsecase>(),
-    fetchDeckUsecase: locator<FetchDeckUsecase>(),
-    generateShareDeckClipboardUsecase: locator<GenerateShareDeckClipboardUsecase>(),
-    updateDeckUsecase: locator<UpdateDeckUsecase>(),
   ));
 }
 
