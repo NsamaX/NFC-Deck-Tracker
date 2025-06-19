@@ -24,7 +24,7 @@ abstract class BaseApi {
   ]) async {
     final Uri url = _buildUrl(path, queryParams);
 
-    LoggerUtil.addMessage(message: 'Sending GET request to: $url');
+    LoggerUtil.addMessage('Sending GET request to: $url');
     LoggerUtil.flushMessages();
 
     try {

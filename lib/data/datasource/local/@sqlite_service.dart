@@ -13,14 +13,12 @@ class SQLiteService {
     try {
       return _databaseService.database;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to get database instance: $e');
+      LoggerUtil.debugMessage('❌ Failed to get database instance: $e');
       rethrow;
     }
   }
 
-  Future<List<Map<String, dynamic>>> queryTable({
-    required String sql,
-  }) async {
+  Future<List<Map<String, dynamic>>> queryTable(String sql) async {
     try {
       final Database db = await getDatabase();
       final result = await db.rawQuery(sql);
@@ -37,12 +35,12 @@ class SQLiteService {
           '$formattedSql\n'
           'Returned: ${result.length} rows';
 
-      LoggerUtil.addMessage(message: message);
+      LoggerUtil.addMessage(message);
       LoggerUtil.flushMessages();
 
       return result;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to execute raw query: $e');
+      LoggerUtil.debugMessage('❌ Failed to execute raw query: $e');
       return [];
     }
   }
@@ -68,12 +66,12 @@ class SQLiteService {
         orderBy: orderBy,
       );
 
-      LoggerUtil.addMessage(message: '🔎 Query\nTable: $table\nWHERE: $where\nARGS : $whereArgs\nReturned: ${result.length} rows');
+      LoggerUtil.addMessage('🔎 Query\nTable: $table\nWHERE: $where\nARGS : $whereArgs\nReturned: ${result.length} rows');
       LoggerUtil.flushMessages();
 
       return result;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to query table "$table": $e');
+      LoggerUtil.debugMessage('❌ Failed to query table "$table": $e');
       return [];
     }
   }
@@ -96,9 +94,9 @@ class SQLiteService {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
-      LoggerUtil.debugMessage(message: '📝 Inserted data into "$table" successfully');
+      LoggerUtil.debugMessage('📝 Inserted data into "$table" successfully');
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to insert data into "$table": $e');
+      LoggerUtil.debugMessage('❌ Failed to insert data into "$table": $e');
     }
   }
 
@@ -136,9 +134,9 @@ class SQLiteService {
         }
       });
 
-      LoggerUtil.debugMessage(message: '📝 Inserted batch data into "$table" successfully');
+      LoggerUtil.debugMessage('📝 Inserted batch data into "$table" successfully');
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to insert batch into "$table": $e');
+      LoggerUtil.debugMessage('❌ Failed to insert batch into "$table": $e');
     }
   }
 
@@ -163,9 +161,9 @@ class SQLiteService {
         whereArgs: whereArgs,
       );
 
-      LoggerUtil.debugMessage(message: '🔔 Updated data in "$table" successfully');
+      LoggerUtil.debugMessage('🔔 Updated data in "$table" successfully');
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to update data in "$table": $e');
+      LoggerUtil.debugMessage('❌ Failed to update data in "$table": $e');
     }
   }
 
@@ -188,13 +186,13 @@ class SQLiteService {
         whereArgs: whereArgs,
       );
 
-      LoggerUtil.debugMessage(message: 
+      LoggerUtil.debugMessage(
         where == null
             ? '🗑️ Deleted all data from "$table"'
             : '🗑️ Deleted data from "$table" with condition: $where');
       return true;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to delete data from "$table": $e');
+      LoggerUtil.debugMessage('❌ Failed to delete data from "$table": $e');
       return false;
     }
   }
@@ -215,7 +213,7 @@ class SQLiteService {
         throw Exception('Table "$table" does not exist.');
       }
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Table check failed for "$table": $e');
+      LoggerUtil.debugMessage('❌ Table check failed for "$table": $e');
       rethrow;
     }
   }

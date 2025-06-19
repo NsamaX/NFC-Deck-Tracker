@@ -55,7 +55,7 @@ class FetchCardUsecase {
     final bool isSupportedGame = GameConfig.isSupported(collectionId);
 
     if (isFirstLoad) {
-      LoggerUtil.addMessage(message: '[Local] No cards found for $collectionId');
+      LoggerUtil.addMessage('[Local] No cards found for $collectionId');
 
       await createCollectionRepository.createForLocal(
         collection: CollectionModel(
@@ -73,12 +73,12 @@ class FetchCardUsecase {
         ),
       );
     } else {
-      LoggerUtil.addMessage(message: '[Local] Cards loaded from local database');
+      LoggerUtil.addMessage('[Local] Cards loaded from local database');
     }
 
     if (isSupportedGame) {
       final Map<String, dynamic> localPageMap = await findPageRepository.find(collectionId: collectionId);
-      final PagingStrategy pageStrategy = ServiceFactory.create(collectionId: collectionId);
+      final PagingStrategy pageStrategy = ServiceFactory.create(collectionId);
 
       final Map<String, dynamic> pageMap = Map<String, dynamic>.from(localPageMap);
       final List<Map<String, dynamic>> pagesToFetch = [];
@@ -108,9 +108,9 @@ class FetchCardUsecase {
               final entity = CardMapper.toEntity(card);
               cardMap[entity.cardId!] = entity;
             }
-            LoggerUtil.addMessage(message: '[API] Loaded page: ${jsonEncode(page)} → ${apiCards.length} cards');
+            LoggerUtil.addMessage('[API] Loaded page: ${jsonEncode(page)} → ${apiCards.length} cards');
           } else {
-            LoggerUtil.addMessage(message: '[API] Page has no more cards: ${jsonEncode(page)}');
+            LoggerUtil.addMessage('[API] Page has no more cards: ${jsonEncode(page)}');
             pageMap[pageKey] = true;
 
             await updatePageRepository.update(
@@ -121,13 +121,13 @@ class FetchCardUsecase {
             );
           }
         } catch (e) {
-          LoggerUtil.addMessage(message: '[Error] Failed to load page: ${jsonEncode(page)}\n$e');
+          LoggerUtil.addMessage('[Error] Failed to load page: ${jsonEncode(page)}\n$e');
         }
       }
 
       LoggerUtil.flushMessages();
     } else if (userId.isNotEmpty) {
-      LoggerUtil.addMessage(message: '[Remote] Fetching cards from remote (custom collection)');
+      LoggerUtil.addMessage('[Remote] Fetching cards from remote (custom collection)');
 
       try {
         final remoteCards = await fetchCardRepository.fetchForRemote(
@@ -141,12 +141,12 @@ class FetchCardUsecase {
             final entity = CardMapper.toEntity(card);
             cardMap[entity.cardId!] = entity;
           }
-          LoggerUtil.addMessage(message: '[Remote] Cards loaded from remote Firestore');
+          LoggerUtil.addMessage('[Remote] Cards loaded from remote Firestore');
         } else {
-          LoggerUtil.addMessage(message: '[Remote] No cards found in remote');
+          LoggerUtil.addMessage('[Remote] No cards found in remote');
         }
       } catch (e) {
-        LoggerUtil.addMessage(message: '[Error] Failed to fetch remote cards for $collectionId\n$e');
+        LoggerUtil.addMessage('[Error] Failed to fetch remote cards for $collectionId\n$e');
       }
 
       LoggerUtil.flushMessages();

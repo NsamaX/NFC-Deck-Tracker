@@ -31,7 +31,7 @@ class UpdateDeckUsecase {
       if (remoteSuccess) {
         synced = true;
       } else {
-        LoggerUtil.debugMessage(message: '⚠️ Remote update failed, will fallback to local-only');
+        LoggerUtil.debugMessage('⚠️ Remote update failed, will fallback to local-only');
       }
     }
 

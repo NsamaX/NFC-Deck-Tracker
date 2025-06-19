@@ -15,8 +15,8 @@ class FindCardRepository {
     required String collectionId,
     required String cardId,
   }) async {
-    final GameApi gameApi = ServiceFactory.create(collectionId: collectionId);
-    return await gameApi.find(cardId: cardId);
+    final GameApi gameApi = ServiceFactory.create(collectionId);
+    return await gameApi.find(cardId);
   }
 
   Future<CardModel?> findForLocal({

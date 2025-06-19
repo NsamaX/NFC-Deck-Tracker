@@ -56,14 +56,14 @@ class FetchRecordUsecase {
       if (local == null) {
         await createRecordRepository.createForLocal(record: RecordMapper.toModel(remote));
         localList.add(remote);
-        LoggerUtil.debugMessage(message: '📥 Imported remote record → local: ${remote.recordId}');
+        LoggerUtil.debugMessage('📥 Imported remote record → local: ${remote.recordId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
         await updateRecordRepository.updateForLocal(record: RecordMapper.toModel(remote));
         final index = localList.indexWhere((r) => r.recordId == remote.recordId);
         if (index != -1) localList[index] = remote;
-        LoggerUtil.debugMessage(message: '📥 Updated local record from remote: ${remote.recordId}');
+        LoggerUtil.debugMessage('📥 Updated local record from remote: ${remote.recordId}');
       }
     }
   }
@@ -87,9 +87,9 @@ class FetchRecordUsecase {
           await updateRecordRepository.updateForLocal(record: RecordMapper.toModel(updated));
           final index = localList.indexWhere((r) => r.recordId == updated.recordId);
           if (index != -1) localList[index] = updated;
-          LoggerUtil.debugMessage(message: '📤 Synced local record → remote: ${local.recordId}');
+          LoggerUtil.debugMessage('📤 Synced local record → remote: ${local.recordId}');
         } else {
-          LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${local.recordId}');
+          LoggerUtil.debugMessage('⚠️ Failed to sync local → remote: ${local.recordId}');
         }
       }
 
@@ -103,9 +103,9 @@ class FetchRecordUsecase {
         );
 
         if (success) {
-          LoggerUtil.debugMessage(message: '🔁 Updated remote with newer local: ${local.recordId}');
+          LoggerUtil.debugMessage('🔁 Updated remote with newer local: ${local.recordId}');
         } else {
-          LoggerUtil.debugMessage(message: '⚠️ Failed to update newer local → remote: ${local.recordId}');
+          LoggerUtil.debugMessage('⚠️ Failed to update newer local → remote: ${local.recordId}');
         }
       }
     }
@@ -123,9 +123,9 @@ class FetchRecordUsecase {
       final success = await deleteRecordRepository.deleteForLocal(recordId: record.recordId);
       if (success) {
         localList.removeWhere((r) => r.recordId == record.recordId);
-        LoggerUtil.debugMessage(message: '🗑️ Deleted local record not found in remote: ${record.recordId}');
+        LoggerUtil.debugMessage('🗑️ Deleted local record not found in remote: ${record.recordId}');
       } else {
-        LoggerUtil.debugMessage(message: '⚠️ Failed to delete local-only record: ${record.recordId}');
+        LoggerUtil.debugMessage('⚠️ Failed to delete local-only record: ${record.recordId}');
       }
     }
   }

@@ -11,17 +11,13 @@ class LoggerUtil {
 
   static final List<String> _messageBuffer = [];
 
-  static void addMessage({
-    required String message,
-  }) {
+  static void addMessage(String message) {
     if (kDebugMode) {
       _messageBuffer.add(message);
     }
   }
 
-  static void flushMessages({
-    bool isError = false,
-  }) {
+  static void flushMessages({bool isError = false}) {
     if (kDebugMode && _messageBuffer.isNotEmpty) {
       final String log = _messageBuffer.join('\n');
       _logger.log(isError ? Level.error : Level.info, log);
@@ -29,9 +25,7 @@ class LoggerUtil {
     }
   }
 
-  static void debugMessage({
-    required String message,
-  }) {
+  static void debugMessage(String message) {
     if (kDebugMode) {
       debugPrint(message);
     }

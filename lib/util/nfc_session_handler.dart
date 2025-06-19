@@ -6,9 +6,7 @@ class NfcSessionHandler extends RouteObserver<ModalRoute> with WidgetsBindingObs
   final NfcCubit nfcCubit;
   bool _isDisposed = false;
 
-  NfcSessionHandler({
-    required this.nfcCubit,
-  });
+  NfcSessionHandler(this.nfcCubit);
 
   void startObserving() => WidgetsBinding.instance.addObserver(this);
 
@@ -16,32 +14,30 @@ class NfcSessionHandler extends RouteObserver<ModalRoute> with WidgetsBindingObs
     if (_isDisposed) return;
     _isDisposed = true;
     WidgetsBinding.instance.removeObserver(this);
-    _stopNFCSession(reason: 'App closed (dispose)');
+    _stopNFCSession('App closed (dispose)');
   }
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (_isDisposed) return;
     if (state == AppLifecycleState.paused || state == AppLifecycleState.detached) {
-      _stopNFCSession(reason: 'App went to background or closed');
+      _stopNFCSession('App went to background or closed');
     }
   }
 
   @override
   void didPush(Route route, Route? previousRoute) {
     if (previousRoute != null) {
-      _stopNFCSession(reason: 'Navigated to a new page');
+      _stopNFCSession('Navigated to a new page');
     }
   }
 
   @override
   void didPop(Route route, Route? previousRoute) {
-    _stopNFCSession(reason: 'Returned to previous page');
+    _stopNFCSession('Returned to previous page');
   }
 
-  void _stopNFCSession({
-    required String reason,
-  }) {
+  void _stopNFCSession(String reason) {
     if (!nfcCubit.isClosed && nfcCubit.state.isSessionActive) {
       nfcCubit.stopSession(reason: reason);
     }

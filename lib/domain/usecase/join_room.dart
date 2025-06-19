@@ -19,7 +19,7 @@ class JoinRoomUsecase {
     );
 
     if (!success) {
-      LoggerUtil.debugMessage(message: '⚠️ Failed to join room "$roomId"');
+      LoggerUtil.debugMessage('⚠️ Failed to join room "$roomId"');
     }
   }
 }

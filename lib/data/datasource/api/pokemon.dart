@@ -11,9 +11,7 @@ class PokemonApi extends BaseApi implements GameApi {
   ) : super(baseUrl);
 
   @override
-  Future<List<CardModel>> fetch({
-    required Map<String, dynamic> page,
-  }) async {
+  Future<List<CardModel>> fetch(Map<String, dynamic> page) async {
     final Map<String, String> queryParams = page.map(
       (k, v) => MapEntry(k, v.toString()),
     );
@@ -22,22 +20,18 @@ class PokemonApi extends BaseApi implements GameApi {
     final body = decodeResponse(response);
     final List<dynamic> data = body['data'] ?? [];
 
-    return _filterData(data: data);
+    return _filterData(data);
   }
 
   @override
-  Future<CardModel> find({
-    required String cardId,
-  }) async {
+  Future<CardModel> find(String cardId) async {
     final response = await getRequest('cards/$cardId');
     final data = decodeResponse(response)['data'] as Map<String, dynamic>;
 
-    return _parseData(data: data);
+    return _parseData(data);
   }
 
-  CardModel _parseData({
-    required Map<String, dynamic> data,
-  }) {
+  CardModel _parseData(Map<String, dynamic> data) {
     final types = (data['types'] as List<dynamic>?)?.cast<String>() ?? [];
     final hp = int.tryParse(data['hp']?.toString() ?? '') ?? 0;
 
@@ -70,12 +64,10 @@ class PokemonApi extends BaseApi implements GameApi {
     );
   }
 
-  List<CardModel> _filterData({
-    required List<dynamic> data,
-  }) {
+  List<CardModel> _filterData(List<dynamic> data) {
     return data
         .where((card) => card['supertype'] == 'Pokémon')
-        .map((data) => _parseData(data: data))
+        .map((data) => _parseData(data))
         .toList();
   }
 }

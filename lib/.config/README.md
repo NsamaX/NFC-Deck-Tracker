@@ -60,7 +60,7 @@ class NewGameApi extends BaseApi implements GameApi {
   NewGameApi(String baseUrl) : super(baseUrl);
 
   @override
-  Future<List<CardModel>> fetch({required Map<String, dynamic> page}) async {
+  Future<List<CardModel>> fetch(Map<String, dynamic> page) async {
     final response = await getRequest('cards', page.map((k, v) => MapEntry(k, v.toString())));
     final body = decodeResponse(response);
     final List<dynamic> results = body['data'] ?? [];
@@ -78,7 +78,7 @@ class NewGameApi extends BaseApi implements GameApi {
 }
 
   @override
-  Future<CardModel> find({required String cardId}) async {
+  Future<CardModel> find(String cardId) async {
     final response = await getRequest('cards/$cardId');
     final data = decodeResponse(response);
     return CardModel(

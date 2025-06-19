@@ -20,7 +20,7 @@ class CreateRoomUsecase {
     );
 
     if (!success) {
-      LoggerUtil.debugMessage(message: '⚠️ Failed to create room remotely');
+      LoggerUtil.debugMessage('⚠️ Failed to create room remotely');
     }
   }
 }

@@ -17,7 +17,7 @@ class FetchCardRepository {
   Future<List<CardModel>> fetchForApi({
     required Map<String, dynamic> page,
   }) async {
-    return await gameApi.fetch(page: page);
+    return await gameApi.fetch(page);
   }
 
   Future<List<CardModel>> fetchForLocal({

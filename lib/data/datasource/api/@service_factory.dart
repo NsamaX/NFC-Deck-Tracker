@@ -6,13 +6,8 @@ import '../../model/card.dart';
 import '~index.dart';
 
 abstract class GameApi {
-  Future<List<CardModel>> fetch({
-    required Map<String, dynamic> page,
-  });
-
-  Future<CardModel> find({
-    required String cardId,
-  });
+  Future<List<CardModel>> fetch(Map<String, dynamic> page);
+  Future<CardModel> find(String cardId);
 }
 
 abstract class PagingStrategy {
@@ -23,14 +18,12 @@ abstract class PagingStrategy {
 }
 
 class ServiceFactory {
-  static T create<T>({
-    required String collectionId,
-  }) {
+  static T create<T>(String collectionId) {
     if (collectionId == GameConfig.dummy) {
       return _createDummy<T>();
     }
 
-    final String baseUrl = ApiConfig.getBaseUrl(key: collectionId);
+    final String baseUrl = ApiConfig.getBaseUrl(collectionId);
 
     if (T == GameApi) {
       final creator = _apiRegistry[collectionId];

@@ -55,7 +55,7 @@ class FetchCollectionUsecase {
           collection: CollectionMapper.toModel(remote),
         );
         localList.add(remote);
-        LoggerUtil.debugMessage(message: '📥 Imported remote → local: ${remote.collectionId}');
+        LoggerUtil.debugMessage('📥 Imported remote → local: ${remote.collectionId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
@@ -64,7 +64,7 @@ class FetchCollectionUsecase {
         );
         final index = localList.indexWhere((c) => c.collectionId == remote.collectionId);
         if (index != -1) localList[index] = remote;
-        LoggerUtil.debugMessage(message: '📥 Updated local from remote: ${remote.collectionId}');
+        LoggerUtil.debugMessage('📥 Updated local from remote: ${remote.collectionId}');
       }
     }
   }
@@ -90,9 +90,9 @@ class FetchCollectionUsecase {
           );
           final index = localList.indexWhere((c) => c.collectionId == updated.collectionId);
           if (index != -1) localList[index] = updated;
-          LoggerUtil.debugMessage(message: '📤 Synced local → remote: ${local.collectionId}');
+          LoggerUtil.debugMessage('📤 Synced local → remote: ${local.collectionId}');
         } else {
-          LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${local.collectionId}');
+          LoggerUtil.debugMessage('⚠️ Failed to sync local → remote: ${local.collectionId}');
         }
 
       } else if (remote != null &&
@@ -105,9 +105,9 @@ class FetchCollectionUsecase {
         );
 
         if (success) {
-          LoggerUtil.debugMessage(message: '🔁 Updated remote with newer local: ${local.collectionId}');
+          LoggerUtil.debugMessage('🔁 Updated remote with newer local: ${local.collectionId}');
         } else {
-          LoggerUtil.debugMessage(message: '⚠️ Failed to update newer local → remote: ${local.collectionId}');
+          LoggerUtil.debugMessage('⚠️ Failed to update newer local → remote: ${local.collectionId}');
         }
       }
     }
@@ -127,9 +127,9 @@ class FetchCollectionUsecase {
       );
       if (success) {
         localList.removeWhere((c) => c.collectionId == collection.collectionId);
-        LoggerUtil.debugMessage(message: '🗑️ Deleted local not found in remote: ${collection.collectionId}');
+        LoggerUtil.debugMessage('🗑️ Deleted local not found in remote: ${collection.collectionId}');
       } else {
-        LoggerUtil.debugMessage(message: '⚠️ Failed to delete local-only collection: ${collection.collectionId}');
+        LoggerUtil.debugMessage('⚠️ Failed to delete local-only collection: ${collection.collectionId}');
       }
     }
   }

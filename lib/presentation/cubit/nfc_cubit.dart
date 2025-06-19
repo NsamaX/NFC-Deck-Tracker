@@ -27,7 +27,7 @@ class NfcCubit extends Cubit<NfcState> {
       warningMessage: '',
       errorMessage: '',
     ));
-    LoggerUtil.addMessage(message: '[Session Control] Starting NFC session: ${card == null ? "Read" : "Write"} mode');
+    LoggerUtil.addMessage('[Session Control] Starting NFC session: ${card == null ? "Read" : "Write"} mode');
     LoggerUtil.flushMessages();
 
     try {
@@ -45,7 +45,7 @@ class NfcCubit extends Cubit<NfcState> {
           }
         } catch (e) {
           safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_process_tag'));
-          LoggerUtil.addMessage(message: '[Session Control] Error during tag processing: $e');
+          LoggerUtil.addMessage('[Session Control] Error during tag processing: $e');
           LoggerUtil.flushMessages(isError: true);
         }
       });
@@ -53,7 +53,7 @@ class NfcCubit extends Cubit<NfcState> {
       safeEmit(state.copyWith(isSessionActive: true));
     } catch (e) {
       safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_start_session'));
-      LoggerUtil.addMessage(message: '[Session Control] Error initializing NFC session: $e');
+      LoggerUtil.addMessage('[Session Control] Error initializing NFC session: $e');
       LoggerUtil.flushMessages(isError: true);
     } finally {
       safeEmit(state.copyWith(isSessionBusy: false));
@@ -71,13 +71,13 @@ class NfcCubit extends Cubit<NfcState> {
     if (state.isSessionActive) {
       try {
         if (isCardChanged) {
-          LoggerUtil.addMessage(message: '[Error Recovery] Card changed. Restarting NFC session...');
+          LoggerUtil.addMessage('[Error Recovery] Card changed. Restarting NFC session...');
           await stopSession(reason: 'Card changed, restarting session...');
         }
         await startSession(card: card);
       } catch (e) {
         safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_restart_session'));
-        LoggerUtil.addMessage(message: '[Error Recovery] Failed to restart NFC session: ${e.toString()}');
+        LoggerUtil.addMessage('[Error Recovery] Failed to restart NFC session: ${e.toString()}');
         LoggerUtil.flushMessages(isError: true);
       }
     }
@@ -92,10 +92,10 @@ class NfcCubit extends Cubit<NfcState> {
         isSessionActive: false,
         isSessionBusy: false,
       ));
-      LoggerUtil.addMessage(message: '[Session Control] NFC session stopped. Reason: $reason');
+      LoggerUtil.addMessage('[Session Control] NFC session stopped. Reason: $reason');
       LoggerUtil.flushMessages();
     } catch (e) {
-      LoggerUtil.addMessage(message: '[Session Control] Error stopping session: $e');
+      LoggerUtil.addMessage('[Session Control] Error stopping session: $e');
       LoggerUtil.flushMessages(isError: true);
       safeEmit(state.copyWith(isSessionBusy: false));
     }
@@ -112,7 +112,7 @@ class NfcCubit extends Cubit<NfcState> {
         lastScannedTag: tagEntity,
         successMessage: 'nfc_snack_bar.success_read_tag',
       ));
-      LoggerUtil.addMessage(message: '[Processing] Tag read successfully for card id[${tagEntity.cardId}]');
+      LoggerUtil.addMessage('[Processing] Tag read successfully for card id[${tagEntity.cardId}]');
       LoggerUtil.flushMessages();
     } catch (e) {
       final message = e.toString();
@@ -127,7 +127,7 @@ class NfcCubit extends Cubit<NfcState> {
         safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_read_tag'));
       }
 
-      LoggerUtil.addMessage(message: '[Processing] Error reading tag: $e');
+      LoggerUtil.addMessage('[Processing] Error reading tag: $e');
       LoggerUtil.flushMessages(isError: true);
     }
   }
@@ -151,7 +151,7 @@ class NfcCubit extends Cubit<NfcState> {
         safeEmit(state.copyWith(successMessage: 'nfc_snack_bar.success_write_tag'));
       }
 
-      LoggerUtil.addMessage(message: '[Processing] Tag written successfully for card id[${card.cardId}]');
+      LoggerUtil.addMessage('[Processing] Tag written successfully for card id[${card.cardId}]');
       LoggerUtil.flushMessages();
     } catch (e) {
       final message = e.toString();
@@ -169,7 +169,7 @@ class NfcCubit extends Cubit<NfcState> {
         safeEmit(state.copyWith(errorMessage: 'nfc_snack_bar.error_write_tag'));
       }
 
-      LoggerUtil.addMessage(message: '[Processing] Error writing to tag: $e');
+      LoggerUtil.addMessage('[Processing] Error writing to tag: $e');
       LoggerUtil.flushMessages(isError: true);
     }
   }

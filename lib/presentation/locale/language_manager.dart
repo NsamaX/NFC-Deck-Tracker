@@ -31,19 +31,19 @@ class LanguageManager {
           langMap[lang] = langData['language_name'] ?? lang;
         } catch (e) {
           langMap[lang] = lang;
-          LoggerUtil.debugMessage(message: '❗ Failed to load language file for "$lang": $e');
+          LoggerUtil.debugMessage('❗ Failed to load language file for "$lang": $e');
         }
       }
 
       supportedLanguages = UnmodifiableListView(languages);
       languageNames = UnmodifiableMapView(langMap);
 
-      LoggerUtil.debugMessage(message: '💬 Supported languages loaded: ${supportedLanguages.join(", ")}');
+      LoggerUtil.debugMessage('💬 Supported languages loaded: ${supportedLanguages.join(", ")}');
     } catch (e) {
       supportedLanguages = UnmodifiableListView([]);
       languageNames = UnmodifiableMapView({});
 
-      LoggerUtil.debugMessage(message: '❌ Failed to load supported languages: $e');
+      LoggerUtil.debugMessage('❌ Failed to load supported languages: $e');
     }
   }
 
@@ -53,7 +53,7 @@ class LanguageManager {
     final String name = languageNames[code] ?? '[Unknown Language]';
 
     if (name == '[Unknown Language]') {
-      LoggerUtil.debugMessage(message: '❓ Unknown language code: "$code"');
+      LoggerUtil.debugMessage('❓ Unknown language code: "$code"');
     }
 
     return name;

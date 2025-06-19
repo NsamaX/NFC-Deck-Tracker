@@ -33,7 +33,7 @@ class UpdateRoomUsecase {
     );
 
     if (!success) {
-      LoggerUtil.debugMessage(message: '⚠️ Failed to update room "$roomId"');
+      LoggerUtil.debugMessage('⚠️ Failed to update room "$roomId"');
     }
   }
 }

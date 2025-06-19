@@ -13,12 +13,12 @@ Map<String, dynamic> getArguments(BuildContext context) {
         buffer.writeln('    $key: $value,');
       });
       buffer.write('}');
-      LoggerUtil.addMessage(message: buffer.toString());
+      LoggerUtil.addMessage(buffer.toString());
     } else {
-      LoggerUtil.addMessage(message: 'Warning: Route arguments is not a Map<String, dynamic>.');
+      LoggerUtil.addMessage('Warning: Route arguments is not a Map<String, dynamic>.');
     }
   } else {
-    LoggerUtil.addMessage(message: 'Route Arguments: null');
+    LoggerUtil.addMessage('Route Arguments: null');
   }
 
   LoggerUtil.flushMessages();

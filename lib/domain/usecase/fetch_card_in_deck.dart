@@ -27,21 +27,17 @@ class FetchCardInDeckUsecase {
 
     if (GameConfig.isSupported(collectionId)) {
       try {
-        final gameApi = ServiceFactory.create<GameApi>(collectionId: collectionId);
+        final gameApi = ServiceFactory.create<GameApi>(collectionId);
         for (final model in localCardModels) {
           try {
-            final apiCard = await gameApi.find(cardId: model.card.cardId);
+            final apiCard = await gameApi.find(model.card.cardId);
             remoteCards.add(apiCard);
           } catch (_) {
-            LoggerUtil.debugMessage(
-              message: '⚠️ Card ${model.card.cardId} not found in Game API',
-            );
+            LoggerUtil.debugMessage('⚠️ Card ${model.card.cardId} not found in Game API');
           }
         }
       } catch (_) {
-        LoggerUtil.debugMessage(
-          message: '❌ Game API is not available for $collectionId',
-        );
+        LoggerUtil.debugMessage('❌ Game API is not available for $collectionId');
       }
     }
 

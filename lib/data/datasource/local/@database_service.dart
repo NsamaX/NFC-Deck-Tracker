@@ -37,10 +37,10 @@ class DatabaseService {
 
       await _configureDatabase(db);
 
-      LoggerUtil.debugMessage(message: '📂 Database initialized successfully');
+      LoggerUtil.debugMessage('📂 Database initialized successfully');
       return db;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to initialize the database: $e');
+      LoggerUtil.debugMessage('❌ Failed to initialize the database: $e');
       rethrow;
     }
   }
@@ -59,9 +59,9 @@ class DatabaseService {
 
       await batch.commit();
 
-      LoggerUtil.debugMessage(message: '🛠️ Tables created successfully');
+      LoggerUtil.debugMessage('🛠️ Tables created successfully');
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to create tables: $e');
+      LoggerUtil.debugMessage('❌ Failed to create tables: $e');
     }
   }
 
@@ -72,7 +72,7 @@ class DatabaseService {
   ) async {
     try {
       if (oldVersion < _dbVersion) {
-        LoggerUtil.debugMessage(message: '🔄 Migrating database from v$oldVersion to v$newVersion...');
+        LoggerUtil.debugMessage('🔄 Migrating database from v$oldVersion to v$newVersion...');
 
         final List<String> _migrations = DatabaseConstant.migrations;
         final Batch batch = db.batch();
@@ -83,10 +83,10 @@ class DatabaseService {
 
         await batch.commit();
 
-        LoggerUtil.debugMessage(message: '🔔 Database migrated successfully');
+        LoggerUtil.debugMessage('🔔 Database migrated successfully');
       }
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Database migration failed: $e');
+      LoggerUtil.debugMessage('❌ Database migration failed: $e');
     }
   }
 
@@ -97,9 +97,9 @@ class DatabaseService {
       await db.rawQuery('PRAGMA foreign_keys = ON');
       await db.rawQuery('PRAGMA journal_mode = WAL');
 
-      LoggerUtil.debugMessage(message: '🔧 Database configured successfully');
+      LoggerUtil.debugMessage('🔧 Database configured successfully');
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to configure database: $e');
+      LoggerUtil.debugMessage('❌ Failed to configure database: $e');
     }
   }
 
@@ -110,9 +110,9 @@ class DatabaseService {
       await db?.close();
       _database = null;
 
-      LoggerUtil.debugMessage(message: '🔒 Database closed successfully.');
+      LoggerUtil.debugMessage('🔒 Database closed successfully.');
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to close database: $e');
+      LoggerUtil.debugMessage('❌ Failed to close database: $e');
     }
   }
 
@@ -124,9 +124,9 @@ class DatabaseService {
       await closeDatabase();
       await deleteDatabase(path);
 
-      LoggerUtil.debugMessage(message: '🗑️ Database "$_db" deleted successfully.');
+      LoggerUtil.debugMessage('🗑️ Database "$_db" deleted successfully.');
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to delete database "$_db": $e');
+      LoggerUtil.debugMessage('❌ Failed to delete database "$_db": $e');
     }
   }
 }

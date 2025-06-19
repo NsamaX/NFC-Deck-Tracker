@@ -38,7 +38,7 @@ class CreateDeckUsecase {
       if (remoteSuccess) {
         synced = true;
       } else {
-        LoggerUtil.debugMessage(message: '⚠️ Remote create failed, will fallback to local-only');
+        LoggerUtil.debugMessage('⚠️ Remote create failed, will fallback to local-only');
       }
     }
 

@@ -25,12 +25,12 @@ class FirestoreService {
 
       final result = await query.get();
 
-      LoggerUtil.addMessage(message: '🔎 Query\nCollection: $collectionPath\nReturned: ${result.docs.length} documents');
+      LoggerUtil.addMessage('🔎 Query\nCollection: $collectionPath\nReturned: ${result.docs.length} documents');
       LoggerUtil.flushMessages();
 
       return result.docs;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to query Firestore collection "$collectionPath": $e');
+      LoggerUtil.debugMessage('❌ Failed to query Firestore collection "$collectionPath": $e');
       return [];
     }
   }
@@ -44,7 +44,7 @@ class FirestoreService {
       if (!doc.exists) return null;
       return doc;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to get document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.debugMessage('❌ Failed to get document "$documentId" in "$collectionPath": $e');
       return null;
     }
   }
@@ -57,10 +57,10 @@ class FirestoreService {
   }) async {
     try {
       await firestore.collection(collectionPath).doc(documentId).set(data, SetOptions(merge: merge));
-      LoggerUtil.debugMessage(message: '📝 Set document "$documentId" in "$collectionPath" successfully');
+      LoggerUtil.debugMessage('📝 Set document "$documentId" in "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to set document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.debugMessage('❌ Failed to set document "$documentId" in "$collectionPath": $e');
       return false;
     }
   }
@@ -72,10 +72,10 @@ class FirestoreService {
   }) async {
     try {
       await firestore.collection(collectionPath).doc(documentId).update(data);
-      LoggerUtil.debugMessage(message: '🔔 Updated document "$documentId" in "$collectionPath" successfully');
+      LoggerUtil.debugMessage('🔔 Updated document "$documentId" in "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to update document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.debugMessage('❌ Failed to update document "$documentId" in "$collectionPath": $e');
       return false;
     }
   }
@@ -95,10 +95,10 @@ class FirestoreService {
       };
 
       await firestore.collection(collectionPath).doc(documentId).update(fieldUpdate);
-      LoggerUtil.debugMessage(message: '${remove ? '➖ Removed' : '➕ Added'} values in "$fieldName" of "$documentId"');
+      LoggerUtil.debugMessage('${remove ? '➖ Removed' : '➕ Added'} values in "$fieldName" of "$documentId"');
       return true;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to update array field "$fieldName" in "$documentId": $e');
+      LoggerUtil.debugMessage('❌ Failed to update array field "$fieldName" in "$documentId": $e');
       return false;
     }
   }
@@ -109,10 +109,10 @@ class FirestoreService {
   }) async {
     try {
       await firestore.collection(collectionPath).doc(documentId).delete();
-      LoggerUtil.debugMessage(message: '🗑️ Deleted document "$documentId" from "$collectionPath" successfully');
+      LoggerUtil.debugMessage('🗑️ Deleted document "$documentId" from "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to delete document "$documentId" from "$collectionPath": $e');
+      LoggerUtil.debugMessage('❌ Failed to delete document "$documentId" from "$collectionPath": $e');
       return false;
     }
   }
@@ -124,7 +124,7 @@ class FirestoreService {
     try {
       final file = File(imagePath);
       if (!file.existsSync()) {
-        LoggerUtil.debugMessage(message: '❌ File does not exist at path: $imagePath');
+        LoggerUtil.debugMessage('❌ File does not exist at path: $imagePath');
         return null;
       }
 
@@ -135,14 +135,14 @@ class FirestoreService {
       try {
         final uploadTask = await ref.putFile(file);
         final snapshot = await uploadTask.ref.getDownloadURL();
-        LoggerUtil.debugMessage(message: '📤 Uploaded image → $snapshot');
+        LoggerUtil.debugMessage('📤 Uploaded image → $snapshot');
         return snapshot;
       } catch (e) {
-        LoggerUtil.debugMessage(message: '❌ Failed to upload image: $e');
+        LoggerUtil.debugMessage('❌ Failed to upload image: $e');
         return null;
       }
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to upload image "$imagePath": $e');
+      LoggerUtil.debugMessage('❌ Failed to upload image "$imagePath": $e');
       return null;
     }
   }

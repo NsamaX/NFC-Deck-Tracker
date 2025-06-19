@@ -21,10 +21,10 @@ class AppLocalization {
 
       _localizedStrings.addAll(json.decode(jsonString));
 
-      LoggerUtil.debugMessage(message: '🔄 Localization loaded: ${locale.languageCode}');
+      LoggerUtil.debugMessage('🔄 Localization loaded: ${locale.languageCode}');
     } catch (e) {
       _localizedStrings.clear();
-      LoggerUtil.debugMessage(message: '❌ Failed to load localization: $e');
+      LoggerUtil.debugMessage('❌ Failed to load localization: $e');
     }
   }
 
@@ -44,12 +44,12 @@ class AppLocalization {
       ).toString();
 
       if (result.startsWith('[Missing')) {
-        LoggerUtil.debugMessage(message: '❗ Key not found: "$key"');
+        LoggerUtil.debugMessage('❗ Key not found: "$key"');
       }
 
       return result;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Translation error: $e');
+      LoggerUtil.debugMessage('❌ Translation error: $e');
       return '[Error: $key]';
     }
   }

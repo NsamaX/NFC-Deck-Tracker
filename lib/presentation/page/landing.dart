@@ -32,7 +32,7 @@ class _LandingPageState extends State<LandingPage> {
     final user = locator<FirebaseAuth>().currentUser;
     if (user != null) {
       await signOutFromGoogle();
-      LoggerUtil.debugMessage(message: 'User signed out automatically on LandingPage');
+      LoggerUtil.debugMessage('User signed out automatically on LandingPage');
     }
   }
 

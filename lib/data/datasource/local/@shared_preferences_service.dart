@@ -7,19 +7,17 @@ class SharedPreferencesService {
 
   SharedPreferencesService(this._sharedPreferences);
 
-  Future<dynamic> load({
-    required String key,
-  }) async {
+  Future<dynamic> load(String key) async {
     try {
       final dynamic value = _sharedPreferences.get(key);
 
       if (value == null) {
-        LoggerUtil.debugMessage(message: '❓ Key "$key" not found');
+        LoggerUtil.debugMessage('❓ Key "$key" not found');
       }
 
       return value;
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to retrieve string for key "$key": $e');
+      LoggerUtil.debugMessage('❌ Failed to retrieve string for key "$key": $e');
       return null;
     }
   }
@@ -45,12 +43,12 @@ class SharedPreferencesService {
       }
 
       if (success) {
-        LoggerUtil.debugMessage(message: '📝 Saved value for key "$key" value "$value" successfully');
+        LoggerUtil.debugMessage('📝 Saved value for key "$key" value "$value" successfully');
       } else {
-        LoggerUtil.debugMessage(message: '❌ Failed to save value for key "$key"');
+        LoggerUtil.debugMessage('❌ Failed to save value for key "$key"');
       }
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to save string for key "$key": $e');
+      LoggerUtil.debugMessage('❌ Failed to save string for key "$key": $e');
     }
   }
 
@@ -58,9 +56,9 @@ class SharedPreferencesService {
     try {
       await _sharedPreferences.clear();
 
-      LoggerUtil.debugMessage(message: '🧹 Cleared all SharedPreferences data successfully');
+      LoggerUtil.debugMessage('🧹 Cleared all SharedPreferences data successfully');
     } catch (e) {
-      LoggerUtil.debugMessage(message: '❌ Failed to clear SharedPreferences: $e');
+      LoggerUtil.debugMessage('❌ Failed to clear SharedPreferences: $e');
     }
   }
 }

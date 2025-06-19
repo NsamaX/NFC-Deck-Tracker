@@ -43,7 +43,7 @@ void main() async {
   // await locator<SharedPreferencesService>().clear();
 
   await Future.wait([
-    ApiConfig.loadConfig(environment: kReleaseMode ? 'production' : 'development'),
+    ApiConfig.loadConfig(kReleaseMode ? 'production' : 'development'),
     Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     LanguageManager.loadSupportedLanguages(),
   ]);
@@ -70,10 +70,10 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     nfcCubit = locator<NfcCubit>();
-    nfcSessionHandler = NfcSessionHandler(nfcCubit: nfcCubit)..startObserving();
+    nfcSessionHandler = NfcSessionHandler(nfcCubit)..startObserving();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      LoggerUtil.debugMessage(message: '📱 Starting app');
+      LoggerUtil.debugMessage('📱 Starting app');
     });
   }
 

@@ -53,12 +53,12 @@ class FetchDeckUsecase {
       if (local == null) {
         await createDeckRepository.createForLocal(deck: DeckMapper.toModel(remote));
         localList.add(remote);
-        LoggerUtil.debugMessage(message: '📥 Imported remote deck → local: ${remote.deckId}');
+        LoggerUtil.debugMessage('📥 Imported remote deck → local: ${remote.deckId}');
       } else if (remote.updatedAt!.isAfter(local.updatedAt!)) {
         await updateDeckRepository.updateForLocal(deck: DeckMapper.toModel(remote));
         final index = localList.indexWhere((d) => d.deckId == remote.deckId);
         if (index != -1) localList[index] = remote;
-        LoggerUtil.debugMessage(message: '📥 Updated local deck from remote: ${remote.deckId}');
+        LoggerUtil.debugMessage('📥 Updated local deck from remote: ${remote.deckId}');
       }
     }
   }
@@ -77,9 +77,9 @@ class FetchDeckUsecase {
         await updateDeckRepository.updateForLocal(deck: DeckMapper.toModel(updated));
         final index = localList.indexWhere((d) => d.deckId == updated.deckId);
         if (index != -1) localList[index] = updated;
-        LoggerUtil.debugMessage(message: '📤 Synced local deck → remote: ${deck.deckId}');
+        LoggerUtil.debugMessage('📤 Synced local deck → remote: ${deck.deckId}');
       } else {
-        LoggerUtil.debugMessage(message: '⚠️ Failed to sync local → remote: ${deck.deckId}');
+        LoggerUtil.debugMessage('⚠️ Failed to sync local → remote: ${deck.deckId}');
       }
     }
   }
@@ -96,9 +96,9 @@ class FetchDeckUsecase {
       final success = await deleteDeckRepository.deleteForLocal(deckId: deck.deckId!);
       if (success) {
         localList.removeWhere((d) => d.deckId == deck.deckId);
-        LoggerUtil.debugMessage(message: '🗑️ Deleted local deck not found in remote: ${deck.deckId}');
+        LoggerUtil.debugMessage('🗑️ Deleted local deck not found in remote: ${deck.deckId}');
       } else {
-        LoggerUtil.debugMessage(message: '⚠️ Failed to delete local-only deck: ${deck.deckId}');
+        LoggerUtil.debugMessage('⚠️ Failed to delete local-only deck: ${deck.deckId}');
       }
     }
   }

@@ -22,7 +22,7 @@ class DeleteRecordUsecase {
       );
 
       if (!remoteSuccess) {
-        LoggerUtil.debugMessage(message: '⚠️ Remote delete failed, local already removed');
+        LoggerUtil.debugMessage('⚠️ Remote delete failed, local already removed');
       }
     }
   }

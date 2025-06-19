@@ -15,7 +15,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
     final bool isSupported = LanguageManager.supportedLanguages.contains(locale.languageCode);
 
     if (!isSupported) {
-      LoggerUtil.debugMessage(message: '🚫 Unsupported locale: ${locale.languageCode}');
+      LoggerUtil.debugMessage('🚫 Unsupported locale: ${locale.languageCode}');
     }
 
     return isSupported;
