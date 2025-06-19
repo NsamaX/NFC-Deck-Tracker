@@ -6,7 +6,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
-import '../../cubit/room_cubit.dart';
+import '../../cubit/room.dart';
 import '../../locale/localization.dart';
 
 import '../app_bar/@default.dart';

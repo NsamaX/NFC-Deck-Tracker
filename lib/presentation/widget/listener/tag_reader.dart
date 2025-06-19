@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '../../cubit/drawer_cubit.dart';
-import '../../cubit/nfc_cubit.dart';
-import '../../cubit/reader_cubit.dart';
+import '../../bloc/nfc/nfc_cubit.dart';
+import '../../cubit/drawer.dart';
+import '../../cubit/reader.dart';
 import '../../locale/localization.dart';
 
 import '../notification/snackbar.dart';

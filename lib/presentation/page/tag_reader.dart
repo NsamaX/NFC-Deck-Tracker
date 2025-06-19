@@ -5,10 +5,10 @@ import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
-import '../cubit/application_cubit.dart';
-import '../cubit/drawer_cubit.dart';
-import '../cubit/nfc_cubit.dart';
-import '../cubit/reader_cubit.dart';
+import '../bloc/nfc/nfc_cubit.dart';
+import '../cubit/application.dart';
+import '../cubit/drawer.dart';
+import '../cubit/reader.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
 import '../widget/drawer/card_history.dart';

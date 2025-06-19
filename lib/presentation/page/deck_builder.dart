@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
-import '../cubit/deck_cubit.dart';
+import '../bloc/deck/deck_bloc.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_builder.dart';
 import '../widget/deck/total_card_in_deck.dart';
@@ -28,11 +28,11 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
     super.initState();
 
     nameController = TextEditingController(
-      text: context.read<DeckCubit>().state.currentDeck.name,
+      text: context.read<DeckBloc>().state.currentDeck.name,
     );
     userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
 
-    context.read<DeckCubit>().closeEditMode();
+    context.read<DeckBloc>().add(CloseEditModeEvent());
   }
 
   @override
@@ -52,7 +52,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
           userId: userId,
           nameController: nameController,
         ),
-        body: BlocBuilder<DeckCubit, DeckState>(
+        body: BlocBuilder<DeckBloc, DeckState>(
           builder: (context, state) {
             final deck = state.currentDeck;
 

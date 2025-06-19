@@ -3,9 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../../cubit/card_cubit.dart';
-import '../../cubit/deck_cubit.dart';
-import '../../cubit/nfc_cubit.dart';
+import '../../bloc/deck/deck_bloc.dart';
+import '../../bloc/nfc/nfc_cubit.dart';
+import '../../cubit/card.dart';
 import '../../locale/localization.dart';
 
 import '../notification/snackbar.dart';
@@ -39,7 +39,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   List<AppBarMenuItem> _buildMenu(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final deckCubit = context.read<DeckCubit>();
+    final deckCubit = context.read<DeckBloc>();
     final nfcCubit = context.read<NfcCubit>();
     final cardCubit = context.watch<CardCubit>();
     final cardState = cardCubit.state.card;
@@ -62,10 +62,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(
           label: locale.translate('page_card_detail.toggle_add'),
           action: () {
-            deckCubit.toggleAddCard(
-              card: card,
-              quantity: deckCubit.state.selectedCardCount,
-            );
+            deckCubit.add(AddCardEvent(card: card, quantity: deckCubit.state.cardQuantity));
             AppSnackBar(
               context,
               text: locale.translate('page_card_detail.snack_bar_add'),

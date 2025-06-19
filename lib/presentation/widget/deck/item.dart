@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.config/game.dart';
-
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
-import '../../cubit/deck_cubit.dart';
+import '../../bloc/deck/deck_bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
 
@@ -21,7 +19,7 @@ class DeckItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEditMode = context.read<DeckCubit>().state.isEditMode;
+    final isEditMode = context.read<DeckBloc>().state.isEditMode;
 
     return Stack(
       children: [
@@ -61,17 +59,10 @@ class DeckItem extends StatelessWidget {
     );
   }
 
-  void _onTap(BuildContext context) async {
-    await context.read<DeckCubit>().setDeck(deckId: deck.deckId!);
-    final collectionId = (deck.cards?.isNotEmpty ?? false)
-        ? deck.cards!.first.card.collectionId
-        : GameConfig.dummy;
+  void _onTap(BuildContext context) {
+    context.read<DeckBloc>().add(SetCurrentDeckEvent(deckId: deck.deckId!));
 
-    await context.read<DeckCubit>().setDeck(deckId: deck.deckId!);
-    context.read<DeckCubit>().fetchCardsInDeck(
-      deckId: deck.deckId!,
-      collectionId: collectionId!,
-    );
+    context.read<DeckBloc>().add(FetchCardInDeckEvent(deckId: deck.deckId!));
 
     Navigator.of(context).pushNamed(RouteConstant.deck_builder);
   }
@@ -96,10 +87,6 @@ class DeckItem extends StatelessWidget {
   }
 
   void _onDelete(BuildContext context) {
-    context.read<DeckCubit>().deleteDeck(
-      locale: AppLocalization.of(context), 
-      userId: userId, 
-      deckId: deck.deckId!,
-    );
+    context.read<DeckBloc>().add(DeleteDeckEvent(userId: userId, deckId: deck.deckId!, locale: AppLocalization.of(context)));
   }
 }

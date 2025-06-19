@@ -13,8 +13,6 @@ import 'package:nfc_deck_tracker/domain/usecase/update_record.dart';
 
 import 'package:nfc_deck_tracker/util/player_action.dart';
 
-part 'record_state.dart';
-
 class RecordCubit extends Cubit<RecordState> {
   final CreateRecordUsecase createRecordUsecase;
   final DeleteRecordUsecase deleteRecordUsecase;
@@ -28,13 +26,13 @@ class RecordCubit extends Cubit<RecordState> {
     required this.fetchRecordUsecase,
     required this.updateRecordUsecase,
   }) : super(RecordState(
-        currentRecord: RecordEntity(
-          deckId: deckId,
-          recordId: Uuid().v4(),
-          createdAt: DateTime.now(),
-          data: [],
-        ),
-      ));
+          currentRecord: RecordEntity(
+            deckId: deckId,
+            recordId: Uuid().v4(),
+            createdAt: DateTime.now(),
+            data: [],
+          ),
+        ));
 
   void safeEmit(RecordState newState) {
     if (!isClosed) emit(newState);
@@ -48,7 +46,6 @@ class RecordCubit extends Cubit<RecordState> {
     required String userId,
   }) async {
     await createRecordUsecase.call(userId: userId, record: state.currentRecord);
-
     final updatedRecords = [...state.records, state.currentRecord];
     safeEmit(state.copyWith(records: updatedRecords));
   }
@@ -68,10 +65,17 @@ class RecordCubit extends Cubit<RecordState> {
     final records = await fetchRecordUsecase.call(userId: userId, deckId: deckId);
     safeEmit(state.copyWith(records: records, isLoading: false));
   }
-  
+
   void findRecord({
     required String recordId,
   }) {
+    final selected = state.records.firstWhere((r) => r.recordId == recordId);
+    safeEmit(state.copyWith(currentRecord: selected));
+  }
+
+  Future<void> selectRecord({
+    required String recordId,
+  }) async {
     final selected = state.records.firstWhere((r) => r.recordId == recordId);
     safeEmit(state.copyWith(currentRecord: selected));
   }
@@ -94,13 +98,6 @@ class RecordCubit extends Cubit<RecordState> {
         .map((data) => deck.cards?.firstWhere((card) => card.card.cardId == data.cardId).card)
         .whereType<CardEntity>()
         .toList();
-  }
-
-  Future<void> selectRecord({
-    required String recordId,
-  }) async {
-    final selected = state.records.firstWhere((r) => r.recordId == recordId);
-    safeEmit(state.copyWith(currentRecord: selected));
   }
 
   void clearActiveRecordData() {
@@ -138,4 +135,35 @@ class RecordCubit extends Cubit<RecordState> {
       return null;
     }
   }
+}
+
+class RecordState extends Equatable {
+  final bool isLoading;
+  final RecordEntity currentRecord;
+  final List<RecordEntity> records;
+
+  const RecordState({
+    this.isLoading = false,
+    required this.currentRecord,
+    this.records = const [],
+  });
+
+  RecordState copyWith({
+    bool? isLoading,
+    RecordEntity? currentRecord,
+    List<RecordEntity>? records,
+  }) {
+    return RecordState(
+      isLoading: isLoading ?? this.isLoading,
+      currentRecord: currentRecord ?? this.currentRecord,
+      records: records ?? this.records,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        isLoading,
+        currentRecord,
+        records,
+      ];
 }

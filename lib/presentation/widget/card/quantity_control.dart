@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../../cubit/deck_cubit.dart';
+import '../../bloc/deck/deck_bloc.dart';
 
 class CardQuantityControl extends StatelessWidget {
   final CardEntity card;
@@ -30,13 +30,13 @@ class CardQuantityControl extends StatelessWidget {
           _buildActionButton(
             context,
             icon: Icons.add,
-            onPressed: () => context.read<DeckCubit>().toggleAddCard(card: card, quantity: 1),
+            onPressed: () => context.read<DeckBloc>().add(AddCardEvent(card: card, quantity: 1))
           ),
           const SizedBox(height: _spacing),
           _buildActionButton(
             context,
             icon: Icons.remove,
-            onPressed: () => context.read<DeckCubit>().toggleRemoveCard(card: card),
+            onPressed: () => context.read<DeckBloc>().add(RemoveCardEvent(card: card))
           ),
         ],
       ),

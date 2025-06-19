@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/pin_color_cubit.dart';
-import '../../cubit/record_cubit.dart';
-import '../../cubit/tracker_cubit.dart';
+import '../../cubit/pin_color.dart';
+import '../../cubit/record.dart';
+import '../../cubit/tracker.dart';
 import '../../locale/localization.dart';
 
 import '../card/list_tile.dart';

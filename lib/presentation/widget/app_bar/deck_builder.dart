@@ -6,9 +6,9 @@ import 'package:nfc_deck_tracker/.config/app.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../../cubit/application_cubit.dart';
-import '../../cubit/deck_cubit.dart';
-import '../../cubit/nfc_cubit.dart';
+import '../../bloc/deck/deck_bloc.dart';
+import '../../bloc/nfc/nfc_cubit.dart';
+import '../../cubit/application.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
 
@@ -38,9 +38,9 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
   List<AppBarMenuItem> _buildMenu(BuildContext context) {
     final locale = AppLocalization.of(context);
     final applicationCubit = context.read<ApplicationCubit>();
-    final deckCubit = context.read<DeckCubit>();
+    final deckCubit = context.read<DeckBloc>();
     final nfcCubit = context.read<NfcCubit>();
-    final deckState = context.watch<DeckCubit>().state;
+    final deckState = context.watch<DeckBloc>().state;
 
     final deckName = deckState.currentDeck.name ?? '';
     final hasCards = deckState.currentDeck.cards?.isNotEmpty == true;
@@ -81,7 +81,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_save'),
-          action: () => deckCubit.createDeck(userId: userId),
+          action: () => deckCubit.add(CreateDeckEvent(userId: userId))
         ),
       ];
     }
@@ -97,9 +97,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         onChanged: (value) {
           final trimmed = value.trim();
-          deckCubit.setDeckName(
-            name: trimmed.isNotEmpty ? trimmed : locale.translate('page_deck_builder.app_bar'),
-          );
+          deckCubit.add(SetDeckNameEvent(name: trimmed.isNotEmpty ? trimmed : locale.translate('page_deck_builder.app_bar')));
         },
         onSubmitted: (_) {
           final trimmed = nameController.text.trim();
@@ -107,7 +105,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
               ? trimmed
               : locale.translate('page_deck_builder.app_bar');
 
-          deckCubit.setDeckName(name: newName);
+          deckCubit.add(SetDeckNameEvent(name: newName));
           nameController.text = newName;
         },
       );
@@ -118,7 +116,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           action: () {
             if (nfcCubit.state.isSessionActive) {
               nfcCubit.stopSession();
-              deckCubit.toggleSelectCard(card: CardEntity());
+              deckCubit.add(SelectCardEvent(card: CardEntity()));
             } else {
               nfcCubit.startSession(card: deckState.selectedCard);
             }
@@ -133,12 +131,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
               content: locale.translate('page_deck_builder.dialog_delete_content'),
               cancelButtonText: locale.translate('common.button_cancel'),
               confirmButtonText: locale.translate('common.button_confirm'),
-              onPressed: () async {
-                await deckCubit.deleteDeck(
-                  locale: locale,
-                  userId: userId,
-                  deckId: deckState.currentDeck.deckId!,
-                );
+              onPressed: () {
+                deckCubit.add(DeleteDeckEvent(userId: userId, deckId: deckState.currentDeck.deckId!, locale: locale));
                 Navigator.of(context).pop();
                 AppSnackBar(context, text: locale.translate('page_deck_builder.snack_bar_delete'));
               },
@@ -162,8 +156,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_save'),
           action: () {
-            deckCubit.saveDeck(userId: userId);
-            deckCubit.closeEditMode();
+            deckCubit.add(UpdateDeckEvent(userId: userId));
+            deckCubit.add(CloseEditModeEvent());
           },
         ),
       ];
@@ -174,7 +168,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppBarMenuItem(
         label: Icons.ios_share_rounded,
         action: () {
-          deckCubit.toggleShare(locale: locale);
+          deckCubit.add(ToggleShareEvent(locale: locale));
           AppSnackBar(context, text: locale.translate('page_deck_builder.snack_bar_share'));
         },
       ),
@@ -186,7 +180,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppBarMenuItem(
         label: locale.translate('page_deck_builder.toggle_edit'),
         action: () {
-          deckCubit.toggleEditMode();
+          deckCubit.add(ToggleEditModeEvent());
           if (!applicationCubit.state.tutorialNfcIcon) {
             showGeneralDialog(
               context: context,

@@ -8,8 +8,6 @@ import 'package:nfc_deck_tracker/domain/usecase/delete_card.dart';
 
 import '../locale/localization.dart';
 
-part 'card_state.dart';
-
 class CardCubit extends Cubit<CardState> {
   final CreateCardUsecase createCardUsecase;
   final DeleteCardUsecase deleteCardUsecase;
@@ -30,11 +28,13 @@ class CardCubit extends Cubit<CardState> {
     required String collectionId,
     required AppLocalization locale,
   }) async {
-    safeEmit(state.copyWith(card: state.card.copyWith(collectionId: collectionId, description: locale.translate('card.no_description'))));
-    await createCardUsecase(
-      userId: userId,
-      card: state.card,
-    );
+    safeEmit(state.copyWith(
+      card: state.card.copyWith(
+        collectionId: collectionId,
+        description: locale.translate('card.no_description'),
+      ),
+    ));
+    await createCardUsecase(userId: userId, card: state.card);
   }
 
   Future<void> deleteCard({
@@ -74,4 +74,23 @@ class CardCubit extends Cubit<CardState> {
   }) {
     safeEmit(state.copyWith(card: state.card.copyWith(additionalData: additionalData)));
   }
+}
+
+class CardState extends Equatable {
+  final CardEntity card;
+
+  const CardState({
+    this.card = const CardEntity(),
+  });
+
+  CardState copyWith({
+    CardEntity? card,
+  }) {
+    return CardState(
+      card: card ?? this.card,
+    );
+  }
+
+  @override
+  List<Object?> get props => [card];
 }

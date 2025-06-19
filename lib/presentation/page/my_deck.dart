@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
-import '../cubit/deck_cubit.dart';
+import '../bloc/deck/deck_bloc.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/my_deck.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
@@ -25,7 +25,7 @@ class _MyDeckPage extends State<MyDeckPage> with RouteAware {
   void initState() {
     super.initState();
     userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
-    context.read<DeckCubit>().fetchDeck(userId: userId);
+    context.read<DeckBloc>().add(FetchDeckEvent(userId: userId));
   }
 
   @override
@@ -42,7 +42,7 @@ class _MyDeckPage extends State<MyDeckPage> with RouteAware {
 
   @override
   void didPopNext() {
-    context.read<DeckCubit>().closeEditMode();
+    context.read<DeckBloc>().add(CloseEditModeEvent());
   }
 
   @override
@@ -51,14 +51,9 @@ class _MyDeckPage extends State<MyDeckPage> with RouteAware {
 
     return Scaffold(
       appBar: const MyDeckAppBar(),
-      body: BlocBuilder<DeckCubit, DeckState>(
+      body: BlocBuilder<DeckBloc, DeckState>(
         builder: (context, state) {
-          final isLoading = state.isLoading;
           final deck = state.decks;
-
-          if (isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } 
           
           if (deck.isEmpty) {
             return DescriptionAlignCenter(

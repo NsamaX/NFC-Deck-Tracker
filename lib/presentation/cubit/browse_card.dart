@@ -4,14 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_card.dart';
 
-part 'search_state.dart';
-
-class SearchCubit extends Cubit<SearchState> {
+class BrowseCardCubit extends Cubit<BrowseCardState> {
   final FetchCardUsecase fetchCardUsecase;
 
-  SearchCubit({
+  BrowseCardCubit({
     required this.fetchCardUsecase,
-  }) : super(const SearchState());
+  }) : super(const BrowseCardState());
 
   Future<void> fetchCard({
     required String userId,
@@ -89,4 +87,41 @@ class SearchCubit extends Cubit<SearchState> {
       errorMessage: '',
     ));
   }
+}
+
+class BrowseCardState extends Equatable {
+  final bool isLoading;
+  final String errorMessage;
+
+  final List<CardEntity> cards;
+  final List<CardEntity> visibleCards;
+
+  const BrowseCardState({
+    this.isLoading = false,
+    this.errorMessage = '',
+    this.cards = const [],
+    this.visibleCards = const [],
+  });
+
+  BrowseCardState copyWith({
+    bool? isLoading,
+    String? errorMessage,
+    List<CardEntity>? cards,
+    List<CardEntity>? visibleCards,
+  }) {
+    return BrowseCardState(
+      isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
+      cards: cards ?? this.cards,
+      visibleCards: visibleCards ?? this.visibleCards,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        isLoading,
+        errorMessage,
+        cards,
+        visibleCards,
+      ];
 }

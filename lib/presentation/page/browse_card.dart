@@ -7,8 +7,8 @@ import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '@argument.dart';
 
-import '../cubit/search_cubit.dart';
-import '../cubit/card_cubit.dart';
+import '../cubit/browse_card.dart';
+import '../cubit/card.dart';
 import '../locale/localization.dart';
 import '../route/route_constant.dart';
 import '../widget/app_bar/@default.dart';
@@ -48,7 +48,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<SearchCubit>.value(value: locator<SearchCubit>(
+        BlocProvider<BrowseCardCubit>.value(value: locator<BrowseCardCubit>(
             param1: GameConfig.isSupported(collectionId) ? collectionId : GameConfig.dummy,
           )..fetchCard(
               userId: userId,
@@ -101,7 +101,7 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
   @override
   void didPopNext() {
     if (!GameConfig.isSupported(widget.collectionId)) {
-      context.read<SearchCubit>().fetchCard(
+      context.read<BrowseCardCubit>().fetchCard(
         userId: widget.userId,
         collectionId: widget.collectionId,
         collectionName: widget.collectionName,
@@ -138,12 +138,12 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
         children: [
           SearchBarWidget(
             onSearchChanged: (query) {
-              context.read<SearchCubit>().filterCardByName(query: query);
+              context.read<BrowseCardCubit>().filterCardByName(query: query);
             },
-            onSearchCleared: context.read<SearchCubit>().resetSearch,
+            onSearchCleared: context.read<BrowseCardCubit>().resetSearch,
           ),
           const SizedBox(height: 8),
-          BlocBuilder<SearchCubit, SearchState>(
+          BlocBuilder<BrowseCardCubit, BrowseCardState>(
             builder: (context, state) {
               if (state.isLoading) {
                 return const Expanded(child: Center(child: CircularProgressIndicator()));

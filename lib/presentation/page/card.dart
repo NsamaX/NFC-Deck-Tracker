@@ -5,9 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../cubit/card_cubit.dart';
-import '../cubit/deck_cubit.dart';
-import '../cubit/nfc_cubit.dart';
+import '../bloc/deck/deck_bloc.dart';
+import '../bloc/nfc/nfc_cubit.dart';
+import '../cubit/card.dart';
 import '../widget/app_bar/card.dart';
 import '../widget/card/custom_image.dart';
 import '../widget/card/custom_info.dart';
@@ -131,12 +131,12 @@ class _CardPageContent extends State<_CardContent> {
                   CardInfo(card: card),
                 ],
                 if (onAdd)
-                  BlocSelector<DeckCubit, DeckState, int>(
-                    selector: (state) => state.selectedCardCount,
+                  BlocSelector<DeckBloc, DeckState, int>(
+                    selector: (state) => state.cardQuantity,
                     builder: (context, quantity) {
                       return CardQuantitySelector(
                         onSelected: (q) {
-                          context.read<DeckCubit>().setCardQuantity(quantity: q);
+                          context.read<DeckBloc>().add(SetCardQuantityEvent(quantity: quantity));
                         },
                         quantityCount: 4,
                         selectedQuantity: quantity,

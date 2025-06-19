@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
+import 'package:nfc_deck_tracker/presentation/bloc/~index.dart';
 import 'package:nfc_deck_tracker/presentation/cubit/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -56,13 +57,12 @@ void _collectionCubit() {
 }
 
 void _deckCubit() {
-  locator.registerLazySingleton(() => DeckCubit(
+  locator.registerLazySingleton(() => DeckBloc(
     createDeckUsecase: locator<CreateDeckUsecase>(),
     deleteDeckUsecase: locator<DeleteDeckUsecase>(),
+    fetchCardInDeckUsecase: locator<FetchCardInDeckUsecase>(),
     fetchDeckUsecase: locator<FetchDeckUsecase>(),
-    filterDeckCardsUsecase: locator<FilterDeckCardsUsecase>(),
     generateShareDeckClipboardUsecase: locator<GenerateShareDeckClipboardUsecase>(),
-    updateDeckCardCountUsecase: locator<UpdateDeckCardCountUsecase>(),
     updateDeckUsecase: locator<UpdateDeckUsecase>(),
   ));
 }
@@ -111,7 +111,7 @@ void _roomCubit() {
 }
 
 void _searchCubit() {
-  locator.registerFactoryParam<SearchCubit, String, void>((collectionId, _) => SearchCubit(
+  locator.registerFactoryParam<BrowseCardCubit, String, void>((collectionId, _) => BrowseCardCubit(
     fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
   ));
 }

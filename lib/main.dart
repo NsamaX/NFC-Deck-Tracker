@@ -17,9 +17,9 @@ import '.injector/service_locator.dart';
 import 'data/datasource/local/@database_service.dart';
 import 'data/datasource/local/@shared_preferences_service.dart';
 
-import 'presentation/cubit/application_cubit.dart';
-import 'presentation/cubit/deck_cubit.dart';
-import 'presentation/cubit/nfc_cubit.dart';
+import 'presentation/bloc/deck/deck_bloc.dart';
+import 'presentation/bloc/nfc/nfc_cubit.dart';
+import 'presentation/cubit/application.dart';
 import 'presentation/locale/language_manager.dart';
 import 'presentation/locale/localization_delegate.dart';
 import 'presentation/route/route_generator.dart';
@@ -89,7 +89,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: nfcCubit),
-        BlocProvider.value(value: locator<DeckCubit>()),
+        BlocProvider.value(value: locator<DeckBloc>()),
         BlocProvider.value(value: locator<ApplicationCubit>()),
       ],
       child: BlocBuilder<ApplicationCubit, ApplicationState>(

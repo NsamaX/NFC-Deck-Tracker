@@ -8,15 +8,15 @@ import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
-import '../cubit/deck_cubit.dart';
-import '../cubit/drawer_cubit.dart';
-import '../cubit/nfc_cubit.dart';
-import '../cubit/pin_color_cubit.dart';
-import '../cubit/reader_cubit.dart';
-import '../cubit/record_cubit.dart';
-import '../cubit/room_cubit.dart';
-import '../cubit/tracker_cubit.dart';
-import '../cubit/usage_card_cubit.dart';
+import '../bloc/deck/deck_bloc.dart';
+import '../bloc/nfc/nfc_cubit.dart';
+import '../cubit/drawer.dart';
+import '../cubit/pin_color.dart';
+import '../cubit/reader.dart';
+import '../cubit/record.dart';
+import '../cubit/room.dart';
+import '../cubit/tracker.dart';
+import '../cubit/usage_card.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_tracker.dart';
 import '../widget/deck/insight_view.dart';
@@ -71,7 +71,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
     super.didChangeDependencies();
     userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
     collectionId = GameConfig.dummy;
-    deck = context.read<DeckCubit>().state.currentDeck;
+    deck = context.read<DeckBloc>().state.currentDeck;
   }
 
   @override

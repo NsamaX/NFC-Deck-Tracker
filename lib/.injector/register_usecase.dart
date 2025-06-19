@@ -92,10 +92,9 @@ void _deckUsecase() {
     fetchDeckRepository: locator<FetchDeckRepository>(),
     updateDeckRepository: locator<UpdateDeckRepository>(),
   ));
-  locator.registerLazySingleton(() => FilterDeckCardsUsecase());
   locator.registerLazySingleton(() => GenerateShareDeckClipboardUsecase());
   locator.registerLazySingleton(() => TrackCardInteractionUsecase());
-  locator.registerLazySingleton(() => UpdateDeckCardCountUsecase());
+  locator.registerLazySingleton(() => UpdateCardInDeckUsecase());
   locator.registerLazySingleton(() => UpdateDeckUsecase(
     updateDeckRepository: locator<UpdateDeckRepository>(),
   ));

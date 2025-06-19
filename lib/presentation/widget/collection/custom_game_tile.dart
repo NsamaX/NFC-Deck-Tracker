@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/collection.dart';
 
-import '../../cubit/collection_cubit.dart';
+import '../../cubit/collection.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
 

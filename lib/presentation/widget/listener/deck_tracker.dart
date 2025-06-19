@@ -1,11 +1,11 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/nfc_cubit.dart';
-import '../../cubit/reader_cubit.dart';
-import '../../cubit/record_cubit.dart';
-import '../../cubit/tracker_cubit.dart';
-import '../../cubit/usage_card_cubit.dart';
+import '../../bloc/nfc/nfc_cubit.dart';
+import '../../cubit/reader.dart';
+import '../../cubit/record.dart';
+import '../../cubit/tracker.dart';
+import '../../cubit/usage_card.dart';
 import '../../locale/localization.dart';
 
 import '../notification/snackbar.dart';

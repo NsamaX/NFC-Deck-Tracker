@@ -2,8 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-part 'pin_color_state.dart';
-
 class PinColorCubit extends Cubit<PinColorState> {
   PinColorCubit() : super(const PinColorState());
 
@@ -37,4 +35,23 @@ class PinColorCubit extends Cubit<PinColorState> {
   void resetColor() {
     safeEmit(state.copyWith(pinColor: {}));
   }
+}
+
+class PinColorState extends Equatable {
+  final Map<String, Color> pinColor;
+
+  const PinColorState({
+    this.pinColor = const {},
+  });
+
+  PinColorState copyWith({
+    Map<String, Color>? pinColor,
+  }) {
+    return PinColorState(
+      pinColor: pinColor ?? this.pinColor,
+    );
+  }
+
+  @override
+  List<Object> get props => [pinColor];
 }

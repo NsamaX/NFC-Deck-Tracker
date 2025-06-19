@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/deck_cubit.dart';
-import '../../cubit/nfc_cubit.dart';
+import '../../bloc/deck/deck_bloc.dart';
+import '../../bloc/nfc/nfc_cubit.dart';
 import '../../locale/localization.dart';
 
 import '../notification/snackbar.dart';
@@ -27,7 +27,7 @@ class CardWriterListener extends StatelessWidget {
           );
 
           await context.read<NfcCubit>().restartSession(
-            card: context.read<DeckCubit>().state.selectedCard,
+            card: context.read<DeckBloc>().state.selectedCard,
           );
         } else if (state.warningMessage.isNotEmpty) {
           AppSnackBar(

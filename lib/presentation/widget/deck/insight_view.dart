@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/usage_card_stats.dart';
 
-import '../../cubit/reader_cubit.dart';
-import '../../cubit/tracker_cubit.dart';
-import '../../cubit/record_cubit.dart';
-import '../../cubit/usage_card_cubit.dart';
+import '../../cubit/reader.dart';
+import '../../cubit/tracker.dart';
+import '../../cubit/record.dart';
+import '../../cubit/usage_card.dart';
 import '../../locale/localization.dart';
 
 import '../specific/history_list_view.dart';
