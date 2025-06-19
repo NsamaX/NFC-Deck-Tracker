@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:nfc_deck_tracker/util/google_athen.dart';
+import 'package:nfc_deck_tracker/util/guest_sign_in.dart';
 
 import '../../locale/localization.dart';
 
@@ -21,11 +22,11 @@ class ButtonGoogleSignIn extends StatelessWidget {
   Future<void> _handleGoogleSignIn(BuildContext context) async {
     final locale = AppLocalization.of(context);
 
-    final result = await signInWithGoogle();
+    final result = await googleSignIn();
 
     switch (result) {
       case SignInStatus.success:
-        handleGuestSignIn(context: context);
+        guestSignIn(context: context);
         break;
       case SignInStatus.cancelled:
         AppSnackBar(

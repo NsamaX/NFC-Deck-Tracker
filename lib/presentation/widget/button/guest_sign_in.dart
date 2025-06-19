@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:nfc_deck_tracker/util/google_athen.dart';
+import 'package:nfc_deck_tracker/util/guest_sign_in.dart';
 
 class ButtonGuestSignIn extends StatelessWidget {
   final String text;
@@ -18,7 +18,7 @@ class ButtonGuestSignIn extends StatelessWidget {
       width: double.infinity,
       height: 46.0,
       child: ElevatedButton(
-        onPressed: () => handleGuestSignIn(context: context),
+        onPressed: () => guestSignIn(context: context),
         child: Text(
           text,
           style: theme.textTheme.bodyMedium?.copyWith(

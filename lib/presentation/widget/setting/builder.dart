@@ -42,9 +42,9 @@ class SettingBuilder {
               : locale.translate('page_setting.section_account_sign_out'),
           'onTap': () async {
             if (user == null) {
-              await signInWithGoogle();
+              await googleSignIn();
             } else {
-              await signOutFromGoogle();
+              await googleSignOut();
               applicationCubit.signOut();
             }
           },
