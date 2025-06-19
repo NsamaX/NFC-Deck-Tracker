@@ -13,6 +13,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import '.config/api.dart';
 import '.injector/service_locator.dart';
 
+// ignore_for_file: unused_import
+import 'data/datasource/local/@database_service.dart';
+import 'data/datasource/local/@shared_preferences_service.dart';
+
 import 'presentation/cubit/application_cubit.dart';
 import 'presentation/cubit/deck_cubit.dart';
 import 'presentation/cubit/nfc_cubit.dart';
@@ -24,10 +28,6 @@ import 'presentation/theme/@theme.dart';
 import 'util/logger.dart';
 
 import 'nfc_session_handler.dart';
-
-// ignore_for_file: unused_import
-import 'data/datasource/local/@database_service.dart';
-import 'data/datasource/local/@shared_preferences_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
