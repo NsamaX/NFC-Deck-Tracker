@@ -11,6 +11,9 @@ void AppSnackBar(
   required String text,
   SnackBarType type = SnackBarType.success,
 }) {
+  final route = ModalRoute.of(context);
+  if (route == null || !route.isCurrent) return;
+
   final theme = Theme.of(context);
   final scaffoldMessenger = ScaffoldMessenger.of(context);
   scaffoldMessenger.hideCurrentSnackBar();
