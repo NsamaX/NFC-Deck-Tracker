@@ -4,8 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/app.dart';
 
-import 'package:nfc_deck_tracker/util/google_athen.dart';
-
+import '../../auth/google.dart';
 import '../../cubit/application_cubit.dart';
 import '../../locale/language_manager.dart';
 import '../../locale/localization.dart';

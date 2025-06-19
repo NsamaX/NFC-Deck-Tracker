@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:nfc_deck_tracker/util/google_athen.dart';
-import 'package:nfc_deck_tracker/util/guest_sign_in.dart';
-
+import '../../auth/google.dart';
+import '../../auth/guest.dart';
 import '../../locale/localization.dart';
 
 import '../constant/image.dart';

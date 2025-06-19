@@ -22,7 +22,8 @@ import 'presentation/route/route_generator.dart';
 import 'presentation/theme/@theme.dart';
 
 import 'util/logger.dart';
-import 'util/nfc_session_handler.dart';
+
+import 'nfc_session_handler.dart';
 
 // ignore_for_file: unused_import
 import 'data/datasource/local/@database_service.dart';

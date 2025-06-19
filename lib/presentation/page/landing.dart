@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
-import 'package:nfc_deck_tracker/util/google_athen.dart';
 import 'package:nfc_deck_tracker/util/logger.dart';
 
+import '../auth/google.dart';
 import '../locale/localization.dart';
 import '../route/route_constant.dart';
 import '../widget/button/max_width.dart';
