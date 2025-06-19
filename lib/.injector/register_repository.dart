@@ -7,9 +7,9 @@ import 'package:nfc_deck_tracker/data/repository/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import 'setup_locator.dart';
+import 'service_locator.dart';
 
-Future<void> setupRepository() async {
+Future<void> registerRepository() async {
   try {
     _cardRepository();
     _collectionRepository();

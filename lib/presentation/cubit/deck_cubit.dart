@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';

@@ -6,52 +6,58 @@ class ApiConfig {
   static String? _currentEnvironment;
   static Map<String, String>? _baseUrls;
 
-  static Future<void> loadConfig({required String environment}) async {
-    if (_currentEnvironment == environment && _baseUrls != null) {
-      LoggerUtil.debugMessage('ℹ️ API config for "$environment" is already loaded.');
-      return;
+  static Future<void> loadConfig({
+    required String environment,
+  }) async {
+    try {
+      if (_currentEnvironment == environment && _baseUrls != null) {
+        LoggerUtil.debugMessage(message: 'ℹ️ API config for "$environment" is already loaded.');
+        return;
+      }
+
+      final envData = GameConfig.environments[environment];
+
+      if (envData == null) {
+        LoggerUtil.debugMessage(message: '❗ Environment "$environment" not found in GameConstant');
+        throw ArgumentError('Environment "$environment" not found in GameConstant');
+      }
+
+      _currentEnvironment = environment;
+      _baseUrls = envData;
+
+      LoggerUtil.debugMessage(message: '🌐 API config loaded from GameConstant for "$environment"');
+    } catch (e) {
+      LoggerUtil.debugMessage(message: '❌ Failed to load API config: $e');
+      rethrow;
     }
-
-    final envData = GameConfig.environments[environment];
-
-    if (envData == null) {
-      final message = '❗ Environment "$environment" not found in GameConfig';
-      LoggerUtil.debugMessage(message: message);
-      throw ArgumentError(message);
-    }
-
-    _currentEnvironment = environment;
-    _baseUrls = envData;
-
-    LoggerUtil.debugMessage('🌐 API config loaded for "$environment"');
   }
 
-  static String getBaseUrl({required String key}) {
-    if (!isInitialized) {
-      final message = '❗ ApiConfig not initialized. Call loadConfig() first.';
-      LoggerUtil.debugMessage(message: message);
-      throw StateError(message);
+  static String getBaseUrl({
+    required String key,
+  }) {
+    if (_baseUrls == null || _currentEnvironment == null) {
+      LoggerUtil.debugMessage(message: '❗ ApiConfig not initialized. Call loadConfig() first.');
+      throw StateError('ApiConfig not initialized. Call loadConfig() first.');
     }
 
     final url = _baseUrls![key];
+
     if (url == null || url.isEmpty) {
-      final message = '❌ Base URL not found or empty for "$key" in "$_currentEnvironment"';
-      LoggerUtil.debugMessage(message: message);
-      throw ArgumentError(message);
+      LoggerUtil.debugMessage(
+        message: '❌ Base URL not found or empty for "$key" in environment "$_currentEnvironment"',
+      );
+      throw ArgumentError('Base URL not found or empty for "$key" in "$_currentEnvironment"');
     }
 
     return url;
   }
 
   static String get currentEnvironment {
-    if (!isInitialized) {
-      final message = '❗ ApiConfig not initialized. Call loadConfig() first.';
-      LoggerUtil.debugMessage(message: message);
-      throw StateError(message);
+    if (_currentEnvironment == null) {
+      LoggerUtil.debugMessage(message: '❗ ApiConfig not initialized. Call loadConfig() first.');
+      throw StateError('ApiConfig not initialized. Call loadConfig() first.');
     }
 
     return _currentEnvironment!;
   }
-
-  static bool get isInitialized => _currentEnvironment != null && _baseUrls != null;
 }

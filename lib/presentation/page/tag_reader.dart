@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '../cubit/application_cubit.dart';
 import '../cubit/drawer_cubit.dart';

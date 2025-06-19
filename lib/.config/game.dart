@@ -1,4 +1,4 @@
-import 'package:nfc_deck_tracker/data/datasource/api/@api_config.dart';
+import 'api.dart';
 
 class GameConfig {
   static const dummy    = 'dummy';

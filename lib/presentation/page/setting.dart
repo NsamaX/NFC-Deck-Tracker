@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '../cubit/application_cubit.dart';
 import '../locale/localization.dart';

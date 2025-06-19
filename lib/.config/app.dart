@@ -14,12 +14,12 @@ class AppConfig {
 
   // Default values
   static final Map<String, dynamic> defaults = {
-    locale:          'th',
-    isDark:          true,
-    isLoggedIn:      false,
-    recentId:        null,
-    recentGame:      null,
-    tutorialNFCIcon: false,
-    tutorialHowTo:   false,
+    keyLocale:          'th',
+    keyIsDark:          true,
+    keyIsLoggedIn:      false,
+    keyRecentId:        null,
+    keyRecentGame:      null,
+    keyTutorialNFCIcon: false,
+    keyTutorialHowTo:   false,
   };
 }

@@ -9,9 +9,9 @@ import 'package:nfc_deck_tracker/data/datasource/remote/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import 'setup_locator.dart';
+import 'service_locator.dart';
 
-Future<void> setupDataSource() async {
+Future<void> registerDataSource() async {
   try {
     _serviceFactoryRemoteDatasource();
 

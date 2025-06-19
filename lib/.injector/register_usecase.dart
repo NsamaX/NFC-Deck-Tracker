@@ -5,9 +5,9 @@ import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import 'setup_locator.dart';
+import 'service_locator.dart';
 
-Future<void> setupUsecase() async {
+Future<void> registerUsecase() async {
   try {
     _cardUsecase();
     _collectionUsecase();

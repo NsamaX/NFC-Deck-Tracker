@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'package:nfc_deck_tracker/.injector/setup_locator.dart';
+import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import 'package:nfc_deck_tracker/util/google_athen.dart';
 import 'package:nfc_deck_tracker/util/logger.dart';

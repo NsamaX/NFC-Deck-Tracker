@@ -11,7 +11,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '.config/api.dart';
-import '.injector/setup_locator.dart';
+import '.injector/service_locator.dart';
 
 import 'presentation/cubit/application_cubit.dart';
 import 'presentation/cubit/deck_cubit.dart';
@@ -37,7 +37,7 @@ void main() async {
   ]);
 
   await dotenv.load();
-  await setupLocator();
+  await initServiceLocator();
 
   // await locator<DatabaseService>().deleteDatabaseFile();
   // await locator<SharedPreferencesService>().clear();

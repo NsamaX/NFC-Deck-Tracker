@@ -6,9 +6,9 @@ import 'package:nfc_deck_tracker/presentation/cubit/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import 'setup_locator.dart';
+import 'service_locator.dart';
 
-Future<void> setupCubit() async {
+Future<void> registerCubit() async {
   try {
     _applicationCubit();
     _cardCubit();
