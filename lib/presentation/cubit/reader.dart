@@ -5,8 +5,6 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/tag.dart';
 import 'package:nfc_deck_tracker/domain/usecase/find_card_from_tag.dart';
 
-part 'reader_state.dart';
-
 class ReaderCubit extends Cubit<ReaderState> {
   final FindCardFromTagUsecase findCardFromTagUsecase;
 
@@ -22,6 +20,7 @@ class ReaderCubit extends Cubit<ReaderState> {
     required TagEntity? tag,
   }) async {
     if (state.isLoading || isClosed) return;
+
     safeEmit(state.copyWith(
       isLoading: true,
       successMessage: '',
@@ -77,5 +76,52 @@ class ReaderCubit extends Cubit<ReaderState> {
 
   void resetScannedCard() => safeEmit(state.copyWith(scannedCards: []));
 
-  void clearMessages() => safeEmit(state.copyWith(successMessage: '', warningMessage: '', errorMessage: ''));
+  void clearMessages() => safeEmit(
+        state.copyWith(
+          successMessage: '',
+          warningMessage: '',
+          errorMessage: '',
+        ),
+      );
+}
+
+class ReaderState extends Equatable {
+  final bool isLoading;
+  final String successMessage;
+  final String warningMessage;
+  final String errorMessage;
+  final List<CardEntity> scannedCards;
+
+  const ReaderState({
+    this.isLoading = false,
+    this.successMessage = '',
+    this.warningMessage = '',
+    this.errorMessage = '',
+    this.scannedCards = const [],
+  });
+
+  ReaderState copyWith({
+    bool? isLoading,
+    String? successMessage,
+    String? warningMessage,
+    String? errorMessage,
+    List<CardEntity>? scannedCards,
+  }) {
+    return ReaderState(
+      isLoading: isLoading ?? this.isLoading,
+      successMessage: successMessage ?? this.successMessage,
+      warningMessage: warningMessage ?? this.warningMessage,
+      errorMessage: errorMessage ?? this.errorMessage,
+      scannedCards: scannedCards ?? this.scannedCards,
+    );
+  }
+
+  @override
+  List<Object?> get props => [
+        isLoading,
+        successMessage,
+        warningMessage,
+        errorMessage,
+        scannedCards,
+      ];
 }

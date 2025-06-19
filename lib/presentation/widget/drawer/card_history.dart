@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../../cubit/drawer_cubit.dart';
-import '../../cubit/reader_cubit.dart';
+import '../../cubit/drawer.dart';
+import '../../cubit/reader.dart';
 import '../../locale/localization.dart';
 
 import '../card/list_tile.dart';

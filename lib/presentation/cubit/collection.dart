@@ -8,8 +8,6 @@ import 'package:nfc_deck_tracker/domain/usecase/delete_collection.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_collection.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_used_card_distinct.dart';
 
-part 'collection_state.dart';
-
 class CollectionCubit extends Cubit<CollectionState> {
   final CreateCollectionUsecase createCollectionUsecase;
   final DeleteCollectionUsecase deleteCollectionUsecase;
@@ -40,7 +38,9 @@ class CollectionCubit extends Cubit<CollectionState> {
     required String collectionId,
   }) async {
     await deleteCollectionUsecase(userId: userId, collectionId: collectionId);
-    safeEmit(state.copyWith(collections: state.collections.where((c) => c.collectionId != collectionId).toList()));
+    safeEmit(state.copyWith(
+      collections: state.collections.where((c) => c.collectionId != collectionId).toList(),
+    ));
   }
 
   Future<void> fetchCollection({
@@ -51,7 +51,25 @@ class CollectionCubit extends Cubit<CollectionState> {
   }
 
   Future<List<CardEntity>> fetchUsedCardDistinct() async {
-    final List<CardEntity> allUsedCardDistinct = await fetchUsedCardDistinctUsecase.call();
-    return allUsedCardDistinct;
+    return await fetchUsedCardDistinctUsecase();
   }
+}
+
+class CollectionState extends Equatable {
+  final List<CollectionEntity> collections;
+
+  const CollectionState({
+    this.collections = const [],
+  });
+
+  CollectionState copyWith({
+    List<CollectionEntity>? collections,
+  }) {
+    return CollectionState(
+      collections: collections ?? this.collections,
+    );
+  }
+
+  @override
+  List<Object?> get props => [collections];
 }

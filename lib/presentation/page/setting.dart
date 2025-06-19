@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
-import '../cubit/application_cubit.dart';
+import '../cubit/application.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
 import '../widget/setting/builder.dart';

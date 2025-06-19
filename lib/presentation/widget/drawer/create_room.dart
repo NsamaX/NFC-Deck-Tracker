@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/drawer_cubit.dart';
-import '../../cubit/room_cubit.dart';
+import '../../cubit/drawer.dart';
+import '../../cubit/room.dart';
 import '../../locale/localization.dart';
 
 import '../qr_code/generetor.dart';

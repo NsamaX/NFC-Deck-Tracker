@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/app.dart';
 
-import 'package:nfc_deck_tracker/presentation/cubit/application_cubit.dart';
+import 'package:nfc_deck_tracker/presentation/cubit/application.dart';
 import 'package:nfc_deck_tracker/presentation/route/route_constant.dart';
 
 Future<void> guestSignIn({

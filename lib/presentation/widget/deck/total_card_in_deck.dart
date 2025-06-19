@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/deck_cubit.dart';
+import '../../bloc/deck_bloc.dart';
 import '../../locale/localization.dart';
 
 class TotalCardInDeck extends StatelessWidget {
@@ -12,7 +12,7 @@ class TotalCardInDeck extends StatelessWidget {
     final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
 
-    return BlocBuilder<DeckCubit, DeckState>(
+    return BlocBuilder<DeckBloc, DeckState>(
       builder: (context, state) {
         final cardList = state.currentDeck.cards ?? [];
         final total = cardList.fold<int>(0, (sum, e) => sum + e.count);

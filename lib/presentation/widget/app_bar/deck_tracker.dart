@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/drawer_cubit.dart';
+import '../../cubit/drawer.dart';
 import '../../cubit/nfc_cubit.dart';
-import '../../cubit/reader_cubit.dart';
-import '../../cubit/record_cubit.dart';
-import '../../cubit/tracker_cubit.dart';
-import '../../cubit/usage_card_cubit.dart';
+import '../../cubit/reader.dart';
+import '../../cubit/record.dart';
+import '../../cubit/tracker.dart';
+import '../../cubit/usage_card.dart';
 import '../../locale/localization.dart';
 
 import '../notification/cupertino_dialog.dart';

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/.config/api.dart';
 import 'package:nfc_deck_tracker/.config/app.dart';
 
-import '../../cubit/application_cubit.dart';
+import '../../cubit/application.dart';
 import '../../route/route_constant.dart';
 
 class SupportedGameTile extends StatelessWidget {

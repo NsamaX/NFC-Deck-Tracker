@@ -13,7 +13,6 @@ Future<void> registerCubit() async {
     _applicationCubit();
     _cardCubit();
     _collectionCubit();
-    _deckCubit();
     _drawerCubit();
     _nfcCubit();
     _pinColorCubit();
@@ -26,7 +25,7 @@ Future<void> registerCubit() async {
 
     LoggerUtil.debugMessage('✔️ Cubit registered successfully.');
   } catch (e) {
-    LoggerUtil.debugMessage('❌ Failed to register Cubit: $e');
+    LoggerUtil.debugMessage('❌ Failed to register cubit: $e');
   }
 }
 
@@ -52,18 +51,6 @@ void _collectionCubit() {
     deleteCollectionUsecase: locator<DeleteCollectionUsecase>(),
     fetchCollectionUsecase: locator<FetchCollectionUsecase>(),
     fetchUsedCardDistinctUsecase: locator<FetchUsedCardDistinctUsecase>(),
-  ));
-}
-
-void _deckCubit() {
-  locator.registerLazySingleton(() => DeckCubit(
-    createDeckUsecase: locator<CreateDeckUsecase>(),
-    deleteDeckUsecase: locator<DeleteDeckUsecase>(),
-    fetchDeckUsecase: locator<FetchDeckUsecase>(),
-    filterDeckCardsUsecase: locator<FilterDeckCardsUsecase>(),
-    generateShareDeckClipboardUsecase: locator<GenerateShareDeckClipboardUsecase>(),
-    updateDeckCardCountUsecase: locator<UpdateDeckCardCountUsecase>(),
-    updateDeckUsecase: locator<UpdateDeckUsecase>(),
   ));
 }
 
@@ -111,7 +98,7 @@ void _roomCubit() {
 }
 
 void _searchCubit() {
-  locator.registerFactoryParam<SearchCubit, String, void>((collectionId, _) => SearchCubit(
+  locator.registerFactoryParam<BrowseCardCubit, String, void>((collectionId, _) => BrowseCardCubit(
     fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
   ));
 }

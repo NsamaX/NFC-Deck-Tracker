@@ -6,8 +6,6 @@ import 'package:nfc_deck_tracker/domain/entity/record.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/calculate_usage_card_stats.dart';
 
-part 'usage_card_state.dart';
-
 class UsageCardCubit extends Cubit<UsageCardState> {
   final CalculateUsageCardStatsUsecase calculateUsageCardStatsUsecase;
 
@@ -34,4 +32,23 @@ class UsageCardCubit extends Cubit<UsageCardState> {
   }
 
   void resetUsageStats() => safeEmit(state.copyWith(stat: []));
+}
+
+class UsageCardState extends Equatable {
+  final List<UsageCardStats> stat;
+
+  const UsageCardState({
+    this.stat = const [],
+  });
+
+  UsageCardState copyWith({
+    List<UsageCardStats>? stat,
+  }) {
+    return UsageCardState(
+      stat: stat ?? this.stat,
+    );
+  }
+
+  @override
+  List<Object?> get props => [stat];
 }

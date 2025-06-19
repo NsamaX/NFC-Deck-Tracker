@@ -7,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../cubit/card_cubit.dart';
+import '../../cubit/card.dart';
 import '../../locale/localization.dart';
 
 class CardCustomImage extends StatelessWidget {

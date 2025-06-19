@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/app.dart';
 
-import '../cubit/application_cubit.dart';
+import '../cubit/application.dart';
 import '../locale/language_manager.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
