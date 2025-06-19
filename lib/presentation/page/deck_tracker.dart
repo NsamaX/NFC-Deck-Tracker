@@ -70,7 +70,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
-    collectionId = Game.dummy;
+    collectionId = GameConfig.dummy;
     deck = context.read<DeckCubit>().state.currentDeck;
   }
 

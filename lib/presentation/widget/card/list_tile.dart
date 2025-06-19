@@ -94,7 +94,7 @@ class CardListTile extends StatelessWidget {
                       backgroundColor: backgroundColor,
                       changeCardColor: changeCardColor!,
                     )
-                  : (!isTrack && onDelete != null && !Game.isSupported(game: card!.collectionId!))
+                  : (!isTrack && onDelete != null && !GameConfig.isSupported(card!.collectionId!))
                       ? buildCardSlidableDelete(
                           context: context,
                           card: card!,

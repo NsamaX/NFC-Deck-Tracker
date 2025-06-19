@@ -36,7 +36,7 @@ class LanguagePage extends StatelessWidget {
               'text': name,
               'onTap': () {
                 context.read<ApplicationCubit>().updateSetting(
-                  key: App.keyLocale,
+                  key: AppConfig.keyLocale,
                   value: code,
                 );
               },

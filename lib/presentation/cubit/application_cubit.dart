@@ -29,7 +29,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
   }
 
   Future<void> initializeCubit() async {
-    final updated = await initializeSettingUsecase.call(App.all);
+    final updated = await initializeSettingUsecase.call(AppConfig.defaults);
 
     for (final entry in updated.entries) {
       safeEmit(_mapUpdatedState(key: entry.key, value: entry.value));
@@ -51,13 +51,13 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     required dynamic value,
   }) {
     switch (key) {
-      case App.keyLocale:          return state.copyWith(locale: Locale(value));
-      case App.keyIsDark:          return state.copyWith(isDark: value);
-      case App.keyIsLoggedIn:      return state.copyWith(keyIsLoggedIn: value);
-      case App.keyRecentId:        return state.copyWith(recentId: value);
-      case App.keyRecentGame:      return state.copyWith(recentGame: value);
-      case App.keyTutorialNFCIcon: return state.copyWith(tutorialNfcIcon: value);
-      case App.keyTutorialHowTo:   return state.copyWith(tutorialHowTo: value);
+      case AppConfig.keyLocale:          return state.copyWith(locale: Locale(value));
+      case AppConfig.keyIsDark:          return state.copyWith(isDark: value);
+      case AppConfig.keyIsLoggedIn:      return state.copyWith(keyIsLoggedIn: value);
+      case AppConfig.keyRecentId:        return state.copyWith(recentId: value);
+      case AppConfig.keyRecentGame:      return state.copyWith(recentGame: value);
+      case AppConfig.keyTutorialNFCIcon: return state.copyWith(tutorialNfcIcon: value);
+      case AppConfig.keyTutorialHowTo:   return state.copyWith(tutorialHowTo: value);
       default: return state;
     }
   }

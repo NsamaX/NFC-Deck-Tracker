@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/data/repository/~index.dart';
-
 import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -10,13 +9,13 @@ import 'setup_locator.dart';
 
 Future<void> setupUsecase() async {
   try {
-    setupCardUsecase();
-    setupCollectionUsecase();
-    setupDeckUsecase();
-    setupLocalUsecase();
-    setupRecordUsecase();
-    setupRoomUsecase();
-    setupSettingUsecase();
+    _cardUsecase();
+    _collectionUsecase();
+    _deckUsecase();
+    _localUsecase();
+    _recordUsecase();
+    _roomUsecase();
+    _settingUsecase();
 
     LoggerUtil.debugMessage(message: '✔️ Usecase registered successfully.');
   } catch (e) {
@@ -24,7 +23,7 @@ Future<void> setupUsecase() async {
   }
 }
 
-void setupCardUsecase() {
+void _cardUsecase() {
   locator.registerLazySingleton(() => CreateCardUsecase(
     checkDuplicateNameRepository: locator<CheckDuplicateNameRepository>(),
     createCardRepository: locator<CreateCardRepository>(),
@@ -57,7 +56,7 @@ void setupCardUsecase() {
   ));
 }
 
-void setupCollectionUsecase() {
+void _collectionUsecase() {
   locator.registerLazySingleton(() => CreateCollectionUsecase(
     createCollectionRepository: locator<CreateCollectionRepository>(),
   ));
@@ -75,7 +74,7 @@ void setupCollectionUsecase() {
   ));
 }
 
-void setupDeckUsecase() {
+void _deckUsecase() {
   locator.registerLazySingleton(() => CreateDeckUsecase(
     createDeckRepository: locator<CreateDeckRepository>(),
   ));
@@ -102,13 +101,13 @@ void setupDeckUsecase() {
   ));
 }
 
-void setupLocalUsecase() {
+void _localUsecase() {
   locator.registerLazySingleton(() => ClearUserDataUsecase(
     clearUserDataRepository: locator<ClearUserDataRepository>(),
   ));
 }
 
-void setupRecordUsecase() {
+void _recordUsecase() {
   locator.registerLazySingleton(() => CalculateUsageCardStatsUsecase());
   locator.registerLazySingleton(() => CreateRecordUsecase(
     createRecordRepository: locator<CreateRecordRepository>(),
@@ -127,7 +126,7 @@ void setupRecordUsecase() {
   ));
 }
 
-void setupRoomUsecase() {
+void _roomUsecase() {
   locator.registerLazySingleton(() => CloseRoomUsecase(
     closeRoomRepository: locator<CloseRoomRepository>(),
   ));
@@ -145,7 +144,7 @@ void setupRoomUsecase() {
   ));
 }
 
-void setupSettingUsecase() {
+void _settingUsecase() {
   locator.registerLazySingleton(() => InitializeSettingUsecase(
     loadSettingRepository: locator<LoadSettingRepository>(),
     saveSettingRepository: locator<SaveSettingRepository>(),

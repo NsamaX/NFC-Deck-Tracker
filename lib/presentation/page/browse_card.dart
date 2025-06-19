@@ -49,7 +49,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<SearchCubit>.value(value: locator<SearchCubit>(
-            param1: Game.isSupported(game: collectionId) ? collectionId : Game.dummy,
+            param1: GameConfig.isSupported(collectionId) ? collectionId : GameConfig.dummy,
           )..fetchCard(
               userId: userId,
               collectionId: collectionId,
@@ -100,7 +100,7 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
 
   @override
   void didPopNext() {
-    if (!Game.isSupported(game: widget.collectionId)) {
+    if (!GameConfig.isSupported(widget.collectionId)) {
       context.read<SearchCubit>().fetchCard(
         userId: widget.userId,
         collectionId: widget.collectionId,
@@ -120,7 +120,7 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
           AppBarMenuItem(
             label: locale.translate('page_browse_card.app_bar'),
           ),
-          !Game.isSupported(game: widget.collectionId)
+          !GameConfig.isSupported(widget.collectionId)
               ? AppBarMenuItem(
                   label: locale.translate('page_browse_card.toggle_create'),
                   action: {

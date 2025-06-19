@@ -3,9 +3,9 @@
 ## Overview
 
 The `.injector/` folder is responsible for setting up **dependency injection (DI)** using the `GetIt` service locator pattern.  
-This structure enables the application to manage dependencies in a centralized, modular, and testable manner without relying on manual instantiation or tight coupling.
+This approach enables centralized, modular, and testable management of dependencies—separating construction logic from usage.
 
-All app services—including databases, repositories, use cases, and Cubits—are registered and resolved through this layer.
+All app dependencies—such as repositories, use cases, Cubits, and services—are registered and resolved through this layer.
 
 ---
 
@@ -17,7 +17,7 @@ The entry point for dependency setup is:
 await setupLocator();
 ````
 
-This function registers all required services in order and ensures that all are ready before the application starts.
+This function orchestrates the registration of all required services in the correct order and ensures everything is ready before launching the application.
 
 ---
 
@@ -25,16 +25,12 @@ This function registers all required services in order and ensures that all are 
 
 ```plaintext
 .injector/
-├── setup_cubit.dart              # Registers Cubits for state management
-├── setup_database.dart           # Initializes database-related instances
-├── setup_datasource.dart         # Registers data source implementations (API, local, remote)
-├── setup_firestore.dart          # Sets up Firebase/Firestore dependencies
-├── setup_locator.dart            # Entry point to register all dependencies
-├── setup_misc.dart               # Miscellaneous utilities (e.g., loggers, config)
-├── setup_repository.dart         # Registers repository implementations
-├── setup_shared_preferences.dart # Initializes SharedPreferences service
-├── setup_sqlite.dart             # Sets up SQLite services and DAOs
-├── setup_usecase.dart            # Registers domain use cases
+├── setup_cubit.dart        # Registers Cubits for UI state management
+├── setup_datasource.dart   # Registers API clients, local, and remote data sources
+├── setup_locator.dart      # Entry point that wires up all dependencies
+├── setup_repository.dart   # Registers concrete repository implementations
+├── setup_service.dart      # Registers core services (e.g., Firestore, SQLite, SharedPreferences)
+├── setup_usecase.dart      # Registers business logic use cases
 ```
 
 ---
@@ -43,53 +39,38 @@ This function registers all required services in order and ensures that all are 
 
 * **`setup_cubit.dart`**
 
-  * Registers Cubits that manage application state (UI logic).
-  * Typically depends on use cases from the domain layer.
-
-* **`setup_database.dart`**
-
-  * General database setup (e.g., creating singletons, configs).
-  * Can coordinate multiple storage mechanisms.
+  * Registers all Cubits used across the app for state management.
+  * Each Cubit usually depends on use cases from the domain layer.
 
 * **`setup_datasource.dart`**
 
-  * Registers API clients, local storage managers, or remote sources.
-  * Maps to the `data/datasource/` layer.
-
-* **`setup_firestore.dart`**
-
-  * Initializes and registers Firebase or Firestore-related services.
-  * Can include Firestore instance, authentication, or Firebase-specific helpers.
-
-* **`setup_misc.dart`**
-
-  * Registers other utilities such as loggers, debuggers, or configs.
-  * Use this file for tools not tied to a specific layer.
+  * Registers all data sources (local/remote/API).
+  * Maps to the `data/datasource/` layer and handles low-level operations.
 
 * **`setup_locator.dart`**
 
-  * The main file that calls each setup function in the proper order.
-  * Uses `GetIt` to globally register dependencies.
-  * Ensures all services are ready before the app starts via `await locator.allReady()`.
+  * Central DI entry point; calls all setup functions in the correct sequence.
+  * Uses `GetIt` to manage instances and `locator.allReady()` to ensure all async singletons are ready.
 
 * **`setup_repository.dart`**
 
-  * Binds interface contracts to their concrete repository implementations.
-  * Bridges the domain and data layers.
+  * Binds domain repository interfaces to concrete data-layer implementations.
+  * Acts as a bridge between `data` and `domain` layers.
 
-* **`setup_shared_preferences.dart`**
+* **`setup_service.dart`**
 
-  * Initializes and registers access to SharedPreferences storage.
-  * Useful for storing settings, tokens, etc.
+  * Initializes and registers foundational services such as:
 
-* **`setup_sqlite.dart`**
-
-  * Prepares SQLite services, DAOs, or related helpers.
-  * Should be used before registering repositories that depend on local storage.
+    * SQLite
+    * Firestore
+    * FirebaseAuth
+    * SharedPreferences
+    * Route observers, etc.
+  * These services are typically required by data sources.
 
 * **`setup_usecase.dart`**
 
-  * Registers domain use cases which contain core business logic.
-  * These are later injected into Cubits or other parts of the app.
+  * Registers domain use cases which encapsulate business logic.
+  * These are injected into Cubits or other higher-level components.
 
 ---

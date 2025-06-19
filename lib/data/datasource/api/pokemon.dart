@@ -43,7 +43,7 @@ class PokemonApi extends BaseApi implements GameApi {
 
     return CardModel(
       cardId: data['id']?.toString() ?? '',
-      collectionId: Game.pokemon,
+      collectionId: GameConfig.pokemon,
       name: data['name'] ?? '',
       imageUrl: data['images']?['large'] ?? '',
       description: 'Type: ${types.join(', ')}, HP: $hp',

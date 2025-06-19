@@ -10,9 +10,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import '.config/api.dart';
 import '.injector/setup_locator.dart';
-
-import 'data/datasource/api/@api_config.dart';
 
 import 'presentation/cubit/application_cubit.dart';
 import 'presentation/cubit/deck_cubit.dart';

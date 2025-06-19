@@ -12,7 +12,7 @@ class ClearUserDataLocalDatasource {
 
     for (final table in deleteTables) {
       if (table == 'collections') {
-        final supportedGames = Game.supportedGameKeys;
+        final supportedGames = GameConfig.supportedGameKeys;
         final placeholders = List.filled(supportedGames.length, '?').join(', ');
         final where = 'collectionId NOT IN ($placeholders)';
         await _sqliteService.delete(

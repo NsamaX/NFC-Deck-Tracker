@@ -46,7 +46,7 @@ class TagReaderListener extends StatelessWidget {
                 type: SnackBarType.warning,
               );
             } else if (state.successMessage.isNotEmpty) {
-              onTagDetected.call(state.lastScannedTag?.collectionId ?? Game.dummy);
+              onTagDetected.call(state.lastScannedTag?.collectionId ?? GameConfig.dummy);
               context.read<ReaderCubit>().scanTag(tag: state.lastScannedTag!);
             }
 

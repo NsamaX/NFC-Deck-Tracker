@@ -1,9 +1,9 @@
+import 'package:nfc_deck_tracker/.config/api.dart';
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '@api_config.dart';
-import '~index.dart';
-
 import '../../model/card.dart';
+
+import '~index.dart';
 
 abstract class GameApi {
   Future<List<CardModel>> fetch({
@@ -26,7 +26,7 @@ class ServiceFactory {
   static T create<T>({
     required String collectionId,
   }) {
-    if (collectionId == Game.dummy) {
+    if (collectionId == GameConfig.dummy) {
       return _createDummy<T>();
     }
 
@@ -52,10 +52,10 @@ class ServiceFactory {
   }
 
   static final Map<String, GameApi Function(String baseUrl)> _apiRegistry = {
-    Game.pokemon: (baseUrl) => PokemonApi(baseUrl),
+    GameConfig.pokemon: (baseUrl) => PokemonApi(baseUrl),
   };
 
   static final Map<String, PagingStrategy Function()> _pagingRegistry = {
-    Game.pokemon: () => PokemonPagingStrategy(),
+    GameConfig.pokemon: () => PokemonPagingStrategy(),
   };
 }

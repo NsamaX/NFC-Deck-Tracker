@@ -25,7 +25,7 @@ class FetchCardInDeckUsecase {
 
     List<CardModel> remoteCards = [];
 
-    if (Game.isSupported(game: collectionId)) {
+    if (GameConfig.isSupported(collectionId)) {
       try {
         final gameApi = ServiceFactory.create<GameApi>(collectionId: collectionId);
         for (final model in localCardModels) {

@@ -195,7 +195,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
               transitionDuration: const Duration(milliseconds: 200),
               pageBuilder: (_, __, ___) => const TutorailNFCIcon(),
             );
-            applicationCubit.updateSetting(key: App.keyTutorialNFCIcon, value: true);
+            applicationCubit.updateSetting(key: AppConfig.keyTutorialNFCIcon, value: true);
           }
         }
       ),

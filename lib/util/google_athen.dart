@@ -55,7 +55,7 @@ Future<void> handleGuestSignIn({
   required BuildContext context,
 }) async {
   context.read<ApplicationCubit>().updateSetting(
-    key: App.keyIsLoggedIn,
+    key: AppConfig.keyIsLoggedIn,
     value: true,
   );
 

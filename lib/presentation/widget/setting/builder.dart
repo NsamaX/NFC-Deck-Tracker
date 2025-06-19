@@ -94,7 +94,7 @@ class SettingBuilder {
               ? locale.translate('page_setting.section_preferences_dark_mode')
               : locale.translate('page_setting.section_preferences_light_mode'),
           'onTap': () => applicationCubit.updateSetting(
-            key: App.keyIsDark, 
+            key: AppConfig.keyIsDark, 
             value: !applicationCubit.state.isDark,
           ),
         },

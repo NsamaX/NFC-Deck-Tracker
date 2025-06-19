@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
-
 import 'package:nfc_deck_tracker/presentation/cubit/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -11,19 +10,19 @@ import 'setup_locator.dart';
 
 Future<void> setupCubit() async {
   try {
-    setupApplicationCubit();
-    setupCardCubit();
-    setupCollectionCubit();
-    setupDeckCubit();
-    setupDrawerCubit();
-    setupNfcCubit();
-    setupPinColorCubit();
-    setupReaderCubit();
-    setupRecordCubit();
-    setupRoomCubit();
-    setupSearchCubit();
-    setupTrackerCubit();
-    setupUsageCardCubit();
+    _applicationCubit();
+    _cardCubit();
+    _collectionCubit();
+    _deckCubit();
+    _drawerCubit();
+    _nfcCubit();
+    _pinColorCubit();
+    _readerCubit();
+    _recordCubit();
+    _roomCubit();
+    _searchCubit();
+    _trackerCubit();
+    _usageCardCubit();
 
     LoggerUtil.debugMessage(message: '✔️ Cubit registered successfully.');
   } catch (e) {
@@ -31,7 +30,7 @@ Future<void> setupCubit() async {
   }
 }
 
-void setupApplicationCubit() {
+void _applicationCubit() {
   locator.registerLazySingleton(() => ApplicationCubit(
     clearUserDataUsecase: locator<ClearUserDataUsecase>(),
     initializeSettingUsecase: locator<InitializeSettingUsecase>(),
@@ -39,7 +38,7 @@ void setupApplicationCubit() {
   ));
 }
 
-void setupCardCubit() {
+void _cardCubit() {
   locator.registerFactory(() => CardCubit(
     createCardUsecase: locator<CreateCardUsecase>(),
     deleteCardUsecase: locator<DeleteCardUsecase>(),
@@ -47,7 +46,7 @@ void setupCardCubit() {
   ));
 }
 
-void setupCollectionCubit() {
+void _collectionCubit() {
   locator.registerLazySingleton(() => CollectionCubit(
     createCollectionUsecase: locator<CreateCollectionUsecase>(),
     deleteCollectionUsecase: locator<DeleteCollectionUsecase>(),
@@ -56,7 +55,7 @@ void setupCollectionCubit() {
   ));
 }
 
-void setupDeckCubit() {
+void _deckCubit() {
   locator.registerLazySingleton(() => DeckCubit(
     createDeckUsecase: locator<CreateDeckUsecase>(),
     deleteDeckUsecase: locator<DeleteDeckUsecase>(),
@@ -68,19 +67,19 @@ void setupDeckCubit() {
   ));
 }
 
-void setupDrawerCubit() {
+void _drawerCubit() {
   locator.registerFactory(() => DrawerCubit());
 }
 
-void setupNfcCubit() {
+void _nfcCubit() {
   locator.registerLazySingleton(() => NfcCubit());
 }
 
-void setupPinColorCubit() {
+void _pinColorCubit() {
   locator.registerFactory(() => PinColorCubit());
 }
 
-void setupReaderCubit() {
+void _readerCubit() {
   locator.registerFactoryParam<ReaderCubit, String, void>((collectionId, _) {
     return ReaderCubit(
       findCardFromTagUsecase: locator<FindCardFromTagUsecase>(param1: collectionId),
@@ -88,7 +87,7 @@ void setupReaderCubit() {
   });
 }
 
-void setupRecordCubit() {
+void _recordCubit() {
   locator.registerFactoryParam<RecordCubit, String, void>((deckId, _) => RecordCubit(
     deckId: deckId,
     createRecordUsecase: locator<CreateRecordUsecase>(),
@@ -98,7 +97,7 @@ void setupRecordCubit() {
   ));
 }
 
-void setupRoomCubit() {
+void _roomCubit() {
   locator.registerFactoryParam<RoomCubit, DeckEntity, void>((deck, _) {
     return RoomCubit(
       deck: deck,
@@ -111,20 +110,20 @@ void setupRoomCubit() {
   });
 }
 
-void setupSearchCubit() {
+void _searchCubit() {
   locator.registerFactoryParam<SearchCubit, String, void>((collectionId, _) => SearchCubit(
     fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
   ));
 }
 
-void setupTrackerCubit() {
+void _trackerCubit() {
   locator.registerFactoryParam<TrackerCubit, DeckEntity, void>((deck, _) => TrackerCubit(
     deck: deck,
     trackCardInteractionUsecase: locator<TrackCardInteractionUsecase>(),
   ));
 }
 
-void setupUsageCardCubit() {
+void _usageCardCubit() {
   locator.registerFactory(() => UsageCardCubit(
     calculateUsageCardStatsUsecase: locator<CalculateUsageCardStatsUsecase>(),
   ));

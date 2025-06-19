@@ -10,7 +10,7 @@ class ImageConstant {
   static Map<String, String> get games {
     final Map<String, String> map = {};
 
-    for (final String game in Game.supportedGameKeys) {
+    for (final String game in GameConfig.supportedGameKeys) {
       map[game] = 'assets/image/game/$game.png';
     }
 

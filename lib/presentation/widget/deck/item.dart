@@ -65,7 +65,7 @@ class DeckItem extends StatelessWidget {
     await context.read<DeckCubit>().setDeck(deckId: deck.deckId!);
     final collectionId = (deck.cards?.isNotEmpty ?? false)
         ? deck.cards!.first.card.collectionId
-        : Game.dummy;
+        : GameConfig.dummy;
 
     await context.read<DeckCubit>().setDeck(deckId: deck.deckId!);
     context.read<DeckCubit>().fetchCardsInDeck(

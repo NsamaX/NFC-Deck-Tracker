@@ -1,8 +1,8 @@
 import 'package:nfc_deck_tracker/data/datasource/api/@api_config.dart';
 
-class Game {
-  static const String dummy    = 'dummy';
-  static const String pokemon  = 'pokemon';  // https://dev.pokemontcg.io/dashboard
+class GameConfig {
+  static const dummy    = 'dummy';
+  static const pokemon  = 'pokemon'; // https://dev.pokemontcg.io/dashboard
 
   static const Map<String, Map<String, String>> environments = {
     'development': {
@@ -15,20 +15,17 @@ class Game {
   };
 
   static List<String> get supportedGameKeys {
-    final envName = ApiConfig.currentEnvironment;
-    final env = environments[envName];
-
+    final currentEnv = ApiConfig.currentEnvironment;
+    final env = environments[currentEnv];
     if (env == null) return [];
 
     return env.entries
-      .where((entry) => entry.key != dummy && entry.value.isNotEmpty)
-      .map((entry) => entry.key)
+      .where((e) => e.key != dummy && e.value.isNotEmpty)
+      .map((e) => e.key)
       .toList();
   }
 
-  static bool isSupported({
-    required String game,
-  }) {
+  static bool isSupported(String game) {
     return game != dummy && supportedGameKeys.contains(game);
   }
 }

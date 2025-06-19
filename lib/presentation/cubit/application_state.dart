@@ -23,14 +23,14 @@ class ApplicationState extends Equatable {
 
   factory ApplicationState.initialFromConstant() {
     return ApplicationState(
-      locale: Locale(App.all[App.keyLocale]),
-      isDark: App.all[App.keyIsDark],
-      keyIsLoggedIn: App.all[App.keyIsLoggedIn],
+      locale: Locale(AppConfig.defaults[AppConfig.keyLocale]),
+      isDark: AppConfig.defaults[AppConfig.keyIsDark],
+      keyIsLoggedIn: AppConfig.defaults[AppConfig.keyIsLoggedIn],
       recentId: '',
       recentGame: '',
       currentPageIndex: RouteConstant.on_boarding_index,
-      tutorialNfcIcon: App.all[App.keyTutorialNFCIcon],
-      tutorialHowTo: App.all[App.keyTutorialHowTo],
+      tutorialNfcIcon: AppConfig.defaults[AppConfig.keyTutorialNFCIcon],
+      tutorialHowTo: AppConfig.defaults[AppConfig.keyTutorialHowTo],
     );
   }
 

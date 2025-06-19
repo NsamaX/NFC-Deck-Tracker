@@ -52,7 +52,7 @@ class FetchCardUsecase {
     }
 
     final bool isFirstLoad = localCards.isEmpty;
-    final bool isSupportedGame = Game.isSupported(game: collectionId);
+    final bool isSupportedGame = GameConfig.isSupported(collectionId);
 
     if (isFirstLoad) {
       LoggerUtil.addMessage(message: '[Local] No cards found for $collectionId');

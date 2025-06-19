@@ -11,15 +11,15 @@ import 'setup_locator.dart';
 
 Future<void> setupRepository() async {
   try {
-    setupCardRepository();
-    setupCollectionRepository();
-    setupDeckRepository();
-    setupLocalRepository();
-    setupPageRepository();
-    setupRecordRepository();
-    setupRoomRepository();
-    setupSettingRepository();
-    setupUploadImageRepository();
+    _cardRepository();
+    _collectionRepository();
+    _deckRepository();
+    _localRepository();
+    _pageRepository();
+    _recordRepository();
+    _roomRepository();
+    _settingRepository();
+    _uploadImageRepository();
 
     LoggerUtil.debugMessage(message: '✔️ Repository registered successfully.');
   } catch (e) {
@@ -27,7 +27,7 @@ Future<void> setupRepository() async {
   }
 }
 
-void setupCardRepository() {
+void _cardRepository() {
   locator.registerLazySingleton(() => CheckDuplicateNameRepository(
     checkDuplicateNameLocalDatasource: locator<CheckDuplicateNameLocalDatasource>(),
   ));
@@ -64,7 +64,7 @@ void setupCardRepository() {
   ));
 }
 
-void setupCollectionRepository() {
+void _collectionRepository() {
   locator.registerLazySingleton(() => CreateCollectionRepository(
     createCollectionLocalDatasource: locator<CreateCollectionLocalDatasource>(),
     createCollectionRemoteDatasource: locator<CreateCollectionRemoteDatasource>(),
@@ -83,7 +83,7 @@ void setupCollectionRepository() {
   ));
 }
 
-void setupDeckRepository() {
+void _deckRepository() {
   locator.registerLazySingleton(() => CreateDeckRepository(
     createDeckLocalDatasource: locator<CreateDeckLocalDatasource>(),
     createDeckRemoteDatasource: locator<CreateDeckRemoteDatasource>(),
@@ -105,7 +105,7 @@ void setupDeckRepository() {
   ));
 }
 
-void setupRoomRepository() {
+void _roomRepository() {
   locator.registerLazySingleton(() => CloseRoomRepository(
     closeRoomRemoteDatasource: locator<CloseRoomRemoteDatasource>(),
   ));
@@ -123,7 +123,7 @@ void setupRoomRepository() {
   ));
 }
 
-void setupRecordRepository() {
+void _recordRepository() {
   locator.registerLazySingleton(() => CreateRecordRepository(
     createRecordLocalDatasource: locator<CreateRecordLocalDatasource>(),
     createRecordRemoteDatasource: locator<CreateRecordRemoteDatasource>(),
@@ -142,7 +142,7 @@ void setupRecordRepository() {
   ));
 }
 
-void setupPageRepository() {
+void _pageRepository() {
   locator.registerLazySingleton(() => CreatePageRepository(
     createPageLocalDatasource: locator<CreatePageLocalDatasource>(),
   ));
@@ -154,13 +154,13 @@ void setupPageRepository() {
   ));
 }
 
-void setupLocalRepository() {
+void _localRepository() {
   locator.registerLazySingleton(() => ClearUserDataRepository(
     clearUserDataLocalDatasource: locator<ClearUserDataLocalDatasource>(),
   ));
 }
 
-void setupSettingRepository() {
+void _settingRepository() {
   locator.registerLazySingleton(() => LoadSettingRepository(
     loadSettingLocalDatasource: locator<LoadSettingLocalDatasource>(),
   ));
@@ -169,7 +169,7 @@ void setupSettingRepository() {
   ));
 }
 
-void setupUploadImageRepository() {
+void _uploadImageRepository() {
   locator.registerLazySingleton(() => UploadImageRepository(
     uploadImageRemoteDatasource: locator<UploadImageRemoteDatasource>(),
   ));

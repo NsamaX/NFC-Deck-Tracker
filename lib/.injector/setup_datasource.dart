@@ -13,25 +13,22 @@ import 'setup_locator.dart';
 
 Future<void> setupDataSource() async {
   try {
-    // API
-    setupServiceFactoryRemoteDatasource();
+    _serviceFactoryRemoteDatasource();
 
-    // Local
-    setupCardLocalDatasource();
-    setupCollectionLocalDatasource();
-    setupDeckLocalDatasource();
-    setupLocalDatasource();
-    setupPageLocalDatasource();
-    setupRecordLocalDatasource();
-    setupSettingLocalDatasource();
+    _cardLocalDatasource();
+    _collectionLocalDatasource();
+    _deckLocalDatasource();
+    _localDatasource();
+    _pageLocalDatasource();
+    _recordLocalDatasource();
+    _settingLocalDatasource();
 
-    // Remote
-    setupCardRemoteDatasource();
-    setupCollectionRemoteDatasource();
-    setupDeckRemoteDatasource();
-    setupRecordRemoteDatasource();
-    setupRoomRemoteDatasource();
-    setupUploadImageRemoteDatasource();
+    _cardRemoteDatasource();
+    _collectionRemoteDatasource();
+    _deckRemoteDatasource();
+    _recordRemoteDatasource();
+    _roomRemoteDatasource();
+    _uploadImageRemoteDatasource();
 
     LoggerUtil.debugMessage(message: '✔️ DataSource registered successfully.');
   } catch (e) {
@@ -39,13 +36,13 @@ Future<void> setupDataSource() async {
   }
 }
 
-void setupServiceFactoryRemoteDatasource() {
+void _serviceFactoryRemoteDatasource() {
   locator.registerFactoryParam<GameApi, String, void>((collectionId, _) {
     return ServiceFactory.create(collectionId: collectionId);
   });
 }
 
-void setupCardLocalDatasource() {
+void _cardLocalDatasource() {
   locator.registerLazySingleton(() => CheckDuplicateNameLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => CreateCardLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => DeleteCardLocalDatasource(locator<SQLiteService>()));
@@ -56,14 +53,14 @@ void setupCardLocalDatasource() {
   locator.registerLazySingleton(() => UpdateCardLocalDatasource(locator<SQLiteService>()));
 }
 
-void setupCollectionLocalDatasource() {
+void _collectionLocalDatasource() {
   locator.registerLazySingleton(() => CreateCollectionLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => DeleteCollectionLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FetchCollectionLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => UpdateCollectionLocalDatasource(locator<SQLiteService>()));
 }
 
-void setupDeckLocalDatasource() {
+void _deckLocalDatasource() {
   locator.registerLazySingleton(() => CreateDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => DeleteDeckLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FetchCardInDeckLocalDatasource(locator<SQLiteService>()));
@@ -71,57 +68,57 @@ void setupDeckLocalDatasource() {
   locator.registerLazySingleton(() => UpdateDeckLocalDatasource(locator<SQLiteService>()));
 }
 
-void setupLocalDatasource() {
+void _localDatasource() {
   locator.registerLazySingleton(() => ClearUserDataLocalDatasource(locator<SQLiteService>()));
 }
 
-void setupPageLocalDatasource() {
+void _pageLocalDatasource() {
   locator.registerLazySingleton(() => CreatePageLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FindPageLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => UpdatePageLocalDatasource(locator<SQLiteService>()));
 }
 
-void setupRecordLocalDatasource() {
+void _recordLocalDatasource() {
   locator.registerLazySingleton(() => CreateRecordLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => DeleteRecordLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FetchRecordLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => UpdateRecordLocalDatasource(locator<SQLiteService>()));
 }
 
-void setupSettingLocalDatasource() {
+void _settingLocalDatasource() {
   locator.registerLazySingleton(() => LoadSettingLocalDatasource(locator<SharedPreferencesService>()));
   locator.registerLazySingleton(() => SaveSettingLocalDatasource(locator<SharedPreferencesService>()));
 }
 
-void setupCardRemoteDatasource() {
+void _cardRemoteDatasource() {
   locator.registerLazySingleton(() => CreateCardRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => DeleteCardRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => FetchCardRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => UpdateCardRemoteDatasource(locator<FirestoreService>()));
 }
 
-void setupCollectionRemoteDatasource() {
+void _collectionRemoteDatasource() {
   locator.registerLazySingleton(() => CreateCollectionRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => DeleteCollectionRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => FetchCollectionRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => UpdateCollectionRemoteDatasource(locator<FirestoreService>()));
 }
 
-void setupDeckRemoteDatasource() {
+void _deckRemoteDatasource() {
   locator.registerLazySingleton(() => CreateDeckRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => DeleteDeckRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => FetchDeckRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => UpdateDeckRemoteDatasource(locator<FirestoreService>()));
 }
 
-void setupRecordRemoteDatasource() {
+void _recordRemoteDatasource() {
   locator.registerLazySingleton(() => CreateRecordRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => DeleteRecordRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => FetchRecordRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => UpdateRecordRemoteDatasource(locator<FirestoreService>()));
 }
 
-void setupRoomRemoteDatasource() {
+void _roomRemoteDatasource() {
   locator.registerLazySingleton(() => CreateRoomRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => FetchRoomRemoteDatasource(locator<FirestoreService>()));
   locator.registerLazySingleton(() => JoinRoomRemoteDatasource(locator<FirestoreService>()));
@@ -129,6 +126,6 @@ void setupRoomRemoteDatasource() {
   locator.registerLazySingleton(() => CloseRoomRemoteDatasource(locator<FirestoreService>()));
 }
 
-void setupUploadImageRemoteDatasource() {
+void _uploadImageRemoteDatasource() {
   locator.registerLazySingleton(() => UploadImageRemoteDatasource(locator<FirestoreService>()));
 }

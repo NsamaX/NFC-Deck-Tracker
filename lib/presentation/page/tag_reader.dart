@@ -25,7 +25,7 @@ class TagReaderPage extends StatefulWidget {
 }
 
 class _TagReaderPageState extends State<TagReaderPage> {
-  String _collectionId = Game.dummy;
+  String _collectionId = GameConfig.dummy;
 
   void _onTagDetected(String newCollectionId) {
     setState(() {
