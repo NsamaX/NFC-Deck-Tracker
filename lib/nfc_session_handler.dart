@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import 'package:nfc_deck_tracker/presentation/cubit/nfc_cubit.dart';
+import 'presentation/cubit/nfc_cubit.dart';
 
 class NfcSessionHandler extends RouteObserver<ModalRoute> with WidgetsBindingObserver {
   final NfcCubit nfcCubit;
