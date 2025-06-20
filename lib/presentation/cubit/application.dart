@@ -81,7 +81,7 @@ class ApplicationCubit extends Cubit<ApplicationState> {
     safeEmit(state.copyWith(currentPageIndex: index));
   }
 
-  void signOut() => clearUserDataUsecase.call();
+  void clearUserData() => clearUserDataUsecase.call();
 }
 
 class ApplicationState extends Equatable {
