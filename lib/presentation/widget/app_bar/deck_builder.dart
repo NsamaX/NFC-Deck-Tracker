@@ -181,7 +181,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         label: locale.translate('page_deck_builder.toggle_edit'),
         action: () {
           deckCubit.add(ToggleEditModeEvent());
-          if (!applicationCubit.state.tutorialNfcIcon) {
+          if (applicationCubit.state.tutorialNfcIcon) {
             showGeneralDialog(
               context: context,
               barrierDismissible: true,
@@ -189,7 +189,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
               transitionDuration: const Duration(milliseconds: 200),
               pageBuilder: (_, __, ___) => const TutorailNFCIcon(),
             );
-            applicationCubit.updateSetting(key: AppConfig.keyTutorialNFCIcon, value: true);
+            applicationCubit.updateSetting(key: AppConfig.keyTutorialNFCIcon, value: false);
           }
         }
       ),

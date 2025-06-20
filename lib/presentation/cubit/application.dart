@@ -60,8 +60,6 @@ class ApplicationCubit extends Cubit<ApplicationState> {
         return state.copyWith(recentGame: value);
       case AppConfig.keyTutorialNFCIcon:
         return state.copyWith(tutorialNfcIcon: value);
-      case AppConfig.keyTutorialHowTo:
-        return state.copyWith(tutorialHowTo: value);
       default:
         return state;
     }
@@ -94,7 +92,6 @@ class ApplicationState extends Equatable {
   final String recentGame;
   final int currentPageIndex;
   final bool tutorialNfcIcon;
-  final bool tutorialHowTo;
 
   const ApplicationState({
     required this.locale,
@@ -104,7 +101,6 @@ class ApplicationState extends Equatable {
     required this.recentGame,
     required this.currentPageIndex,
     required this.tutorialNfcIcon,
-    required this.tutorialHowTo,
   });
 
   factory ApplicationState.initialFromConstant() {
@@ -116,7 +112,6 @@ class ApplicationState extends Equatable {
       recentGame: '',
       currentPageIndex: RouteConstant.on_boarding_index,
       tutorialNfcIcon: AppConfig.defaults[AppConfig.keyTutorialNFCIcon],
-      tutorialHowTo: AppConfig.defaults[AppConfig.keyTutorialHowTo],
     );
   }
 
@@ -128,7 +123,6 @@ class ApplicationState extends Equatable {
     String? recentGame,
     int? currentPageIndex,
     bool? tutorialNfcIcon,
-    bool? tutorialHowTo,
   }) {
     return ApplicationState(
       locale: locale ?? this.locale,
@@ -138,7 +132,6 @@ class ApplicationState extends Equatable {
       recentGame: recentGame ?? this.recentGame,
       currentPageIndex: currentPageIndex ?? this.currentPageIndex,
       tutorialNfcIcon: tutorialNfcIcon ?? this.tutorialNfcIcon,
-      tutorialHowTo: tutorialHowTo ?? this.tutorialHowTo,
     );
   }
 
@@ -151,6 +144,5 @@ class ApplicationState extends Equatable {
         recentGame,
         currentPageIndex,
         tutorialNfcIcon,
-        tutorialHowTo,
       ];
 }
