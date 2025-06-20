@@ -15,12 +15,12 @@ class DeckModel {
     required this.updatedAt,
   });
 
-  factory DeckModel.fromJson(Map<String, dynamic> json) {
+  factory DeckModel.fromJsonForLocal(Map<String, dynamic> json) {
     if (json['deckId'] == null ||
         json['name'] == null ||
         json['isSynced'] == null ||
         json['updatedAt'] == null) {
-      throw FormatException('Missing required fields in DeckModel');
+      throw FormatException('Missing required fields in DeckModel (Local)');
     }
 
     return DeckModel(
@@ -28,6 +28,26 @@ class DeckModel {
       name: json['name'],
       cards: [],
       isSynced: (json['isSynced'] == true || json['isSynced'] == 1),
+      updatedAt: DateTime.parse(json['updatedAt']),
+    );
+  }
+
+  factory DeckModel.fromJsonForRemote(Map<String, dynamic> json) {
+    if (json['deckId'] == null ||
+        json['name'] == null ||
+        json['isSynced'] == null ||
+        json['updatedAt'] == null ||
+        json['cards'] == null) {
+      throw FormatException('Missing required fields in DeckModel (Remote)');
+    }
+
+    return DeckModel(
+      deckId: json['deckId'],
+      name: json['name'],
+      cards: (json['cards'] as List)
+          .map((cardJson) => CardInDeckModel.fromJson(cardJson))
+          .toList(),
+      isSynced: json['isSynced'] == true || json['isSynced'] == 1,
       updatedAt: DateTime.parse(json['updatedAt']),
     );
   }

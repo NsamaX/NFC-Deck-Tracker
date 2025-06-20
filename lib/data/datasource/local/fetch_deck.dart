@@ -13,7 +13,7 @@ class FetchDeckLocalDatasource {
     );
 
     return result.map((row) {
-      final DeckModel deck = DeckModel.fromJson(row);
+      final DeckModel deck = DeckModel.fromJsonForLocal(row);
       return DeckModel(
         deckId: deck.deckId,
         name: deck.name,

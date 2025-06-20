@@ -80,11 +80,13 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
 
     on<CreateDeckEvent>((event, emit) async {
       await createDeckUsecase.call(userId: event.userId, deck: state.currentDeck);
-      emit(state.copyWith(isNewDeck: false));
+      final decks = await fetchDeckUsecase(userId: event.userId);
+      emit(state.copyWith(decks: decks, isNewDeck: false));
     });
 
     on<DeleteDeckEvent>((event, emit) async {
       await deleteDeckUsecase.call(userId: event.userId, deckId: event.deckId);
+      emit(state.copyWith(decks: state.decks.where((deck) => deck.deckId != event.deckId).toList()));
     });
 
     on<UpdateDeckEvent>((event, emit) async {
@@ -116,10 +118,6 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
         totalLabel: event.locale.translate('page_deck_builder.clipboard_total_cards'),
       );
       Clipboard.setData(ClipboardData(text: text));
-    });
-
-    on<ToggleDeleteEvent>((event, emit) async {
-      await deleteDeckUsecase(userId: event.userId, deckId: event.deckId);
     });
 
     on<ToggleEditModeEvent>((event, emit) {

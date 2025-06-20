@@ -129,10 +129,11 @@ class SQLiteService {
 
           await batch.commit(
             noResult: true,
-            continueOnError: true,
+            continueOnError: false,
           );
         }
       });
+      
 
       LoggerUtil.debugMessage('📝 Inserted batch data into "$table" successfully');
     } catch (e) {
