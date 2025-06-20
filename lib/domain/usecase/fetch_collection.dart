@@ -65,6 +65,14 @@ class FetchCollectionUsecase {
         final index = localList.indexWhere((c) => c.collectionId == remote.collectionId);
         if (index != -1) localList[index] = remote;
         LoggerUtil.debugMessage('📥 Updated local from remote: ${remote.collectionId}');
+      } else if (local.name == 'unknow') {
+        final updated = local.copyWith(name: remote.name);
+        await updateCollectionRepository.updateForLocal(
+          collection: CollectionMapper.toModel(updated),
+        );
+        final index = localList.indexWhere((c) => c.collectionId == updated.collectionId);
+        if (index != -1) localList[index] = updated;
+        LoggerUtil.debugMessage('✏️ Renamed "unknow" local from remote: ${remote.collectionId}');
       }
     }
   }
