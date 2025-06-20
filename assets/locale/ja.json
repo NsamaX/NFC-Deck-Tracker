@@ -125,6 +125,7 @@
     "app_bar_custom": "カスタム",
     "toggle_add": "追加",
     "snack_bar_add": "カードがデッキに追加されました！",
+    "snack_bar_create": "カードが作成されました！",
     "upload_image": "画像をアップロード"
   },
   "page_setting": {

@@ -86,7 +86,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
                   );
               AppSnackBar(
                 context,
-                text: locale.translate('page_card_detail.snack_bar_add'),
+                text: locale.translate('page_card_detail.snack_bar_create'),
               );
             },
           ),

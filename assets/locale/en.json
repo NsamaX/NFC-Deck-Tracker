@@ -125,6 +125,7 @@
     "app_bar_custom": "Custom",
     "toggle_add": "Add",
     "snack_bar_add": "Card successfully added to your deck!",
+    "snack_bar_create": "Card successfully created!",
     "upload_image": "Upload Image"
   },
   "page_setting": {
