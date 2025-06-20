@@ -4,10 +4,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/local/@database_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/@shared_preferences_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/@sqlite_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/remote/@supabase_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/remote/@firestore_service.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -21,6 +23,7 @@ Future<void> registerService() async {
     await _Database();
     await _Sqlite();
     await _Firestore();
+    await _Supabase();
 
     LoggerUtil.debugMessage('✔️ All services registered successfully.');
   } catch (e) {
@@ -58,4 +61,19 @@ Future<void> _Firestore() async {
     firestore: FirebaseFirestore.instance,
     storage: FirebaseStorage.instance,
   ));
+}
+
+Future<void> _Supabase() async {
+  if (!locator.isRegistered<SupabaseClient>()) {
+    final supabaseUrl = dotenv.env['SUPABASE_URL'];
+    final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+    if (supabaseUrl == null || supabaseAnonKey == null) {
+      throw Exception('❌ Supabase URL or anon key is missing.');
+    }
+    final client = SupabaseClient(supabaseUrl, supabaseAnonKey);
+    locator.registerSingleton<SupabaseClient>(client);
+  }
+  if (!locator.isRegistered<SupabaseService>()) {
+    locator.registerLazySingleton(() => SupabaseService(supabase: locator<SupabaseClient>()));
+  }
 }

@@ -1,8 +1,5 @@
-import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
@@ -114,36 +111,6 @@ class FirestoreService {
     } catch (e) {
       LoggerUtil.debugMessage('❌ Failed to delete document "$documentId" from "$collectionPath": $e');
       return false;
-    }
-  }
-
-  Future<String?> uploadImage({
-    required String userId,
-    required String imagePath,
-  }) async {
-    try {
-      final file = File(imagePath);
-      if (!file.existsSync()) {
-        LoggerUtil.debugMessage('❌ File does not exist at path: $imagePath');
-        return null;
-      }
-
-      final uniqueId = const Uuid().v4();
-      final ext = imagePath.split('.').last;
-      final ref = storage.ref().child('users/$userId/images/$uniqueId.$ext');
-
-      try {
-        final uploadTask = await ref.putFile(file);
-        final snapshot = await uploadTask.ref.getDownloadURL();
-        LoggerUtil.debugMessage('📤 Uploaded image → $snapshot');
-        return snapshot;
-      } catch (e) {
-        LoggerUtil.debugMessage('❌ Failed to upload image: $e');
-        return null;
-      }
-    } catch (e) {
-      LoggerUtil.debugMessage('❌ Failed to upload image "$imagePath": $e');
-      return null;
     }
   }
 }

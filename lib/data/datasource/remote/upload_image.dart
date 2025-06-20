@@ -1,26 +1,17 @@
-import 'dart:io';
-
-import '@firestore_service.dart';
+import '@supabase_service.dart';
 
 class UploadImageRemoteDatasource {
-  final FirestoreService _firestoreService;
+  final SupabaseService _supabaseService;
 
-  UploadImageRemoteDatasource(this._firestoreService);
+  UploadImageRemoteDatasource(this._supabaseService);
 
   Future<String?> upload({
     required String userId,
     required String imagePath,
   }) async {
-    final file = File(imagePath);
-    if (!file.existsSync()) {
-      return null;
-    }
-
-    final imageUrl = await _firestoreService.uploadImage(
+    return await _supabaseService.uploadImage(
       userId: userId,
       imagePath: imagePath,
     );
-
-    return imageUrl;
   }
 }
