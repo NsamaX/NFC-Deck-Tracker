@@ -53,6 +53,11 @@ class ReaderCubit extends Cubit<ReaderState> {
             isLoading: false,
           ));
           return;
+        case 'Exception: CARD_NOT_FOUND':
+          safeEmit(state.copyWith(
+            warningMessage: 'nfc_snack_bar.error_card_not_found',
+            isLoading: false,
+          ));
         case 'Exception: GAME_NOT_SUPPORTED':
           safeEmit(state.copyWith(
             errorMessage: 'nfc_snack_bar.error_game_not_supported',

@@ -27,6 +27,11 @@ class FindCardFromTagUsecase {
 
     try {
       final apiCard = await findCardRepository.findForApi(collectionId: tag.collectionId, cardId: tag.cardId);
+
+      if (apiCard == null) {
+        throw Exception('CARD_NOT_FOUND');
+      }
+
       return CardMapper.toEntity(apiCard);
     } catch (e) {
       throw Exception('GAME_NOT_SUPPORTED');

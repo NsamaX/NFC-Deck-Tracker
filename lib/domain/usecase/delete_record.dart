@@ -1,7 +1,5 @@
 import 'package:nfc_deck_tracker/data/repository/delete_record.dart';
 
-import 'package:nfc_deck_tracker/util/logger.dart';
-
 class DeleteRecordUsecase {
   final DeleteRecordRepository deleteRecordRepository;
 
@@ -16,14 +14,10 @@ class DeleteRecordUsecase {
     await deleteRecordRepository.deleteForLocal(recordId: recordId);
 
     if (userId.isNotEmpty) {
-      final remoteSuccess = await deleteRecordRepository.deleteForRemote(
+      await deleteRecordRepository.deleteForRemote(
         userId: userId,
         recordId: recordId,
       );
-
-      if (!remoteSuccess) {
-        LoggerUtil.debugMessage('⚠️ Remote delete failed, local already removed');
-      }
     }
   }
 }

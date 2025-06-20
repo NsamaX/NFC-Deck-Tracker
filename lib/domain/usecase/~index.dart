@@ -1,5 +1,5 @@
 export 'calculate_usage_card_stats.dart';
-export 'clear_local_datasource.dart';
+export 'clear_user_data.dart';
 export 'close_room.dart';
 export 'create_card.dart';
 export 'create_collection.dart';
@@ -21,7 +21,7 @@ export 'find_card_from_tag.dart';
 export 'generate_share_deck_clipboard.dart';
 export 'initialize_setting.dart';
 export 'join_room.dart';
-export 'tracke_card_interaction.dart';
+export 'track_card_interaction.dart';
 export 'update_card.dart';
 export 'update_collection.dart';
 export 'update_card_in_deck.dart';

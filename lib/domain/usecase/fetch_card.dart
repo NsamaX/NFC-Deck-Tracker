@@ -66,7 +66,6 @@ class FetchCardUsecase {
             collectionId: collectionId,
             name: collectionName,
             isSynced: isSupportedGame,
-            updatedAt: DateTime.now(),
           ),
         ),
       );

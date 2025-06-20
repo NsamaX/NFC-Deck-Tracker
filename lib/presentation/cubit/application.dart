@@ -4,7 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/app.dart';
-import 'package:nfc_deck_tracker/domain/usecase/clear_local_datasource.dart';
+import 'package:nfc_deck_tracker/domain/usecase/clear_user_data.dart';
 import 'package:nfc_deck_tracker/domain/usecase/initialize_setting.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
 

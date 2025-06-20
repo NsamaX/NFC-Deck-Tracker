@@ -24,11 +24,19 @@ class PokemonApi extends BaseApi implements GameApi {
   }
 
   @override
-  Future<CardModel> find(String cardId) async {
-    final response = await getRequest('cards/$cardId');
-    final data = decodeResponse(response)['data'] as Map<String, dynamic>;
+  Future<CardModel?> find(String cardId) async {
+    try {
+      final response = await getRequest('cards/$cardId');
+      final body = decodeResponse(response);
 
-    return _parseData(data);
+      if (body['data'] == null) return null;
+
+      final data = body['data'] as Map<String, dynamic>;
+      return _parseData(data);
+
+    } catch (e) {
+      return null;
+    }
   }
 
   CardModel _parseData(Map<String, dynamic> data) {

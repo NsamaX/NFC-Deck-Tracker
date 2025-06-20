@@ -2,8 +2,6 @@ import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/data/repository/create_deck.dart';
 
-import 'package:nfc_deck_tracker/util/logger.dart';
-
 import '../entity/deck.dart';
 import '../mapper/deck.dart';
 
@@ -19,27 +17,21 @@ class CreateDeckUsecase {
     required DeckEntity deck,
   }) async {
     final String deckId = const Uuid().v4();
-    final DateTime now = DateTime.now();
 
     final updatedDeck = deck.copyWith(
       deckId: deckId,
-      updatedAt: now,
     );
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final remoteSuccess = await createDeckRepository.createForRemote(
+      final success = await createDeckRepository.createForRemote(
         userId: userId,
         deck: DeckMapper.toModel(
           updatedDeck.copyWith(isSynced: true),
         ),
       );
 
-      if (remoteSuccess) {
-        synced = true;
-      } else {
-        LoggerUtil.debugMessage('⚠️ Remote create failed, will fallback to local-only');
-      }
+      if (success) synced = true;
     }
 
     final finalEntity = updatedDeck.copyWith(isSynced: synced);

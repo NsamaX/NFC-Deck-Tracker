@@ -89,7 +89,7 @@ class FetchDeckUsecase {
     List<DeckEntity> localList,
   ) async {
     final toRemove = localList.where(
-      (deck) => deck.isSynced == true && !remoteMap.containsKey(deck.deckId),
+      (d) => d.isSynced == true && !remoteMap.containsKey(d.deckId),
     ).toList();
 
     for (final deck in toRemove) {

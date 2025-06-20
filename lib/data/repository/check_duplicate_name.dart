@@ -1,16 +1,16 @@
-import '../datasource/local/check_duplicate_name.dart';
+import '../datasource/local/check_card_duplicate_name.dart';
 
-class CheckDuplicateNameRepository {
-  final CheckDuplicateNameLocalDatasource checkDuplicateNameLocalDatasource;
+class CheckCardDuplicateNameRepository {
+  final CheckCardDuplicateNameLocalDatasource checkCardDuplicateNameLocalDatasource;
 
-  CheckDuplicateNameRepository({
-    required this.checkDuplicateNameLocalDatasource,
+  CheckCardDuplicateNameRepository({
+    required this.checkCardDuplicateNameLocalDatasource,
   });
 
   Future<int> check({
     required String collectionId,
     required String name,
   }) async {
-    return await checkDuplicateNameLocalDatasource.check(collectionId: collectionId, name: name);
+    return await checkCardDuplicateNameLocalDatasource.check(collectionId: collectionId, name: name);
   }
 }

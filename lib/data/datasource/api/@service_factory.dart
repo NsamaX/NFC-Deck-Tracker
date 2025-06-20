@@ -7,7 +7,7 @@ import '~index.dart';
 
 abstract class GameApi {
   Future<List<CardModel>> fetch(Map<String, dynamic> page);
-  Future<CardModel> find(String cardId);
+  Future<CardModel?> find(String cardId);
 }
 
 abstract class PagingStrategy {

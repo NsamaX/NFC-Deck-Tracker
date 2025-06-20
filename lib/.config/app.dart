@@ -18,4 +18,12 @@ class AppConfig {
     keyRecentGame:      null,
     keyTutorialNFCIcon: false,
   };
+
+  // Keys that should not be written with default value
+  static const List<String> ignoreDefaultWriteKeys = [
+    keyIsLoggedIn,
+    keyRecentId,
+    keyRecentGame,
+    keyTutorialNFCIcon,
+  ];
 }

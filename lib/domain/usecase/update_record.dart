@@ -1,7 +1,5 @@
 import 'package:nfc_deck_tracker/data/repository/update_record.dart';
 
-import 'package:nfc_deck_tracker/util/logger.dart';
-
 import '../entity/record.dart';
 import '../mapper/record.dart';
 
@@ -21,18 +19,14 @@ class UpdateRecordUsecase {
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final remoteSuccess = await updateRecordRepository.updateForRemote(
+      final success = await updateRecordRepository.updateForRemote(
         userId: userId,
         record: RecordMapper.toModel(
           updatedRecord.copyWith(isSynced: true),
         ),
       );
 
-      if (remoteSuccess) {
-        synced = true;
-      } else {
-        LoggerUtil.debugMessage('⚠️ Remote update failed, will fallback to local-only');
-      }
+      if (success) synced = true;
     }
 
     final finalEntity = updatedRecord.copyWith(isSynced: synced);

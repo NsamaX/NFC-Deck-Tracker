@@ -11,7 +11,7 @@ class FindCardRepository {
     required this.gameApi,
   });
 
-  Future<CardModel> findForApi({
+  Future<CardModel?> findForApi({
     required String collectionId,
     required String cardId,
   }) async {

@@ -9,11 +9,17 @@ class GenerateShareDeckClipboardUsecase {
     final cardList = deck.cards ?? [];
     final totalCount = cardList.fold<int>(0, (sum, e) => sum + e.count);
 
-    final lines = <String>[
-      '$nameLabel: ${deck.name}',
-      totalLabel.replaceAll('{total}', totalCount.toString()),
-      ...cardList.map((e) => '- [${e.count}] ${e.card.name}'),
-    ];
+    final lines = <String>[];
+
+    lines.add('$nameLabel: ${deck.name}');
+    lines.add('${totalLabel.replaceAll('{total}', totalCount.toString())}');
+    lines.add('Card List:');
+
+    for (final cardInDeck in cardList) {
+      final name = cardInDeck.card.name?.trim();
+      final count = cardInDeck.count;
+      lines.add('   • ${name ?? "Unknown"} × $count');
+    }
 
     return lines.join('\n');
   }

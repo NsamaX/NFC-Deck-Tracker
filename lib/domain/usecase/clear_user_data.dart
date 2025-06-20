@@ -1,4 +1,4 @@
-import 'package:nfc_deck_tracker/data/repository/clear_local_datasource.dart';
+import 'package:nfc_deck_tracker/data/repository/clear_user_data.dart';
 
 class ClearUserDataUsecase {
   final ClearUserDataRepository clearUserDataRepository;

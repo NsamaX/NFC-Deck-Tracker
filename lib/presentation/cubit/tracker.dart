@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/domain/entity/data.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/tag.dart';
-import 'package:nfc_deck_tracker/domain/usecase/tracke_card_interaction.dart';
+import 'package:nfc_deck_tracker/domain/usecase/track_card_interaction.dart';
 
 class TrackerCubit extends Cubit<TrackerState> {
   final TrackCardInteractionUsecase trackCardInteractionUsecase;

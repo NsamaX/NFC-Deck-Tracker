@@ -1,8 +1,6 @@
 import 'package:nfc_deck_tracker/data/repository/update_card.dart';
 import 'package:nfc_deck_tracker/data/repository/upload_image.dart';
 
-import 'package:nfc_deck_tracker/util/logger.dart';
-
 import '../entity/card.dart';
 import '../mapper/card.dart';
 
@@ -40,18 +38,14 @@ class UpdateCardUsecase {
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final remoteSuccess = await updateCardRepository.updateForRemote(
+      final success = await updateCardRepository.updateForRemote(
         userId: userId,
         card: CardMapper.toModel(
           updatedCard.copyWith(isSynced: true),
         ),
       );
 
-      if (remoteSuccess) {
-        synced = true;
-      } else {
-        LoggerUtil.debugMessage('⚠️ Remote update failed, will fallback to local-only');
-      }
+      if (success) synced = true;
     }
 
     final finalEntity = updatedCard.copyWith(isSynced: synced);

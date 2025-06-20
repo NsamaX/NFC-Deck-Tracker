@@ -4,18 +4,16 @@ import 'package:nfc_deck_tracker/data/repository/check_duplicate_name.dart';
 import 'package:nfc_deck_tracker/data/repository/create_card.dart';
 import 'package:nfc_deck_tracker/data/repository/upload_image.dart';
 
-import 'package:nfc_deck_tracker/util/logger.dart';
-
 import '../entity/card.dart';
 import '../mapper/card.dart';
 
 class CreateCardUsecase {
-  final CheckDuplicateNameRepository checkDuplicateNameRepository;
+  final CheckCardDuplicateNameRepository checkCardDuplicateNameRepository;
   final CreateCardRepository createCardRepository;
   final UploadImageRepository uploadImageRepository;
 
   CreateCardUsecase({
-    required this.checkDuplicateNameRepository,
+    required this.checkCardDuplicateNameRepository,
     required this.createCardRepository,
     required this.uploadImageRepository,
   });
@@ -25,21 +23,20 @@ class CreateCardUsecase {
     required CardEntity card,
   }) async {
     final String cardId = const Uuid().v4();
-    final DateTime now = DateTime.now();
-    String finalImageUrl = card.imageUrl ?? '';
+    String imageUrl = card.imageUrl ?? '';
 
-    if (userId.isNotEmpty && card.imageUrl?.isNotEmpty == true) {
+    if (userId.isNotEmpty) {
       final uploadedUrl = await uploadImageRepository.upload(
         userId: userId,
         imagePath: card.imageUrl!,
       );
 
       if (uploadedUrl != null) {
-        finalImageUrl = uploadedUrl;
+        imageUrl = uploadedUrl;
       }
     }
 
-    final duplicateCount = await checkDuplicateNameRepository.check(
+    final duplicateCount = await checkCardDuplicateNameRepository.check(
       collectionId: card.collectionId!,
       name: card.name!,
     );
@@ -49,25 +46,20 @@ class CreateCardUsecase {
 
     final updatedCard = card.copyWith(
       cardId: cardId,
-      imageUrl: finalImageUrl,
+      imageUrl: imageUrl,
       name: newName,
-      updatedAt: now,
     );
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final remoteSuccess = await createCardRepository.createForRemote(
+      final success = await createCardRepository.createForRemote(
         userId: userId,
         card: CardMapper.toModel(
           updatedCard.copyWith(isSynced: true),
         ),
       );
 
-      if (remoteSuccess) {
-        synced = true;
-      } else {
-        LoggerUtil.debugMessage('⚠️ Remote create failed, will fallback to local-only');
-      }
+      if (success) synced = true;
     }
 
     final finalEntity = updatedCard.copyWith(isSynced: synced);

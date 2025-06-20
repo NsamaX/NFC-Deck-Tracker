@@ -1,9 +1,9 @@
 import '@sqlite_service.dart';
 
-class CheckDuplicateNameLocalDatasource {
+class CheckCardDuplicateNameLocalDatasource {
   final SQLiteService _sqliteService;
 
-  CheckDuplicateNameLocalDatasource(this._sqliteService);
+  CheckCardDuplicateNameLocalDatasource(this._sqliteService);
 
   Future<int> check({
     required String collectionId,
