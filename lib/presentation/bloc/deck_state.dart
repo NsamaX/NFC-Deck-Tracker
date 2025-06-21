@@ -6,6 +6,7 @@ class DeckState extends Equatable {
   final CardEntity selectedCard;
   final bool isEditMode;
   final bool isNewDeck;
+  final bool isChange;
   final int cardQuantity;
 
   const DeckState({
@@ -14,6 +15,7 @@ class DeckState extends Equatable {
     this.selectedCard = const CardEntity(),
     this.isEditMode = false,
     this.isNewDeck = false,
+    this.isChange = false,
     this.cardQuantity = 1,
   });
 
@@ -23,6 +25,7 @@ class DeckState extends Equatable {
     CardEntity? selectedCard,
     bool? isEditMode,
     bool? isNewDeck,
+    bool? isChange,
     int? cardQuantity,
   }) {
     return DeckState(
@@ -31,6 +34,7 @@ class DeckState extends Equatable {
       selectedCard: selectedCard ?? this.selectedCard,
       isEditMode: isEditMode ?? this.isEditMode,
       isNewDeck: isNewDeck ?? this.isNewDeck,
+      isChange: isChange ?? this.isChange,
       cardQuantity: cardQuantity ?? this.cardQuantity,
     );
   }
@@ -42,6 +46,7 @@ class DeckState extends Equatable {
         selectedCard,
         isEditMode,
         isNewDeck,
+        isChange,
         cardQuantity,
       ];
 }

@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../cubit/application.dart';
 import '../../locale/localization.dart';
 
+import '../constant/icon.dart';
+
 class _NavItem {
   final String labelKey;
-  final IconData icon;
+  final String iconPath;
 
   const _NavItem(
     this.labelKey,
-    this.icon, 
+    this.iconPath, 
   );
 }
 
@@ -40,16 +43,35 @@ class BottomNavigationBarWidget extends StatelessWidget implements PreferredSize
     BuildContext context, {
     required _NavItem item,
   }) {
+    final theme = Theme.of(context).bottomNavigationBarTheme;
+
     return BottomNavigationBarItem(
-      icon: Icon(item.icon),
+      icon: SvgPicture.asset(
+        item.iconPath,
+        width: 24,
+        height: 24,
+        colorFilter: ColorFilter.mode(
+          theme.unselectedItemColor ?? Colors.grey,
+          BlendMode.srcIn,
+        ),
+      ),
+      activeIcon: SvgPicture.asset(
+        item.iconPath,
+        width: 24,
+        height: 24,
+        colorFilter: ColorFilter.mode(
+          theme.selectedItemColor ?? Colors.blue,
+          BlendMode.srcIn,
+        ),
+      ),
       label: AppLocalization.of(context).translate(item.labelKey),
     );
   }
 
-  static const List<_NavItem> _navItems = [
-    _NavItem('bottom_navigation_bar.deck_list', Icons.web_stories_rounded),
-    _NavItem('bottom_navigation_bar.card_reader', Icons.nfc_rounded),
-    _NavItem('bottom_navigation_bar.setting', Icons.settings_outlined),
+  static List<_NavItem> _navItems = [
+    _NavItem('bottom_navigation_bar.deck_list', IconConstant.decks),
+    _NavItem('bottom_navigation_bar.card_reader', IconConstant.nfcSearch),
+    _NavItem('bottom_navigation_bar.setting', IconConstant.setting),
   ];
 
   @override

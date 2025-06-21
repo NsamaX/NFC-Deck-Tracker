@@ -53,7 +53,10 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
         card: event.card,
         quantity: 1,
       );
-      emit(state.copyWith(currentDeck: state.currentDeck.copyWith(cards: cards)));
+      emit(state.copyWith(
+        currentDeck: state.currentDeck.copyWith(cards: cards),
+        isChange: true,
+      ));
     });
 
     on<RemoveCardEvent>((event, emit) async {
@@ -62,7 +65,10 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
         card: event.card,
         quantity: -1,
       );
-      emit(state.copyWith(currentDeck: state.currentDeck.copyWith(cards: cards)));
+      emit(state.copyWith(
+        currentDeck: state.currentDeck.copyWith(cards: cards),
+        isChange: true,
+      ));
     });
 
     on<SelectCardEvent>((event, emit) {
@@ -90,10 +96,12 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
     });
 
     on<UpdateDeckEvent>((event, emit) async {
+      if (!state.isChange) return;
       await updateDeckUsecase.call(
         userId: event.userId,
         deck: state.currentDeck,
       );
+      emit(state.copyWith(isChange: false));
     });
 
     on<SetCurrentDeckEvent>((event, emit) {

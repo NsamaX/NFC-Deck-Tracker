@@ -48,6 +48,7 @@ dependencies:
   fl_chart: ^0.70.2
   flutter_native_splash: ^2.4.4
   flutter_slidable: ^4.0.0
+  flutter_svg: ^2.2.0
   google_fonts: ^6.2.1
   image_picker: ^1.1.2
   qr_code_scanner: ^1.0.1
@@ -64,6 +65,7 @@ flutter:
   assets:
     - .env
     - assets/font/
+    - assets/icon/
     - assets/image/
     - assets/image/game/
     - assets/locale/
