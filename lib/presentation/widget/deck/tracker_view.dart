@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/pin_color.dart';
+import '../../bloc/pin_card/bloc.dart';
 import '../../cubit/record.dart';
 import '../../cubit/tracker.dart';
 import '../../locale/localization.dart';
@@ -20,7 +20,7 @@ class DeckTrackerView extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
-    final pinColorState = context.watch<PinColorCubit>().state;
+    final pinColorState = context.watch<PinCardBloc>().state;
 
     return BlocBuilder<TrackerCubit, TrackerState>(
       builder: (context, state) {
@@ -67,10 +67,10 @@ class DeckTrackerView extends StatelessWidget {
                     lightTheme: count > 0,
                     markedColor: pinColorState.pinColor[card.cardId],
                     changeCardColor: (color) {
-                      context.read<PinColorCubit>().togglePinColor(
+                      context.read<PinCardBloc>().add(PinColorEvent(
                             cardId: card.cardId!,
                             color: color,
-                          );
+                          ));
                     },
                   );
                 },

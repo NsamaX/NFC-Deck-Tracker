@@ -15,7 +15,6 @@ Future<void> registerCubit() async {
     _collectionCubit();
     _drawerCubit();
     _nfcCubit();
-    _pinColorCubit();
     _readerCubit();
     _recordCubit();
     _roomCubit();
@@ -59,10 +58,6 @@ void _drawerCubit() {
 
 void _nfcCubit() {
   locator.registerLazySingleton(() => NfcCubit());
-}
-
-void _pinColorCubit() {
-  locator.registerFactory(() => PinColorCubit());
 }
 
 void _readerCubit() {

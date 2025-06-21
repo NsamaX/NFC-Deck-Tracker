@@ -9,9 +9,9 @@ import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
 import '../bloc/deck/bloc.dart';
+import '../bloc/pin_card/bloc.dart';
 import '../cubit/drawer.dart';
 import '../cubit/nfc_cubit.dart';
-import '../cubit/pin_color.dart';
 import '../cubit/reader.dart';
 import '../cubit/record.dart';
 import '../cubit/room.dart';
@@ -79,7 +79,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider.value(value: locator<DrawerCubit>()),
-        BlocProvider.value(value: locator<PinColorCubit>()),
+        BlocProvider.value(value: locator<PinCardBloc>()),
         BlocProvider.value(value: locator<UsageCardCubit>()),
         BlocProvider.value(value: locator<ReaderCubit>(param1: collectionId)),
         BlocProvider.value(value: locator<RecordCubit>(param1: deck.deckId)),

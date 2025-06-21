@@ -12,6 +12,7 @@ Future<void> registerBloc() async {
   try {
     _browseCardBloc();
     _deckBloc();
+    _pinCardBloc();
 
     LoggerUtil.debugMessage('✔️ Bloc registered successfully.');
   } catch (e) {
@@ -35,4 +36,8 @@ void _deckBloc() {
     updateCardInDeckUsecase: locator<UpdateCardInDeckUsecase>(),
     updateDeckUsecase: locator<UpdateDeckUsecase>(),
   ));
+}
+
+void _pinCardBloc() {
+  locator.registerFactory(() => PinCardBloc());
 }

@@ -48,7 +48,7 @@ class CardListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     if (card == null) return const SizedBox();
 
-    final systemColor = lightTheme ? Colors.black : null;
+    final systemColor = lightTheme ? Colors.black : Colors.white;
     final backgroundColor = lightTheme ? Colors.white : theme.appBarTheme.backgroundColor!;
     final markColor = markedColor ?? backgroundColor;
 

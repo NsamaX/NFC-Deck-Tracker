@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:nfc_deck_tracker/presentation/theme/@theme.dart';
 
 ActionPane? buildCardSlidablePinColor({
   required BuildContext context,
@@ -11,9 +12,9 @@ ActionPane? buildCardSlidablePinColor({
   final mediaQuery = MediaQuery.of(context);
 
   final allColors = [
-    theme.colorScheme.primary,
-    theme.colorScheme.secondary,
-    theme.colorScheme.tertiary,
+    theme.colorScheme.pin_color_1,
+    theme.colorScheme.pin_color_2,
+    theme.colorScheme.pin_color_3,
   ];
 
   final colors = markedColor != null && allColors.contains(markedColor)
