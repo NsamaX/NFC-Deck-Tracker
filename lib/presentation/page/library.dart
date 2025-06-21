@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../cubit/collection.dart';
+import '../bloc/collection/bloc.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
@@ -22,7 +22,7 @@ class _LibraryPageState extends State<LibraryPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: locator<CollectionCubit>(),
+      value: locator<CollectionBloc>(),
       child: const _LibraryPageContent(),
     );
   }
@@ -47,7 +47,7 @@ class _LibraryPageContent extends StatelessWidget {
         ],
       ),
       body: FutureBuilder<List<CardEntity>>(
-        future: context.read<CollectionCubit>().fetchUsedCardDistinct(),
+        future: context.read<CollectionBloc>().fetchUsedCardDistinct(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());

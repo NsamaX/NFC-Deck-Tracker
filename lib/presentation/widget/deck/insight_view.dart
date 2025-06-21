@@ -4,10 +4,10 @@ import 'package:intl/intl.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/usage_card_stats.dart';
 
+import '../../bloc/tracker/bloc.dart';
+import '../../bloc/usage_card/bloc.dart';
 import '../../cubit/reader.dart';
-import '../../cubit/tracker.dart';
 import '../../cubit/record.dart';
-import '../../cubit/usage_card.dart';
 import '../../locale/localization.dart';
 
 import '../specific/history_list_view.dart';
@@ -18,9 +18,9 @@ import 'insight_summary.dart';
 class DeckInsightView extends StatefulWidget {
   final AppLocalization locale;
   final ReaderCubit readerCubit;
-  final TrackerCubit trackerCubit;
+  final TrackerBloc trackerCubit;
   final RecordCubit recordCubit;
-  final UsageCardCubit usageCardCubit;
+  final UsageCardBloc usageCardCubit;
   final String userId;
 
   const DeckInsightView({
@@ -104,7 +104,7 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
                       recordId: record.recordId,
                       deck: widget.trackerCubit.state.originalDeck,
                     );
-                    widget.usageCardCubit.loadUsageStats(deck: widget.trackerCubit.state.originalDeck, record: record);
+                    widget.usageCardCubit.add(LoadUsageStatsEvent(deck: widget.trackerCubit.state.originalDeck, record: record));
                     widget.readerCubit.setScannedCard(scannedCards: cards);
                   },
                   'onDel': () {

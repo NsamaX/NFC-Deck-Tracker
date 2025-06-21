@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/collection.dart';
 
-import '../../cubit/collection.dart';
+import '../../bloc/collection/bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
 
@@ -65,10 +65,10 @@ class CustomGameTile extends StatelessWidget {
               context: context,
               collection: collection,
               onDelete: (collectionId) {
-                context.read<CollectionCubit>().deleteCollection(
+                context.read<CollectionBloc>().add(DeleteCollectionEvent(
                       userId: userId,
                       collectionId: collectionId,
-                    );
+                    ));
               },
             ),
             child: Row(

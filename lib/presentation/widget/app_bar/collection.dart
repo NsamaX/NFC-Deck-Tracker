@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/collection.dart';
+import '../../bloc/collection/bloc.dart';
 import '../../locale/localization.dart';
 
 import '../notification/cupertino_dialog.dart';
@@ -41,10 +41,10 @@ class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
             cancelButtonText: locale.translate('common.button_cancel'),
             confirmButtonText: locale.translate('common.button_ok'),
             onConfirm: (value) {
-              context.read<CollectionCubit>().createCollection(
+              context.read<CollectionBloc>().add(CreateCollectionEvent(
                 userId: userId,
                 name: value,
-              );
+              ));
             },
             closeDialog: () => Navigator.of(context).pop(),
             showDialog: (dialog) => showCupertinoDialog(

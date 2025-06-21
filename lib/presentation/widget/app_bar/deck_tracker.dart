@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/drawer/bloc.dart';
+import '../../bloc/tracker/bloc.dart';
+import '../../bloc/usage_card/bloc.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../cubit/reader.dart';
 import '../../cubit/record.dart';
-import '../../cubit/tracker.dart';
-import '../../cubit/usage_card.dart';
 import '../../locale/localization.dart';
 
 import '../notification/cupertino_dialog.dart';
@@ -38,8 +38,8 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
     final drawerCubit = context.read<DrawerBloc>();
     final readerCubit = context.read<ReaderCubit>();
     final recordCubit = context.read<RecordCubit>();
-    final trackerCubit = context.read<TrackerCubit>();
-    final usageCardCubit = context.read<UsageCardCubit>();
+    final trackerCubit = context.read<TrackerBloc>();
+    final usageCardCubit = context.read<UsageCardBloc>();
 
     final isAdvancedMode = trackerCubit.state.isAdvancedMode;
     final isSessionActive = nfcCubit.state.isSessionActive;
@@ -70,10 +70,10 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
                 DialogChoice(
                   text: locale.translate('page_deck_tracker.button_reset'),
                   onPressed: () {
-                    trackerCubit.toggleResetDeck();
+                    trackerCubit.add(ResetDeckEvent());
                     recordCubit.toggleResetRecord();
                     readerCubit.resetScannedCard();
-                    usageCardCubit.resetUsageStats();
+                    usageCardCubit.add(ResetUsageStatsEvent());
                     navigator.pop();
                   },
                 ),
@@ -81,10 +81,10 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
                   text: locale.translate('page_deck_tracker.button_save'),
                   onPressed: () {
                     recordCubit.createRecord(userId: userId);
-                    trackerCubit.toggleResetDeck();
+                    trackerCubit.add(ResetDeckEvent());
                     recordCubit.toggleResetRecord();
                     readerCubit.resetScannedCard();
-                    usageCardCubit.resetUsageStats();
+                    usageCardCubit.add(ResetUsageStatsEvent());
                     navigator.pop();
                   },
                 ),
@@ -105,7 +105,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
         toggleNfcItem,
         AppBarMenuItem(
           label: Icons.build_rounded,
-          action: () => trackerCubit.toggleAdvancedMode(),
+          action: () => trackerCubit.add(ToggleAdvancedModeEvent()),
         ),
       ];
     } else {
@@ -133,7 +133,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(
           label: Icons.build_outlined,
           action: () {
-            trackerCubit.toggleAdvancedMode();
+            trackerCubit.add(ToggleAdvancedModeEvent());
             if (drawerCubit.state.visibleFeatureDrawer) {
               drawerCubit.add(ToggleFeatureDrawerEvent());
             }

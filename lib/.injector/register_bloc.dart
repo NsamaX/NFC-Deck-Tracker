@@ -11,10 +11,13 @@ import 'service_locator.dart';
 Future<void> registerBloc() async {
   try {
     _browseCardBloc();
+    _collectionBloc();
     _deckBloc();
     _drawerBloc();
     _pinCardBloc();
     _roomBloc();
+    _searchCardBloc();
+    _usageCardBloc();
 
     LoggerUtil.debugMessage('✔️ Bloc registered successfully.');
   } catch (e) {
@@ -25,6 +28,15 @@ Future<void> registerBloc() async {
 void _browseCardBloc() {
   locator.registerFactoryParam<BrowseCardBloc, String, void>((collectionId, _) => BrowseCardBloc(
     fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
+  ));
+}
+
+void _collectionBloc() {
+  locator.registerLazySingleton(() => CollectionBloc(
+    createCollectionUsecase: locator<CreateCollectionUsecase>(),
+    deleteCollectionUsecase: locator<DeleteCollectionUsecase>(),
+    fetchCollectionUsecase: locator<FetchCollectionUsecase>(),
+    fetchUsedCardDistinctUsecase: locator<FetchUsedCardDistinctUsecase>(),
   ));
 }
 
@@ -59,4 +71,17 @@ void _roomBloc() {
       updateRoomUsecase: locator<UpdateRoomUsecase>(),
     );
   });
+}
+
+void _trackerBloc() {
+  locator.registerFactoryParam<TrackerCubit, DeckEntity, void>((deck, _) => TrackerBloc(
+    deck: deck,
+    trackCardInteractionUsecase: locator<TrackCardInteractionUsecase>(),
+  ));
+}
+
+void _usageCardBloc() {
+  locator.registerFactory(() => UsageCardBloc(
+    calculateUsageCardStatsUsecase: locator<CalculateUsageCardStatsUsecase>(),
+  ));
 }

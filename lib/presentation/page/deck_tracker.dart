@@ -12,11 +12,11 @@ import '../bloc/deck/bloc.dart';
 import '../bloc/drawer/bloc.dart';
 import '../bloc/pin_card/bloc.dart';
 import '../bloc/room/bloc.dart';
+import '../bloc/tracker/bloc.dart';
+import '../bloc/usage_card/bloc.dart';
 import '../cubit/nfc_cubit.dart';
 import '../cubit/reader.dart';
 import '../cubit/record.dart';
-import '../cubit/tracker.dart';
-import '../cubit/usage_card.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_tracker.dart';
 import '../widget/deck/insight_view.dart';
@@ -80,11 +80,11 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
       providers: [
         BlocProvider.value(value: locator<DrawerBloc>()),
         BlocProvider.value(value: locator<PinCardBloc>()),
-        BlocProvider.value(value: locator<UsageCardCubit>()),
+        BlocProvider.value(value: locator<UsageCardBloc>()),
         BlocProvider.value(value: locator<ReaderCubit>(param1: collectionId)),
         BlocProvider.value(value: locator<RecordCubit>(param1: deck.deckId)),
         BlocProvider.value(value: locator<RoomBloc>(param1: deck)),
-        BlocProvider.value(value: locator<TrackerCubit>(param1: deck)),
+        BlocProvider.value(value: locator<TrackerBloc>(param1: deck)),
       ],
       child: _DeckTrackerPageContent(userId: userId),
     );
@@ -98,12 +98,12 @@ class _DeckTrackerPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final trackerCubit = context.watch<TrackerCubit>();
+    final trackerCubit = context.watch<TrackerBloc>();
     final readerCubit = context.watch<ReaderCubit>();
     final drawerCubit = context.watch<DrawerBloc>();
     final recordCubit = context.watch<RecordCubit>();
     final roomCubit = context.watch<RoomBloc>();
-    final usageCardCubit = context.watch<UsageCardCubit>();
+    final usageCardCubit = context.watch<UsageCardBloc>();
     final locale = AppLocalization.of(context);
 
     return DeckTrackerListener(
@@ -124,7 +124,7 @@ class _DeckTrackerPageContent extends StatelessWidget {
                     const SizedBox(height: 16.0),
                     DeckSwitchMode(
                       isAnalyzeModeEnabled: trackerCubit.state.isAnalysisMode,
-                      onSelected: (_) => trackerCubit.toggleAnalysisMode(),
+                      onSelected: (_) => trackerCubit.add(ToggleAnalysisModeEvent()),
                     ),
                     const SizedBox(height: 8.0),
                     Expanded(

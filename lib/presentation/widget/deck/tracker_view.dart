@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/pin_card/bloc.dart';
+import '../../bloc/tracker/bloc.dart';
 import '../../cubit/record.dart';
-import '../../cubit/tracker.dart';
 import '../../locale/localization.dart';
 
 import '../card/list_tile.dart';
@@ -22,7 +22,7 @@ class DeckTrackerView extends StatelessWidget {
     final theme = Theme.of(context);
     final pinColorState = context.watch<PinCardBloc>().state;
 
-    return BlocBuilder<TrackerCubit, TrackerState>(
+    return BlocBuilder<TrackerBloc, TrackerState>(
       builder: (context, state) {
         final cardList = state.currentDeck.cards ?? [];
 

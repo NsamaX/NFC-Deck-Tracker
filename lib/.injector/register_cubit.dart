@@ -12,12 +12,9 @@ Future<void> registerCubit() async {
   try {
     _applicationCubit();
     _cardCubit();
-    _collectionCubit();
     _nfcCubit();
     _readerCubit();
     _recordCubit();
-    _trackerCubit();
-    _usageCardCubit();
 
     LoggerUtil.debugMessage('✔️ Cubit registered successfully.');
   } catch (e) {
@@ -41,15 +38,6 @@ void _cardCubit() {
   ));
 }
 
-void _collectionCubit() {
-  locator.registerLazySingleton(() => CollectionCubit(
-    createCollectionUsecase: locator<CreateCollectionUsecase>(),
-    deleteCollectionUsecase: locator<DeleteCollectionUsecase>(),
-    fetchCollectionUsecase: locator<FetchCollectionUsecase>(),
-    fetchUsedCardDistinctUsecase: locator<FetchUsedCardDistinctUsecase>(),
-  ));
-}
-
 void _nfcCubit() {
   locator.registerLazySingleton(() => NfcCubit());
 }
@@ -69,18 +57,5 @@ void _recordCubit() {
     deleteRecordUsecase: locator<DeleteRecordUsecase>(),
     fetchRecordUsecase: locator<FetchRecordUsecase>(),
     updateRecordUsecase: locator<UpdateRecordUsecase>(),
-  ));
-}
-
-void _trackerCubit() {
-  locator.registerFactoryParam<TrackerCubit, DeckEntity, void>((deck, _) => TrackerCubit(
-    deck: deck,
-    trackCardInteractionUsecase: locator<TrackCardInteractionUsecase>(),
-  ));
-}
-
-void _usageCardCubit() {
-  locator.registerFactory(() => UsageCardCubit(
-    calculateUsageCardStatsUsecase: locator<CalculateUsageCardStatsUsecase>(),
   ));
 }

@@ -6,7 +6,7 @@ import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '@argument.dart';
 
-import '../cubit/collection.dart';
+import '../bloc/collection/bloc.dart';
 import '../widget/app_bar/collection.dart';
 import '../widget/collection/list_view.dart';
 import '../widget/constant/image.dart';
@@ -35,7 +35,7 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: locator<CollectionCubit>()..fetchCollection(userId: _userId!),
+      value: locator<CollectionBloc>()..add(FetchCollectionEvent(userId: _userId!)),
       child: _CollectionPageContent(userId: _userId!, onAdd: _onAdd!),
     );
   }
@@ -51,7 +51,7 @@ class _CollectionPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CollectionAppBar(userId: userId),
-      body: BlocBuilder<CollectionCubit, CollectionState>(
+      body: BlocBuilder<CollectionBloc, CollectionState>(
         builder: (context, state) {
           return CollectionListView(
             gameKeys: ImageConstant.games.keys.toList(),
