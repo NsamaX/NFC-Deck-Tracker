@@ -13,10 +13,10 @@ import 'package:nfc_deck_tracker/domain/usecase/generate_share_deck_clipboard.da
 import 'package:nfc_deck_tracker/domain/usecase/update_card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 
-import '../locale/localization.dart';
+import '../../locale/localization.dart';
 
-part 'deck_event.dart';
-part 'deck_state.dart';
+part 'event.dart';
+part 'state.dart';
 
 class DeckBloc extends Bloc<DeckEvent, DeckState> {
   final CreateDeckUsecase createDeckUsecase;

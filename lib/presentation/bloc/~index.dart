@@ -1,1 +1,2 @@
-export 'deck_bloc.dart';
+export 'browse_card/bloc.dart';
+export 'deck/bloc.dart';

@@ -6,7 +6,7 @@ import 'package:nfc_deck_tracker/.config/app.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../../bloc/deck_bloc.dart';
+import '../../bloc/deck/bloc.dart';
 import '../../cubit/application.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../locale/localization.dart';

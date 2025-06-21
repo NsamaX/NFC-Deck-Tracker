@@ -19,7 +19,6 @@ Future<void> registerCubit() async {
     _readerCubit();
     _recordCubit();
     _roomCubit();
-    _searchCubit();
     _trackerCubit();
     _usageCardCubit();
 
@@ -95,12 +94,6 @@ void _roomCubit() {
       updateRoomUsecase: locator<UpdateRoomUsecase>(),
     );
   });
-}
-
-void _searchCubit() {
-  locator.registerFactoryParam<BrowseCardCubit, String, void>((collectionId, _) => BrowseCardCubit(
-    fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
-  ));
 }
 
 void _trackerCubit() {

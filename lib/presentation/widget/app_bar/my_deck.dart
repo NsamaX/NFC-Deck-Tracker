@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/deck_bloc.dart';
+import '../../bloc/deck/bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/route_constant.dart';
 

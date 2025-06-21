@@ -7,7 +7,7 @@ import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '@argument.dart';
 
-import '../cubit/browse_card.dart';
+import '../bloc/browse_card/bloc.dart';
 import '../cubit/card.dart';
 import '../locale/localization.dart';
 import '../route/route_constant.dart';
@@ -48,13 +48,13 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider<BrowseCardCubit>.value(value: locator<BrowseCardCubit>(
+        BlocProvider<BrowseCardBloc>.value(value: locator<BrowseCardBloc>(
             param1: GameConfig.isSupported(collectionId) ? collectionId : GameConfig.dummy,
-          )..fetchCard(
+          )..add(FetchCardsEvent(
               userId: userId,
               collectionId: collectionId,
               collectionName: collectionName,
-            ),
+            )),
         ),
         BlocProvider<CardCubit>.value(value: locator<CardCubit>()),
       ],
@@ -101,11 +101,11 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
   @override
   void didPopNext() {
     if (!GameConfig.isSupported(widget.collectionId)) {
-      context.read<BrowseCardCubit>().fetchCard(
+      context.read<BrowseCardBloc>().add(FetchCardsEvent(
         userId: widget.userId,
         collectionId: widget.collectionId,
         collectionName: widget.collectionName,
-      );
+      ));
     }
   }
 
@@ -138,12 +138,12 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
         children: [
           SearchBarWidget(
             onSearchChanged: (query) {
-              context.read<BrowseCardCubit>().filterCardByName(query: query);
+              context.read<BrowseCardBloc>().add(FilterCardByNameEvent(query: query));
             },
-            onSearchCleared: context.read<BrowseCardCubit>().resetSearch,
+            onSearchCleared: () => context.read<BrowseCardBloc>().add(ResetSearchEvent()),
           ),
           const SizedBox(height: 8),
-          BlocBuilder<BrowseCardCubit, BrowseCardState>(
+          BlocBuilder<BrowseCardBloc, BrowseCardState>(
             builder: (context, state) {
               if (state.isLoading) {
                 return const Expanded(child: Center(child: CircularProgressIndicator()));

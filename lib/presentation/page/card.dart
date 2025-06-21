@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../bloc/deck_bloc.dart';
+import '../bloc/deck/bloc.dart';
 import '../cubit/card.dart';
 import '../cubit/nfc_cubit.dart';
 import '../widget/app_bar/card.dart';

@@ -1,4 +1,4 @@
-part of 'deck_bloc.dart';
+part of 'bloc.dart';
 
 abstract class DeckEvent extends Equatable {
   const DeckEvent();

@@ -1,4 +1,4 @@
-part of 'deck_bloc.dart';
+part of 'bloc.dart';
 
 class DeckState extends Equatable {
   final List<DeckEntity> decks;
