@@ -23,6 +23,7 @@ This project integrates modern mobile development practices such as **Flutter**,
 
 - **Flutter** – Cross-platform mobile development  
 - **Firebase** – Cloud-based authentication and real-time database  
+- **Supabase** – Cloud-based image storage
 - **SQLite** – Local offline storage  
 - **NFC (Ntag213)** – Real-time card tracking via NFC  
 - **Clean Architecture** – Scalable and testable app structure
