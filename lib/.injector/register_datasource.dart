@@ -58,6 +58,7 @@ void _collectionLocalDatasource() {
   locator.registerLazySingleton(() => CreateCollectionLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => DeleteCollectionLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => FetchCollectionLocalDatasource(locator<SQLiteService>()));
+  locator.registerLazySingleton(() => UpdateCollectionDateLocalDatasource(locator<SQLiteService>()));
   locator.registerLazySingleton(() => UpdateCollectionLocalDatasource(locator<SQLiteService>()));
 }
 

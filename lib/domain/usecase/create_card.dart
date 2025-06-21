@@ -2,6 +2,7 @@ import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/data/repository/check_duplicate_name.dart';
 import 'package:nfc_deck_tracker/data/repository/create_card.dart';
+import 'package:nfc_deck_tracker/data/repository/update_collection_date.dart';
 import 'package:nfc_deck_tracker/data/repository/upload_image.dart';
 
 import '../entity/card.dart';
@@ -10,11 +11,13 @@ import '../mapper/card.dart';
 class CreateCardUsecase {
   final CheckCardDuplicateNameRepository checkCardDuplicateNameRepository;
   final CreateCardRepository createCardRepository;
+  final UpdateCollectionDateRepository updateCollectionDateRepository;
   final UploadImageRepository uploadImageRepository;
 
   CreateCardUsecase({
     required this.checkCardDuplicateNameRepository,
     required this.createCardRepository,
+    required this.updateCollectionDateRepository,
     required this.uploadImageRepository,
   });
 
@@ -61,6 +64,10 @@ class CreateCardUsecase {
 
       if (success) synced = true;
     }
+
+    await updateCollectionDateRepository.update(
+      collectionId: card.collectionId!,
+    );
 
     final finalEntity = updatedCard.copyWith(isSynced: synced);
     final cardModel = CardMapper.toModel(finalEntity);

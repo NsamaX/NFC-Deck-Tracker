@@ -27,6 +27,7 @@ void _cardUsecase() {
   locator.registerLazySingleton(() => CreateCardUsecase(
     checkCardDuplicateNameRepository: locator<CheckCardDuplicateNameRepository>(),
     createCardRepository: locator<CreateCardRepository>(),
+    updateCollectionDateRepository: locator<UpdateCollectionDateRepository>(),
     uploadImageRepository: locator<UploadImageRepository>(),
   ));
   locator.registerLazySingleton(() => DeleteCardUsecase(

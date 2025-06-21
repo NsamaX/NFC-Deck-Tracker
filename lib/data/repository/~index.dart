@@ -25,6 +25,7 @@ export 'load_setting.dart';
 export 'save_card.dart';
 export 'save_setting.dart';
 export 'update_card.dart';
+export 'update_collection_date.dart';
 export 'update_collection.dart';
 export 'update_deck.dart';
 export 'update_page.dart';

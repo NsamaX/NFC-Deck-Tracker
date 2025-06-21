@@ -77,6 +77,9 @@ void _collectionRepository() {
     fetchCollectionLocalDatasource: locator<FetchCollectionLocalDatasource>(),
     fetchCollectionRemoteDatasource: locator<FetchCollectionRemoteDatasource>(),
   ));
+  locator.registerLazySingleton(() => UpdateCollectionDateRepository(
+    updateCollectionDateLocalDatasource: locator<UpdateCollectionDateLocalDatasource>(),
+  ));
   locator.registerLazySingleton(() => UpdateCollectionRepository(
     updateCollectionLocalDatasource: locator<UpdateCollectionLocalDatasource>(),
     updateCollectionRemoteDatasource: locator<UpdateCollectionRemoteDatasource>(),

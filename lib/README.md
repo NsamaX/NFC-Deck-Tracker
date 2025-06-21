@@ -2,18 +2,18 @@
 
 ## Overview
 
-The `lib/` directory contains the **entire application source code**, structured using the **Clean Architecture** pattern.  
-This structure separates the app into distinct layers to ensure **modularity**, **testability**, and **maintainability**.  
+The `lib/` directory contains the **entire application source code**, structured using the **Clean Architecture** pattern.
+This structure separates the app into distinct layers to ensure **modularity**, **testability**, and **maintainability**.
 Each layer has a clear responsibility and communicates with other layers through well-defined interfaces.
 
 ---
 
 ## 🧱 Clean Architecture Layers
 
-1. **Presentation Layer** – UI, interaction, and state management  
-2. **Domain Layer**       – Core business logic and use cases  
-3. **Data Layer**         – Data access from APIs, databases, etc.  
-4. **Injection Layer**    – Dependency registration via service locator  
+1. **Presentation Layer** – UI, interaction, and state management
+2. **Domain Layer**       – Core business logic and use cases
+3. **Data Layer**         – Data access from APIs, databases, etc.
+4. **Injection Layer**    – Dependency registration via service locator
 5. **Config Layer**       – App-wide constants and configurations
 
 ---
@@ -30,7 +30,7 @@ lib/
 ├── util/                   # Reusable utilities (e.g., logger, extensions, helpers)
 ├── firebase_options.dart   # Firebase configuration file (auto-generated)
 ├── main.dart               # App entry point and bootstrap logic
-````
+```
 
 ---
 
@@ -116,4 +116,32 @@ lib/
 
 ---
 
+## ⚠️ Development Notes
+
+> To run the application in a development environment, make sure to follow the steps below:
+
+### ✅ Required: `.env` File
+
+Create a `.env` file in the project root with the following variables:
+
+```env
+SUPABASE_URL=your_supabase_url
+SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+These are necessary for Supabase integration.
+
+### ✅ Required: Firebase Setup
+
+Ensure the app is connected to Firebase:
+
+1. Set up your Firebase project at [console.firebase.google.com](https://console.firebase.google.com).
+2. Download the `google-services.json` and `GoogleService-Info.plist` files for Android/iOS.
+3. Run `flutterfire configure` if using FlutterFire CLI.
+4. Ensure `firebase_options.dart` is generated and used in `main.dart`.
+
+---
+
 > ℹ️ This documentation provides guidance to developers contributing to the app’s core structure, ensuring a consistent and understandable codebase.
+
+---
