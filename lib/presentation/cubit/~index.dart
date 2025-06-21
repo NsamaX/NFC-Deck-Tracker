@@ -1,5 +1,4 @@
 export 'application.dart';
-export 'browse_card.dart';
 export 'card.dart';
 export 'collection.dart';
 export 'drawer.dart';
