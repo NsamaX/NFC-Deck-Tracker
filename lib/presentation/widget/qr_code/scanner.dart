@@ -6,13 +6,13 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
-import '../../cubit/room.dart';
+import '../../bloc/room/bloc.dart';
 import '../../locale/localization.dart';
 
 import '../app_bar/@default.dart';
 
 class QRCodeScanner extends StatefulWidget {
-  final RoomCubit roomCubit;
+  final RoomBloc roomCubit;
 
   QRCodeScanner({
     super.key,
@@ -56,7 +56,7 @@ class _JoinRoomScannerPageState extends State<QRCodeScanner> {
           result ?? '',
         ];
         if (playerIds[0] == playerIds[1] || playerIds.isEmpty) return;
-        widget.roomCubit.createRoom(playerIds: playerIds);
+        widget.roomCubit.add(CreateRoomEvent(playerIds: playerIds));
       });
     });
   }

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '../../cubit/drawer.dart';
+import '../../bloc/drawer/bloc.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../cubit/reader.dart';
 import '../../locale/localization.dart';
@@ -74,8 +74,8 @@ class TagReaderListener extends StatelessWidget {
                 type: SnackBarType.success,
               );
 
-              if (!context.read<DrawerCubit>().state.visibleHistoryDrawer) {
-                context.read<DrawerCubit>().toggleHistoryDrawer();
+              if (!context.read<DrawerBloc>().state.visibleHistoryDrawer) {
+                context.read<DrawerBloc>().add(ToggleHistoryDrawerEvent());
               }
             }
 

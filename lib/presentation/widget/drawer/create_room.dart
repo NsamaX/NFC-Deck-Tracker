@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/drawer.dart';
-import '../../cubit/room.dart';
+import '../../bloc/room/bloc.dart';
+import '../../bloc/drawer/bloc.dart';
 import '../../locale/localization.dart';
 
 import '../qr_code/generetor.dart';
@@ -10,7 +10,7 @@ import '../qr_code/scanner.dart';
 
 class CreateRoomDrawer extends StatelessWidget {
   final String userId;
-  final RoomCubit roomCubit;
+  final RoomBloc roomCubit;
 
   const CreateRoomDrawer({
     super.key,
@@ -20,7 +20,7 @@ class CreateRoomDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<DrawerCubit, DrawerState>(
+    return BlocBuilder<DrawerBloc, DrawerState>(
       buildWhen: (previous, current) => previous.visibleFeatureDrawer != current.visibleFeatureDrawer,
       builder: (context, state) {
         return AnimatedPositioned(
@@ -57,7 +57,7 @@ class CreateRoomDrawer extends StatelessWidget {
 
 class _DrawerContainer extends StatelessWidget {
   final String userId;
-  final RoomCubit roomCubit;
+  final RoomBloc roomCubit;
 
   const _DrawerContainer({
     required this.userId,

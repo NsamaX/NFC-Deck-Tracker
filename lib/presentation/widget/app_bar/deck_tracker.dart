@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../cubit/drawer.dart';
+import '../../bloc/drawer/bloc.dart';
 import '../../cubit/nfc_cubit.dart';
 import '../../cubit/reader.dart';
 import '../../cubit/record.dart';
@@ -35,7 +35,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
     final locale = AppLocalization.of(context);
     final navigator = Navigator.of(context);
 
-    final drawerCubit = context.read<DrawerCubit>();
+    final drawerCubit = context.read<DrawerBloc>();
     final readerCubit = context.read<ReaderCubit>();
     final recordCubit = context.read<RecordCubit>();
     final trackerCubit = context.read<TrackerCubit>();
@@ -57,7 +57,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
       return [
         AppBarMenuItem(
           label: Icons.access_time_rounded,
-          action: () => drawerCubit.toggleHistoryDrawer(),
+          action: () => drawerCubit.add(ToggleHistoryDrawerEvent()),
         ),
         AppBarMenuItem(
           label: Icons.refresh_rounded,
@@ -126,7 +126,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
                     builder: (_) => dialog,
                   ),
                 ) 
-              : drawerCubit.toggleFeatureDrawer(),
+              : drawerCubit.add(ToggleFeatureDrawerEvent()),
         ),
         AppBarMenuItem(label: locale.translate('page_deck_tracker.app_bar')),
         toggleNfcItem,
@@ -135,7 +135,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
           action: () {
             trackerCubit.toggleAdvancedMode();
             if (drawerCubit.state.visibleFeatureDrawer) {
-              drawerCubit.toggleFeatureDrawer();
+              drawerCubit.add(ToggleFeatureDrawerEvent());
             }
           },
         ),

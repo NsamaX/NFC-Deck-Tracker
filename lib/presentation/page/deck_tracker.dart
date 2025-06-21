@@ -9,12 +9,12 @@ import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
 import '../bloc/deck/bloc.dart';
+import '../bloc/drawer/bloc.dart';
 import '../bloc/pin_card/bloc.dart';
-import '../cubit/drawer.dart';
+import '../bloc/room/bloc.dart';
 import '../cubit/nfc_cubit.dart';
 import '../cubit/reader.dart';
 import '../cubit/record.dart';
-import '../cubit/room.dart';
 import '../cubit/tracker.dart';
 import '../cubit/usage_card.dart';
 import '../locale/localization.dart';
@@ -78,12 +78,12 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider.value(value: locator<DrawerCubit>()),
+        BlocProvider.value(value: locator<DrawerBloc>()),
         BlocProvider.value(value: locator<PinCardBloc>()),
         BlocProvider.value(value: locator<UsageCardCubit>()),
         BlocProvider.value(value: locator<ReaderCubit>(param1: collectionId)),
         BlocProvider.value(value: locator<RecordCubit>(param1: deck.deckId)),
-        BlocProvider.value(value: locator<RoomCubit>(param1: deck)),
+        BlocProvider.value(value: locator<RoomBloc>(param1: deck)),
         BlocProvider.value(value: locator<TrackerCubit>(param1: deck)),
       ],
       child: _DeckTrackerPageContent(userId: userId),
@@ -100,9 +100,9 @@ class _DeckTrackerPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final trackerCubit = context.watch<TrackerCubit>();
     final readerCubit = context.watch<ReaderCubit>();
-    final drawerCubit = context.watch<DrawerCubit>();
+    final drawerCubit = context.watch<DrawerBloc>();
     final recordCubit = context.watch<RecordCubit>();
-    final roomCubit = context.watch<RoomCubit>();
+    final roomCubit = context.watch<RoomBloc>();
     final usageCardCubit = context.watch<UsageCardCubit>();
     final locale = AppLocalization.of(context);
 
@@ -113,7 +113,7 @@ class _DeckTrackerPageContent extends StatelessWidget {
           nfcCubit: context.watch<NfcCubit>(),
         ),
         body: GestureDetector(
-          onTap: drawerCubit.closeAllDrawer,
+          onTap: () => drawerCubit.add(CloseAllDrawerEvent()),
           behavior: HitTestBehavior.opaque,
           child: Stack(
             children: [

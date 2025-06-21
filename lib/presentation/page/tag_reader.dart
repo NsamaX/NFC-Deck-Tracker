@@ -5,8 +5,8 @@ import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
+import '../bloc/drawer/bloc.dart';
 import '../cubit/application.dart';
-import '../cubit/drawer.dart';
 import '../cubit/nfc_cubit.dart';
 import '../cubit/reader.dart';
 import '../locale/localization.dart';
@@ -37,7 +37,7 @@ class _TagReaderPageState extends State<TagReaderPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => locator<DrawerCubit>()),
+        BlocProvider(create: (_) => locator<DrawerBloc>()),
         BlocProvider(create: (_) => locator<ReaderCubit>(param1: _collectionId)),
       ],
       child: _TagReaderPageContent(onTagDetected: _onTagDetected),
@@ -62,7 +62,7 @@ class _TagReaderPageContent extends StatelessWidget {
           AppBarMenuItem(
             label: Icons.history_rounded,
             action: () {
-              context.read<DrawerCubit>().toggleHistoryDrawer();
+              context.read<DrawerBloc>().add(ToggleHistoryDrawerEvent());
             },
           ),
           AppBarMenuItem(
@@ -71,7 +71,7 @@ class _TagReaderPageContent extends StatelessWidget {
           AppBarMenuItem(
             label: Icons.search_rounded,
             action: () {
-              context.read<DrawerCubit>().toggleFeatureDrawer();
+              context.read<DrawerBloc>().add(ToggleFeatureDrawerEvent());
             },
           ),
         ],
@@ -80,7 +80,7 @@ class _TagReaderPageContent extends StatelessWidget {
         onTagDetected: onTagDetected,
         child: GestureDetector(
           onTap: () {
-            context.read<DrawerCubit>().closeAllDrawer();
+            context.read<DrawerBloc>().add(CloseAllDrawerEvent());
           },
           behavior: HitTestBehavior.opaque,
           child: Stack(
@@ -95,13 +95,13 @@ class _TagReaderPageContent extends StatelessWidget {
                   );
                 },
               ),
-              BlocBuilder<DrawerCubit, DrawerState>(
+              BlocBuilder<DrawerBloc, DrawerState>(
                 buildWhen: (prev, curr) => prev.visibleHistoryDrawer != curr.visibleHistoryDrawer,
                 builder: (context, drawerState) {
                   return BlocBuilder<ReaderCubit, ReaderState>(
                     builder: (context, readerState) {
                       return CardHistoryDrawer(
-                        drawerCubit: context.watch<DrawerCubit>(),
+                        drawerCubit: context.watch<DrawerBloc>(),
                         readerCubit: context.watch<ReaderCubit>(),
                       );
                     },
@@ -110,7 +110,7 @@ class _TagReaderPageContent extends StatelessWidget {
               ),
               BlocBuilder<ApplicationCubit, ApplicationState>(
                 builder: (context, appState) {
-                  return BlocBuilder<DrawerCubit, DrawerState>(
+                  return BlocBuilder<DrawerBloc, DrawerState>(
                     buildWhen: (prev, curr) => prev.visibleFeatureDrawer != curr.visibleFeatureDrawer,
                     builder: (context, drawerState) {
                       return CollectionDrawer(

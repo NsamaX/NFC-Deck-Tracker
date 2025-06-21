@@ -12,7 +12,9 @@ Future<void> registerBloc() async {
   try {
     _browseCardBloc();
     _deckBloc();
+    _drawerBloc();
     _pinCardBloc();
+    _roomBloc();
 
     LoggerUtil.debugMessage('✔️ Bloc registered successfully.');
   } catch (e) {
@@ -38,6 +40,23 @@ void _deckBloc() {
   ));
 }
 
+void _drawerBloc() {
+  locator.registerFactory(() => DrawerBloc());
+}
+
 void _pinCardBloc() {
   locator.registerFactory(() => PinCardBloc());
+}
+
+void _roomBloc() {
+  locator.registerFactoryParam<RoomBloc, DeckEntity, void>((deck, _) {
+    return RoomBloc(
+      deck: deck,
+      closeRoomUsecase: locator<CloseRoomUsecase>(),
+      createRoomUsecase: locator<CreateRoomUsecase>(),
+      fetchRoomUsecase: locator<FetchRoomUsecase>(),
+      joinRoomUsecase: locator<JoinRoomUsecase>(),
+      updateRoomUsecase: locator<UpdateRoomUsecase>(),
+    );
+  });
 }

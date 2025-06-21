@@ -13,11 +13,9 @@ Future<void> registerCubit() async {
     _applicationCubit();
     _cardCubit();
     _collectionCubit();
-    _drawerCubit();
     _nfcCubit();
     _readerCubit();
     _recordCubit();
-    _roomCubit();
     _trackerCubit();
     _usageCardCubit();
 
@@ -52,10 +50,6 @@ void _collectionCubit() {
   ));
 }
 
-void _drawerCubit() {
-  locator.registerFactory(() => DrawerCubit());
-}
-
 void _nfcCubit() {
   locator.registerLazySingleton(() => NfcCubit());
 }
@@ -76,19 +70,6 @@ void _recordCubit() {
     fetchRecordUsecase: locator<FetchRecordUsecase>(),
     updateRecordUsecase: locator<UpdateRecordUsecase>(),
   ));
-}
-
-void _roomCubit() {
-  locator.registerFactoryParam<RoomCubit, DeckEntity, void>((deck, _) {
-    return RoomCubit(
-      deck: deck,
-      closeRoomUsecase: locator<CloseRoomUsecase>(),
-      createRoomUsecase: locator<CreateRoomUsecase>(),
-      fetchRoomUsecase: locator<FetchRoomUsecase>(),
-      joinRoomUsecase: locator<JoinRoomUsecase>(),
-      updateRoomUsecase: locator<UpdateRoomUsecase>(),
-    );
-  });
 }
 
 void _trackerCubit() {
