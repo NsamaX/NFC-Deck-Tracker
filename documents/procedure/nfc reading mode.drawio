@@ -1,0 +1,96 @@
+<mxfile host="65bd71144e">
+    <diagram name="Page-1" id="FUj5JuBEpWsL8a2AdBEq">
+        <mxGraphModel dx="574" dy="1222" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+            <root>
+                <mxCell id="0"/>
+                <mxCell id="1" parent="0"/>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-222" value="แท็กมีข้อมูล" style="rhombus;strokeWidth=1;whiteSpace=wrap;fontStyle=0;fillColor=default;" parent="1" vertex="1">
+                    <mxGeometry x="1284" y="393" width="101" height="101" as="geometry"/>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-225" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" parent="1" source="6EVmLK6l6n9z2KSdd183-222" target="6EVmLK6l6n9z2KSdd183-227" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                        <mxPoint x="1334" y="481" as="sourcePoint"/>
+                        <mxPoint x="1333" y="525" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="19" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;ใช่&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="6EVmLK6l6n9z2KSdd183-225" vertex="1" connectable="0">
+                    <mxGeometry x="-0.1783" relative="1" as="geometry">
+                        <mxPoint x="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="22" style="html=1;entryX=0.615;entryY=-0.003;entryDx=0;entryDy=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;rounded=0;edgeStyle=orthogonalEdgeStyle;entryPerimeter=0;" parent="1" source="6EVmLK6l6n9z2KSdd183-227" target="26" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1395" y="603" as="sourcePoint"/>
+                        <mxPoint x="1215" y="668" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="24" value="ไม่" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="22" vertex="1" connectable="0">
+                    <mxGeometry x="-0.8701" relative="1" as="geometry">
+                        <mxPoint x="-20" y="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-227" value="รูปแบบข้อมูล&#xa;ถูกต้อง" style="rhombus;strokeWidth=1;whiteSpace=wrap;fontStyle=0;fillColor=default;" parent="1" vertex="1">
+                    <mxGeometry x="1284" y="553" width="101" height="101" as="geometry"/>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-230" value="" style="curved=1;startArrow=none;endArrow=block;exitX=0.5;exitY=1;entryX=0.5;entryY=0;rounded=0;entryDx=0;entryDy=0;exitDx=0;exitDy=0;" parent="1" source="6EVmLK6l6n9z2KSdd183-227" target="41" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points"/>
+                        <mxPoint x="1334.3" y="654" as="sourcePoint"/>
+                        <mxPoint x="1334.5" y="713" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="18" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;ใช่&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="6EVmLK6l6n9z2KSdd183-230" vertex="1" connectable="0">
+                    <mxGeometry x="-0.2643" relative="1" as="geometry">
+                        <mxPoint x="-1" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6EVmLK6l6n9z2KSdd183-247" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;" parent="1" source="6EVmLK6l6n9z2KSdd183-222" target="26" edge="1">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="1274.5" y="531" as="sourcePoint"/>
+                        <mxPoint x="1215" y="668" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="13" value="&lt;span style=&quot;color: rgb(0, 0, 0);&quot;&gt;ไม่&lt;/span&gt;" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="6EVmLK6l6n9z2KSdd183-247" vertex="1" connectable="0">
+                    <mxGeometry x="-0.0068" relative="1" as="geometry">
+                        <mxPoint x="41" y="-70" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="45" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;rounded=0;curved=0;" edge="1" parent="1" source="26" target="43">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="1216" y="790"/>
+                            <mxPoint x="1335" y="790"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="26" value="แสดงข้อผิดพลาด" style="whiteSpace=wrap;strokeWidth=1;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="1160" y="652" width="111.5" height="47" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="36" target="6EVmLK6l6n9z2KSdd183-222">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="1334.5" y="341" as="sourcePoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="36" value="รอรับสัญญาณ NFC" style="whiteSpace=wrap;strokeWidth=1;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="1278.75" y="290" width="111.5" height="48" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="37" target="36">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="37" value="" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+                    <mxGeometry x="1324.5" y="220" width="20" height="20" as="geometry"/>
+                </mxCell>
+                <mxCell id="44" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="41" target="43">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="41" value="ส่งข้อมูลที่อ่าน" style="whiteSpace=wrap;strokeWidth=1;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="1280.25" y="710" width="110" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="สิ้นสุด" style="whiteSpace=wrap;strokeWidth=1;fillColor=default;" vertex="1" parent="1">
+                    <mxGeometry x="1280.25" y="830" width="110" height="50" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+</mxfile>

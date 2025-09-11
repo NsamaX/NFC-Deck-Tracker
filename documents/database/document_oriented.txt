@@ -1,0 +1,27 @@
+users/{userID}/
+├── collections/
+│   └── {collectionId} (Document)
+│       ├── name: String
+│       └── cards/ (Subcollection)
+│           └── {cardId} (Document)
+│               ├── name: String
+│               ├── imageUrl: String?
+│               ├── description: String?
+│               ├── additionalData: Map<String, dynamic>?
+│               └── updatedAt: Timestamp
+├── decks/
+│   └── {deckId} (Document)
+│       ├── name: String
+│       ├── cards: List<CardInDeckModel>
+│       ├── isSynced: bool
+│       └── updatedAt: Timestamp
+├── records/
+│   └── {recordID} (Document)
+│       ├── deckId: String
+│       ├── createdAt: Timestamp
+│       ├── data: List<Map<String, dynamic>>
+│       ├── isSynced: bool
+│       └── updatedAt: Timestamp
+└── room (Document)
+    ├── cards: List<CardModel>
+    └── data: List<Map<String, dynamic>>

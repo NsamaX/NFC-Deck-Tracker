@@ -1,0 +1,65 @@
+import 'package:flutter/material.dart';
+
+import '../../constant.dart';
+
+class NfcIcon extends StatelessWidget {
+  final bool isSessionActive;
+  final VoidCallback onTap;
+
+  const NfcIcon({
+    super.key,
+    required this.isSessionActive,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+
+    final color = isSessionActive
+        ? theme.bottomNavigationBarTheme.selectedItemColor ?? Colors.black
+        : theme.bottomNavigationBarTheme.unselectedItemColor ?? Colors.black;
+
+    return Center(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _buildIcon(angle: -90, offsetX: WidgetConstant.NfcButtonDot + 6, color: color),
+            const SizedBox(width: 4),
+            _buildDot(color),
+            const SizedBox(width: 4),
+            _buildIcon(angle: 90, offsetX: -WidgetConstant.NfcButtonDot - 6, color: color),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIcon({
+    required double angle,
+    required double offsetX,
+    required Color color,
+  }) {
+    return Transform.translate(
+      offset: Offset(offsetX, 0),
+      child: AnimatedRotation(
+        duration: WidgetConstant.NfcTransitionDuration,
+        turns: angle / 360,
+        curve: Curves.easeInOut,
+        child: Icon(Icons.wifi_rounded, size: WidgetConstant.NfcButtonIcon, color: color),
+      ),
+    );
+  }
+
+  Widget _buildDot(Color color) {
+    return AnimatedContainer(
+      duration: WidgetConstant.NfcTransitionDuration,
+      curve: Curves.easeInOut,
+      width: WidgetConstant.NfcButtonDot,
+      height: WidgetConstant.NfcButtonDot,
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+    );
+  }
+}

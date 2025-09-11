@@ -1,0 +1,62 @@
+plugins {
+    id "com.android.application"
+    id 'com.google.gms.google-services'
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
+android {
+    namespace = "com.tacticsv.nfc_deck_tracker"
+    compileSdk = 35
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        coreLibraryDesugaringEnabled true
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.tacticsv.nfc_deck_tracker"
+        minSdk = 24
+        targetSdk = 35
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+    signingConfigs {
+        release {
+            storeFile file(keystoreProperties['storeFile'])
+            storePassword keystoreProperties['storePassword']
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+        }
+    }
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+
+dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
+}
