@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:connectivity_plus/connectivity_plus.dart';
+import '../dependencies.dart';
 
 import '../locale/localization.dart';
 import '../widget/button/google_sign_in.dart';
@@ -17,9 +17,9 @@ class SignInPage extends StatelessWidget {
     final locale = AppLocalization.of(context);
 
     return Scaffold(
-      body: StreamBuilder<List<ConnectivityResult>>(
-        stream: Connectivity().onConnectivityChanged,
-        initialData: const [ConnectivityResult.none],
+      body: StreamBuilder<bool>(
+        stream: PresentationScope.read(context).device.connectivityChanges,
+        initialData: false,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -27,10 +27,7 @@ class SignInPage extends StatelessWidget {
             );
           }
 
-          final results = snapshot.data!;
-          final isOnline = results.any(
-            (result) => result != ConnectivityResult.none,
-          );
+          final isOnline = snapshot.data!;
 
           return Padding(
             padding: const EdgeInsets.symmetric(

@@ -1,15 +1,14 @@
 import 'package:uuid/uuid.dart';
 
-import 'package:nfc_deck_tracker/data/repository/create_deck.dart';
+import '../repository/deck.dart';
 
 import '../entity/deck.dart';
-import '../mapper/deck.dart';
 
 class CreateDeckUsecase {
-  final CreateDeckRepository createDeckRepository;
+  final DeckRepository deckRepository;
 
   CreateDeckUsecase({
-    required this.createDeckRepository,
+    required this.deckRepository,
   });
 
   Future<void> call({
@@ -24,18 +23,16 @@ class CreateDeckUsecase {
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await createDeckRepository.createForRemote(
+      final success = await deckRepository.createForRemote(
         userId: userId,
-        deck: DeckMapper.toModel(
-          updatedDeck.copyWith(isSynced: true),
-        ),
+        deck: updatedDeck.copyWith(isSynced: true),
       );
 
       if (success) synced = true;
     }
 
     final finalEntity = updatedDeck.copyWith(isSynced: synced);
-    final deckModel = DeckMapper.toModel(finalEntity);
-    await createDeckRepository.createForLocal(deck: deckModel);
+    final deckToSave = finalEntity;
+    await deckRepository.createForLocal(deck: deckToSave);
   }
 }

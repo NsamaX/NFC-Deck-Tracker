@@ -1,15 +1,14 @@
 import 'package:uuid/uuid.dart';
 
-import 'package:nfc_deck_tracker/data/repository/create_collection.dart';
+import '../repository/collection.dart';
 
 import '../entity/collection.dart';
-import '../mapper/collection.dart';
 
 class CreateCollectionUsecase {
-  final CreateCollectionRepository createCollectionRepository;
+  final CollectionRepository collectionRepository;
 
   CreateCollectionUsecase({
-    required this.createCollectionRepository,
+    required this.collectionRepository,
   });
 
   Future<void> call({
@@ -25,18 +24,16 @@ class CreateCollectionUsecase {
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await createCollectionRepository.createForRemote(
+      final success = await collectionRepository.createForRemote(
         userId: userId,
-        collection: CollectionMapper.toModel(
-          newCollection.copyWith(isSynced: true),
-        ),
+        collection: newCollection.copyWith(isSynced: true),
       );
 
       if (success) synced = true;
     }
 
     final finalEntity = newCollection.copyWith(isSynced: synced);
-    final collectionModel = CollectionMapper.toModel(finalEntity);
-    await createCollectionRepository.createForLocal(collection: collectionModel);
+    final collectionToSave = finalEntity;
+    await collectionRepository.createForLocal(collection: collectionToSave);
   }
 }

@@ -29,7 +29,7 @@ lib/
 ├── presentation/                # UI components, localization, theming, and Blocs
 ├── util/                        # Reusable utilities (e.g., logger, extensions, helpers)
 ├── main.dart                    # App entry point and bootstrap logic
-├── nfc_life_cycle_observer.dart # NFC lifecycle management
+├── presentation/app.dart       # App UI and NFC lifecycle composition
 ```
 
 ---
@@ -58,7 +58,7 @@ lib/
 
 ### **`domain/`**
 
-  * **Purpose**: Contains the application's core business rules and logic, including entities, data mappers, and use cases.
+  * **Purpose**: Contains application rules, entities, repository interfaces, and use cases. Persistence mappers live in `data/mapper`.
   * 📄 [See more](./domain/README.md)
 
 ---

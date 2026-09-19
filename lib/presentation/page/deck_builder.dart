@@ -1,8 +1,6 @@
-import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-
 
 import '../bloc/application/bloc.dart';
 import '../bloc/deck/bloc.dart';
@@ -33,7 +31,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
     nameController = TextEditingController(
       text: context.read<DeckBloc>().state.currentDeck.name,
     );
-    userId = AuthSession.currentUser?.uid ?? '';
+    userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
 
     context.read<DeckBloc>().add(CloseEditModeEvent());
   }

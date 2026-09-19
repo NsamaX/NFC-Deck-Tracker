@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+import '../dependencies.dart';
 
 import '../locale/localization.dart';
 import '../widget/app_bar/@default.dart';
@@ -14,13 +14,13 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPage extends State<AboutPage> {
-  late final Future<PackageInfo> packageInfoFuture;
+  late final Future<String> packageInfoFuture;
 
   @override
   void initState() {
     super.initState();
 
-    packageInfoFuture = PackageInfo.fromPlatform();
+    packageInfoFuture = PresentationScope.read(context).device.appVersion();
   }
 
   @override
@@ -38,7 +38,7 @@ class _AboutPage extends State<AboutPage> {
           AppBarMenuItem.empty(),
         ],
       ),
-      body: FutureBuilder<PackageInfo>(
+      body: FutureBuilder<String>(
         future: packageInfoFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -52,8 +52,10 @@ class _AboutPage extends State<AboutPage> {
             );
           }
 
-          final version = snapshot.data!.version;
-          final content = locale.translate('page_about.content').replaceFirst('{version}', version);
+          final version = snapshot.data!;
+          final content = locale
+              .translate('page_about.content')
+              .replaceFirst('{version}', version);
 
           return Padding(
             padding: const EdgeInsets.all(WidgetConstant.paddingAround),

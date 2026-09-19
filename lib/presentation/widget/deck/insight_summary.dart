@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:nfc_deck_tracker/.config/player_action.dart';
+import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/record.dart';
@@ -41,29 +41,38 @@ class DeckInsightSummary extends StatelessWidget {
         children: [
           Text(
             locale.translate('page_deck_tracker.summerize_title'),
-            style: theme.textTheme.bodyMedium?.copyWith(color: theme.appBarTheme.iconTheme?.color),
+            style: theme.textTheme.bodyMedium
+                ?.copyWith(color: theme.appBarTheme.iconTheme?.color),
           ),
           const SizedBox(height: 8.0),
           ...[
-            locale.translate('page_deck_tracker.summarize_percentage_played')
-                .replaceFirst('{percentage}', percentagePlayed.toStringAsFixed(1)),
-            locale.translate('page_deck_tracker.summarize_total_action')
+            locale
+                .translate('page_deck_tracker.summarize_percentage_played')
+                .replaceFirst(
+                    '{percentage}', percentagePlayed.toStringAsFixed(1)),
+            locale
+                .translate('page_deck_tracker.summarize_total_action')
                 .replaceFirst('{draw}', '$totalDraw')
                 .replaceFirst('{return}', '$totalReturn'),
-            locale.translate('page_deck_tracker.summarize_unused_card')
+            locale
+                .translate('page_deck_tracker.summarize_unused_card')
                 .replaceFirst('{unused}', '$unusedCardCount'),
-          ].map((line) => Text('     ➜ $line', style: theme.textTheme.bodySmall)),
+          ].map(
+              (line) => Text('     ➜ $line', style: theme.textTheme.bodySmall)),
         ],
       ),
     );
   }
 
-  int _totalDrawCount() => usageCardStat.fold(0, (sum, stat) => sum + stat.drawCount);
+  int _totalDrawCount() =>
+      usageCardStat.fold(0, (sum, stat) => sum + stat.drawCount);
 
-  int _totalReturnCount() => usageCardStat.fold(0, (sum, stat) => sum + stat.returnCount);
+  int _totalReturnCount() =>
+      usageCardStat.fold(0, (sum, stat) => sum + stat.returnCount);
 
   double _percentagePlayed() {
-    final totalCards = (initialDeck.cards ?? []).fold(0, (sum, e) => sum + e.count);
+    final totalCards =
+        (initialDeck.cards ?? []).fold(0, (sum, e) => sum + e.count);
     final playedCardTags = currentRecord.data
         .where((e) => e.playerAction == PlayerAction.take)
         .map((e) => e.tagId)
@@ -74,7 +83,8 @@ class DeckInsightSummary extends StatelessWidget {
   }
 
   int _unusedCardCount() {
-    final allCardNames = (initialDeck.cards ?? []).map((e) => e.card.name).toSet();
+    final allCardNames =
+        (initialDeck.cards ?? []).map((e) => e.card.name).toSet();
     final drawnCardIds = currentRecord.data
         .where((e) => e.playerAction == PlayerAction.take)
         .map((e) => e.cardId)

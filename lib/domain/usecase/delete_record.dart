@@ -1,20 +1,20 @@
-import 'package:nfc_deck_tracker/data/repository/delete_record.dart';
+import '../repository/record.dart';
 
 class DeleteRecordUsecase {
-  final DeleteRecordRepository deleteRecordRepository;
+  final RecordRepository recordRepository;
 
   DeleteRecordUsecase({
-    required this.deleteRecordRepository,
+    required this.recordRepository,
   });
 
   Future<void> call({
     required String userId,
     required String recordId,
   }) async {
-    await deleteRecordRepository.deleteForLocal(recordId: recordId);
+    await recordRepository.deleteForLocal(recordId: recordId);
 
     if (userId.isNotEmpty) {
-      await deleteRecordRepository.deleteForRemote(
+      await recordRepository.deleteForRemote(
         userId: userId,
         recordId: recordId,
       );

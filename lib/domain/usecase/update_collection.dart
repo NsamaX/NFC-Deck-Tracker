@@ -1,13 +1,12 @@
-import 'package:nfc_deck_tracker/data/repository/update_collection.dart';
+import '../repository/collection.dart';
 
 import '../entity/collection.dart';
-import '../mapper/collection.dart';
 
 class UpdateCollectionUsecase {
-  final UpdateCollectionRepository updateCollectionRepository;
+  final CollectionRepository collectionRepository;
 
   UpdateCollectionUsecase({
-    required this.updateCollectionRepository,
+    required this.collectionRepository,
   });
 
   Future<void> call({
@@ -19,18 +18,16 @@ class UpdateCollectionUsecase {
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await updateCollectionRepository.updateForRemote(
+      final success = await collectionRepository.updateForRemote(
         userId: userId,
-        collection: CollectionMapper.toModel(
-          updatedCollection.copyWith(isSynced: true),
-        ),
+        collection: updatedCollection.copyWith(isSynced: true),
       );
 
       if (success) synced = true;
     }
 
     final finalEntity = updatedCollection.copyWith(isSynced: synced);
-    final collectionModel = CollectionMapper.toModel(finalEntity);
-    await updateCollectionRepository.updateForLocal(collection: collectionModel);
+    final collectionToSave = finalEntity;
+    await collectionRepository.updateForLocal(collection: collectionToSave);
   }
 }

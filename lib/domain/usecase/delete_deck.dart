@@ -1,20 +1,20 @@
-import 'package:nfc_deck_tracker/data/repository/delete_deck.dart';
+import '../repository/deck.dart';
 
 class DeleteDeckUsecase {
-  final DeleteDeckRepository deleteDeckRepository;
+  final DeckRepository deckRepository;
 
   DeleteDeckUsecase({
-    required this.deleteDeckRepository,
+    required this.deckRepository,
   });
 
   Future<void> call({
     required String userId,
     required String deckId,
   }) async {
-    await deleteDeckRepository.deleteForLocal(deckId: deckId);
+    await deckRepository.deleteForLocal(deckId: deckId);
 
     if (userId.isNotEmpty) {
-      await deleteDeckRepository.deleteForRemote(
+      await deckRepository.deleteForRemote(
         userId: userId,
         deckId: deckId,
       );

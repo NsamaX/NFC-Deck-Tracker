@@ -1,12 +1,12 @@
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nfc_deck_tracker/domain/entity/session_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/.config/app.dart';
 import 'package:nfc_deck_tracker/.config/runtime.dart';
 
-import '../../auth/google.dart';
 import '../../bloc/application/bloc.dart';
 import '../../locale/language_manager.dart';
 import '../../locale/localization.dart';
@@ -21,39 +21,46 @@ class SettingBuilder {
       : locale = AppLocalization.of(context),
         applicationBloc = context.read<ApplicationBloc>();
 
-  Map<String, dynamic> buildAccountSection({User? user}) {
+  Map<String, dynamic> buildAccountSection({SessionUser? user}) {
     return {
       'title': locale.translate('page_setting.section_account_label'),
       'content': [
         {
           'icon': Icons.account_circle_rounded,
-          'text': user?.email ?? locale.translate('page_setting.section_account_email'),
+          'text': user?.email ??
+              locale.translate('page_setting.section_account_email'),
         },
         {
           'icon': Icons.bookmark_added_rounded,
           'text': locale.translate('page_setting.section_account_library'),
           'route': RouteConstant.library,
         },
-        if (!RuntimeConfig.guestMode) {
-          'icon': user == null 
-              ? Icons.login_rounded 
-              : Icons.logout_rounded,
-          'text': user == null
-              ? locale.translate('page_setting.section_account_sign_in')
-              : locale.translate('page_setting.section_account_sign_out'),
-          'onTap': () async {
-            if (user == null) {
-              await signInWithGoogle().then((_) {
-              applicationBloc.add(UpdateSettingEvent(key: AppConfig.keyGuestId, value: null));
+        if (!RuntimeConfig.guestMode)
+          {
+            'icon': user == null ? Icons.login_rounded : Icons.logout_rounded,
+            'text': user == null
+                ? locale.translate('page_setting.section_account_sign_in')
+                : locale.translate('page_setting.section_account_sign_out'),
+            'onTap': () async {
+              if (user == null) {
+                await PresentationScope.read(context)
+                    .session
+                    .signInWithGoogle()
+                    .then((_) {
+                  applicationBloc.add(UpdateSettingEvent(
+                      key: AppConfig.keyGuestId, value: null));
+                  applicationBloc.add(ClearUserDataEvent());
+                });
+              } else {
+                await PresentationScope.read(context)
+                    .session
+                    .signInWithGoogle();
+                applicationBloc.add(UpdateSettingEvent(
+                    key: AppConfig.keyGuestId, value: const Uuid().v4()));
                 applicationBloc.add(ClearUserDataEvent());
-              });
-            } else {
-              await signInWithGoogle();
-              applicationBloc.add(UpdateSettingEvent(key: AppConfig.keyGuestId, value: const Uuid().v4()));
-              applicationBloc.add(ClearUserDataEvent());
-            }
+              }
+            },
           },
-        },
       ],
     };
   }
@@ -92,16 +99,16 @@ class SettingBuilder {
           'route': RouteConstant.language,
         },
         {
-          'icon': applicationBloc.state.isDark 
-              ? Icons.dark_mode_rounded 
+          'icon': applicationBloc.state.isDark
+              ? Icons.dark_mode_rounded
               : Icons.light_mode_rounded,
-          'text': applicationBloc.state.isDark 
+          'text': applicationBloc.state.isDark
               ? locale.translate('page_setting.section_preferences_dark_mode')
               : locale.translate('page_setting.section_preferences_light_mode'),
           'onTap': () => applicationBloc.add(UpdateSettingEvent(
-            key: AppConfig.keyIsDark, 
-            value: !applicationBloc.state.isDark,
-          )),
+                key: AppConfig.keyIsDark,
+                value: !applicationBloc.state.isDark,
+              )),
         },
       ],
     };

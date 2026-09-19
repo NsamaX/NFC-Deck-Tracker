@@ -16,6 +16,10 @@ A mobile application for managing and tracking trading card game (TCG) decks in 
 
 ## Local configuration
 
+Architecture and contribution guidance: [Layer boundaries](docs/architecture.md).
+Domain owns contracts/use cases; data implements storage/platform adapters;
+presentation receives typed dependencies from the composition root.
+
 ### Guest mode on an Android emulator
 
 Guest mode stores decks, collections, cards, and settings locally. It skips

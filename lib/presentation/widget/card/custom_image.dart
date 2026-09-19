@@ -1,11 +1,10 @@
+import '../../dependencies.dart';
+import '../../../domain/entity/selected_image.dart';
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 import '../../bloc/card/bloc.dart';
 import '../../locale/localization.dart';
@@ -64,9 +63,11 @@ class CardCustomImage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.upload_rounded, size: 36.0, color: theme.iconTheme.color),
+            Icon(Icons.upload_rounded,
+                size: 36.0, color: theme.iconTheme.color),
             const SizedBox(height: 8.0),
-            Text(locale.translate('page_card_detail.upload_image'), style: theme.textTheme.bodyMedium),
+            Text(locale.translate('page_card_detail.upload_image'),
+                style: theme.textTheme.bodyMedium),
           ],
         ),
       ),
@@ -76,25 +77,15 @@ class CardCustomImage extends StatelessWidget {
   Future<void> _pickImage(BuildContext context) async {
     final locale = AppLocalization.of(context);
 
-    final status = await Permission.photos.request();
-    if (!status.isGranted) {
+    final selected =
+        await PresentationScope.read(context).device.selectCardImage();
+    if (!context.mounted) return;
+    if (selected.status == ImageSelectionStatus.permissionDenied) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(locale.translate('permission.denied_photos'))),
       );
-      return;
+    } else if (selected.status == ImageSelectionStatus.selected) {
+      cardBloc.add(SetCardImageUrlEvent(imageUrl: selected.path!));
     }
-
-    final picked = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (picked == null) return;
-
-    final savedPath = await _saveImageToPermanentDirectory(picked.path);
-    cardBloc.add(SetCardImageUrlEvent(imageUrl: savedPath));
-  }
-
-  Future<String> _saveImageToPermanentDirectory(String imagePath) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final fileName = imagePath.split('/').last;
-    final newPath = '${dir.path}/$fileName';
-    return File(imagePath).copy(newPath).then((f) => f.path);
   }
 }

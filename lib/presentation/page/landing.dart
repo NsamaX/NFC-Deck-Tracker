@@ -1,11 +1,9 @@
-import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import 'package:flutter/material.dart';
 
-
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import '../auth/google.dart';
 import '../locale/localization.dart';
 import '../route/constant.dart';
 import '../widget/button/max_width.dart';
@@ -28,9 +26,9 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Future<void> _signOutIfLoggedIn() async {
-    final user = AuthSession.currentUser;
+    final user = PresentationScope.read(context).session.currentUser;
     if (user != null) {
-      await signInWithGoogle();
+      await PresentationScope.read(context).session.signInWithGoogle();
       LoggerUtil.w('User signed out automatically on LandingPage');
     }
   }

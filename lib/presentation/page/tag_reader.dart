@@ -1,8 +1,8 @@
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
-import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '../bloc/application/bloc.dart';
 import '../bloc/drawer/bloc.dart';
@@ -36,8 +36,11 @@ class _TagReaderPageState extends State<TagReaderPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => locator<DrawerBloc>()),
-        BlocProvider(create: (_) => locator<ReaderBloc>(param1: _collectionId)),
+        BlocProvider(
+            create: (_) => PresentationScope.read(context).createDrawerBloc()),
+        BlocProvider(
+            create: (_) => PresentationScope.read(context)
+                .createReaderBloc(_collectionId)),
       ],
       child: _TagReaderPageContent(onTagDetected: _onTagDetected),
     );
@@ -95,7 +98,8 @@ class _TagReaderPageContent extends StatelessWidget {
                 },
               ),
               BlocBuilder<DrawerBloc, DrawerState>(
-                buildWhen: (prev, curr) => prev.visibleHistoryDrawer != curr.visibleHistoryDrawer,
+                buildWhen: (prev, curr) =>
+                    prev.visibleHistoryDrawer != curr.visibleHistoryDrawer,
                 builder: (context, drawerState) {
                   return BlocBuilder<ReaderBloc, ReaderState>(
                     builder: (context, readerState) {
@@ -110,7 +114,8 @@ class _TagReaderPageContent extends StatelessWidget {
               BlocBuilder<ApplicationBloc, ApplicationState>(
                 builder: (context, appState) {
                   return BlocBuilder<DrawerBloc, DrawerState>(
-                    buildWhen: (prev, curr) => prev.visibleFeatureDrawer != curr.visibleFeatureDrawer,
+                    buildWhen: (prev, curr) =>
+                        prev.visibleFeatureDrawer != curr.visibleFeatureDrawer,
                     builder: (context, drawerState) {
                       return CollectionDrawer(
                         key: ValueKey(appState.recentId),

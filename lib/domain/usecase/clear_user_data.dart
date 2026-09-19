@@ -1,30 +1,29 @@
-import 'package:nfc_deck_tracker/data/repository/clear_user_data.dart';
-import 'package:nfc_deck_tracker/data/repository/delete_image.dart';
-import 'package:nfc_deck_tracker/data/repository/fetch_used_card_distinct.dart';
-
-import '../mapper/card.dart';
+import '../repository/local_data.dart';
+import '../repository/image.dart';
+import '../repository/card.dart';
 
 class ClearUserDataUsecase {
-  final ClearUserDataRepository clearUserDataRepository;
-  final DeleteImageRepository deleteImageRepository;
-  final FetchUsedCardDistinctRepository fetchUsedCardDistinctRepository;
+  final LocalDataRepository localDataRepository;
+  final ImageRepository imageRepository;
+  final CardRepository cardRepository;
 
   ClearUserDataUsecase({
-    required this.clearUserDataRepository,
-    required this.deleteImageRepository,
-    required this.fetchUsedCardDistinctRepository,
+    required this.localDataRepository,
+    required this.imageRepository,
+    required this.cardRepository,
   });
 
   Future<void> call({
     required bool isGuest,
   }) async {
-    final cards = await fetchUsedCardDistinctRepository.fetch();
+    final cards = await cardRepository.fetchUsedCards();
 
     if (isGuest && cards.isNotEmpty) {
-      final List<String> imageUrls = cards.map(CardMapper.toEntity).toList().map((card) => card.imageUrl!).toList();
-      await deleteImageRepository.delete(imageUrls: imageUrls);
+      final List<String> imageUrls =
+          cards.map((card) => card.imageUrl!).toList();
+      await imageRepository.delete(imageUrls: imageUrls);
     }
 
-    await clearUserDataRepository.clear();
+    await localDataRepository.clear();
   }
 }

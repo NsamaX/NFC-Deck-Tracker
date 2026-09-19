@@ -1,13 +1,13 @@
-import 'package:nfc_deck_tracker/data/repository/delete_card.dart';
-import 'package:nfc_deck_tracker/data/repository/delete_image.dart';
+import '../repository/card.dart';
+import '../repository/image.dart';
 
 class DeleteCardUsecase {
-  final DeleteCardRepository deleteCardRepository;
-  final DeleteImageRepository deleteImageRepository;
+  final CardRepository cardRepository;
+  final ImageRepository imageRepository;
 
   DeleteCardUsecase({
-    required this.deleteCardRepository,
-    required this.deleteImageRepository,
+    required this.cardRepository,
+    required this.imageRepository,
   });
 
   Future<void> call({
@@ -16,16 +16,17 @@ class DeleteCardUsecase {
     required String cardId,
     required String imageUrl,
   }) async {
-    await deleteCardRepository.deleteForLocal(collectionId: collectionId, cardId: cardId);
+    await cardRepository.deleteForLocal(
+        collectionId: collectionId, cardId: cardId);
 
     if (userId.isNotEmpty) {
-      await deleteCardRepository.deleteForRemote(
+      await cardRepository.deleteForRemote(
         userId: userId,
         collectionId: collectionId,
         cardId: cardId,
       );
     }
 
-    await deleteImageRepository.delete(imageUrls: [imageUrl]);
+    await imageRepository.delete(imageUrls: [imageUrl]);
   }
 }

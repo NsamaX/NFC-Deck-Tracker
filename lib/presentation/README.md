@@ -2,6 +2,11 @@
 
 ## Overview
 
+`app.dart` receives typed `PresentationDependencies` from composition and exposes
+them through `PresentationScope`. Views create blocs through typed factories;
+they never import GetIt, data implementations, or infrastructure SDKs. See
+[layer boundaries](../../docs/architecture.md).
+
 The `presentation/` layer is responsible for managing the **User Interface (UI)** and **user interactions** within the application.  
 It renders the visual components based on the current application state and handles input from users.  
 This layer communicates with the domain or application layer (via Blocs) to execute logic and reflect changes.
@@ -28,8 +33,8 @@ presentation/
 
 * **`auth/`**
 
-  * Handles authentication using Google and guest sign-in options.
-  * Provides methods for user sign-in and sign-out.
+  * Contains the Guest entry/navigation helper.
+  * Online authentication calls `SessionUsecase`; Firebase/Google SDK code lives in data.
 
 * **`bloc/`**
 

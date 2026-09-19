@@ -1,9 +1,7 @@
-import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-
-import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '../bloc/collection/bloc.dart';
 import '../locale/localization.dart';
@@ -17,7 +15,7 @@ class LibraryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: locator<CollectionBloc>(),
+      value: PresentationScope.read(context).collectionBloc,
       child: const _LibraryPageState(),
     );
   }
@@ -36,8 +34,10 @@ class _LibraryPageContent extends State<_LibraryPageState> {
   @override
   void initState() {
     super.initState();
-    userId = AuthSession.currentUser?.uid ?? '';
-    context.read<CollectionBloc>().add(FetchUsedCardDistinctEvent(userId: userId));
+    userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
+    context
+        .read<CollectionBloc>()
+        .add(FetchUsedCardDistinctEvent(userId: userId));
   }
 
   @override

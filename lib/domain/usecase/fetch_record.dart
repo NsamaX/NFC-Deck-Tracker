@@ -1,40 +1,33 @@
-import 'package:nfc_deck_tracker/data/repository/create_record.dart';
-import 'package:nfc_deck_tracker/data/repository/delete_record.dart';
-import 'package:nfc_deck_tracker/data/repository/fetch_record.dart';
-import 'package:nfc_deck_tracker/data/repository/update_record.dart';
+import '../repository/record.dart';
 
-import 'package:nfc_deck_tracker/util/logger.dart';
+import '../service/domain_logger.dart';
 
 import '../entity/record.dart';
-import '../mapper/record.dart';
 
 class FetchRecordUsecase {
-  final CreateRecordRepository createRecordRepository;
-  final DeleteRecordRepository deleteRecordRepository;
-  final FetchRecordRepository fetchRecordRepository;
-  final UpdateRecordRepository updateRecordRepository;
+  final DomainLogger logger;
+  final RecordRepository recordRepository;
 
   FetchRecordUsecase({
-    required this.createRecordRepository,
-    required this.deleteRecordRepository,
-    required this.fetchRecordRepository,
-    required this.updateRecordRepository,
+    this.logger = const SilentDomainLogger(),
+    required this.recordRepository,
   });
 
   Future<List<RecordEntity>> call({
     required String userId,
     required String deckId,
   }) async {
-    final localModels = await fetchRecordRepository.fetchForLocal(deckId: deckId);
-    final localList = localModels.map(RecordMapper.toEntity).toList();
+    final localEntities = await recordRepository.fetchForLocal(deckId: deckId);
+    final localList = localEntities;
     final localMap = {for (final r in localList) r.recordId: r};
 
     List<RecordEntity> remoteList = [];
     Map<String, RecordEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteModels = await fetchRecordRepository.fetchForRemote(userId: userId, deckId: deckId);
-      remoteList = remoteModels.map(RecordMapper.toEntity).toList();
+      final remoteEntities =
+          await recordRepository.fetchForRemote(userId: userId, deckId: deckId);
+      remoteList = remoteEntities;
       remoteMap = {for (final r in remoteList) r.recordId: r};
 
       await _importOrUpdateFromRemote(remoteList, localMap, localList);
@@ -54,16 +47,17 @@ class FetchRecordUsecase {
       final local = localMap[remote.recordId];
 
       if (local == null) {
-        await createRecordRepository.createForLocal(record: RecordMapper.toModel(remote));
+        await recordRepository.createForLocal(record: remote);
         localList.add(remote);
-        LoggerUtil.d('📥 Imported remote record → local: ${remote.recordId}');
+        logger.d('📥 Imported remote record → local: ${remote.recordId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
-        await updateRecordRepository.updateForLocal(record: RecordMapper.toModel(remote));
-        final index = localList.indexWhere((r) => r.recordId == remote.recordId);
+        await recordRepository.updateForLocal(record: remote);
+        final index =
+            localList.indexWhere((r) => r.recordId == remote.recordId);
         if (index != -1) localList[index] = remote;
-        LoggerUtil.d('📥 Updated local record from remote: ${remote.recordId}');
+        logger.d('📥 Updated local record from remote: ${remote.recordId}');
       }
     }
   }
@@ -77,35 +71,35 @@ class FetchRecordUsecase {
       final remote = remoteMap[local.recordId];
 
       if (local.isSynced != true) {
-        final success = await createRecordRepository.createForRemote(
+        final success = await recordRepository.createForRemote(
           userId: userId,
-          record: RecordMapper.toModel(local.copyWith(isSynced: true)),
+          record: local.copyWith(isSynced: true),
         );
 
         if (success) {
           final updated = local.copyWith(isSynced: true);
-          await updateRecordRepository.updateForLocal(record: RecordMapper.toModel(updated));
-          final index = localList.indexWhere((r) => r.recordId == updated.recordId);
+          await recordRepository.updateForLocal(record: updated);
+          final index =
+              localList.indexWhere((r) => r.recordId == updated.recordId);
           if (index != -1) localList[index] = updated;
-          LoggerUtil.d('📤 Synced local record → remote: ${local.recordId}');
+          logger.d('📤 Synced local record → remote: ${local.recordId}');
         } else {
-          LoggerUtil.e('⚠️ Failed to sync local → remote: ${local.recordId}');
+          logger.e('⚠️ Failed to sync local → remote: ${local.recordId}');
         }
-      }
-
-      else if (remote != null &&
+      } else if (remote != null &&
           local.updatedAt != null &&
           remote.updatedAt != null &&
           local.updatedAt!.isAfter(remote.updatedAt!)) {
-        final success = await updateRecordRepository.updateForRemote(
+        final success = await recordRepository.updateForRemote(
           userId: userId,
-          record: RecordMapper.toModel(local.copyWith(isSynced: true)),
+          record: local.copyWith(isSynced: true),
         );
 
         if (success) {
-          LoggerUtil.d('🔁 Updated remote with newer local: ${local.recordId}');
+          logger.d('🔁 Updated remote with newer local: ${local.recordId}');
         } else {
-          LoggerUtil.e('⚠️ Failed to update newer local → remote: ${local.recordId}');
+          logger
+              .e('⚠️ Failed to update newer local → remote: ${local.recordId}');
         }
       }
     }
@@ -115,17 +109,21 @@ class FetchRecordUsecase {
     Map<String, RecordEntity> remoteMap,
     List<RecordEntity> localList,
   ) async {
-    final toRemove = localList.where(
-      (r) => r.isSynced == true && !remoteMap.containsKey(r.recordId),
-    ).toList();
+    final toRemove = localList
+        .where(
+          (r) => r.isSynced == true && !remoteMap.containsKey(r.recordId),
+        )
+        .toList();
 
     for (final record in toRemove) {
-      final success = await deleteRecordRepository.deleteForLocal(recordId: record.recordId);
+      final success =
+          await recordRepository.deleteForLocal(recordId: record.recordId);
       if (success) {
         localList.removeWhere((r) => r.recordId == record.recordId);
-        LoggerUtil.d('🗑️ Deleted local record not found in remote: ${record.recordId}');
+        logger.d(
+            '🗑️ Deleted local record not found in remote: ${record.recordId}');
       } else {
-        LoggerUtil.e('⚠️ Failed to delete local-only record: ${record.recordId}');
+        logger.e('⚠️ Failed to delete local-only record: ${record.recordId}');
       }
     }
   }

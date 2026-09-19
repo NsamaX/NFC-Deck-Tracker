@@ -1,6 +1,14 @@
+import '../domain/repository/nfc.dart';
+import '../domain/usecase/nfc_session.dart';
+import '../domain/repository/device.dart';
+import '../domain/usecase/device.dart';
+import '../domain/repository/session.dart';
+import '../domain/usecase/session.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:nfc_deck_tracker/data/repository/~index.dart';
+import '../domain/repository/~index.dart';
+import '../.config/app.dart';
+import '../util/domain_logger.dart';
 import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
@@ -9,6 +17,12 @@ import 'service_locator.dart';
 
 Future<void> registerUsecase() async {
   try {
+    locator.registerLazySingleton(
+        () => NfcSessionUsecase(locator<NfcRepository>()));
+    locator.registerLazySingleton(
+        () => DeviceUsecase(locator<DeviceRepository>()));
+    locator.registerLazySingleton(
+        () => SessionUsecase(locator<SessionRepository>()));
     _cardUsecase();
     _collectionUsecase();
     _deckUsecase();
@@ -24,123 +38,112 @@ Future<void> registerUsecase() async {
 
 void _cardUsecase() {
   locator.registerLazySingleton(() => CreateCardUsecase(
-    checkCardDuplicateNameRepository: locator<CheckCardDuplicateNameRepository>(),
-    createCardRepository: locator<CreateCardRepository>(),
-    updateCollectionDateRepository: locator<UpdateCollectionDateRepository>(),
-    uploadImageRepository: locator<UploadImageRepository>(),
-  ));
+        cardRepository: locator<CardRepository>(),
+        collectionRepository: locator<CollectionRepository>(),
+        imageRepository: locator<ImageRepository>(),
+      ));
   locator.registerLazySingleton(() => DeleteCardUsecase(
-    deleteCardRepository: locator<DeleteCardRepository>(),
-    deleteImageRepository: locator<DeleteImageRepository>(),
-  ));
-  locator.registerFactoryParam<FetchCardUsecase, String, void>((collectionId, _) {
+        cardRepository: locator<CardRepository>(),
+        imageRepository: locator<ImageRepository>(),
+      ));
+  locator
+      .registerFactoryParam<FetchCardUsecase, String, void>((collectionId, _) {
     return FetchCardUsecase(
-      createCollectionRepository: locator<CreateCollectionRepository>(),
-      createPageRepository: locator<CreatePageRepository>(),
-      fetchCardRepository: locator<FetchCardRepository>(param1: collectionId),
-      findCollectionRepository: locator<FindCollectionRepository>(),
-      findPageRepository: locator<FindPageRepository>(),
-      saveCardRepository: locator<SaveCardRepository>(),
-      updatePageRepository: locator<UpdatePageRepository>(),
+      repository: locator<CardCatalogRepository>(param1: collectionId),
     );
   });
   locator.registerLazySingleton(() => FetchUsedCardDistinctUsecase(
-    fetchUsedCardDistinctRepository: locator<FetchUsedCardDistinctRepository>(),
-  ));
-  locator.registerFactoryParam<FindCardFromTagUsecase, String, void>((collectionId, _) {
+        cardRepository: locator<CardRepository>(),
+      ));
+  locator.registerFactoryParam<FindCardFromTagUsecase, String, void>(
+      (collectionId, _) {
     return FindCardFromTagUsecase(
-      findCardRepository: locator<FindCardRepository>(param1: collectionId),
+      cardRepository: locator<CardRepository>(),
     );
   });
   locator.registerLazySingleton(() => UpdateCardUsecase(
-    updateCardRepository: locator<UpdateCardRepository>(),
-    updateImageRepository: locator<UpdateImageRepository>(),
-    uploadImageRepository: locator<UploadImageRepository>(),
-  ));
+        cardRepository: locator<CardRepository>(),
+        imageRepository: locator<ImageRepository>(),
+      ));
 }
 
 void _collectionUsecase() {
   locator.registerLazySingleton(() => CreateCollectionUsecase(
-    createCollectionRepository: locator<CreateCollectionRepository>(),
-  ));
+        collectionRepository: locator<CollectionRepository>(),
+      ));
   locator.registerLazySingleton(() => DeleteCollectionUsecase(
-    deleteCollectionRepository: locator<DeleteCollectionRepository>(),
-  ));
+        collectionRepository: locator<CollectionRepository>(),
+      ));
   locator.registerLazySingleton(() => FetchCollectionUsecase(
-    createCollectionRepository: locator<CreateCollectionRepository>(),
-    deleteCollectionRepository: locator<DeleteCollectionRepository>(),
-    fetchCollectionRepository: locator<FetchCollectionRepository>(),
-    updateCollectionRepository: locator<UpdateCollectionRepository>(),
-  ));
+        logger: const AppDomainLogger(),
+        collectionRepository: locator<CollectionRepository>(),
+      ));
   locator.registerLazySingleton(() => UpdateCollectionUsecase(
-    updateCollectionRepository: locator<UpdateCollectionRepository>(),
-  ));
+        collectionRepository: locator<CollectionRepository>(),
+      ));
 }
 
 void _deckUsecase() {
   locator.registerLazySingleton(() => CreateDeckUsecase(
-    createDeckRepository: locator<CreateDeckRepository>(),
-  ));
+        deckRepository: locator<DeckRepository>(),
+      ));
   locator.registerLazySingleton(() => DeleteDeckUsecase(
-    deleteDeckRepository: locator<DeleteDeckRepository>(),
-  ));
+        deckRepository: locator<DeckRepository>(),
+      ));
   locator.registerLazySingleton(() => FetchCardInDeckUsecase(
-    fetchCardInDeckRepository: locator<FetchCardInDeckRepository>(),
-  ));
+        deckRepository: locator<DeckRepository>(),
+      ));
   locator.registerLazySingleton(() => FetchDeckUsecase(
-    createDeckRepository: locator<CreateDeckRepository>(),
-    deleteDeckRepository: locator<DeleteDeckRepository>(),
-    fetchDeckRepository: locator<FetchDeckRepository>(),
-    updateDeckRepository: locator<UpdateDeckRepository>(),
-  ));
+        logger: const AppDomainLogger(),
+        deckRepository: locator<DeckRepository>(),
+      ));
   locator.registerLazySingleton(() => GenerateShareDeckClipboardUsecase());
   locator.registerLazySingleton(() => TrackingInteractionUsecase());
   locator.registerLazySingleton(() => UpdateCardInDeckUsecase());
   locator.registerLazySingleton(() => UpdateDeckUsecase(
-    updateDeckRepository: locator<UpdateDeckRepository>(),
-  ));
+        deckRepository: locator<DeckRepository>(),
+      ));
 }
 
 void _localUsecase() {
   locator.registerLazySingleton(() => ClearUserDataUsecase(
-    clearUserDataRepository: locator<ClearUserDataRepository>(),
-    deleteImageRepository: locator<DeleteImageRepository>(),
-    fetchUsedCardDistinctRepository: locator<FetchUsedCardDistinctRepository>(),
-  ));
+        localDataRepository: locator<LocalDataRepository>(),
+        imageRepository: locator<ImageRepository>(),
+        cardRepository: locator<CardRepository>(),
+      ));
 }
 
 void _recordUsecase() {
   locator.registerLazySingleton(() => CalculateUsageCardUsecase());
   locator.registerLazySingleton(() => CreateRecordUsecase(
-    createRecordRepository: locator<CreateRecordRepository>(),
-  ));
+        recordRepository: locator<RecordRepository>(),
+      ));
   locator.registerLazySingleton(() => DeleteRecordUsecase(
-    deleteRecordRepository: locator<DeleteRecordRepository>(),
-  ));
+        recordRepository: locator<RecordRepository>(),
+      ));
   locator.registerLazySingleton(() => FetchRecordUsecase(
-    createRecordRepository: locator<CreateRecordRepository>(),
-    deleteRecordRepository: locator<DeleteRecordRepository>(),
-    fetchRecordRepository: locator<FetchRecordRepository>(),
-    updateRecordRepository: locator<UpdateRecordRepository>(),
-  ));
+        logger: const AppDomainLogger(),
+        recordRepository: locator<RecordRepository>(),
+      ));
   locator.registerLazySingleton(() => GetCardFromRecordUsecase());
   locator.registerLazySingleton(() => ImportRecordUsecase(
-    importRecordRepository: locator<ImportRecordRepository>(),
-  ));
+        recordRepository: locator<RecordRepository>(),
+      ));
   locator.registerLazySingleton(() => ShareRecordUsecase(
-    shareRecordRepository: locator<ShareRecordRepository>(),
-  ));
+        recordRepository: locator<RecordRepository>(),
+      ));
   locator.registerLazySingleton(() => UpdateRecordUsecase(
-    updateRecordRepository: locator<UpdateRecordRepository>(),
-  ));
+        recordRepository: locator<RecordRepository>(),
+      ));
 }
 
 void _settingUsecase() {
   locator.registerLazySingleton(() => InitSettingUsecase(
-    loadSettingRepository: locator<LoadSettingRepository>(),
-    updateSettingRepository: locator<UpdateSettingRepository>(),
-  ));
+        ignoreDefaultWriteKeys: AppConfig.ignoreDefaultWriteKeys,
+        logger: const AppDomainLogger(),
+        settingsRepository: locator<SettingsRepository>(),
+      ));
   locator.registerLazySingleton(() => UpdateSettingUsecase(
-    updateSettingRepository: locator<UpdateSettingRepository>(),
-  ));
+        settingsRepository: locator<SettingsRepository>(),
+      ));
 }

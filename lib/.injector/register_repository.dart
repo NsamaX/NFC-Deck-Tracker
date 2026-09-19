@@ -1,176 +1,124 @@
-import 'package:flutter/foundation.dart';
-
+import '../domain/repository/nfc.dart';
+import '../data/repository/nfc.dart';
+import '../domain/repository/device.dart';
+import '../data/repository/device.dart';
+import '../domain/repository/session.dart';
+import '../data/repository/session.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import '../.config/runtime.dart';
 import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/~index.dart';
-import 'package:nfc_deck_tracker/data/datasource/remote/@supabase_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/remote/~index.dart';
-import 'package:nfc_deck_tracker/data/repository/~index.dart';
-
-import 'package:nfc_deck_tracker/util/logger.dart';
-
+import 'package:nfc_deck_tracker/data/datasource/remote/@supabase_service.dart';
 import 'service_locator.dart';
+import '../data/repository/card.dart';
+import '../domain/repository/card.dart';
+import '../data/repository/collection.dart';
+import '../domain/repository/collection.dart';
+import '../data/repository/deck.dart';
+import '../domain/repository/deck.dart';
+import '../data/repository/record.dart';
+import '../domain/repository/record.dart';
+import '../data/repository/image.dart';
+import '../domain/repository/image.dart';
+import '../data/repository/settings.dart';
+import '../domain/repository/settings.dart';
+import '../data/repository/local_data.dart';
+import '../domain/repository/local_data.dart';
+import '../data/repository/card_catalog.dart';
+import '../domain/repository/card_catalog.dart';
 
 Future<void> registerRepository() async {
-  try {
-    _cardRepository();
-    _cloudImageRepository();
-    _collectionRepository();
-    _deckRepository();
-    _localRepository();
-    _pageRepository();
-    _recordRepository();
-    _settingRepository();
-
-    LoggerUtil.buffer('✔️ Repository registered successfully.');
-  } catch (e) {
-    LoggerUtil.buffer('❌ Failed to register repository: $e');
-  }
-}
-
-void _cardRepository() {
-  locator.registerLazySingleton(() => CheckCardDuplicateNameRepository(
-    checkCardDuplicateNameLocalDatasource: locator<CheckCardDuplicateNameLocalDatasource>(),
-  ));
-  locator.registerLazySingleton(() => CreateCardRepository(
-    createCardLocalDatasource: locator<CreateCardLocalDatasource>(),
-    createCardRemoteDatasource: locator<CreateCardRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => DeleteCardRepository(
-    deleteCardLocalDatasource: locator<DeleteCardLocalDatasource>(),
-    deleteCardRemoteDatasource: locator<DeleteCardRemoteDatasource>(),
-  ));
-  locator.registerFactoryParam<FetchCardRepository, String, void>((collectionId, _) {
-    return FetchCardRepository(
-      gameApi: locator<GameApi>(param1: collectionId),
-      fetchCardLocalDatasource: locator<FetchCardLocalDatasource>(),
-      fetchCardRemoteDatasource: locator<FetchCardRemoteDatasource>(),
-    );
-  });
-  locator.registerLazySingleton(() => FetchUsedCardDistinctRepository(
-    fetchUsedCardDistinctLocalDatasource: locator<FetchUsedCardDistinctLocalDatasource>(),
-  ));
-  locator.registerFactoryParam<FindCardRepository, String, void>((collectionId, _) {
-    return FindCardRepository(
-      findCardLocalDatasource: locator<FindCardLocalDatasource>(),
-      gameApi: locator<GameApi>(param1: collectionId),
-    );
-  });
-  locator.registerLazySingleton(() => SaveCardRepository(
-    saveCardLocalDatasource: locator<SaveCardLocalDatasource>(),
-  ));
-  locator.registerLazySingleton(() => UpdateCardRepository(
-    updateCardLocalDatasource: locator<UpdateCardLocalDatasource>(),
-    updateCardRemoteDatasource: locator<UpdateCardRemoteDatasource>(),
-  ));
-}
-
-void _cloudImageRepository() {
-  locator.registerLazySingleton(() => DeleteImageRepository(
-    supabaseService: locator<SupabaseService>(),
-  ));
-  locator.registerLazySingleton(() => UpdateImageRepository(
-    supabaseService: locator<SupabaseService>(),
-  ));
-  locator.registerLazySingleton(() => UploadImageRepository(
-    supabaseService: locator<SupabaseService>(),
-  ));
-}
-
-void _collectionRepository() {
-  locator.registerLazySingleton(() => CreateCollectionRepository(
-    createCollectionLocalDatasource: locator<CreateCollectionLocalDatasource>(),
-    createCollectionRemoteDatasource: locator<CreateCollectionRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => DeleteCollectionRepository(
-    deleteCollectionLocalDatasource: locator<DeleteCollectionLocalDatasource>(),
-    deleteCollectionRemoteDatasource: locator<DeleteCollectionRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => FetchCollectionRepository(
-    fetchCollectionLocalDatasource: locator<FetchCollectionLocalDatasource>(),
-    fetchCollectionRemoteDatasource: locator<FetchCollectionRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => FindCollectionRepository(
-    findCollectionLocalDatasource: locator<FindCollectionLocalDatasource>(),
-  ));
-  locator.registerLazySingleton(() => UpdateCollectionDateRepository(
-    updateCollectionDateLocalDatasource: locator<UpdateCollectionDateLocalDatasource>(),
-  ));
-  locator.registerLazySingleton(() => UpdateCollectionRepository(
-    updateCollectionLocalDatasource: locator<UpdateCollectionLocalDatasource>(),
-    updateCollectionRemoteDatasource: locator<UpdateCollectionRemoteDatasource>(),
-  ));
-}
-
-void _deckRepository() {
-  locator.registerLazySingleton(() => CreateDeckRepository(
-    createDeckLocalDatasource: locator<CreateDeckLocalDatasource>(),
-    createDeckRemoteDatasource: locator<CreateDeckRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => DeleteDeckRepository(
-    deleteDeckLocalDatasource: locator<DeleteDeckLocalDatasource>(),
-    deleteDeckRemoteDatasource: locator<DeleteDeckRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => FetchCardInDeckRepository(
-    fetchCardInDeckLocalDatasource: locator<FetchCardInDeckLocalDatasource>(),
-  ));
-  locator.registerLazySingleton(() => FetchDeckRepository(
-    fetchDeckLocalDatasource: locator<FetchDeckLocalDatasource>(),
-    fetchDeckRemoteDatasource: locator<FetchDeckRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => UpdateDeckRepository(
-    updateDeckLocalDatasource: locator<UpdateDeckLocalDatasource>(),
-    updateDeckRemoteDatasource: locator<UpdateDeckRemoteDatasource>(),
-  ));
-}
-
-void _recordRepository() {
-  locator.registerLazySingleton(() => CreateRecordRepository(
-    createRecordLocalDatasource: locator<CreateRecordLocalDatasource>(),
-    createRecordRemoteDatasource: locator<CreateRecordRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => DeleteRecordRepository(
-    deleteRecordLocalDatasource: locator<DeleteRecordLocalDatasource>(),
-    deleteRecordRemoteDatasource: locator<DeleteRecordRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => FetchRecordRepository(
-    fetchRecordLocalDatasource: locator<FetchRecordLocalDatasource>(),
-    fetchRecordRemoteDatasource: locator<FetchRecordRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => ImportRecordRepository(
-    importRecordRemoteDatasource: locator<ImportRecordRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => ShareRecordRepository(
-    shareRecordRemoteDatasource: locator<ShareRecordRemoteDatasource>(),
-  ));
-  locator.registerLazySingleton(() => UpdateRecordRepository(
-    updateRecordLocalDatasource: locator<UpdateRecordLocalDatasource>(),
-    updateRecordRemoteDatasource: locator<UpdateRecordRemoteDatasource>(),
-  ));
-}
-
-void _pageRepository() {
-  locator.registerLazySingleton(() => CreatePageRepository(
-    createPageLocalDatasource: locator<CreatePageLocalDatasource>(),
-  ));
-  locator.registerLazySingleton(() => FindPageRepository(
-    findPageLocalDatasource: locator<FindPageLocalDatasource>(),
-  ));
-  locator.registerLazySingleton(() => UpdatePageRepository(
-    updatePageLocalDatasource: locator<UpdatePageLocalDatasource>(),
-  ));
-}
-
-void _localRepository() {
-  locator.registerLazySingleton(() => ClearUserDataRepository(
-    clearUserDataLocalDatasource: locator<ClearUserDataLocalDatasource>(),
-  ));
-}
-
-void _settingRepository() {
-  locator.registerLazySingleton(() => LoadSettingRepository(
-    loadSettingLocalDatasource: locator<LoadSettingLocalDatasource>(),
-  ));
-  locator.registerLazySingleton(() => UpdateSettingRepository(
-    updateSettingLocalDatasource: locator<UpdateSettingLocalDatasource>(),
-  ));
+  locator.registerLazySingleton<SessionRepository>(() => RuntimeConfig.guestMode
+      ? GuestSessionRepository()
+      : FirebaseSessionRepository(
+          auth: locator<FirebaseAuth>(), googleSignIn: GoogleSignIn()));
+  locator.registerLazySingleton<DeviceRepository>(() => DeviceRepositoryImpl());
+  locator.registerLazySingleton<NfcRepository>(() => NfcRepositoryImpl());
+  locator.registerLazySingleton<CardRepository>(() => CardRepositoryImpl(
+        checkCardDuplicateNameLocalDatasource:
+            locator<CheckCardDuplicateNameLocalDatasource>(),
+        createCardLocalDatasource: locator<CreateCardLocalDatasource>(),
+        createCardRemoteDatasource: locator<CreateCardRemoteDatasource>(),
+        deleteCardLocalDatasource: locator<DeleteCardLocalDatasource>(),
+        deleteCardRemoteDatasource: locator<DeleteCardRemoteDatasource>(),
+        fetchCardLocalDatasource: locator<FetchCardLocalDatasource>(),
+        fetchCardRemoteDatasource: locator<FetchCardRemoteDatasource>(),
+        fetchUsedCardDistinctLocalDatasource:
+            locator<FetchUsedCardDistinctLocalDatasource>(),
+        findCardLocalDatasource: locator<FindCardLocalDatasource>(),
+        saveCardLocalDatasource: locator<SaveCardLocalDatasource>(),
+        updateCardLocalDatasource: locator<UpdateCardLocalDatasource>(),
+        updateCardRemoteDatasource: locator<UpdateCardRemoteDatasource>(),
+      ));
+  locator.registerLazySingleton<CollectionRepository>(() =>
+      CollectionRepositoryImpl(
+        createCollectionLocalDatasource:
+            locator<CreateCollectionLocalDatasource>(),
+        createCollectionRemoteDatasource:
+            locator<CreateCollectionRemoteDatasource>(),
+        deleteCollectionLocalDatasource:
+            locator<DeleteCollectionLocalDatasource>(),
+        deleteCollectionRemoteDatasource:
+            locator<DeleteCollectionRemoteDatasource>(),
+        fetchCollectionLocalDatasource:
+            locator<FetchCollectionLocalDatasource>(),
+        fetchCollectionRemoteDatasource:
+            locator<FetchCollectionRemoteDatasource>(),
+        findCollectionLocalDatasource: locator<FindCollectionLocalDatasource>(),
+        updateCollectionDateLocalDatasource:
+            locator<UpdateCollectionDateLocalDatasource>(),
+        updateCollectionLocalDatasource:
+            locator<UpdateCollectionLocalDatasource>(),
+        updateCollectionRemoteDatasource:
+            locator<UpdateCollectionRemoteDatasource>(),
+      ));
+  locator.registerLazySingleton<DeckRepository>(() => DeckRepositoryImpl(
+        createDeckLocalDatasource: locator<CreateDeckLocalDatasource>(),
+        createDeckRemoteDatasource: locator<CreateDeckRemoteDatasource>(),
+        deleteDeckLocalDatasource: locator<DeleteDeckLocalDatasource>(),
+        deleteDeckRemoteDatasource: locator<DeleteDeckRemoteDatasource>(),
+        fetchCardInDeckLocalDatasource:
+            locator<FetchCardInDeckLocalDatasource>(),
+        fetchDeckLocalDatasource: locator<FetchDeckLocalDatasource>(),
+        fetchDeckRemoteDatasource: locator<FetchDeckRemoteDatasource>(),
+        updateDeckLocalDatasource: locator<UpdateDeckLocalDatasource>(),
+        updateDeckRemoteDatasource: locator<UpdateDeckRemoteDatasource>(),
+      ));
+  locator.registerLazySingleton<RecordRepository>(() => RecordRepositoryImpl(
+        createRecordLocalDatasource: locator<CreateRecordLocalDatasource>(),
+        createRecordRemoteDatasource: locator<CreateRecordRemoteDatasource>(),
+        deleteRecordLocalDatasource: locator<DeleteRecordLocalDatasource>(),
+        deleteRecordRemoteDatasource: locator<DeleteRecordRemoteDatasource>(),
+        fetchRecordLocalDatasource: locator<FetchRecordLocalDatasource>(),
+        fetchRecordRemoteDatasource: locator<FetchRecordRemoteDatasource>(),
+        importRecordRemoteDatasource: locator<ImportRecordRemoteDatasource>(),
+        shareRecordRemoteDatasource: locator<ShareRecordRemoteDatasource>(),
+        updateRecordLocalDatasource: locator<UpdateRecordLocalDatasource>(),
+        updateRecordRemoteDatasource: locator<UpdateRecordRemoteDatasource>(),
+      ));
+  locator.registerLazySingleton<ImageRepository>(() => ImageRepositoryImpl(
+        supabaseService: locator<SupabaseService>(),
+      ));
+  locator
+      .registerLazySingleton<SettingsRepository>(() => SettingsRepositoryImpl(
+            loadSettingLocalDatasource: locator<LoadSettingLocalDatasource>(),
+            updateSettingLocalDatasource:
+                locator<UpdateSettingLocalDatasource>(),
+          ));
+  locator
+      .registerLazySingleton<LocalDataRepository>(() => LocalDataRepositoryImpl(
+            clearUserDataLocalDatasource:
+                locator<ClearUserDataLocalDatasource>(),
+          ));
+  locator.registerFactoryParam<CardCatalogRepository, String, void>(
+      (collectionId, _) => CardCatalogRepositoryImpl(
+            cardRepository: locator<CardRepository>(),
+            collectionRepository: locator<CollectionRepository>(),
+            gameApi: locator<GameApi>(param1: collectionId),
+            createPageLocalDatasource: locator<CreatePageLocalDatasource>(),
+            findPageLocalDatasource: locator<FindPageLocalDatasource>(),
+            updatePageLocalDatasource: locator<UpdatePageLocalDatasource>(),
+          ));
 }

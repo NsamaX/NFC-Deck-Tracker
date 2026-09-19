@@ -1,37 +1,30 @@
-import 'package:nfc_deck_tracker/data/repository/create_deck.dart';
-import 'package:nfc_deck_tracker/data/repository/delete_deck.dart';
-import 'package:nfc_deck_tracker/data/repository/fetch_deck.dart';
-import 'package:nfc_deck_tracker/data/repository/update_deck.dart';
+import '../repository/deck.dart';
 
-import 'package:nfc_deck_tracker/util/logger.dart';
+import '../service/domain_logger.dart';
 
 import '../entity/deck.dart';
-import '../mapper/deck.dart';
 
 class FetchDeckUsecase {
-  final CreateDeckRepository createDeckRepository;
-  final DeleteDeckRepository deleteDeckRepository;
-  final FetchDeckRepository fetchDeckRepository;
-  final UpdateDeckRepository updateDeckRepository;
+  final DomainLogger logger;
+  final DeckRepository deckRepository;
 
   FetchDeckUsecase({
-    required this.createDeckRepository,
-    required this.deleteDeckRepository,
-    required this.fetchDeckRepository,
-    required this.updateDeckRepository,
+    this.logger = const SilentDomainLogger(),
+    required this.deckRepository,
   });
 
   Future<List<DeckEntity>> call({required String userId}) async {
-    final localModels = await fetchDeckRepository.fetchForLocal();
-    final localList = localModels.map(DeckMapper.toEntity).toList();
+    final localEntities = await deckRepository.fetchForLocal();
+    final localList = localEntities;
     final localMap = {for (final deck in localList) deck.deckId!: deck};
 
     List<DeckEntity> remoteList = [];
     Map<String, DeckEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteModels = await fetchDeckRepository.fetchForRemote(userId: userId);
-      remoteList = remoteModels.map(DeckMapper.toEntity).toList();
+      final remoteEntities =
+          await deckRepository.fetchForRemote(userId: userId);
+      remoteList = remoteEntities;
       remoteMap = {for (final deck in remoteList) deck.deckId!: deck};
 
       await _importRemoteToLocal(remoteList, localMap, localList);
@@ -51,14 +44,14 @@ class FetchDeckUsecase {
       final local = localMap[remote.deckId];
 
       if (local == null) {
-        await createDeckRepository.createForLocal(deck: DeckMapper.toModel(remote));
+        await deckRepository.createForLocal(deck: remote);
         localList.add(remote);
-        LoggerUtil.d('📥 Imported remote deck → local: ${remote.deckId}');
+        logger.d('📥 Imported remote deck → local: ${remote.deckId}');
       } else if (remote.updatedAt!.isAfter(local.updatedAt!)) {
-        await updateDeckRepository.updateForLocal(deck: DeckMapper.toModel(remote));
+        await deckRepository.updateForLocal(deck: remote);
         final index = localList.indexWhere((d) => d.deckId == remote.deckId);
         if (index != -1) localList[index] = remote;
-        LoggerUtil.d('📥 Updated local deck from remote: ${remote.deckId}');
+        logger.d('📥 Updated local deck from remote: ${remote.deckId}');
       }
     }
   }
@@ -68,18 +61,18 @@ class FetchDeckUsecase {
     List<DeckEntity> localList,
   ) async {
     for (final deck in localList.where((d) => d.isSynced != true)) {
-      final success = await createDeckRepository.createForRemote(
+      final success = await deckRepository.createForRemote(
         userId: userId,
-        deck: DeckMapper.toModel(deck),
+        deck: deck,
       );
       if (success) {
         final updated = deck.copyWith(isSynced: true);
-        await updateDeckRepository.updateForLocal(deck: DeckMapper.toModel(updated));
+        await deckRepository.updateForLocal(deck: updated);
         final index = localList.indexWhere((d) => d.deckId == updated.deckId);
         if (index != -1) localList[index] = updated;
-        LoggerUtil.d('📤 Synced local deck → remote: ${deck.deckId}');
+        logger.d('📤 Synced local deck → remote: ${deck.deckId}');
       } else {
-        LoggerUtil.e('⚠️ Failed to sync local → remote: ${deck.deckId}');
+        logger.e('⚠️ Failed to sync local → remote: ${deck.deckId}');
       }
     }
   }
@@ -88,17 +81,19 @@ class FetchDeckUsecase {
     Map<String, DeckEntity> remoteMap,
     List<DeckEntity> localList,
   ) async {
-    final toRemove = localList.where(
-      (d) => d.isSynced == true && !remoteMap.containsKey(d.deckId),
-    ).toList();
+    final toRemove = localList
+        .where(
+          (d) => d.isSynced == true && !remoteMap.containsKey(d.deckId),
+        )
+        .toList();
 
     for (final deck in toRemove) {
-      final success = await deleteDeckRepository.deleteForLocal(deckId: deck.deckId!);
+      final success = await deckRepository.deleteForLocal(deckId: deck.deckId!);
       if (success) {
         localList.removeWhere((d) => d.deckId == deck.deckId);
-        LoggerUtil.d('🗑️ Deleted local deck not found in remote: ${deck.deckId}');
+        logger.d('🗑️ Deleted local deck not found in remote: ${deck.deckId}');
       } else {
-        LoggerUtil.e('⚠️ Failed to delete local-only deck: ${deck.deckId}');
+        logger.e('⚠️ Failed to delete local-only deck: ${deck.deckId}');
       }
     }
   }

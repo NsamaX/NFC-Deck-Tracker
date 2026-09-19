@@ -1,24 +1,20 @@
 import 'package:uuid/uuid.dart';
 
-import 'package:nfc_deck_tracker/data/repository/check_duplicate_name.dart';
-import 'package:nfc_deck_tracker/data/repository/create_card.dart';
-import 'package:nfc_deck_tracker/data/repository/update_collection_date.dart';
-import 'package:nfc_deck_tracker/data/repository/upload_image.dart';
+import '../repository/card.dart';
+import '../repository/collection.dart';
+import '../repository/image.dart';
 
 import '../entity/card.dart';
-import '../mapper/card.dart';
 
 class CreateCardUsecase {
-  final CheckCardDuplicateNameRepository checkCardDuplicateNameRepository;
-  final CreateCardRepository createCardRepository;
-  final UpdateCollectionDateRepository updateCollectionDateRepository;
-  final UploadImageRepository uploadImageRepository;
+  final CardRepository cardRepository;
+  final CollectionRepository collectionRepository;
+  final ImageRepository imageRepository;
 
   CreateCardUsecase({
-    required this.checkCardDuplicateNameRepository,
-    required this.createCardRepository,
-    required this.updateCollectionDateRepository,
-    required this.uploadImageRepository,
+    required this.cardRepository,
+    required this.collectionRepository,
+    required this.imageRepository,
   });
 
   Future<void> call({
@@ -27,16 +23,16 @@ class CreateCardUsecase {
   }) async {
     final String cardId = const Uuid().v4();
 
-    final uploadedUrl = await uploadImageRepository.upload(imagePath: card.imageUrl!);
+    final uploadedUrl = await imageRepository.upload(imagePath: card.imageUrl!);
 
-    final duplicateCount = await checkCardDuplicateNameRepository.check(
+    final duplicateCount = await cardRepository.check(
       collectionId: card.collectionId!,
       name: card.name!,
     );
 
     final isDuplicate = duplicateCount > 0;
-    final newName = isDuplicate ? '${card.name} (${duplicateCount})' : card.name;
-
+    final newName =
+        isDuplicate ? '${card.name} (${duplicateCount})' : card.name;
 
     final updatedCard = card.copyWith(
       cardId: cardId,
@@ -45,22 +41,19 @@ class CreateCardUsecase {
     );
 
     bool synced = false;
-    final success = await createCardRepository.createForRemote(
+    final success = await cardRepository.createForRemote(
       userId: userId,
-      card: CardMapper.toModel(
-        updatedCard.copyWith(isSynced: true),
-      ),
+      card: updatedCard.copyWith(isSynced: true),
     );
 
     if (success) synced = true;
 
-
-    await updateCollectionDateRepository.update(
+    await collectionRepository.touch(
       collectionId: card.collectionId!,
     );
 
     final finalEntity = updatedCard.copyWith(isSynced: synced);
-    final cardModel = CardMapper.toModel(finalEntity);
-    await createCardRepository.createForLocal(card: cardModel);
+    final cardToSave = finalEntity;
+    await cardRepository.createForLocal(card: cardToSave);
   }
 }

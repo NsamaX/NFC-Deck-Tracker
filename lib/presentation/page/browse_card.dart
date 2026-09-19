@@ -1,10 +1,8 @@
-import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import 'package:nfc_deck_tracker/.config/game.dart';
-import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '@argument.dart';
 
@@ -37,7 +35,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       final args = getArguments(context);
-      userId = AuthSession.currentUser?.uid ?? '';
+      userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
       collectionId = args['collectionId'];
       collectionName = args['collectionName'];
       onAdd = args['onAdd'] ?? false;
@@ -50,14 +48,17 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<BrowseCardBloc>(
-          create: (_) => locator<BrowseCardBloc>(
-            param1: GameConfig.instance.isSupported(collectionId) ? collectionId : GameConfig.dummy,
+          create: (_) => PresentationScope.read(context).createBrowseCardBloc(
+            GameConfig.instance.isSupported(collectionId)
+                ? collectionId
+                : GameConfig.dummy,
           )..add(FetchCardEvent(
-            userId: userId,
-            collectionId: collectionId,
-          )),
+              userId: userId,
+              collectionId: collectionId,
+            )),
         ),
-        BlocProvider<CardBloc>(create: (_) => locator<CardBloc>()),
+        BlocProvider<CardBloc>(
+            create: (_) => PresentationScope.read(context).createCardBloc()),
       ],
       child: _BrowseCardContent(
         userId: userId,
@@ -86,16 +87,19 @@ class _BrowseCardContent extends StatefulWidget {
   State<_BrowseCardContent> createState() => _BrowseCardContentState();
 }
 
-class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware {
+class _BrowseCardContentState extends State<_BrowseCardContent>
+    with RouteAware {
+  RouteObserver<ModalRoute>? _routeObserver;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    locator<RouteObserver<ModalRoute>>().subscribe(this, ModalRoute.of(context)!);
+    _routeObserver = PresentationScope.read(context).routeObserver;
+    _routeObserver!.subscribe(this, ModalRoute.of(context)!);
   }
 
   @override
   void dispose() {
-    locator<RouteObserver<ModalRoute>>().unsubscribe(this);
+    _routeObserver?.unsubscribe(this);
     super.dispose();
   }
 
@@ -103,9 +107,9 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
   void didPopNext() {
     if (!GameConfig.instance.isSupported(widget.collectionId)) {
       context.read<BrowseCardBloc>().add(FetchCardEvent(
-        userId: widget.userId,
-        collectionId: widget.collectionId,
-      ));
+            userId: widget.userId,
+            collectionId: widget.collectionId,
+          ));
     }
   }
 
@@ -140,13 +144,15 @@ class _BrowseCardContentState extends State<_BrowseCardContent> with RouteAware 
             onSearchChanged: (query) {
               context.read<BrowseCardBloc>().add(FilterCardEvent(query: query));
             },
-            onSearchCleared: () => context.read<BrowseCardBloc>().add(ClearFilterEvent()),
+            onSearchCleared: () =>
+                context.read<BrowseCardBloc>().add(ClearFilterEvent()),
           ),
           const SizedBox(height: 8),
           BlocBuilder<BrowseCardBloc, BrowseCardState>(
             builder: (context, state) {
               if (state.isLoading) {
-                return const Expanded(child: Center(child: CircularProgressIndicator()));
+                return const Expanded(
+                    child: Center(child: CircularProgressIndicator()));
               }
 
               if (state.errorMessage.isNotEmpty) {

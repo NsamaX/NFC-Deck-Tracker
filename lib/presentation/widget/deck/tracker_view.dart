@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.config/player_action.dart';
+import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 
 import '../../bloc/pin_card/bloc.dart';
 import '../../bloc/record/bloc.dart';
@@ -50,9 +50,11 @@ class DeckTrackerView extends StatelessWidget {
 
                   return BlocBuilder<RecordBloc, RecordState>(
                     builder: (context, recordState) {
-                      final RecordBloc recordBlocInstance = context.read<RecordBloc>();
+                      final RecordBloc recordBlocInstance =
+                          context.read<RecordBloc>();
 
-                      final PlayerAction lastAction = recordBlocInstance.getLastAction(
+                      final PlayerAction lastAction =
+                          recordBlocInstance.getLastAction(
                         collectionId: card.collectionId!,
                         cardId: card.cardId!,
                       );

@@ -1,10 +1,8 @@
-import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import 'package:nfc_deck_tracker/.config/game.dart';
-import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import '@argument.dart';
 
@@ -28,7 +26,7 @@ class _CollectionPageState extends State<CollectionPage> {
     super.didChangeDependencies();
     if (_userId == null || _onAdd == null) {
       final args = getArguments(context);
-      _userId = AuthSession.currentUser?.uid ?? '';
+      _userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
       _onAdd = args['onAdd'] ?? false;
     }
   }
@@ -36,7 +34,8 @@ class _CollectionPageState extends State<CollectionPage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: locator<CollectionBloc>()..add(FetchCollectionEvent(userId: _userId!)),
+      value: PresentationScope.read(context).collectionBloc
+        ..add(FetchCollectionEvent(userId: _userId!)),
       child: _CollectionPageContent(userId: _userId!, onAdd: _onAdd!),
     );
   }

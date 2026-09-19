@@ -1,13 +1,12 @@
-import 'package:nfc_deck_tracker/data/repository/update_record.dart';
+import '../repository/record.dart';
 
 import '../entity/record.dart';
-import '../mapper/record.dart';
 
 class UpdateRecordUsecase {
-  final UpdateRecordRepository updateRecordRepository;
+  final RecordRepository recordRepository;
 
   UpdateRecordUsecase({
-    required this.updateRecordRepository,
+    required this.recordRepository,
   });
 
   Future<void> call({
@@ -19,18 +18,16 @@ class UpdateRecordUsecase {
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await updateRecordRepository.updateForRemote(
+      final success = await recordRepository.updateForRemote(
         userId: userId,
-        record: RecordMapper.toModel(
-          updatedRecord.copyWith(isSynced: true),
-        ),
+        record: updatedRecord.copyWith(isSynced: true),
       );
 
       if (success) synced = true;
     }
 
     final finalEntity = updatedRecord.copyWith(isSynced: synced);
-    final recordModel = RecordMapper.toModel(finalEntity);
-    await updateRecordRepository.updateForLocal(record: recordModel);
+    final recordToSave = finalEntity;
+    await recordRepository.updateForLocal(record: recordToSave);
   }
 }

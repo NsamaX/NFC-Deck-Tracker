@@ -1,4 +1,4 @@
-import 'package:nfc_deck_tracker/.config/player_action.dart';
+import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 
 import '../entity/card.dart';
 import '../entity/data.dart';
@@ -46,8 +46,9 @@ class CalculateUsageCardUsecase {
     try {
       return deck.cards
               ?.firstWhere(
-                (c) => c.card.cardId == log.cardId &&
-                       c.card.collectionId == log.collectionId,
+                (c) =>
+                    c.card.cardId == log.cardId &&
+                    c.card.collectionId == log.collectionId,
               )
               .card ??
           _createUnknownCard(log);

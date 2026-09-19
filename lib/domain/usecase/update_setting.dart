@@ -1,16 +1,16 @@
-import 'package:nfc_deck_tracker/data/repository/update_setting.dart';
+import '../repository/settings.dart';
 
 class UpdateSettingUsecase {
-  final UpdateSettingRepository updateSettingRepository;
+  final SettingsRepository settingsRepository;
 
   UpdateSettingUsecase({
-    required this.updateSettingRepository,
+    required this.settingsRepository,
   });
 
   Future<void> call({
     required String key,
     required dynamic value,
   }) async {
-    await updateSettingRepository.update(key: key, value: value);
+    await settingsRepository.update(key: key, value: value);
   }
 }

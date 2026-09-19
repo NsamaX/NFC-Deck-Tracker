@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 
-import 'package:nfc_deck_tracker/.config/player_action.dart';
+import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 
 import 'tag.dart';
 

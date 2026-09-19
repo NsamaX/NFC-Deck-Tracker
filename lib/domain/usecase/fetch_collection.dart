@@ -1,37 +1,30 @@
-import 'package:nfc_deck_tracker/data/repository/create_collection.dart';
-import 'package:nfc_deck_tracker/data/repository/delete_collection.dart';
-import 'package:nfc_deck_tracker/data/repository/fetch_collection.dart';
-import 'package:nfc_deck_tracker/data/repository/update_collection.dart';
+import '../repository/collection.dart';
 
-import 'package:nfc_deck_tracker/util/logger.dart';
+import '../service/domain_logger.dart';
 
 import '../entity/collection.dart';
-import '../mapper/collection.dart';
 
 class FetchCollectionUsecase {
-  final CreateCollectionRepository createCollectionRepository;
-  final DeleteCollectionRepository deleteCollectionRepository;
-  final FetchCollectionRepository fetchCollectionRepository;
-  final UpdateCollectionRepository updateCollectionRepository;
+  final DomainLogger logger;
+  final CollectionRepository collectionRepository;
 
   FetchCollectionUsecase({
-    required this.createCollectionRepository,
-    required this.deleteCollectionRepository,
-    required this.fetchCollectionRepository,
-    required this.updateCollectionRepository,
+    this.logger = const SilentDomainLogger(),
+    required this.collectionRepository,
   });
 
   Future<List<CollectionEntity>> call({required String userId}) async {
-    final localModels = await fetchCollectionRepository.fetchForLocal();
-    final localList = localModels.map(CollectionMapper.toEntity).toList();
+    final localEntities = await collectionRepository.fetchForLocal();
+    final localList = localEntities;
     final localMap = {for (final col in localList) col.collectionId: col};
 
     List<CollectionEntity> remoteList = [];
     Map<String, CollectionEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteModels = await fetchCollectionRepository.fetchForRemote(userId: userId);
-      remoteList = remoteModels.map(CollectionMapper.toEntity).toList();
+      final remoteEntities =
+          await collectionRepository.fetchForRemote(userId: userId);
+      remoteList = remoteEntities;
       remoteMap = {for (final col in remoteList) col.collectionId: col};
 
       await _importOrUpdateFromRemote(remoteList, localMap, localList);
@@ -51,28 +44,31 @@ class FetchCollectionUsecase {
       final local = localMap[remote.collectionId];
 
       if (local == null) {
-        await createCollectionRepository.createForLocal(
-          collection: CollectionMapper.toModel(remote),
+        await collectionRepository.createForLocal(
+          collection: remote,
         );
         localList.add(remote);
-        LoggerUtil.d('📥 Imported remote → local: ${remote.collectionId}');
+        logger.d('📥 Imported remote → local: ${remote.collectionId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
-        await updateCollectionRepository.updateForLocal(
-          collection: CollectionMapper.toModel(remote),
+        await collectionRepository.updateForLocal(
+          collection: remote,
         );
-        final index = localList.indexWhere((c) => c.collectionId == remote.collectionId);
+        final index =
+            localList.indexWhere((c) => c.collectionId == remote.collectionId);
         if (index != -1) localList[index] = remote;
-        LoggerUtil.d('📥 Updated local from remote: ${remote.collectionId}');
+        logger.d('📥 Updated local from remote: ${remote.collectionId}');
       } else if (local.name == 'unknow') {
         final updated = local.copyWith(name: remote.name);
-        await updateCollectionRepository.updateForLocal(
-          collection: CollectionMapper.toModel(updated),
+        await collectionRepository.updateForLocal(
+          collection: updated,
         );
-        final index = localList.indexWhere((c) => c.collectionId == updated.collectionId);
+        final index =
+            localList.indexWhere((c) => c.collectionId == updated.collectionId);
         if (index != -1) localList[index] = updated;
-        LoggerUtil.d('✏️ Renamed "unknow" local from remote: ${remote.collectionId}');
+        logger
+            .d('✏️ Renamed "unknow" local from remote: ${remote.collectionId}');
       }
     }
   }
@@ -86,36 +82,37 @@ class FetchCollectionUsecase {
       final remote = remoteMap[local.collectionId];
 
       if (local.isSynced != true) {
-        final success = await createCollectionRepository.createForRemote(
+        final success = await collectionRepository.createForRemote(
           userId: userId,
-          collection: CollectionMapper.toModel(local.copyWith(isSynced: true)),
+          collection: local.copyWith(isSynced: true),
         );
 
         if (success) {
           final updated = local.copyWith(isSynced: true);
-          await updateCollectionRepository.updateForLocal(
-            collection: CollectionMapper.toModel(updated),
+          await collectionRepository.updateForLocal(
+            collection: updated,
           );
-          final index = localList.indexWhere((c) => c.collectionId == updated.collectionId);
+          final index = localList
+              .indexWhere((c) => c.collectionId == updated.collectionId);
           if (index != -1) localList[index] = updated;
-          LoggerUtil.d('📤 Synced local → remote: ${local.collectionId}');
+          logger.d('📤 Synced local → remote: ${local.collectionId}');
         } else {
-          LoggerUtil.e('⚠️ Failed to sync local → remote: ${local.collectionId}');
+          logger.e('⚠️ Failed to sync local → remote: ${local.collectionId}');
         }
-
       } else if (remote != null &&
           local.updatedAt != null &&
           remote.updatedAt != null &&
           local.updatedAt!.isAfter(remote.updatedAt!)) {
-        final success = await updateCollectionRepository.updateForRemote(
+        final success = await collectionRepository.updateForRemote(
           userId: userId,
-          collection: CollectionMapper.toModel(local.copyWith(isSynced: true)),
+          collection: local.copyWith(isSynced: true),
         );
 
         if (success) {
-          LoggerUtil.d('🔁 Updated remote with newer local: ${local.collectionId}');
+          logger.d('🔁 Updated remote with newer local: ${local.collectionId}');
         } else {
-          LoggerUtil.e('⚠️ Failed to update newer local → remote: ${local.collectionId}');
+          logger.e(
+              '⚠️ Failed to update newer local → remote: ${local.collectionId}');
         }
       }
     }
@@ -125,19 +122,23 @@ class FetchCollectionUsecase {
     Map<String, CollectionEntity> remoteMap,
     List<CollectionEntity> localList,
   ) async {
-    final toRemove = localList.where(
-      (c) => c.isSynced == true && !remoteMap.containsKey(c.collectionId),
-    ).toList();
+    final toRemove = localList
+        .where(
+          (c) => c.isSynced == true && !remoteMap.containsKey(c.collectionId),
+        )
+        .toList();
 
     for (final collection in toRemove) {
-      final success = await deleteCollectionRepository.deleteForLocal(
+      final success = await collectionRepository.deleteForLocal(
         collectionId: collection.collectionId,
       );
       if (success) {
         localList.removeWhere((c) => c.collectionId == collection.collectionId);
-        LoggerUtil.d('🗑️ Deleted local not found in remote: ${collection.collectionId}');
+        logger.d(
+            '🗑️ Deleted local not found in remote: ${collection.collectionId}');
       } else {
-        LoggerUtil.e('⚠️ Failed to delete local-only collection: ${collection.collectionId}');
+        logger.e(
+            '⚠️ Failed to delete local-only collection: ${collection.collectionId}');
       }
     }
   }

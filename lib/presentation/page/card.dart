@@ -1,13 +1,9 @@
-import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
-import 'package:nfc_deck_tracker/.injector/service_locator.dart';
-
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../bloc/application/bloc.dart';
 import '../bloc/card/bloc.dart';
 import '../bloc/deck/bloc.dart';
 import '../bloc/nfc/bloc.dart';
@@ -34,7 +30,7 @@ class _CardPageState extends State<CardPage> {
   @override
   void initState() {
     super.initState();
-    cardBloc = locator<CardBloc>();
+    cardBloc = PresentationScope.read(context).createCardBloc();
   }
 
   @override
@@ -100,7 +96,9 @@ class _CardPageContent extends State<_CardContent> {
     final onCustom = args['onCustom'] ?? false;
     final onNFC = args['onNFC'] ?? false;
     final onAdd = args['onAdd'] ?? false;
-    final userId = AuthSession.currentUser?.uid ?? locator<ApplicationBloc>().state.guestId ?? '';
+    final userId = PresentationScope.read(context).session.currentUser?.uid ??
+        PresentationScope.read(context).applicationBloc.state.guestId ??
+        '';
     final cardBloc = context.read<CardBloc>();
 
     return WriterListener(
@@ -139,7 +137,9 @@ class _CardPageContent extends State<_CardContent> {
                     builder: (context, quantity) {
                       return CardQuantitySelector(
                         onSelected: (q) {
-                          context.read<DeckBloc>().add(SetCardQuantityEvent(quantity: q));
+                          context
+                              .read<DeckBloc>()
+                              .add(SetCardQuantityEvent(quantity: q));
                         },
                         quantityCount: 4,
                         selectedQuantity: quantity,

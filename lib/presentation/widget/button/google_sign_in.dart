@@ -1,6 +1,7 @@
+import 'package:nfc_deck_tracker/domain/entity/session_user.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 
-import '../../auth/google.dart';
 import '../../auth/guest.dart';
 import '../../locale/localization.dart';
 
@@ -20,7 +21,8 @@ class ButtonGoogleSignIn extends StatelessWidget {
   Future<void> _handleGoogleSignIn(BuildContext context) async {
     final locale = AppLocalization.of(context);
 
-    final result = await signInWithGoogle();
+    final result =
+        await PresentationScope.read(context).session.signInWithGoogle();
 
     switch (result) {
       case SignInResult.success:

@@ -1,14 +1,13 @@
-import 'package:nfc_deck_tracker/data/repository/find_card.dart';
+import '../repository/card.dart';
 
 import '../entity/card.dart';
 import '../entity/tag.dart';
-import '../mapper/card.dart';
 
 class FindCardFromTagUsecase {
-  final FindCardRepository findCardRepository;
+  final CardRepository cardRepository;
 
   FindCardFromTagUsecase({
-    required this.findCardRepository,
+    required this.cardRepository,
   });
 
   Future<CardEntity?> call(TagEntity tag) async {
@@ -16,23 +15,24 @@ class FindCardFromTagUsecase {
       throw Exception('INVALID_TAG');
     }
 
-    final localCard = await findCardRepository.findForLocal(
+    final localCard = await cardRepository.findForLocal(
       collectionId: tag.collectionId,
       cardId: tag.cardId,
     );
 
     if (localCard != null) {
-      return CardMapper.toEntity(localCard);
+      return localCard;
     }
 
     try {
-      final apiCard = await findCardRepository.findForApi(collectionId: tag.collectionId, cardId: tag.cardId);
+      final apiCard = await cardRepository.findForApi(
+          collectionId: tag.collectionId, cardId: tag.cardId);
 
       if (apiCard == null) {
         throw Exception('CARD_NOT_FOUND');
       }
 
-      return CardMapper.toEntity(apiCard);
+      return apiCard;
     } catch (e) {
       throw Exception('GAME_NOT_SUPPORTED');
     }

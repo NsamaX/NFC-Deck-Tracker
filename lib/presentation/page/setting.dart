@@ -1,8 +1,7 @@
-import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nfc_deck_tracker/domain/entity/session_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 import '../bloc/application/bloc.dart';
 import '../locale/localization.dart';
@@ -19,8 +18,8 @@ class SettingPage extends StatelessWidget {
     final locale = AppLocalization.of(context);
     final sectionBuilder = SettingBuilder(context);
 
-    return StreamBuilder<User?>(
-      stream: AuthSession.authStateChanges(),
+    return StreamBuilder<SessionUser?>(
+      stream: PresentationScope.read(context).session.authStateChanges(),
       builder: (context, snapshot) {
         return Scaffold(
           appBar: DefaultAppBar(

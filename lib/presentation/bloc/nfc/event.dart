@@ -34,7 +34,7 @@ class RestartNfcSessionEvent extends NfcEvent {
   final bool isCardChanged;
 
   const RestartNfcSessionEvent({
-    this.card, 
+    this.card,
     this.isCardChanged = false,
   });
 
@@ -42,28 +42,11 @@ class RestartNfcSessionEvent extends NfcEvent {
   List<Object?> get props => [card, isCardChanged];
 }
 
-class ProcessReadTagEvent extends NfcEvent {
-  final NfcTag tag;
-
-  const ProcessReadTagEvent({
-    required this.tag,
-  });
-
+class NfcResultEvent extends NfcEvent {
+  final NfcResult result;
+  const NfcResultEvent(this.result);
   @override
-  List<Object?> get props => [tag];
-}
-
-class ProcessWriteTagEvent extends NfcEvent {
-  final NfcTag tag;
-  final CardEntity card;
-
-  const ProcessWriteTagEvent({
-    required this.tag, 
-    required this.card,
-  });
-
-  @override
-  List<Object?> get props => [tag, card];
+  List<Object?> get props => [result];
 }
 
 class ClearNFCMessagesEvent extends NfcEvent {}

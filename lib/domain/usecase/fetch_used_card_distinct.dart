@@ -1,17 +1,16 @@
-import 'package:nfc_deck_tracker/data/repository/fetch_used_card_distinct.dart';
+import '../repository/card.dart';
 
 import '../entity/card.dart';
-import '../mapper/card.dart';
 
 class FetchUsedCardDistinctUsecase {
-  final FetchUsedCardDistinctRepository fetchUsedCardDistinctRepository;
+  final CardRepository cardRepository;
 
   FetchUsedCardDistinctUsecase({
-    required this.fetchUsedCardDistinctRepository,
+    required this.cardRepository,
   });
 
   Future<List<CardEntity>> call() async {
-    final cards = await fetchUsedCardDistinctRepository.fetch();
-    return cards.map(CardMapper.toEntity).toList();
+    final cards = await cardRepository.fetchUsedCards();
+    return cards;
   }
 }

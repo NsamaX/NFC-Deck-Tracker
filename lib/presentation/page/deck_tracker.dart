@@ -1,18 +1,15 @@
-import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 import 'package:nfc_deck_tracker/.config/game.dart';
-import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
 import '../bloc/deck/bloc.dart';
 import '../bloc/drawer/bloc.dart';
 import '../bloc/nfc/bloc.dart';
-import '../bloc/pin_card/bloc.dart';
 import '../bloc/reader/bloc.dart';
 import '../bloc/record/bloc.dart';
 import '../bloc/tracker/bloc.dart';
@@ -52,8 +49,10 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
 
         buildCupertinoAlertDialog(
           theme: Theme.of(context),
-          title: locale.translate('page_deck_tracker.dialog_tracker_tutorial_title'),
-          content: locale.translate('page_deck_tracker.dialog_tracker_tutorial_content'),
+          title: locale
+              .translate('page_deck_tracker.dialog_tracker_tutorial_title'),
+          content: locale
+              .translate('page_deck_tracker.dialog_tracker_tutorial_content'),
           confirmButtonText: locale.translate('common.button_ok'),
           onPressed: () => context.read<NfcBloc>().add(StartNfcSessionEvent()),
           closeDialog: () => Navigator.of(context, rootNavigator: true).pop(),
@@ -69,7 +68,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    userId = AuthSession.currentUser?.uid ?? '';
+    userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
     collectionId = GameConfig.dummy;
     deck = context.read<DeckBloc>().state.currentDeck;
   }
@@ -78,12 +77,22 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (_) => locator<DrawerBloc>()),
-        BlocProvider(create: (_) => locator<PinCardBloc>()),
-        BlocProvider(create: (_) => locator<UsageCardBloc>()),
-        BlocProvider(create: (_) => locator<ReaderBloc>(param1: collectionId)),
-        BlocProvider(create: (_) => locator<RecordBloc>(param1: deck.deckId)),
-        BlocProvider(create: (_) => locator<TrackerBloc>(param1: deck)),
+        BlocProvider(
+            create: (_) => PresentationScope.read(context).createDrawerBloc()),
+        BlocProvider(
+            create: (_) => PresentationScope.read(context).createPinCardBloc()),
+        BlocProvider(
+            create: (_) =>
+                PresentationScope.read(context).createUsageCardBloc()),
+        BlocProvider(
+            create: (_) =>
+                PresentationScope.read(context).createReaderBloc(collectionId)),
+        BlocProvider(
+            create: (_) =>
+                PresentationScope.read(context).createRecordBloc(deck.deckId!)),
+        BlocProvider(
+            create: (_) =>
+                PresentationScope.read(context).createTrackerBloc(deck)),
       ],
       child: _DeckTrackerPageContent(userId: userId),
     );
@@ -116,13 +125,15 @@ class _DeckTrackerPageContent extends StatelessWidget {
           child: Stack(
             children: [
               AbsorbPointer(
-                absorbing: drawerBloc.state.visibleHistoryDrawer || drawerBloc.state.visibleFeatureDrawer,
+                absorbing: drawerBloc.state.visibleHistoryDrawer ||
+                    drawerBloc.state.visibleFeatureDrawer,
                 child: Column(
                   children: [
                     const SizedBox(height: 16.0),
                     DeckSwitchMode(
                       isAnalyzeModeEnabled: trackerBloc.state.isAnalysisMode,
-                      onSelected: (_) => trackerBloc.add(ToggleAnalysisModeEvent()),
+                      onSelected: (_) =>
+                          trackerBloc.add(ToggleAnalysisModeEvent()),
                     ),
                     const SizedBox(height: 8.0),
                     Expanded(

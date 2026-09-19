@@ -1,19 +1,18 @@
-import 'package:nfc_deck_tracker/data/repository/import_record.dart';
+import '../repository/record.dart';
 
 import '../entity/share_record.dart';
-import '../mapper/share_record.dart';
 
 class ImportRecordUsecase {
-  final ImportRecordRepository importRecordRepository;
+  final RecordRepository recordRepository;
 
   ImportRecordUsecase({
-    required this.importRecordRepository,
+    required this.recordRepository,
   });
 
   Future<ShareRecordEntity> call({
     required String userId,
   }) async {
-    final shareRecord = await importRecordRepository.import(userId: userId);
-    return ShareRecordMapper.toEntity(shareRecord);
+    final shareRecord = await recordRepository.import(userId: userId);
+    return shareRecord;
   }
 }

@@ -5,7 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
-import 'package:nfc_deck_tracker/.config/player_action.dart';
+import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
@@ -52,7 +52,8 @@ class CardListTile extends StatelessWidget {
     if (card == null) return const SizedBox();
 
     final systemColor = lightTheme ? Colors.black : Colors.white;
-    final backgroundColor = lightTheme ? Colors.white : theme.appBarTheme.backgroundColor!;
+    final backgroundColor =
+        lightTheme ? Colors.white : theme.appBarTheme.backgroundColor!;
     final markColor = markedColor ?? backgroundColor;
 
     return GestureDetector(
@@ -97,7 +98,9 @@ class CardListTile extends StatelessWidget {
                       backgroundColor: backgroundColor,
                       changeCardColor: changeCardColor!,
                     )
-                  : (!isTrack && onDelete != null && !GameConfig.instance.isSupported(card!.collectionId!))
+                  : (!isTrack &&
+                          onDelete != null &&
+                          !GameConfig.instance.isSupported(card!.collectionId!))
                       ? buildCardSlidableDelete(
                           context: context,
                           card: card!,
@@ -110,7 +113,8 @@ class CardListTile extends StatelessWidget {
                   const SizedBox(width: 8.0),
                   Expanded(child: _buildCardInfo(color: systemColor)),
                   const SizedBox(width: 8.0),
-                  if (action != null) _buildActionIcon(action: action!, color: systemColor),
+                  if (action != null)
+                    _buildActionIcon(action: action!, color: systemColor),
                   const SizedBox(width: 4.0),
                   if (count != null) _buildCount(color: systemColor),
                 ],
@@ -139,12 +143,14 @@ class CardListTile extends StatelessWidget {
             ? Image.network(
                 imageUrl,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Icon(Icons.image_not_supported, size: 36.0, color: iconColor),
+                errorBuilder: (_, __, ___) => Icon(Icons.image_not_supported,
+                    size: 36.0, color: iconColor),
               )
             : Image.file(
                 File(imageUrl),
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Icon(Icons.image_not_supported, size: 36.0, color: iconColor),
+                errorBuilder: (_, __, ___) => Icon(Icons.image_not_supported,
+                    size: 36.0, color: iconColor),
               ),
       ),
     );
@@ -173,7 +179,7 @@ class CardListTile extends StatelessWidget {
   }
 
   Widget _buildActionIcon({required PlayerAction action, Color? color}) {
-  String? svgPath;
+    String? svgPath;
     switch (action) {
       case PlayerAction.take:
         svgPath = 'assets/icon/arrow-up-bold.svg';
@@ -189,13 +195,12 @@ class CardListTile extends StatelessWidget {
         break;
     }
 
-    if (svgPath  == null) return const SizedBox.shrink();
+    if (svgPath == null) return const SizedBox.shrink();
 
     return SvgPicture.asset(
       svgPath,
-      colorFilter: color != null
-          ? ColorFilter.mode(color, BlendMode.srcIn)
-          : null,
+      colorFilter:
+          color != null ? ColorFilter.mode(color, BlendMode.srcIn) : null,
       width: 24,
       height: 24,
     );

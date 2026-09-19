@@ -1,3 +1,4 @@
+import '../domain/usecase/nfc_session.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
@@ -32,46 +33,48 @@ Future<void> registerBloc() async {
 
 void _applicationBloc() {
   locator.registerLazySingleton(() => ApplicationBloc(
-    clearUserDataUsecase: locator<ClearUserDataUsecase>(),
-    initSettingUsecase: locator<InitSettingUsecase>(),
-    updateSettingUsecase: locator<UpdateSettingUsecase>(),
-  ));
+        clearUserDataUsecase: locator<ClearUserDataUsecase>(),
+        initSettingUsecase: locator<InitSettingUsecase>(),
+        updateSettingUsecase: locator<UpdateSettingUsecase>(),
+      ));
 }
 
 void _browseCardBloc() {
-  locator.registerFactoryParam<BrowseCardBloc, String, void>((collectionId, _) => BrowseCardBloc(
-    deleteCardUsecase: locator<DeleteCardUsecase>(),
-    fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
-  ));
+  locator.registerFactoryParam<BrowseCardBloc, String, void>(
+      (collectionId, _) => BrowseCardBloc(
+            deleteCardUsecase: locator<DeleteCardUsecase>(),
+            fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
+          ));
 }
 
 void _cardBloc() {
   locator.registerFactory(() => CardBloc(
-    createCardUsecase: locator<CreateCardUsecase>(),
-    updateCardUsecase: locator<UpdateCardUsecase>(),
-  ));
+        createCardUsecase: locator<CreateCardUsecase>(),
+        updateCardUsecase: locator<UpdateCardUsecase>(),
+      ));
 }
 
 void _collectionBloc() {
   locator.registerLazySingleton(() => CollectionBloc(
-    createCollectionUsecase: locator<CreateCollectionUsecase>(),
-    deleteCollectionUsecase: locator<DeleteCollectionUsecase>(),
-    fetchCollectionUsecase: locator<FetchCollectionUsecase>(),
-    fetchDeckUsecase: locator<FetchDeckUsecase>(),
-    fetchUsedCardDistinctUsecase: locator<FetchUsedCardDistinctUsecase>(),
-  ));
+        createCollectionUsecase: locator<CreateCollectionUsecase>(),
+        deleteCollectionUsecase: locator<DeleteCollectionUsecase>(),
+        fetchCollectionUsecase: locator<FetchCollectionUsecase>(),
+        fetchDeckUsecase: locator<FetchDeckUsecase>(),
+        fetchUsedCardDistinctUsecase: locator<FetchUsedCardDistinctUsecase>(),
+      ));
 }
 
 void _deckBloc() {
   locator.registerLazySingleton(() => DeckBloc(
-    createDeckUsecase: locator<CreateDeckUsecase>(),
-    deleteDeckUsecase: locator<DeleteDeckUsecase>(),
-    fetchCardInDeckUsecase: locator<FetchCardInDeckUsecase>(),
-    fetchDeckUsecase: locator<FetchDeckUsecase>(),
-    generateShareDeckClipboardUsecase: locator<GenerateShareDeckClipboardUsecase>(),
-    updateCardInDeckUsecase: locator<UpdateCardInDeckUsecase>(),
-    updateDeckUsecase: locator<UpdateDeckUsecase>(),
-  ));
+        createDeckUsecase: locator<CreateDeckUsecase>(),
+        deleteDeckUsecase: locator<DeleteDeckUsecase>(),
+        fetchCardInDeckUsecase: locator<FetchCardInDeckUsecase>(),
+        fetchDeckUsecase: locator<FetchDeckUsecase>(),
+        generateShareDeckClipboardUsecase:
+            locator<GenerateShareDeckClipboardUsecase>(),
+        updateCardInDeckUsecase: locator<UpdateCardInDeckUsecase>(),
+        updateDeckUsecase: locator<UpdateDeckUsecase>(),
+      ));
 }
 
 void _drawerBloc() {
@@ -79,7 +82,8 @@ void _drawerBloc() {
 }
 
 void _nfcBloc() {
-  locator.registerLazySingleton(() => NfcBloc());
+  locator.registerLazySingleton(
+      () => NfcBloc(session: locator<NfcSessionUsecase>()));
 }
 
 void _pinCardBloc() {
@@ -89,33 +93,36 @@ void _pinCardBloc() {
 void _readerBloc() {
   locator.registerFactoryParam<ReaderBloc, String, void>((collectionId, _) {
     return ReaderBloc(
-      findCardFromTagUsecase: locator<FindCardFromTagUsecase>(param1: collectionId),
+      findCardFromTagUsecase:
+          locator<FindCardFromTagUsecase>(param1: collectionId),
     );
   });
 }
 
 void _recordBloc() {
-  locator.registerFactoryParam<RecordBloc, String, void>((deckId, _) => RecordBloc(
-    deckId: deckId,
-    createRecordUsecase: locator<CreateRecordUsecase>(),
-    deleteRecordUsecase: locator<DeleteRecordUsecase>(),
-    fetchRecordUsecase: locator<FetchRecordUsecase>(),
-    getCardFromRecordUsecase: locator<GetCardFromRecordUsecase>(),
-    importRecordUsecase: locator<ImportRecordUsecase>(),
-    shareRecordUsecase: locator<ShareRecordUsecase>(),
-    updateRecordUsecase: locator<UpdateRecordUsecase>(),
-  ));
+  locator
+      .registerFactoryParam<RecordBloc, String, void>((deckId, _) => RecordBloc(
+            deckId: deckId,
+            createRecordUsecase: locator<CreateRecordUsecase>(),
+            deleteRecordUsecase: locator<DeleteRecordUsecase>(),
+            fetchRecordUsecase: locator<FetchRecordUsecase>(),
+            getCardFromRecordUsecase: locator<GetCardFromRecordUsecase>(),
+            importRecordUsecase: locator<ImportRecordUsecase>(),
+            shareRecordUsecase: locator<ShareRecordUsecase>(),
+            updateRecordUsecase: locator<UpdateRecordUsecase>(),
+          ));
 }
 
 void _trackerBloc() {
-  locator.registerFactoryParam<TrackerBloc, DeckEntity, void>((deck, _) => TrackerBloc(
-    deck: deck,
-    trackingInteractionUsecase: locator<TrackingInteractionUsecase>(),
-  ));
+  locator.registerFactoryParam<TrackerBloc, DeckEntity, void>(
+      (deck, _) => TrackerBloc(
+            deck: deck,
+            trackingInteractionUsecase: locator<TrackingInteractionUsecase>(),
+          ));
 }
 
 void _usageCardBloc() {
   locator.registerFactory(() => UsageCardBloc(
-    calculateUsageCardUsecase: locator<CalculateUsageCardUsecase>(),
-  ));
+        calculateUsageCardUsecase: locator<CalculateUsageCardUsecase>(),
+      ));
 }

@@ -1,19 +1,15 @@
-import 'package:nfc_deck_tracker/data/repository/update_card.dart';
-import 'package:nfc_deck_tracker/data/repository/update_image.dart';
-import 'package:nfc_deck_tracker/data/repository/upload_image.dart';
+import '../repository/card.dart';
+import '../repository/image.dart';
 
 import '../entity/card.dart';
-import '../mapper/card.dart';
 
 class UpdateCardUsecase {
-  final UpdateCardRepository updateCardRepository;
-  final UpdateImageRepository updateImageRepository;
-  final UploadImageRepository uploadImageRepository;
+  final CardRepository cardRepository;
+  final ImageRepository imageRepository;
 
   UpdateCardUsecase({
-    required this.updateCardRepository,
-    required this.updateImageRepository,
-    required this.uploadImageRepository,
+    required this.cardRepository,
+    required this.imageRepository,
   });
 
   Future<void> call({
@@ -25,7 +21,8 @@ class UpdateCardUsecase {
     final DateTime now = DateTime.now();
 
     if (oldImageUrl != card.imageUrl) {
-      finalImageUrl = await updateImageRepository.update(oldImageUrl: oldImageUrl, newImagePath: card.imageUrl!);
+      finalImageUrl = await imageRepository.update(
+          oldImageUrl: oldImageUrl, newImagePath: card.imageUrl!);
     }
 
     final updatedCard = card.copyWith(
@@ -35,18 +32,16 @@ class UpdateCardUsecase {
 
     bool synced = false;
     if (userId.isNotEmpty) {
-      final success = await updateCardRepository.updateForRemote(
+      final success = await cardRepository.updateForRemote(
         userId: userId,
-        card: CardMapper.toModel(
-          updatedCard.copyWith(isSynced: true),
-        ),
+        card: updatedCard.copyWith(isSynced: true),
       );
 
       if (success) synced = true;
     }
 
     final finalEntity = updatedCard.copyWith(isSynced: synced);
-    final cardModel = CardMapper.toModel(finalEntity);
-    await updateCardRepository.updateForLocal(card: cardModel);
+    final cardToSave = finalEntity;
+    await cardRepository.updateForLocal(card: cardToSave);
   }
 }
