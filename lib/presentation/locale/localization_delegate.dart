@@ -13,7 +13,7 @@ class AppLocalizationDelegate extends LocalizationsDelegate<AppLocalization> {
     final isSupported = LanguageManager.supportedLanguages.contains(locale.languageCode);
 
     if (!isSupported) {
-      LoggerUtil.w('🚫 Unsupported locale provided: ${locale.languageCode}');
+      LoggerUtil.w('Unsupported locale provided: ${locale.languageCode}');
     }
     return isSupported;
   }

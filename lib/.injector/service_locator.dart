@@ -12,7 +12,7 @@ import 'register_usecase.dart';
 final GetIt locator = GetIt.instance;
 
 Future<void> initServiceLocator() async {
-  LoggerUtil.buffer('⚙️ Setting up Service Locator...');
+  LoggerUtil.buffer('Setting up Service Locator...');
   try {
     await registerService();
     await registerDataSource();
@@ -21,9 +21,9 @@ Future<void> initServiceLocator() async {
     await registerBloc();
     await locator.allReady();
 
-    LoggerUtil.buffer('👌 Service locator register completed successfully.');
+    LoggerUtil.buffer('Service locator register completed successfully.');
   } catch (e) {
-    LoggerUtil.buffer('❌ Failed to register service locator: $e');
+    LoggerUtil.buffer('Failed to register service locator: $e');
     rethrow;
   }
   LoggerUtil.flush();

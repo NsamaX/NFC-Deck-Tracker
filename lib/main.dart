@@ -22,7 +22,7 @@ void main() async {
 
   await dotenv.load();
   if (!RuntimeConfig.guestMode) {
-    // Android/iOS load their native Firebase configuration files.
+
     await Firebase.initializeApp();
   }
   await initServiceLocator();

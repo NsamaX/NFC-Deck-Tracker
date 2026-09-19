@@ -49,7 +49,7 @@ class FetchRecordUsecase {
       if (local == null) {
         await recordRepository.createForLocal(record: remote);
         localList.add(remote);
-        logger.d('📥 Imported remote record → local: ${remote.recordId}');
+        logger.d('Imported remote record → local: ${remote.recordId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
@@ -57,7 +57,7 @@ class FetchRecordUsecase {
         final index =
             localList.indexWhere((r) => r.recordId == remote.recordId);
         if (index != -1) localList[index] = remote;
-        logger.d('📥 Updated local record from remote: ${remote.recordId}');
+        logger.d('Updated local record from remote: ${remote.recordId}');
       }
     }
   }
@@ -82,9 +82,9 @@ class FetchRecordUsecase {
           final index =
               localList.indexWhere((r) => r.recordId == updated.recordId);
           if (index != -1) localList[index] = updated;
-          logger.d('📤 Synced local record → remote: ${local.recordId}');
+          logger.d('Synced local record → remote: ${local.recordId}');
         } else {
-          logger.e('⚠️ Failed to sync local → remote: ${local.recordId}');
+          logger.e('Failed to sync local → remote: ${local.recordId}');
         }
       } else if (remote != null &&
           local.updatedAt != null &&
@@ -96,10 +96,10 @@ class FetchRecordUsecase {
         );
 
         if (success) {
-          logger.d('🔁 Updated remote with newer local: ${local.recordId}');
+          logger.d('Updated remote with newer local: ${local.recordId}');
         } else {
           logger
-              .e('⚠️ Failed to update newer local → remote: ${local.recordId}');
+              .e('Failed to update newer local → remote: ${local.recordId}');
         }
       }
     }
@@ -121,9 +121,9 @@ class FetchRecordUsecase {
       if (success) {
         localList.removeWhere((r) => r.recordId == record.recordId);
         logger.d(
-            '🗑️ Deleted local record not found in remote: ${record.recordId}');
+            'Deleted local record not found in remote: ${record.recordId}');
       } else {
-        logger.e('⚠️ Failed to delete local-only record: ${record.recordId}');
+        logger.e('Failed to delete local-only record: ${record.recordId}');
       }
     }
   }

@@ -1,4 +1,4 @@
-<h1 align="center"\>📦 Util Layer\</h1\>
+<h1 align="center"\>Util Layer\</h1\>
 
 ## Overview
 

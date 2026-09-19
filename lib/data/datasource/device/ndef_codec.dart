@@ -52,7 +52,7 @@ TagEntity createTagEntity({
   try {
     final collectionId = records
         .firstWhere(
-          (r) => r.startsWith('coId:'), // coId is collection id
+          (r) => r.startsWith('coId:'),
           orElse: () => '',
         )
         .split(': ')
@@ -60,7 +60,7 @@ TagEntity createTagEntity({
 
     final cardId = records
         .firstWhere(
-          (r) => r.startsWith('caId:'), // caId is card id
+          (r) => r.startsWith('caId:'),
           orElse: () => '',
         )
         .split(': ')

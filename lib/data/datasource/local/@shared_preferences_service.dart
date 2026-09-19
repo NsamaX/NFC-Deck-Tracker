@@ -16,12 +16,12 @@ class SharedPreferencesService {
       final dynamic value = _sharedPreferences.get(key);
 
       if (value == null) {
-        LoggerUtil.buffer('❓ Key not found "$key"');
+        LoggerUtil.buffer('Key not found "$key"');
       }
 
       return value;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to retrieve string for key "$key": $e');
+      LoggerUtil.e('Failed to retrieve string for key "$key": $e');
       return null;
     }
   }
@@ -34,9 +34,9 @@ class SharedPreferencesService {
       if (value == null) {
         final bool success = await _sharedPreferences.remove(key);
         if (success) {
-          LoggerUtil.buffer('🗑️ Removed key "$key" (value was null)');
+          LoggerUtil.buffer('Removed key "$key" (value was null)');
         } else {
-          LoggerUtil.e('❌ Failed to remove key "$key"');
+          LoggerUtil.e('Failed to remove key "$key"');
         }
         return;
       }
@@ -54,26 +54,26 @@ class SharedPreferencesService {
           success = await _sharedPreferences.setBool(key, value as bool);
           break;
         default:
-          LoggerUtil.e('❗ Unsupported type "${value.runtimeType}" for key "$key"');
+          LoggerUtil.e('Unsupported type "${value.runtimeType}" for key "$key"');
           return;
       }
 
       if (success) {
-        LoggerUtil.buffer('📝 Saved value for key "$key" value "$value" successfully');
+        LoggerUtil.buffer('Saved value for key "$key" value "$value" successfully');
       } else {
-        LoggerUtil.e('❌ Failed to save value for key "$key"');
+        LoggerUtil.e('Failed to save value for key "$key"');
       }
     } catch (e) {
-      LoggerUtil.e('❌ Failed to save for key "$key": $e');
+      LoggerUtil.e('Failed to save for key "$key": $e');
     }
   }
 
   Future<void> clear() async {
     try {
       await _sharedPreferences.clear();
-      LoggerUtil.i('🧹 Cleared all SharedPreferences data successfully');
+      LoggerUtil.i('Cleared all SharedPreferences data successfully');
     } catch (e) {
-      LoggerUtil.e('❌ Failed to clear SharedPreferences: $e');
+      LoggerUtil.e('Failed to clear SharedPreferences: $e');
     }
   }
 }

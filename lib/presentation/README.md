@@ -1,4 +1,4 @@
-<h1 align="center">📦 Presentation Layer</h1>
+<h1 align="center">Presentation Layer</h1>
 
 ## Overview
 
@@ -13,23 +13,23 @@ This layer communicates with the domain or application layer (via Blocs) to exec
 
 ---
 
-## 📁 Folder Structure & Responsibilities
+## Folder Structure & Responsibilities
 
 ```plaintext
 presentation/
-├── auth/         # Authentication (Google & Guest)
-├── bloc/         # State management using bloc
-├── locale/       # Internationalization (i18n) and localization setup
-├── page/         # Individual screens or pages in the application
-├── route/        # Application-wide route definitions and navigation
-├── theme/        # Global theming: colors, fonts, text styles
-├── widget/       # Reusable, shared UI components
-├── constant.dart # Ui constants
+├── auth/
+├── bloc/
+├── locale/
+├── page/
+├── route/
+├── theme/
+├── widget/
+├── constant.dart
 ```
 
 ---
 
-### 🗂️ Detailed Folder Descriptions
+### Detailed Folder Descriptions
 
 * **`auth/`**
 

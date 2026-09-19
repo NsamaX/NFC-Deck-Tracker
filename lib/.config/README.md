@@ -1,4 +1,4 @@
-<h1 align="center">🃏 How to Add a New Game</h1>
+<h1 align="center">How to Add a New Game</h1>
 
 ## Overview
 
@@ -7,18 +7,18 @@ Each game must be registered in the application along with its associated **API 
 
 ---
 
-## 📌 Prerequisites
+## Prerequisites
 
 - The game must have a publicly accessible card API (REST preferred)
 - Card data must include at minimum: `cardId`, `name`, `imageUrl`, and optional metadata
 
 ---
 
-## ✅ Step-by-Step Instructions
+## Step-by-Step Instructions
 
 ---
 
-### 🔹 Step 1: Register Game in `GameConfig`
+### Step 1: Register Game in `GameConfig`
 
 Files:
 - `lib/.config/game.dart`
@@ -28,18 +28,18 @@ Add a new constant for your game ID and define API URLs under each environment (
 ```dart
 class ApiConfig {
   static const dummy = 'dummy';
-  static const pokemon = 'pokemon'; // https://dev.pokemontcg.io/dashboard
-  static const newgame = 'newgame'; // <-- Add this
+  static const pokemon = 'pokemon';
+  static const newgame = 'newgame';
 
   static const Map<String, Map<String, String>> _baseUrls = {
     'development': {
       dummy: '',
       pokemon: 'https://api.pokemontcg.io/v2/',
-      newgame: '', // <-- Add this
+      newgame: '',
     },
     'production': {
       dummy: '',
-      newgame: '', // <-- Add this if ready for production
+      newgame: '',
     },
   };
 }
@@ -47,7 +47,7 @@ class ApiConfig {
 
 ---
 
-### 🔹 Step 2: Create Game API and Paging Strategy
+### Step 2: Create Game API and Paging Strategy
 
 Folder: `lib/data/datasource/api/`
 
@@ -106,24 +106,23 @@ class NewGameApi extends BaseApi implements GameApi {
       final data = body['data'] as Map<String, dynamic>;
       return _parseData(data: data);
     } catch (e) {
-      // Log the error if necessary
+
       return null;
     }
   }
 
-  // Helper method to parse a single card's data
   CardModel _parseData({
     required Map<String, dynamic> data,
   }) {
-    // Customize this based on the actual NewGame API response structure
+
     return CardModel(
       cardId: data['id']?.toString() ?? '',
-      collectionId: GameConfig.newgame, // Use GameConfig
+      collectionId: GameConfig.newgame,
       name: data['name'] ?? '',
-      imageUrl: data['images']?['large'] ?? data['image'] ?? '', // Adjust based on your API's image field
-      description: data['description'] ?? '', // Add a relevant description
+      imageUrl: data['images']?['large'] ?? data['image'] ?? '',
+      description: data['description'] ?? '',
       additionalData: {
-        // Add any additional metadata your API provides
+
         'type': data['type'] ?? '',
         'rarity': data['rarity'] ?? '',
       },
@@ -132,11 +131,10 @@ class NewGameApi extends BaseApi implements GameApi {
     );
   }
 
-  // Helper method to filter and parse a list of cards
   List<CardModel> _filterAndParseData({
     required List<dynamic> data,
   }) {
-    // Add any filtering logic if needed (e.g., only "Pokémon" supertype for PokemonApi)
+
     return data
         .map((cardData) => _parseData(data: cardData))
         .toList();
@@ -149,16 +147,16 @@ class NewGamePagingStrategy implements PagingStrategy {
     required Map<String, dynamic> current,
     required int offset,
   }) {
-    // Customize this based on your API's paging parameters
+
     return {
       'page': (current['page'] ?? 1) + offset,
-      // 'pageSize': 20, // Example: if your API uses page size
+
     };
   }
 }
 ```
 
-### 🔹 Step 3: Export the Game File
+### Step 3: Export the Game File
 
 File: `lib/data/datasource/api/~index.dart`
 
@@ -166,14 +164,14 @@ Add an export statement for your new game file:
 
 ```dart
 export 'pokemon.dart';
-export 'newgame.dart'; // <-- Add this
+export 'newgame.dart';
 ```
 
 ---
 
 ---
 
-### 🔹 Step 4: Register the Game in `ServiceFactory`
+### Step 4: Register the Game in `ServiceFactory`
 
 File: `lib/data/datasource/api/@service_factory.dart`
 
@@ -181,23 +179,22 @@ Add your game into the two factory maps:
 
 ```dart
 class ServiceFactory {
-  // ... existing code ...
 
   static final Map<String, GameApi Function(String baseUrl)> _apiRegistry = {
     GameConfig.pokemon: (baseUrl) => PokemonApi(baseUrl: baseUrl),
-    GameConfig.newgame: (baseUrl) => NewGameApi(baseUrl: baseUrl), // <-- Add this
+    GameConfig.newgame: (baseUrl) => NewGameApi(baseUrl: baseUrl),
   };
 
   static final Map<String, PagingStrategy Function()> _pagingRegistry = {
     GameConfig.pokemon: () => PokemonPagingStrategy(),
-    GameConfig.newgame: () => NewGamePagingStrategy(), // <-- Add this
+    GameConfig.newgame: () => NewGamePagingStrategy(),
   };
 }
 ```
 
 ---
 
-### 🔹 Step 5: Add Game Icon Image (Optional but Recommended)
+### Step 5: Add Game Icon Image (Optional but Recommended)
 
 Folder: `assets/image/game/`
 
@@ -213,7 +210,7 @@ Folder: `assets/image/game/`
 
 ---
 
-## ✅ Done\!
+## Done\!
 
 You’ve successfully registered a new game\!
 Now it will be recognized in the system and available for:
@@ -225,7 +222,7 @@ Now it will be recognized in the system and available for:
 
 ---
 
-## 🧪 Recommended Testing Checklist
+## Recommended Testing Checklist
 
   * [ ] API returns valid data for both `find` and `fetch`
   * [ ] Cards are correctly parsed into `CardModel` objects

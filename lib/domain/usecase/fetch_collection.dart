@@ -48,7 +48,7 @@ class FetchCollectionUsecase {
           collection: remote,
         );
         localList.add(remote);
-        logger.d('📥 Imported remote → local: ${remote.collectionId}');
+        logger.d('Imported remote → local: ${remote.collectionId}');
       } else if (remote.updatedAt != null &&
           local.updatedAt != null &&
           remote.updatedAt!.isAfter(local.updatedAt!)) {
@@ -58,7 +58,7 @@ class FetchCollectionUsecase {
         final index =
             localList.indexWhere((c) => c.collectionId == remote.collectionId);
         if (index != -1) localList[index] = remote;
-        logger.d('📥 Updated local from remote: ${remote.collectionId}');
+        logger.d('Updated local from remote: ${remote.collectionId}');
       } else if (local.name == 'unknow') {
         final updated = local.copyWith(name: remote.name);
         await collectionRepository.updateForLocal(
@@ -68,7 +68,7 @@ class FetchCollectionUsecase {
             localList.indexWhere((c) => c.collectionId == updated.collectionId);
         if (index != -1) localList[index] = updated;
         logger
-            .d('✏️ Renamed "unknow" local from remote: ${remote.collectionId}');
+            .d('Renamed "unknow" local from remote: ${remote.collectionId}');
       }
     }
   }
@@ -95,9 +95,9 @@ class FetchCollectionUsecase {
           final index = localList
               .indexWhere((c) => c.collectionId == updated.collectionId);
           if (index != -1) localList[index] = updated;
-          logger.d('📤 Synced local → remote: ${local.collectionId}');
+          logger.d('Synced local → remote: ${local.collectionId}');
         } else {
-          logger.e('⚠️ Failed to sync local → remote: ${local.collectionId}');
+          logger.e('Failed to sync local → remote: ${local.collectionId}');
         }
       } else if (remote != null &&
           local.updatedAt != null &&
@@ -109,10 +109,10 @@ class FetchCollectionUsecase {
         );
 
         if (success) {
-          logger.d('🔁 Updated remote with newer local: ${local.collectionId}');
+          logger.d('Updated remote with newer local: ${local.collectionId}');
         } else {
           logger.e(
-              '⚠️ Failed to update newer local → remote: ${local.collectionId}');
+              'Failed to update newer local → remote: ${local.collectionId}');
         }
       }
     }
@@ -135,10 +135,10 @@ class FetchCollectionUsecase {
       if (success) {
         localList.removeWhere((c) => c.collectionId == collection.collectionId);
         logger.d(
-            '🗑️ Deleted local not found in remote: ${collection.collectionId}');
+            'Deleted local not found in remote: ${collection.collectionId}');
       } else {
         logger.e(
-            '⚠️ Failed to delete local-only collection: ${collection.collectionId}');
+            'Failed to delete local-only collection: ${collection.collectionId}');
       }
     }
   }

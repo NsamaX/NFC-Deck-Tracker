@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 
-// Includes relative paths, barrels, parts, and conditional imports/exports.
 Iterable<String> dependencies(String source) sync* {
   final directives = RegExp(
     r'''^\s*(?:import|export|part(?:\s+of)?)\s+([^;]+);''',
@@ -85,7 +84,7 @@ void main() {
                 infrastructurePackages
                     .contains(target.substring(8).split('/').first))
               problem = 'infrastructure SDK';
-            // Domain use cases may depend on domain ports; views may not import ports directly.
+
             if (file.startsWith('domain/')) continue;
           } else if (target.startsWith('presentation/') ||
               target.startsWith('.injector/') ||

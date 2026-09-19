@@ -1,4 +1,4 @@
-<h1 align="center">📦 Application Source (`lib/`)</h1>
+<h1 align="center">Application Source (`lib/`)</h1>
 
 ## Overview
 
@@ -8,7 +8,7 @@ Each layer has a clear responsibility and communicates with other layers through
 
 ---
 
-## 🧱 Clean Architecture Layers
+## Clean Architecture Layers
 
 1. **Presentation Layer** – UI, interaction, and state management
 2. **Domain Layer**       – Core business logic and use cases
@@ -18,23 +18,23 @@ Each layer has a clear responsibility and communicates with other layers through
 
 ---
 
-## 📁 Folder Structure & Responsibilities
+## Folder Structure & Responsibilities
 
 ```plaintext
 lib/
-├── .config/                     # App-wide constants and configurations
-├── .injector/                   # Dependency injection setup (via GetIt)
-├── data/                        # Data sources, models, and repository implementations
-├── domain/                      # Business logic, use cases, and entities
-├── presentation/                # UI components, localization, theming, and Blocs
-├── util/                        # Reusable utilities (e.g., logger, extensions, helpers)
-├── main.dart                    # App entry point and bootstrap logic
-├── presentation/app.dart       # App UI and NFC lifecycle composition
+├── .config/                    
+├── .injector/                  
+├── data/                        
+├── domain/                      
+├── presentation/                
+├── util/                        
+├── main.dart                    
+├── presentation/app.dart
 ```
 
 ---
 
-## 🗂️ Detailed Folder Descriptions
+## Detailed Folder Descriptions
 
 ### **`.config/`**
 
@@ -45,28 +45,28 @@ lib/
 ### **`.injector/`**
 
   * **Purpose**: Sets up dependency injection using `GetIt` for managing the application's dependencies.
-  * 📄 [See more](.injector/README.md)
+  *  [See more](.injector/README.md)
 
 ---
 
 ### **`data/`**
 
   * **Purpose**: Handles all data-related operations, including interacting with external APIs, local storage, and cloud services.
-  * 📄 [See more](./data/README.md)
+  *  [See more](./data/README.md)
 
 ---
 
 ### **`domain/`**
 
   * **Purpose**: Contains application rules, entities, repository interfaces, and use cases. Persistence mappers live in `data/mapper`.
-  * 📄 [See more](./domain/README.md)
+  *  [See more](./domain/README.md)
 
 ---
 
 ### **`presentation/`**
 
   * **Purpose**: Manages UI rendering, application state, localization, navigation, and theming.
-  * 📄 [See more](./presentation/README.md)
+  *  [See more](./presentation/README.md)
 
 ---
 
@@ -89,12 +89,12 @@ lib/
 
 ---
 
-## ⚠️ Development Notes
+## Development Notes
 
 Guest builds run without Firebase or Supabase credentials. Online builds need
 the native Firebase configuration and Supabase values in `.env`. See the
 [project README](../README.md#local-configuration) for the current emulator setup.
 
-> ℹ️ This documentation provides guidance to developers contributing to the app’s core structure, ensuring a consistent and understandable codebase.
+>  This documentation provides guidance to developers contributing to the app’s core structure, ensuring a consistent and understandable codebase.
 
 ---

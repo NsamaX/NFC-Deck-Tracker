@@ -33,7 +33,7 @@ class _AppRootState extends State<AppRoot> {
     _nfcLifecycleObserver = NfcLifecycleObserver(_nfcBloc)..startObserving();
 
     SchedulerBinding.instance.addPostFrameCallback((_) {
-      LoggerUtil.i('📱 Application initialized');
+      LoggerUtil.i('Application initialized');
     });
   }
 

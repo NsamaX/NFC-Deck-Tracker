@@ -46,12 +46,12 @@ class FetchDeckUsecase {
       if (local == null) {
         await deckRepository.createForLocal(deck: remote);
         localList.add(remote);
-        logger.d('📥 Imported remote deck → local: ${remote.deckId}');
+        logger.d('Imported remote deck → local: ${remote.deckId}');
       } else if (remote.updatedAt!.isAfter(local.updatedAt!)) {
         await deckRepository.updateForLocal(deck: remote);
         final index = localList.indexWhere((d) => d.deckId == remote.deckId);
         if (index != -1) localList[index] = remote;
-        logger.d('📥 Updated local deck from remote: ${remote.deckId}');
+        logger.d('Updated local deck from remote: ${remote.deckId}');
       }
     }
   }
@@ -70,9 +70,9 @@ class FetchDeckUsecase {
         await deckRepository.updateForLocal(deck: updated);
         final index = localList.indexWhere((d) => d.deckId == updated.deckId);
         if (index != -1) localList[index] = updated;
-        logger.d('📤 Synced local deck → remote: ${deck.deckId}');
+        logger.d('Synced local deck → remote: ${deck.deckId}');
       } else {
-        logger.e('⚠️ Failed to sync local → remote: ${deck.deckId}');
+        logger.e('Failed to sync local → remote: ${deck.deckId}');
       }
     }
   }
@@ -91,9 +91,9 @@ class FetchDeckUsecase {
       final success = await deckRepository.deleteForLocal(deckId: deck.deckId!);
       if (success) {
         localList.removeWhere((d) => d.deckId == deck.deckId);
-        logger.d('🗑️ Deleted local deck not found in remote: ${deck.deckId}');
+        logger.d('Deleted local deck not found in remote: ${deck.deckId}');
       } else {
-        logger.e('⚠️ Failed to delete local-only deck: ${deck.deckId}');
+        logger.e('Failed to delete local-only deck: ${deck.deckId}');
       }
     }
   }

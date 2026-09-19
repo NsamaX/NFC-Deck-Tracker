@@ -1,39 +1,39 @@
-<h1 align="center">🌐 Localization System</h1>
+<h1 align="center">Localization System</h1>
 
 ## Overview
 
 This folder (`lib/presentation/locale/`) contains all **logic related to localization and internationalization (i18n)** for the application.  
 It provides the mechanisms required to load translation files, switch app languages at runtime, and integrate seamlessly with Flutter's localization APIs.
 
-> 🔤 The actual translation files (`.json`) are located in: `assets/locale/`
+>  The actual translation files (`.json`) are located in: `assets/locale/`
 
 ---
 
-## 📁 Folder Structure
+## Folder Structure
 
 ```plaintext
 presentation/locale/
-├── language_manager.dart           # Handles supported languages and language switching logic
-├── localization_delegate.dart      # Custom Flutter localization delegate
-├── localization.dart               # Loads and retrieves localized strings
+├── language_manager.dart
+├── localization_delegate.dart
+├── localization.dart
 ```
 
 ---
 
-## 🗂️ Related Assets
+## Related Assets
 
 ```plaintext
 assets/locale/
-├── en.json      # English translations
-├── th.json      # Thai translations
-├── fr.json      # French translations
+├── en.json
+├── th.json
+├── fr.json
 ```
 
 Each JSON file represents a supported locale and contains key-value pairs used for UI translations.
 
 ---
 
-## ➕ How to Add a New Language
+## How to Add a New Language
 
 To add support for a new language:
 
@@ -46,7 +46,7 @@ Once completed, the app will automatically detect and load the new language base
 
 ---
 
-## 🔣 Placeholder Usage
+## Placeholder Usage
 
 Use **named placeholders** when inserting dynamic content into translation strings. For example:
 

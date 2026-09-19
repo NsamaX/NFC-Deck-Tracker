@@ -12,7 +12,7 @@ class GameConfig {
   }
 
   static const String dummy = 'dummy';
-  static const String pokemon = 'pokemon'; // https://dev.pokemontcg.io/dashboard
+  static const String pokemon = 'pokemon';
 
   static final Map<String, Map<String, String>> _environments = {
     'development': {

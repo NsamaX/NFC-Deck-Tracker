@@ -27,10 +27,10 @@ class FirestoreService {
 
       final result = await query.get();
 
-      LoggerUtil.i('🔎 Query\nCollection: $collectionPath\nReturned: ${result.docs.length} documents');
+      LoggerUtil.i('Query\nCollection: $collectionPath\nReturned: ${result.docs.length} documents');
       return result.docs;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to query Firestore collection "$collectionPath": $e');
+      LoggerUtil.e('Failed to query Firestore collection "$collectionPath": $e');
       return [];
     }
   }
@@ -45,7 +45,7 @@ class FirestoreService {
       if (!doc.exists) return null;
       return doc;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to get document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.e('Failed to get document "$documentId" in "$collectionPath": $e');
       return null;
     }
   }
@@ -59,10 +59,10 @@ class FirestoreService {
     if (_firestore == null) return false;
     try {
       await firestore.collection(collectionPath).doc(documentId).set(data, SetOptions(merge: merge));
-      LoggerUtil.i('📝 Set document "$documentId" in "$collectionPath" successfully');
+      LoggerUtil.i('Set document "$documentId" in "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to set document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.e('Failed to set document "$documentId" in "$collectionPath": $e');
       return false;
     }
   }
@@ -75,10 +75,10 @@ class FirestoreService {
     if (_firestore == null) return false;
     try {
       await firestore.collection(collectionPath).doc(documentId).update(data);
-      LoggerUtil.i('🔔 Updated document "$documentId" in "$collectionPath" successfully');
+      LoggerUtil.i('Updated document "$documentId" in "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to update document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.e('Failed to update document "$documentId" in "$collectionPath": $e');
       return false;
     }
   }
@@ -99,10 +99,10 @@ class FirestoreService {
       };
 
       await firestore.collection(collectionPath).doc(documentId).update(fieldUpdate);
-      LoggerUtil.i('${remove ? '➖ Removed' : '➕ Added'} values in "$fieldName" of "$documentId"');
+      LoggerUtil.i('${remove ? 'Removed' : 'Added'} values in "$fieldName" of "$documentId"');
       return true;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to update array field "$fieldName" in "$documentId": $e');
+      LoggerUtil.e('Failed to update array field "$fieldName" in "$documentId": $e');
       return false;
     }
   }
@@ -114,10 +114,10 @@ class FirestoreService {
     if (_firestore == null) return false;
     try {
       await firestore.collection(collectionPath).doc(documentId).delete();
-      LoggerUtil.i('🗑️ Deleted document "$documentId" from "$collectionPath" successfully');
+      LoggerUtil.i('Deleted document "$documentId" from "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to delete document "$documentId" from "$collectionPath": $e');
+      LoggerUtil.e('Failed to delete document "$documentId" from "$collectionPath": $e');
       return false;
     }
   }

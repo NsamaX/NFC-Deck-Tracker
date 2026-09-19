@@ -25,9 +25,9 @@ Future<void> registerBloc() async {
     _trackerBloc();
     _usageCardBloc();
 
-    LoggerUtil.buffer('✔️ Bloc registered successfully.');
+    LoggerUtil.buffer('Bloc registered successfully.');
   } catch (e) {
-    LoggerUtil.buffer('❌ Failed to register bloc: $e');
+    LoggerUtil.buffer('Failed to register bloc: $e');
   }
 }
 

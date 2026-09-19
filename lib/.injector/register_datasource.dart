@@ -29,9 +29,9 @@ Future<void> registerDataSource() async {
     _deckRemoteDatasource();
     _recordRemoteDatasource();
 
-    LoggerUtil.buffer('✔️ DataSource registered successfully.');
+    LoggerUtil.buffer('DataSource registered successfully.');
   } catch (e) {
-    LoggerUtil.buffer('❌ Failed to register datasource: $e');
+    LoggerUtil.buffer('Failed to register datasource: $e');
   }
 }
 

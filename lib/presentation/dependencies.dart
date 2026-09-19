@@ -4,8 +4,6 @@ import '../domain/usecase/session.dart';
 import '../domain/usecase/device.dart';
 import 'bloc/~index.dart';
 
-/// Typed UI dependencies. The composition root supplies factories; views own
-/// factory-created blocs and borrow the shared application/collection blocs.
 class PresentationDependencies {
   final NfcBloc nfcBloc;
   final DeckBloc deckBloc;
@@ -47,7 +45,6 @@ class PresentationScope extends InheritedWidget {
   const PresentationScope(
       {super.key, required this.dependencies, required super.child});
 
-  /// Non-listening lookup also supports bloc creation in State.initState.
   static PresentationDependencies read(BuildContext context) {
     final scope = context.getInheritedWidgetOfExactType<PresentationScope>();
     assert(scope != null, 'PresentationScope must wrap the application.');

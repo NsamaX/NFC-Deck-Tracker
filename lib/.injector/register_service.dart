@@ -31,9 +31,9 @@ Future<void> registerService() async {
       await _Supabase();
     }
 
-    LoggerUtil.buffer('✔️ All services registered successfully.');
+    LoggerUtil.buffer('All services registered successfully.');
   } catch (e) {
-    LoggerUtil.buffer('❌ Failed to setup services: $e');
+    LoggerUtil.buffer('Failed to setup services: $e');
     rethrow;
   }
 }
@@ -78,7 +78,7 @@ Future<void> _Supabase() async {
     final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
     if (supabaseUrl == null || supabaseUrl.trim().isEmpty ||
         supabaseAnonKey == null || supabaseAnonKey.trim().isEmpty) {
-      throw Exception('❌ Supabase URL or anon key is missing.');
+      throw Exception('Supabase URL or anon key is missing.');
     }
     final client = SupabaseClient(supabaseUrl, supabaseAnonKey);
     locator.registerSingleton<SupabaseClient>(client);

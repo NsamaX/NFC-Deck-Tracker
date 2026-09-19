@@ -30,9 +30,9 @@ Future<void> registerUsecase() async {
     _recordUsecase();
     _settingUsecase();
 
-    LoggerUtil.buffer('✔️ Usecase registered successfully.');
+    LoggerUtil.buffer('Usecase registered successfully.');
   } catch (e) {
-    LoggerUtil.buffer('❌ Failed to register usecase: $e');
+    LoggerUtil.buffer('Failed to register usecase: $e');
   }
 }
 

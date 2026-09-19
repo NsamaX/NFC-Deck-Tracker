@@ -17,7 +17,7 @@ class LanguageManager {
       if (languageCodes.isEmpty) {
         supportedLanguages = UnmodifiableListView([]);
         languageNames = UnmodifiableMapView({});
-        LoggerUtil.w('⚠️ No language files found in $_localePath');
+        LoggerUtil.w('No language files found in $_localePath');
         return;
       }
 
@@ -28,11 +28,11 @@ class LanguageManager {
       supportedLanguages = UnmodifiableListView(languageCodes);
       languageNames = UnmodifiableMapView(Map.fromEntries(entries));
 
-      LoggerUtil.i('💬 Supported languages loaded: ${supportedLanguages.join(", ")}');
+      LoggerUtil.i('Supported languages loaded: ${supportedLanguages.join(", ")}');
     } on Exception catch (e) {
       supportedLanguages = UnmodifiableListView([]);
       languageNames = UnmodifiableMapView({});
-      LoggerUtil.e('❌ Failed to initialize languages: $e');
+      LoggerUtil.e('Failed to initialize languages: $e');
     }
   }
 
@@ -52,7 +52,7 @@ class LanguageManager {
       final languageName = langData['language_name'] as String?;
       return MapEntry(code, languageName ?? code);
     } on Exception catch (e) {
-      LoggerUtil.w('❗ Could not load name for language "$code", using code as name. Error: $e');
+      LoggerUtil.w('Could not load name for language "$code", using code as name. Error: $e');
       return MapEntry(code, code);
     }
   }
@@ -60,7 +60,7 @@ class LanguageManager {
   static String getLanguageName(String code) {
     final name = languageNames[code];
     if (name == null) {
-      LoggerUtil.w('❓ Unknown language code requested: "$code"');
+      LoggerUtil.w('Unknown language code requested: "$code"');
       return code;
     }
     return name;

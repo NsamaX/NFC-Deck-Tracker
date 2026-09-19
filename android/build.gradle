@@ -17,8 +17,6 @@ tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
 
-// nfc_manager 3.x uses APIs removed from the Kotlin 2.1 language/API surface.
-// Keep its existing Dart API while compiling that plugin in compatibility mode.
 project(':nfc_manager') {
     tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         compilerOptions {

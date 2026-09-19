@@ -23,7 +23,7 @@ class ApiConfig {
 
   static Future<void> load(String environment) async {
     if (_instance?.environment == environment) {
-      LoggerUtil.i('ℹ️ API config for "$environment" is already loaded.');
+      LoggerUtil.i('API config for "$environment" is already loaded.');
       return;
     }
 
@@ -34,10 +34,10 @@ class ApiConfig {
       }
 
       _instance = ApiConfig._(environment: environment, baseUrls: envData);
-      LoggerUtil.i('🌐 API config loaded for "$environment"');
+      LoggerUtil.i('API config loaded for "$environment"');
     } catch (error, stackTrace) {
       _instance = null;
-      LoggerUtil.e('❌ Failed to load API config for "$environment"', error: error, stackTrace: stackTrace);
+      LoggerUtil.e('Failed to load API config for "$environment"', error: error, stackTrace: stackTrace);
       rethrow;
     }
   }
@@ -45,7 +45,7 @@ class ApiConfig {
   String getBaseUrl(String key) {
     final url = _baseUrls[key];
     if (url == null || url.isEmpty) {
-      LoggerUtil.w('⚠️ Base URL not found for key "$key" in environment "$environment"');
+      LoggerUtil.w('Base URL not found for key "$key" in environment "$environment"');
       throw ArgumentError('Base URL not found or empty for "$key" in environment "$environment"');
     }
     return url;

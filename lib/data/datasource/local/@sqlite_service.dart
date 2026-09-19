@@ -15,7 +15,7 @@ class SQLiteService {
     try {
       return _databaseService.database;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to get database instance: $e');
+      LoggerUtil.e('Failed to get database instance: $e');
       rethrow;
     }
   }
@@ -34,7 +34,7 @@ class SQLiteService {
           .toList();
 
       final formattedSql = sqlLines.join('\n');
-      final message = '🔎 Query\n'
+      final message = 'Query\n'
           'SQL:\n'
           '$formattedSql\n'
           'Returned: ${result.length} rows';
@@ -43,7 +43,7 @@ class SQLiteService {
 
       return result;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to execute raw query: $e');
+      LoggerUtil.e('Failed to execute raw query: $e');
       return [];
     }
   }
@@ -69,11 +69,11 @@ class SQLiteService {
         orderBy: orderBy,
       );
 
-      LoggerUtil.i('🔎 Query\nTable: $table\nWHERE: $where\nARGS : $whereArgs\nReturned: ${result.length} rows');
+      LoggerUtil.i('Query\nTable: $table\nWHERE: $where\nARGS : $whereArgs\nReturned: ${result.length} rows');
 
       return result;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to query table "$table": $e');
+      LoggerUtil.e('Failed to query table "$table": $e');
       return [];
     }
   }
@@ -97,9 +97,9 @@ class SQLiteService {
         conflictAlgorithm: conflictAlgorithm,
       );
 
-      LoggerUtil.i('📝 Inserted data into "$table" successfully');
+      LoggerUtil.i('Inserted data into "$table" successfully');
     } catch (e) {
-      LoggerUtil.e('❌ Failed to insert data into "$table": $e');
+      LoggerUtil.e('Failed to insert data into "$table": $e');
     }
   }
 
@@ -138,9 +138,9 @@ class SQLiteService {
         }
       });
 
-      LoggerUtil.i('📝 Inserted batch data into "$table" successfully');
+      LoggerUtil.i('Inserted batch data into "$table" successfully');
     } catch (e) {
-      LoggerUtil.e('❌ Failed to insert batch into "$table": $e');
+      LoggerUtil.e('Failed to insert batch into "$table": $e');
     }
   }
 
@@ -165,9 +165,9 @@ class SQLiteService {
         whereArgs: whereArgs,
       );
 
-      LoggerUtil.i('🔔 Updated data in "$table" successfully');
+      LoggerUtil.i('Updated data in "$table" successfully');
     } catch (e) {
-      LoggerUtil.e('❌ Failed to update data in "$table": $e');
+      LoggerUtil.e('Failed to update data in "$table": $e');
     }
   }
 
@@ -192,11 +192,11 @@ class SQLiteService {
 
       LoggerUtil.i(
           where == null
-              ? '🗑️ Deleted all data from "$table"'
-              : '🗑️ Deleted data from "$table" with condition: $where');
+              ? 'Deleted all data from "$table"'
+              : 'Deleted data from "$table" with condition: $where');
       return true;
     } catch (e) {
-      LoggerUtil.e('❌ Failed to delete data from "$table": $e');
+      LoggerUtil.e('Failed to delete data from "$table": $e');
       return false;
     }
   }
@@ -217,7 +217,7 @@ class SQLiteService {
         throw Exception('Table "$table" does not exist.');
       }
     } catch (e) {
-      LoggerUtil.e('❌ Table check failed for "$table": $e');
+      LoggerUtil.e('Table check failed for "$table": $e');
       rethrow;
     }
   }

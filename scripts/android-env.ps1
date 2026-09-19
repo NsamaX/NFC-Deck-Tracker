@@ -1,4 +1,3 @@
-# Dot-source this file to use the project-local Android toolchain in this shell.
 $projectRoot = Split-Path -Parent $PSScriptRoot
 $localSdk = Join-Path $projectRoot '.local/android-sdk'
 $localJdk = Join-Path $projectRoot '.local/jdk'
@@ -17,5 +16,5 @@ if (Test-Path -LiteralPath $localJdk) {
         $env:PATH = "$env:JAVA_HOME/bin;$env:PATH"
     }
 }
-# Android-only commands do not need Windows desktop plugin symlinks.
+
 $env:FLUTTER_WINDOWS = 'false'
