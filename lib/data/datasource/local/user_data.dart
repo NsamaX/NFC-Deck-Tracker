@@ -1,6 +1,6 @@
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '@sqlite_service.dart';
+import 'sqlite_service.dart';
 
 class UserDataLocalDatasource {
   final SQLiteService _sqliteService;

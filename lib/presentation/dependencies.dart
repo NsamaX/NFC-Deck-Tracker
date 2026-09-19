@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import '../domain/entity/deck.dart';
 import '../domain/usecase/session.dart';
 import '../domain/usecase/device.dart';
-import 'bloc/~index.dart';
+import 'bloc/index.dart';
 
 class PresentationDependencies {
   final NfcBloc nfcBloc;

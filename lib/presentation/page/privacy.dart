@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../locale/localization.dart';
-import '../widget/app_bar/@default.dart';
+import '../widget/app_bar/default.dart';
 import '../constant.dart';
 
 class PrivacyPage extends StatelessWidget {

@@ -10,7 +10,7 @@ tags:
 `lib/data/datasource/remote/collection.dart`
 
 ## Imports
-- [[data---datasource---remote---@firestore_service.dart]]
+- [[data---datasource---remote---firestore_service.dart]]
 - [[data---model---collection.dart]]
 - [[domain---value---remote_unavailable.dart]]
 

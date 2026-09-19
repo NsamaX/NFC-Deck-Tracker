@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '@argument.dart';
+import 'argument.dart';
 
 import '../bloc/browse_card/bloc.dart';
 import '../bloc/card/bloc.dart';
 import '../locale/localization.dart';
 import '../route/constant.dart';
-import '../widget/app_bar/@default.dart';
+import '../widget/app_bar/default.dart';
 import '../widget/card/list_view.dart';
 import '../widget/specific/search_bar.dart';
 import '../widget/text/description_align_center.dart';

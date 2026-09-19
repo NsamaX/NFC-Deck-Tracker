@@ -1,7 +1,7 @@
 import 'package:nfc_deck_tracker/.config/app.dart';
 
 import '../../../domain/entity/app_settings.dart';
-import '@shared_preferences_service.dart';
+import 'shared_preferences_service.dart';
 
 class SettingsLocalDatasource {
   final SharedPreferencesService _sharedPreferencesService;

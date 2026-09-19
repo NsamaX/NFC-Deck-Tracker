@@ -6,9 +6,9 @@ tags:
   - coupling/medium
 ---
 
-# @firestore_service.dart
+# firestore_service.dart
 
-`lib/data/datasource/remote/@firestore_service.dart`
+`lib/data/datasource/remote/firestore_service.dart`
 
 ## Imports
 - [[domain---value---remote_unavailable.dart]]

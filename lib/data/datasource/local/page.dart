@@ -1,7 +1,7 @@
 import '../../model/page.dart';
 import 'dart:convert';
 
-import '@sqlite_service.dart';
+import 'sqlite_service.dart';
 
 class PageLocalDatasource {
   final SQLiteService _sqliteService;

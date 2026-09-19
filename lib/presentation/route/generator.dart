@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../page/~index.dart';
+import '../page/index.dart';
 
 import 'constant.dart';
 

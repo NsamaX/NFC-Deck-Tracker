@@ -15,7 +15,7 @@ tags:
 - [[presentation---bloc---deck---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---widget---app_bar---@default.dart]]
+- [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---notification---snackbar.dart]]
 
 ## Packages

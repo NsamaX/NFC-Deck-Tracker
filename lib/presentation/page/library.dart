@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/collection/bloc.dart';
 import '../locale/localization.dart';
-import '../widget/app_bar/@default.dart';
+import '../widget/app_bar/default.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
 

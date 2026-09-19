@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/service_factory.dart';
 import 'package:nfc_deck_tracker/data/datasource/api/game_api.dart';
 import '../../domain/repository/collection.dart';
 import '../../domain/repository/card.dart';

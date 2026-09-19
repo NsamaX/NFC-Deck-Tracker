@@ -13,7 +13,7 @@ tags:
 - [[presentation---bloc---application---bloc.dart]]
 - [[presentation---locale---language_manager.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---widget---app_bar---@default.dart]]
+- [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---setting---language.dart]]
 
 ## Packages

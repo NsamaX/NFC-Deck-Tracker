@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../bloc/card/bloc.dart';
 import '../../locale/localization.dart';
-import '../../theme/@theme.dart';
+import '../../theme/theme.dart';
 
 class CardCustomInfo extends StatelessWidget {
   final CardBloc cardBloc;

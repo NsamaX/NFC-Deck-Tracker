@@ -14,7 +14,7 @@ tags:
 - [[presentation---bloc---application---bloc.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---widget---app_bar---@default.dart]]
+- [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---setting---builder.dart]]
 - [[presentation---widget---setting---section.dart]]
 - [[presentation---widget---shared---bottom_navigation_bar.dart]]

@@ -2,12 +2,11 @@
 tags:
   - layer/presentation
   - role/page
-  - entry/service
 ---
 
-# @argument.dart
+# argument.dart
 
-`lib/presentation/page/@argument.dart`
+`lib/presentation/page/argument.dart`
 
 ## Imports
 - [[util---logger.dart]]

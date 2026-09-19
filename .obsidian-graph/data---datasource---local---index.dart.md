@@ -6,9 +6,9 @@ tags:
   - coupling/medium
 ---
 
-# ~index.dart
+# index.dart
 
-`lib/data/datasource/local/~index.dart`
+`lib/data/datasource/local/index.dart`
 
 ## Imports
 - [[data---datasource---local---card.dart]]

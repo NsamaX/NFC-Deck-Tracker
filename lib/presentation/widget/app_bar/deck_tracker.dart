@@ -12,7 +12,7 @@ import '../../locale/localization.dart';
 
 import '../notification/cupertino_dialog.dart';
 
-import '@default.dart';
+import 'default.dart';
 
 class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;

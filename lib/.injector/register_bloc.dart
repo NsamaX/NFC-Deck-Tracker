@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
-import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
-import 'package:nfc_deck_tracker/presentation/bloc/~index.dart';
+import 'package:nfc_deck_tracker/domain/usecase/index.dart';
+import 'package:nfc_deck_tracker/presentation/bloc/index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 

@@ -15,7 +15,7 @@ tags:
 - [[presentation---bloc---deck---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---dependencies.dart]]
-- [[presentation---page---@argument.dart]]
+- [[presentation---page---argument.dart]]
 - [[presentation---widget---app_bar---card.dart]]
 - [[presentation---widget---card---custom_image.dart]]
 - [[presentation---widget---card---custom_info.dart]]

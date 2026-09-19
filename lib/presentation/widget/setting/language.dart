@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../theme/@theme.dart';
+import '../../theme/theme.dart';
 
 class SettingLanguage extends StatelessWidget {
   final List<Map<String, dynamic>> language;

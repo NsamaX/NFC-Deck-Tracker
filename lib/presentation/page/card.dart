@@ -15,7 +15,7 @@ import '../widget/card/info.dart';
 import '../widget/card/quantity_selector.dart';
 import '../widget/listener/writer.dart';
 
-import '@argument.dart';
+import 'argument.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});

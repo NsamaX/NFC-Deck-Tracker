@@ -10,7 +10,7 @@ import '../../locale/localization.dart';
 
 import '../notification/snackbar.dart';
 
-import '@default.dart';
+import 'default.dart';
 
 class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;

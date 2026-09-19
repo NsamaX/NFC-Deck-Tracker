@@ -1,10 +1,10 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:nfc_deck_tracker/.config/game.dart';
-import 'package:nfc_deck_tracker/data/datasource/local/@sqlite_service.dart';
-import 'package:nfc_deck_tracker/data/datasource/local/~index.dart';
-import 'package:nfc_deck_tracker/data/datasource/remote/@firestore_service.dart';
-import 'package:nfc_deck_tracker/data/datasource/remote/~index.dart';
+import 'package:nfc_deck_tracker/data/datasource/local/sqlite_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/local/index.dart';
+import 'package:nfc_deck_tracker/data/datasource/remote/firestore_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/remote/index.dart';
 import 'package:nfc_deck_tracker/data/repository/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/card_in_deck.dart';

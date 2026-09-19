@@ -13,7 +13,7 @@ tags:
 - [[injector---locator.dart]]
 - [[domain---usecase---device.dart]]
 - [[domain---usecase---session.dart]]
-- [[presentation---bloc---~index.dart]]
+- [[presentation---bloc---index.dart]]
 - [[presentation---dependencies.dart]]
 
 ## Packages

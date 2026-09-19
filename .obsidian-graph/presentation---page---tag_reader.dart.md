@@ -17,7 +17,7 @@ tags:
 - [[presentation---bloc---reader---bloc.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---widget---app_bar---@default.dart]]
+- [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---drawer---card_history.dart]]
 - [[presentation---widget---drawer---collection.dart]]
 - [[presentation---widget---listener---reader.dart]]

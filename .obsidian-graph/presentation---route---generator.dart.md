@@ -9,7 +9,7 @@ tags:
 `lib/presentation/route/generator.dart`
 
 ## Imports
-- [[presentation---page---~index.dart]]
+- [[presentation---page---index.dart]]
 - [[presentation---route---constant.dart]]
 
 ## Packages

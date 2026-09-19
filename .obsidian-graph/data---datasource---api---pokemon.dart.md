@@ -11,7 +11,7 @@ tags:
 
 ## Imports
 - [[config---game.dart]]
-- [[data---datasource---api---&base_api.dart]]
+- [[data---datasource---api---base_api.dart]]
 - [[data---datasource---api---game_api.dart]]
 - [[data---model---card.dart]]
 

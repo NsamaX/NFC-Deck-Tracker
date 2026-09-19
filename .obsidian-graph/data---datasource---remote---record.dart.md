@@ -10,7 +10,7 @@ tags:
 `lib/data/datasource/remote/record.dart`
 
 ## Imports
-- [[data---datasource---remote---@firestore_service.dart]]
+- [[data---datasource---remote---firestore_service.dart]]
 - [[data---model---record.dart]]
 - [[data---model---share_record.dart]]
 

@@ -1,6 +1,6 @@
 import '../../model/record.dart';
 
-import '@sqlite_service.dart';
+import 'sqlite_service.dart';
 
 class RecordLocalDatasource {
   final SQLiteService _sqliteService;

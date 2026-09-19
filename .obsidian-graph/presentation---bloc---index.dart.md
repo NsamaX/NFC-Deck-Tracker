@@ -6,9 +6,9 @@ tags:
   - coupling/high
 ---
 
-# ~index.dart
+# index.dart
 
-`lib/presentation/bloc/~index.dart`
+`lib/presentation/bloc/index.dart`
 
 ## Imports
 - [[presentation---bloc---application---bloc.dart]]

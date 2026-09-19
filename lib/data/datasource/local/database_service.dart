@@ -3,7 +3,7 @@ import 'package:sqflite/sqflite.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import '&database_constant.dart';
+import 'database_constant.dart';
 
 class DatabaseService {
   static final DatabaseService _instance = DatabaseService._internal();

@@ -11,7 +11,7 @@ tags:
 
 ## Imports
 - [[config---game.dart]]
-- [[data---datasource---local---@sqlite_service.dart]]
+- [[data---datasource---local---sqlite_service.dart]]
 - [[data---model---card.dart]]
 - [[data---model---card_in_deck.dart]]
 - [[data---model---collection.dart]]

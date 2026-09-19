@@ -12,7 +12,7 @@ tags:
 - [[domain---entity---deck.dart]]
 - [[domain---usecase---device.dart]]
 - [[domain---usecase---session.dart]]
-- [[presentation---bloc---~index.dart]]
+- [[presentation---bloc---index.dart]]
 
 ## Packages
 - `package:flutter/widgets.dart`

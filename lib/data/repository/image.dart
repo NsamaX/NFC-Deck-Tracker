@@ -1,5 +1,5 @@
 import '../../domain/repository/image.dart';
-import '../datasource/remote/@supabase_service.dart';
+import '../datasource/remote/supabase_service.dart';
 
 class ImageRepositoryImpl implements ImageRepository {
   final SupabaseService supabaseService;

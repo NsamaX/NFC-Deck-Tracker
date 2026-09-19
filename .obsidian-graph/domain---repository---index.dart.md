@@ -6,9 +6,9 @@ tags:
   - coupling/medium
 ---
 
-# ~index.dart
+# index.dart
 
-`lib/domain/repository/~index.dart`
+`lib/domain/repository/index.dart`
 
 ## Imports
 - [[domain---repository---card.dart]]

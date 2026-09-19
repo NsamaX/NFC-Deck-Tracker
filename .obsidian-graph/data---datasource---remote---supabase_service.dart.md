@@ -6,9 +6,9 @@ tags:
   - coupling/medium
 ---
 
-# @supabase_service.dart
+# supabase_service.dart
 
-`lib/data/datasource/remote/@supabase_service.dart`
+`lib/data/datasource/remote/supabase_service.dart`
 
 ## Imports
 - [[util---logger.dart]]

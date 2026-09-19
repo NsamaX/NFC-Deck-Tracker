@@ -9,7 +9,7 @@ import '../bloc/drawer/bloc.dart';
 import '../bloc/nfc/bloc.dart';
 import '../bloc/reader/bloc.dart';
 import '../locale/localization.dart';
-import '../widget/app_bar/@default.dart';
+import '../widget/app_bar/default.dart';
 import '../widget/drawer/card_history.dart';
 import '../widget/drawer/collection.dart';
 import '../widget/listener/reader.dart';

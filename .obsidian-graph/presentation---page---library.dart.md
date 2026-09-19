@@ -13,7 +13,7 @@ tags:
 - [[presentation---bloc---collection---bloc.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---widget---app_bar---@default.dart]]
+- [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---shared---deck_or_card_grid_view.dart]]
 - [[presentation---widget---text---description_align_center.dart]]
 

@@ -6,10 +6,10 @@ import '../domain/repository/session.dart';
 import '../domain/usecase/session.dart';
 import 'package:flutter/foundation.dart';
 
-import '../domain/repository/~index.dart';
+import '../domain/repository/index.dart';
 import '../.config/app.dart';
 import '../util/domain_logger.dart';
-import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
+import 'package:nfc_deck_tracker/domain/usecase/index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 

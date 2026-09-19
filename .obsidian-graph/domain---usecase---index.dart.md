@@ -6,9 +6,9 @@ tags:
   - coupling/high
 ---
 
-# ~index.dart
+# index.dart
 
-`lib/domain/usecase/~index.dart`
+`lib/domain/usecase/index.dart`
 
 ## Imports
 - [[domain---usecase---calculate_usage_card.dart]]

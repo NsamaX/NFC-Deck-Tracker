@@ -9,7 +9,7 @@ tags:
 `lib/presentation/widget/setting/language.dart`
 
 ## Imports
-- [[presentation---theme---@theme.dart]]
+- [[presentation---theme---theme.dart]]
 
 ## Packages
 - `package:flutter/material.dart`

@@ -14,7 +14,7 @@ tags:
 - [[presentation---bloc---deck---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---route---constant.dart]]
-- [[presentation---theme---@theme.dart]]
+- [[presentation---theme---theme.dart]]
 - [[presentation---widget---card---quantity_control.dart]]
 
 ## Packages

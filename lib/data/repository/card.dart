@@ -1,6 +1,6 @@
 import '../../domain/entity/card.dart';
 import '../../domain/repository/card.dart';
-import '../datasource/api/@service_factory.dart';
+import '../datasource/api/service_factory.dart';
 import '../datasource/api/game_api.dart';
 import '../mapper/card.dart';
 import '../datasource/local/card.dart';

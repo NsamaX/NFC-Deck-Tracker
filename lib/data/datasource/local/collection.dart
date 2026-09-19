@@ -1,6 +1,6 @@
 import '../../model/collection.dart';
 
-import '@sqlite_service.dart';
+import 'sqlite_service.dart';
 
 class CollectionLocalDatasource {
   final SQLiteService _sqliteService;

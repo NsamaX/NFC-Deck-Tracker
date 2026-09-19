@@ -5,7 +5,7 @@ import '../../bloc/deck/bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/constant.dart';
 
-import '@default.dart';
+import 'default.dart';
 
 class MyDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MyDeckAppBar({super.key});

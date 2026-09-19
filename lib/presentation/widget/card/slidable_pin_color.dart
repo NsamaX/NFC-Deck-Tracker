@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:nfc_deck_tracker/presentation/theme/@theme.dart';
+import 'package:nfc_deck_tracker/presentation/theme/theme.dart';
 
 ActionPane? buildCardSlidablePinColor({
   required BuildContext context,

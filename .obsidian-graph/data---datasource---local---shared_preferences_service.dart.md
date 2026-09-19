@@ -5,9 +5,9 @@ tags:
   - entry/service
 ---
 
-# @shared_preferences_service.dart
+# shared_preferences_service.dart
 
-`lib/data/datasource/local/@shared_preferences_service.dart`
+`lib/data/datasource/local/shared_preferences_service.dart`
 
 ## Imports
 - [[util---logger.dart]]

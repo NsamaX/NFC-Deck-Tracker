@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../dependencies.dart';
 
 import '../locale/localization.dart';
-import '../widget/app_bar/@default.dart';
+import '../widget/app_bar/default.dart';
 import '../widget/text/description_align_center.dart';
 import '../constant.dart';
 

@@ -9,7 +9,7 @@ tags:
 `lib/data/datasource/local/page.dart`
 
 ## Imports
-- [[data---datasource---local---@sqlite_service.dart]]
+- [[data---datasource---local---sqlite_service.dart]]
 - [[data---model---page.dart]]
 
 ## Packages

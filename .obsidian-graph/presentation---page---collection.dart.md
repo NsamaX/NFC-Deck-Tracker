@@ -13,7 +13,7 @@ tags:
 - [[config---game.dart]]
 - [[presentation---bloc---collection---bloc.dart]]
 - [[presentation---dependencies.dart]]
-- [[presentation---page---@argument.dart]]
+- [[presentation---page---argument.dart]]
 - [[presentation---widget---app_bar---collection.dart]]
 - [[presentation---widget---collection---list_view.dart]]
 

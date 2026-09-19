@@ -13,7 +13,7 @@ import '../notification/cupertino_dialog.dart';
 import '../notification/snackbar.dart';
 import '../specific/tutorail_nfc_icon.dart';
 
-import '@default.dart';
+import 'default.dart';
 
 class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;

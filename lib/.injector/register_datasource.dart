@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:nfc_deck_tracker/data/datasource/api/@service_factory.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/service_factory.dart';
 import 'package:nfc_deck_tracker/data/datasource/api/game_api.dart';
-import 'package:nfc_deck_tracker/data/datasource/local/@shared_preferences_service.dart';
-import 'package:nfc_deck_tracker/data/datasource/local/@sqlite_service.dart';
-import 'package:nfc_deck_tracker/data/datasource/local/~index.dart';
-import 'package:nfc_deck_tracker/data/datasource/remote/@firestore_service.dart';
-import 'package:nfc_deck_tracker/data/datasource/remote/@supabase_service.dart';
-import 'package:nfc_deck_tracker/data/datasource/remote/~index.dart';
+import 'package:nfc_deck_tracker/data/datasource/local/shared_preferences_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/local/sqlite_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/local/index.dart';
+import 'package:nfc_deck_tracker/data/datasource/remote/firestore_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/remote/supabase_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/remote/index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 

@@ -67,8 +67,8 @@ import 'package:nfc_deck_tracker/.config/game.dart';
 
 import '../../model/card.dart';
 
-import '@service_factory.dart';
-import '&base_api.dart';
+import 'service_factory.dart';
+import 'base_api.dart';
 
 class NewGameApi extends BaseApi implements GameApi {
   NewGameApi({
@@ -158,7 +158,7 @@ class NewGamePagingStrategy implements PagingStrategy {
 
 ### Step 3: Export the Game File
 
-File: `lib/data/datasource/api/~index.dart`
+File: `lib/data/datasource/api/index.dart`
 
 Add an export statement for your new game file:
 
@@ -173,7 +173,7 @@ export 'newgame.dart';
 
 ### Step 4: Register the Game in `ServiceFactory`
 
-File: `lib/data/datasource/api/@service_factory.dart`
+File: `lib/data/datasource/api/service_factory.dart`
 
 Add your game into the two factory maps:
 

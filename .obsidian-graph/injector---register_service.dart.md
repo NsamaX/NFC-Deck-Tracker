@@ -12,11 +12,11 @@ tags:
 ## Imports
 - [[config---runtime.dart]]
 - [[injector---locator.dart]]
-- [[data---datasource---local---@database_service.dart]]
-- [[data---datasource---local---@shared_preferences_service.dart]]
-- [[data---datasource---local---@sqlite_service.dart]]
-- [[data---datasource---remote---@firestore_service.dart]]
-- [[data---datasource---remote---@supabase_service.dart]]
+- [[data---datasource---local---database_service.dart]]
+- [[data---datasource---local---shared_preferences_service.dart]]
+- [[data---datasource---local---sqlite_service.dart]]
+- [[data---datasource---remote---firestore_service.dart]]
+- [[data---datasource---remote---supabase_service.dart]]
 - [[util---logger.dart]]
 
 ## Packages

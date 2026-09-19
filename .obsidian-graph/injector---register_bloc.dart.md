@@ -13,9 +13,9 @@ tags:
 - [[injector---locator.dart]]
 - [[domain---entity---card.dart]]
 - [[domain---entity---deck.dart]]
+- [[domain---usecase---index.dart]]
 - [[domain---usecase---nfc_session.dart]]
-- [[domain---usecase---~index.dart]]
-- [[presentation---bloc---~index.dart]]
+- [[presentation---bloc---index.dart]]
 - [[util---logger.dart]]
 
 ## Packages

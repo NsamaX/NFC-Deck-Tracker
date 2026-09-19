@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import '../domain/usecase/session.dart';
 import '../domain/usecase/device.dart';
 import '../presentation/dependencies.dart';
-import '../presentation/bloc/~index.dart';
+import '../presentation/bloc/index.dart';
 import 'locator.dart';
 
 PresentationDependencies createPresentationDependencies() =>

@@ -9,7 +9,7 @@ import 'bloc/nfc/bloc.dart';
 import 'locale/language_manager.dart';
 import 'locale/localization_delegate.dart';
 import 'route/generator.dart';
-import 'theme/@theme.dart';
+import 'theme/theme.dart';
 import 'nfc_life_cycle_observer.dart';
 
 class AppRoot extends StatefulWidget {

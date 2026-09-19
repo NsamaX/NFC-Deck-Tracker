@@ -8,7 +8,7 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import '../../bloc/deck/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
 import '../../route/constant.dart';
-import '../../theme/@theme.dart';
+import '../../theme/theme.dart';
 
 import 'quantity_control.dart';
 

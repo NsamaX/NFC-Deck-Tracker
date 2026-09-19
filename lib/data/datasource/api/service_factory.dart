@@ -1,7 +1,7 @@
 import 'package:nfc_deck_tracker/.config/api.dart';
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '&dummy_api.dart';
+import 'dummy_api.dart';
 import 'game_api.dart';
 import 'pokemon.dart';
 

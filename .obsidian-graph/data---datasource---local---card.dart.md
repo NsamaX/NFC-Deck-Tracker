@@ -9,6 +9,6 @@ tags:
 `lib/data/datasource/local/card.dart`
 
 ## Imports
-- [[data---datasource---local---@sqlite_service.dart]]
+- [[data---datasource---local---sqlite_service.dart]]
 - [[data---model---card.dart]]
 

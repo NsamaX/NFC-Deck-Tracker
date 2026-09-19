@@ -9,6 +9,6 @@ tags:
 `lib/data/datasource/local/record.dart`
 
 ## Imports
-- [[data---datasource---local---@sqlite_service.dart]]
+- [[data---datasource---local---sqlite_service.dart]]
 - [[data---model---record.dart]]
 

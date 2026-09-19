@@ -2,7 +2,7 @@ import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../../model/deck.dart';
 
-import '@firestore_service.dart';
+import 'firestore_service.dart';
 
 class DeckRemoteDatasource {
   final FirestoreService _firestoreService;

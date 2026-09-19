@@ -11,6 +11,6 @@ tags:
 
 ## Imports
 - [[config---app.dart]]
-- [[data---datasource---local---@shared_preferences_service.dart]]
+- [[data---datasource---local---shared_preferences_service.dart]]
 - [[domain---entity---app_settings.dart]]
 

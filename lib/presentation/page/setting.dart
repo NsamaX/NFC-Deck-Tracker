@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/application/bloc.dart';
 import '../locale/localization.dart';
-import '../widget/app_bar/@default.dart';
+import '../widget/app_bar/default.dart';
 import '../widget/setting/builder.dart';
 import '../widget/setting/section.dart';
 import '../widget/shared/bottom_navigation_bar.dart';

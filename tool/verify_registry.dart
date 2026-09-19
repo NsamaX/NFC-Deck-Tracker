@@ -39,7 +39,8 @@ void main() {
     if (section.source == null) continue;
     final dir = Directory(section.source!);
     if (!dir.existsSync()) {
-      problems.add('${section.title}: source directory missing (${section.source})');
+      problems.add(
+          '${section.title}: source directory missing (${section.source})');
       continue;
     }
     final declaredFiles = section.entries.map((e) => e.file).toSet();
@@ -47,38 +48,46 @@ void main() {
         .listSync()
         .whereType<File>()
         .map((f) => f.uri.pathSegments.last)
-        .where((n) => n.endsWith('.dart') && !n.startsWith('~'))
+        .where((n) => n.endsWith('.dart') && n != 'index.dart')
         .toSet();
     for (final name in onDisk.difference(declaredFiles).toList()..sort()) {
-      problems.add('${section.title}: `$name` exists on disk but is not in the registry');
+      problems.add(
+          '${section.title}: `$name` exists on disk but is not in the registry');
     }
     for (final entry in section.entries) {
       entries++;
       final path = '${section.source}${entry.file}';
       final source = File(path);
       if (!source.existsSync()) {
-        problems.add('${section.title}: ${entry.name} points to missing file $path');
+        problems.add(
+            '${section.title}: ${entry.name} points to missing file $path');
         continue;
       }
       final text = source.readAsStringSync();
       final body = classBody(text, entry.name);
       if (body == null) {
-        problems.add('${section.title}: `${entry.name}` is not declared in $path');
+        problems
+            .add('${section.title}: `${entry.name}` is not declared in $path');
         continue;
       }
       if (!section.checkMembers) continue;
       final actual = publicMembers(body, entry.name);
-      for (final m in actual.difference(entry.members.toSet()).toList()..sort()) {
-        problems.add('${section.title}: ${entry.name}.$m exists but is not in the registry');
+      for (final m in actual.difference(entry.members.toSet()).toList()
+        ..sort()) {
+        problems.add(
+            '${section.title}: ${entry.name}.$m exists but is not in the registry');
       }
-      for (final m in entry.members.toSet().difference(actual).toList()..sort()) {
-        problems.add('${section.title}: ${entry.name}.$m is in the registry but not in code');
+      for (final m in entry.members.toSet().difference(actual).toList()
+        ..sort()) {
+        problems.add(
+            '${section.title}: ${entry.name}.$m is in the registry but not in code');
       }
     }
   }
 
   stdout.writeln('Registry verification: $registryPath');
-  stdout.writeln('Sections: ${sections.where((s) => s.source != null).length}, entries: $entries');
+  stdout.writeln(
+      'Sections: ${sections.where((s) => s.source != null).length}, entries: $entries');
   if (problems.isEmpty) {
     stdout.writeln('OK');
     return;
@@ -139,8 +148,11 @@ String? classBody(String text, String name) {
 
 Set<String> publicMembers(String body, String className) {
   final members = <String>{};
-  final method = RegExp(r'^  (?!static |final |const |late |@)[A-Za-z_][\w<>, ?]*\s+([a-z]\w*)\s*\(', multiLine: true);
-  final getter = RegExp(r'^  [A-Za-z_][\w<>, ?]*\s+get\s+([a-z]\w*)', multiLine: true);
+  final method = RegExp(
+      r'^  (?!static |final |const |late |@)[A-Za-z_][\w<>, ?]*\s+([a-z]\w*)\s*\(',
+      multiLine: true);
+  final getter =
+      RegExp(r'^  [A-Za-z_][\w<>, ?]*\s+get\s+([a-z]\w*)', multiLine: true);
   for (final m in method.allMatches(body)) {
     members.add(m.group(1)!);
   }

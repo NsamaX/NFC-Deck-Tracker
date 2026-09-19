@@ -6,7 +6,7 @@ import '../../model/card_in_deck.dart';
 import '../../model/collection.dart';
 import '../../model/deck.dart';
 
-import '@sqlite_service.dart';
+import 'sqlite_service.dart';
 
 class DeckLocalDatasource {
   final SQLiteService _sqliteService;

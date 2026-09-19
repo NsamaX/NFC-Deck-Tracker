@@ -11,7 +11,7 @@ tags:
 ## Imports
 - [[presentation---bloc---application---bloc.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---theme---@theme.dart]]
+- [[presentation---theme---theme.dart]]
 
 ## Packages
 - `package:flutter/material.dart`

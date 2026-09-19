@@ -2,13 +2,12 @@
 tags:
   - layer/presentation
   - role/theme
-  - entry/service
   - coupling/high
 ---
 
-# @theme.dart
+# theme.dart
 
-`lib/presentation/theme/@theme.dart`
+`lib/presentation/theme/theme.dart`
 
 ## Imports
 - [[presentation---theme---app_bar.dart]]

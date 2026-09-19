@@ -6,9 +6,9 @@ tags:
   - coupling/medium
 ---
 
-# ~index.dart
+# index.dart
 
-`lib/data/datasource/remote/~index.dart`
+`lib/data/datasource/remote/index.dart`
 
 ## Imports
 - [[data---datasource---remote---card.dart]]

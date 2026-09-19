@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/application/bloc.dart';
 import '../../locale/localization.dart';
-import '../../theme/@theme.dart';
+import '../../theme/theme.dart';
 
 class TutorailNFCIcon extends StatefulWidget {
   const TutorailNFCIcon({super.key});

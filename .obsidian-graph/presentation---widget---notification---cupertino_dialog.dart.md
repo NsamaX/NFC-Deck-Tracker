@@ -10,7 +10,7 @@ tags:
 `lib/presentation/widget/notification/cupertino_dialog.dart`
 
 ## Imports
-- [[presentation---theme---@theme.dart]]
+- [[presentation---theme---theme.dart]]
 
 ## Packages
 - `package:flutter/cupertino.dart`

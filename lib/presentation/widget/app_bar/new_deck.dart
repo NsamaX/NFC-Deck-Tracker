@@ -4,7 +4,7 @@ import '../../bloc/deck/bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/constant.dart';
 
-import '@default.dart';
+import 'default.dart';
 
 class NewDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
   final AppLocalization locale;

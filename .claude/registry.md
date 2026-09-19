@@ -11,7 +11,7 @@ call only the use cases listed here. Data may implement only the ports listed
 here. Anything not listed is internal to its layer.
 
 Each section names its `Source:` directory. Every `.dart` file in that
-directory (except the `~index.dart` barrel) must appear as a `### Name
+directory (except the `index.dart` barrel) must appear as a `### Name
 (`file`)` entry. Sections marked `Check: members` also compare the bulleted
 member names against the class body.
 

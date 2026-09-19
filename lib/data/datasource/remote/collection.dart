@@ -3,7 +3,7 @@ import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 
 import '../../model/collection.dart';
 
-import '@firestore_service.dart';
+import 'firestore_service.dart';
 
 class CollectionRemoteDatasource {
   final FirestoreService _firestoreService;

@@ -171,8 +171,7 @@ void writeViolationReport(Map<String, FileNode> nodes) {
     ..writeln('| Severity | Violation | Count |')
     ..writeln('|---|---|---|');
   for (final kind in ViolationKind.values) {
-    b.writeln(
-        '| ${kind.severity} | ${kind.label} | ${byKind[kind]!.length} |');
+    b.writeln('| ${kind.severity} | ${kind.label} | ${byKind[kind]!.length} |');
   }
   b.writeln();
   for (final kind in ViolationKind.values) {
@@ -252,7 +251,7 @@ void writeGraphContext(Map<String, FileNode> nodes) {
     ..writeln('| Violet | Use case |')
     ..writeln('| Blue | Page |')
     ..writeln('| Light blue | Bloc |')
-    ..writeln('| Cyan | Data source service (`@`-prefixed) |')
+    ..writeln('| Cyan | Data source service (`*_service.dart`) |')
     ..writeln('| Green | Repository implementation |')
     ..writeln()
     ..writeln('## Layers')

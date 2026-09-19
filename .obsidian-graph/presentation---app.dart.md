@@ -16,7 +16,7 @@ tags:
 - [[presentation---locale---localization_delegate.dart]]
 - [[presentation---nfc_life_cycle_observer.dart]]
 - [[presentation---route---generator.dart]]
-- [[presentation---theme---@theme.dart]]
+- [[presentation---theme---theme.dart]]
 - [[util---logger.dart]]
 
 ## Packages

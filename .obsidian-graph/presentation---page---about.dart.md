@@ -13,7 +13,7 @@ tags:
 - [[presentation---constant.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---widget---app_bar---@default.dart]]
+- [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---text---description_align_center.dart]]
 
 ## Packages

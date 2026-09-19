@@ -30,10 +30,14 @@ enum ViolationKind {
       'Domain may import only other domain files.'),
   domainSdk('domain-sdk', 'Domain depends on a framework', 'Critical',
       'Domain may import only `dart:` core libraries, equatable, and uuid.'),
-  presentationBypass('presentation-bypass', 'Presentation bypasses use cases',
+  presentationBypass(
+      'presentation-bypass',
+      'Presentation bypasses use cases',
       'High',
       'Presentation must call use cases and entities, never data, composition, or repository ports.'),
-  presentationSdk('presentation-sdk', 'Presentation uses an infrastructure SDK',
+  presentationSdk(
+      'presentation-sdk',
+      'Presentation uses an infrastructure SDK',
       'High',
       'Storage, auth, NFC, and device SDKs belong in data adapters behind domain ports.'),
   dataUpward('data-upward', 'Data depends on presentation or composition',
@@ -131,9 +135,10 @@ String? roleOf(String rel) {
 String? entryOf(String rel) {
   final name = rel.split('/').last;
   if (rel == 'main.dart' || rel.startsWith('.injector/')) return 'composition';
-  if (name.startsWith('~')) return 'barrel';
-  if (name.startsWith('@')) return 'service';
-  if (name.startsWith('&')) return 'shared';
+  if (name == 'index.dart') return 'barrel';
+  if (name.endsWith('_service.dart') || name == 'service_factory.dart') {
+    return 'service';
+  }
   return null;
 }
 

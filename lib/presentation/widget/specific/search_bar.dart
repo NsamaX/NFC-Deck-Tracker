@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../locale/localization.dart';
-import '../../theme/@theme.dart';
+import '../../theme/theme.dart';
 import '../../constant.dart';
 
 class SearchBarWidget extends StatefulWidget {
