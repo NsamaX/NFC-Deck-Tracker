@@ -9,7 +9,7 @@ class ImportRecordUsecase {
     required this.recordRepository,
   });
 
-  Future<ShareRecordEntity> call({
+  Future<ShareRecordEntity?> call({
     required String userId,
   }) async {
     final shareRecord = await recordRepository.import(userId: userId);

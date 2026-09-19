@@ -103,7 +103,7 @@ calls when it is empty.
 - `deleteForRemote` — delete the user's record
 - `fetchForLocal` — records of one deck
 - `fetchForRemote` — the user's records of one deck
-- `import` — fetch a record shared to this user
+- `import` — fetch a record shared to this user, or null when none exists
 - `share` — publish a record to another user
 - `updateForLocal` — update a record
 - `updateForRemote` — update the user's record
@@ -228,7 +228,7 @@ first when `userId` is not empty and store the resulting `isSynced` flag locally
 
 ### ImportRecordUsecase (`import_record.dart`)
 
-`call({userId})` — fetch a record shared to this user.
+`call({userId})` — fetch a record shared to this user, or null when none exists.
 
 ### InitSettingUsecase (`init_setting.dart`)
 
@@ -344,6 +344,12 @@ Check: classes
 ### PlayerAction (`player_action.dart`)
 
 Enumerated action recorded on each tracker interaction.
+
+### RemoteUnavailableException (`remote_unavailable.dart`)
+
+Thrown by remote reads when Firestore is unconfigured or the query fails, so
+callers can tell "no data" from "could not read". `Fetch*` use cases catch it
+and return local data without syncing.
 
 ---
 

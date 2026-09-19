@@ -15,6 +15,7 @@ import 'package:nfc_deck_tracker/presentation/bloc/card/bloc.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/collection/bloc.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/deck/bloc.dart';
 import 'package:nfc_deck_tracker/presentation/locale/language_manager.dart';
+import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -49,9 +50,10 @@ void main() {
   test('Offline storage does not claim that local changes were synced',
       () async {
     final store = locator<FirestoreService>();
-    expect(await store.queryCollection(collectionPath: 'cards'), isEmpty);
-    expect(await store.getDocument(collectionPath: 'cards', documentId: '1'),
-        isNull);
+    expect(() => store.queryCollection(collectionPath: 'cards'),
+        throwsA(isA<RemoteUnavailableException>()));
+    expect(() => store.getDocument(collectionPath: 'cards', documentId: '1'),
+        throwsA(isA<RemoteUnavailableException>()));
     expect(
         await store.insert(collectionPath: 'cards', documentId: '1', data: {}),
         isFalse);

@@ -1,5 +1,7 @@
 import '../../model/deck.dart';
 
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import '@firestore_service.dart';
 
 class FetchDeckRemoteDatasource {
@@ -24,7 +26,9 @@ class FetchDeckRemoteDatasource {
 
         final deck = DeckModel.fromJsonForRemote(data);
         decks.add(deck);
-      } catch (e) {}
+      } catch (e) {
+        LoggerUtil.w('Skipped malformed document ${doc.id}: $e');
+      }
     }
 
     return decks;

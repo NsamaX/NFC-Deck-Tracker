@@ -1,6 +1,7 @@
 import '../repository/collection.dart';
 
 import '../service/domain_logger.dart';
+import '../value/remote_unavailable.dart';
 
 import '../entity/collection.dart';
 
@@ -22,8 +23,13 @@ class FetchCollectionUsecase {
     Map<String, CollectionEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteEntities =
-          await collectionRepository.fetchForRemote(userId: userId);
+      final List<CollectionEntity> remoteEntities;
+      try {
+        remoteEntities = await collectionRepository.fetchForRemote(userId: userId);
+      } on RemoteUnavailableException catch (e) {
+        logger.e('Remote unavailable, keeping local collections: $e');
+        return localList;
+      }
       remoteList = remoteEntities;
       remoteMap = {for (final col in remoteList) col.collectionId: col};
 

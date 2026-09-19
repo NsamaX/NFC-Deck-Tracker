@@ -93,12 +93,13 @@ class RecordRepositoryImpl implements RecordRepository {
   }
 
   @override
-  Future<ShareRecordEntity> import({
+  Future<ShareRecordEntity?> import({
     required String userId,
   }) async {
     final shareRecord =
         await importRecordRemoteDatasource.import(userId: userId);
-    return ShareRecordMapper.toEntity(shareRecord!);
+    if (shareRecord == null) return null;
+    return ShareRecordMapper.toEntity(shareRecord);
   }
 
   @override

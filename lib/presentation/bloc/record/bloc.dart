@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/domain/value/player_action.dart';
+import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/data.dart';
@@ -71,8 +72,13 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
 
   void _onImportRecord(
       ImportRecordEvent event, Emitter<RecordState> emit) async {
-    final shareRecordEntity =
-        await importRecordUsecase.call(userId: event.userId);
+    final ShareRecordEntity? shareRecordEntity;
+    try {
+      shareRecordEntity = await importRecordUsecase.call(userId: event.userId);
+    } on RemoteUnavailableException {
+      return;
+    }
+    if (shareRecordEntity == null) return;
 
     final updatedData = [
       ...state.currentRecord.data,

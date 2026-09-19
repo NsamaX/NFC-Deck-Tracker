@@ -96,7 +96,8 @@ services still require hardware/configuration; these tests do not prove them.
 The following review findings need separate behavior changes:
 
 - Sync uses a remote snapshot taken before local uploads; deletion decisions
-  can use stale data. Remote read failures can also become empty lists.
+  can use stale data. Remote read failures now raise
+  `RemoteUnavailableException` and skip the sync instead of deleting local rows.
 - Account transitions in Settings and Landing have existing sign-in/sign-out
   inconsistencies. Settings clears local data without checking sign-in success.
 - Nullable `copyWith` fields cannot always be explicitly cleared.

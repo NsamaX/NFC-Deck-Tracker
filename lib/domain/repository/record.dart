@@ -29,7 +29,7 @@ abstract interface class RecordRepository {
     required String deckId,
   });
 
-  Future<ShareRecordEntity> import({
+  Future<ShareRecordEntity?> import({
     required String userId,
   });
 

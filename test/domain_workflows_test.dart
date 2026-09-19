@@ -11,11 +11,13 @@ import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/delete_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/find_card_from_tag.dart';
 import 'package:nfc_deck_tracker/domain/usecase/init_setting.dart';
+import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 
 class MemoryDecks extends Fake implements DeckRepository {
   final local = <String, DeckEntity>{};
   final remote = <String, DeckEntity>{};
   bool remoteSucceeds = true;
+  bool remoteReadable = true;
   int remoteCalls = 0;
   @override
   Future<void> createForLocal({required DeckEntity deck}) async =>
@@ -33,6 +35,7 @@ class MemoryDecks extends Fake implements DeckRepository {
   @override
   Future<List<DeckEntity>> fetchForRemote({required String userId}) async {
     remoteCalls++;
+    if (!remoteReadable) throw const RemoteUnavailableException('offline');
     return remote.values.toList();
   }
 
@@ -126,6 +129,27 @@ void main() {
   });
 
   const tag = TagEntity(tagId: 'tag', cardId: 'card', collectionId: 'game');
+  test('a failed remote read keeps synced local decks instead of deleting them',
+      () async {
+    final repository = MemoryDecks()..remoteReadable = false;
+    final synced = DeckEntity(
+        deckId: 'kept', name: 'Kept', isSynced: true, updatedAt: DateTime(2024));
+    repository.local['kept'] = synced;
+    final decks = await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    expect(decks, [synced]);
+    expect(repository.local['kept'], synced);
+  });
+
+  test('an empty remote still removes synced decks that were deleted remotely',
+      () async {
+    final repository = MemoryDecks();
+    repository.local['gone'] = DeckEntity(
+        deckId: 'gone', name: 'Gone', isSynced: true, updatedAt: DateTime(2024));
+    final decks = await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    expect(decks, isEmpty);
+    expect(repository.local, isEmpty);
+  });
+
   test('tag lookup prefers local data without calling the API', () async {
     final cards = MemoryCards()
       ..local = const CardEntity(cardId: 'card', collectionId: 'game');

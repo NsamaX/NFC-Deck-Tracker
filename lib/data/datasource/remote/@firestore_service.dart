@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
+import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 import 'package:nfc_deck_tracker/util/logger.dart';
 
 class FirestoreService {
@@ -20,7 +21,9 @@ class FirestoreService {
     required String collectionPath,
     Query<Map<String, dynamic>> Function(Query<Map<String, dynamic>>)? queryBuilder,
   }) async {
-    if (_firestore == null) return [];
+    if (_firestore == null) {
+      throw const RemoteUnavailableException('Firestore is not configured');
+    }
     try {
       Query<Map<String, dynamic>> query = firestore.collection(collectionPath);
       if (queryBuilder != null) query = queryBuilder(query);
@@ -31,7 +34,7 @@ class FirestoreService {
       return result.docs;
     } catch (e) {
       LoggerUtil.e('Failed to query Firestore collection "$collectionPath": $e');
-      return [];
+      throw RemoteUnavailableException('query $collectionPath: $e');
     }
   }
 
@@ -39,14 +42,16 @@ class FirestoreService {
     required String collectionPath,
     required String documentId,
   }) async {
-    if (_firestore == null) return null;
+    if (_firestore == null) {
+      throw const RemoteUnavailableException('Firestore is not configured');
+    }
     try {
       final doc = await firestore.collection(collectionPath).doc(documentId).get();
       if (!doc.exists) return null;
       return doc;
     } catch (e) {
       LoggerUtil.e('Failed to get document "$documentId" in "$collectionPath": $e');
-      return null;
+      throw RemoteUnavailableException('get $collectionPath/$documentId: $e');
     }
   }
 

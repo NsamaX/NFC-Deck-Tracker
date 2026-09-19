@@ -1,6 +1,7 @@
 import '../repository/record.dart';
 
 import '../service/domain_logger.dart';
+import '../value/remote_unavailable.dart';
 
 import '../entity/record.dart';
 
@@ -25,8 +26,13 @@ class FetchRecordUsecase {
     Map<String, RecordEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteEntities =
-          await recordRepository.fetchForRemote(userId: userId, deckId: deckId);
+      final List<RecordEntity> remoteEntities;
+      try {
+        remoteEntities = await recordRepository.fetchForRemote(userId: userId, deckId: deckId);
+      } on RemoteUnavailableException catch (e) {
+        logger.e('Remote unavailable, keeping local records: $e');
+        return localList;
+      }
       remoteList = remoteEntities;
       remoteMap = {for (final r in remoteList) r.recordId: r};
 

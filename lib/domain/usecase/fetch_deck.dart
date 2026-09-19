@@ -1,6 +1,7 @@
 import '../repository/deck.dart';
 
 import '../service/domain_logger.dart';
+import '../value/remote_unavailable.dart';
 
 import '../entity/deck.dart';
 
@@ -22,8 +23,13 @@ class FetchDeckUsecase {
     Map<String, DeckEntity> remoteMap = {};
 
     if (userId.isNotEmpty) {
-      final remoteEntities =
-          await deckRepository.fetchForRemote(userId: userId);
+      final List<DeckEntity> remoteEntities;
+      try {
+        remoteEntities = await deckRepository.fetchForRemote(userId: userId);
+      } on RemoteUnavailableException catch (e) {
+        logger.e('Remote unavailable, keeping local decks: $e');
+        return localList;
+      }
       remoteList = remoteEntities;
       remoteMap = {for (final deck in remoteList) deck.deckId!: deck};
 
