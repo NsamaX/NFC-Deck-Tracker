@@ -14,10 +14,10 @@ class DeckMapper {
       );
 
   static DeckModel toModel(DeckEntity entity) => DeckModel(
-        deckId: entity.deckId ?? '',
-        name: entity.name ?? '',
-        cards: entity.cards?.map(CardInDeckMapper.toModel).toList() ?? [],
-        isSynced: entity.isSynced ?? false,
+        deckId: entity.deckId,
+        name: entity.name,
+        cards: entity.cards.map(CardInDeckMapper.toModel).toList(),
+        isSynced: entity.isSynced,
         updatedAt: entity.updatedAt ?? DateTime.now(),
       );
 }

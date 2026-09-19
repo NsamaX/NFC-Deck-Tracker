@@ -17,12 +17,13 @@ class AppTextStyles {
       : this.from(color: isDark ? AppColor.darkText : AppColor.lightText);
 
   AppTextStyles.from({required Color color})
-      : titleLarge  = _createTextStyle(color: color, fontSize: 60, isBold: true),
-        titleMedium = _createTextStyle(color: color, fontSize: 20, isBold: true),
-        titleSmall  = _createTextStyle(color: color, fontSize: 10, isBold: true),
-        bodyLarge   = _createTextStyle(color: color, fontSize: 30),
-        bodyMedium  = _createTextStyle(color: color, fontSize: 14),
-        bodySmall   = _createTextStyle(color: color, fontSize: 10);
+      : titleLarge = _createTextStyle(color: color, fontSize: 60, isBold: true),
+        titleMedium =
+            _createTextStyle(color: color, fontSize: 20, isBold: true),
+        titleSmall = _createTextStyle(color: color, fontSize: 10, isBold: true),
+        bodyLarge = _createTextStyle(color: color, fontSize: 30),
+        bodyMedium = _createTextStyle(color: color, fontSize: 14),
+        bodySmall = _createTextStyle(color: color, fontSize: 10);
 
   static TextStyle _createTextStyle({
     required Color color,

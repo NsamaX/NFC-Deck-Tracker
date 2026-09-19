@@ -3,13 +3,13 @@ import 'package:equatable/equatable.dart';
 class CollectionEntity extends Equatable {
   final String collectionId;
   final String name;
-  final bool? isSynced;
+  final bool isSynced;
   final DateTime? updatedAt;
 
   const CollectionEntity({
     required this.collectionId,
     required this.name,
-    this.isSynced,
+    this.isSynced = false,
     this.updatedAt,
   });
 

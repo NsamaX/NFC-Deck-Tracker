@@ -11,11 +11,12 @@ class _NavItem {
 
   const _NavItem(
     this.labelKey,
-    this.iconPath, 
+    this.iconPath,
   );
 }
 
-class BottomNavigationBarWidget extends StatelessWidget implements PreferredSizeWidget {
+class BottomNavigationBarWidget extends StatelessWidget
+    implements PreferredSizeWidget {
   const BottomNavigationBarWidget({super.key});
 
   @override
@@ -23,10 +24,13 @@ class BottomNavigationBarWidget extends StatelessWidget implements PreferredSize
     return BlocBuilder<ApplicationBloc, ApplicationState>(
       builder: (_, state) => BottomNavigationBar(
         currentIndex: state.currentPageIndex,
-        items: _navItems.map((item) => _buildItem(context, item: item)).toList(),
+        items:
+            _navItems.map((item) => _buildItem(context, item: item)).toList(),
         onTap: (index) {
           if (index != state.currentPageIndex) {
-            context.read<ApplicationBloc>().add(SetPageIndexEvent(index: index));
+            context
+                .read<ApplicationBloc>()
+                .add(SetPageIndexEvent(index: index));
             Navigator.of(context).pushNamedAndRemoveUntil(
               context.read<ApplicationBloc>().getPageRoute(index: index),
               (_) => false,

@@ -1,23 +1,23 @@
 import 'package:equatable/equatable.dart';
 
 class CardEntity extends Equatable {
-  final String? collectionId;
-  final String? cardId;
-  final String? name;
+  final String collectionId;
+  final String cardId;
+  final String name;
   final String? imageUrl;
   final String? description;
   final Map<String, dynamic>? additionalData;
-  final bool? isSynced;
+  final bool isSynced;
   final DateTime? updatedAt;
 
   const CardEntity({
-    this.collectionId,
-    this.cardId,
-    this.name,
+    this.collectionId = '',
+    this.cardId = '',
+    this.name = '',
     this.imageUrl,
     this.description,
     this.additionalData,
-    this.isSynced,
+    this.isSynced = false,
     this.updatedAt,
   });
 

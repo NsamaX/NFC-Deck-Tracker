@@ -13,7 +13,7 @@ class CollectionMapper {
   static CollectionModel toModel(CollectionEntity entity) => CollectionModel(
         collectionId: entity.collectionId,
         name: entity.name,
-        isSynced: entity.isSynced ?? false,
+        isSynced: entity.isSynced,
         updatedAt: entity.updatedAt ?? DateTime.now(),
       );
 }

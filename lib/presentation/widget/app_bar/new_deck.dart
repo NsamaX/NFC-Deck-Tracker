@@ -25,11 +25,10 @@ class NewDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final deckState = deckBloc.state;
-    final deckName = deckState.currentDeck.name ?? '';
-    final hasCards = deckState.currentDeck.cards?.isNotEmpty == true;
-    final String collectionId = hasCards
-        ? deckState.currentDeck.cards?.first.card.collectionId ?? ''
-        : '';
+    final deckName = deckState.currentDeck.name;
+    final hasCards = deckState.currentDeck.cards.isNotEmpty == true;
+    final String collectionId =
+        hasCards ? deckState.currentDeck.cards.first.card.collectionId : '';
 
     List<AppBarMenuItem> menuItems;
 

@@ -14,7 +14,7 @@ class TotalCardInDeck extends StatelessWidget {
 
     return BlocBuilder<DeckBloc, DeckState>(
       builder: (context, state) {
-        final cardList = state.currentDeck.cards ?? [];
+        final cardList = state.currentDeck.cards;
         final total = cardList.fold<int>(0, (sum, e) => sum + e.count);
 
         return Text(

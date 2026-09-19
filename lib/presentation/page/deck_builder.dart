@@ -80,7 +80,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
 
                 final deck = state.currentDeck;
 
-                if (deck.cards?.isEmpty ?? true) {
+                if (deck.cards.isEmpty) {
                   return DescriptionAlignCenter(
                     text: locale.translate('page_deck_builder.empty_message'),
                     bottomNavHeight: true,
@@ -97,7 +97,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
                     Expanded(
                       child: DeckOrCardGridView(
                         userId: userId,
-                        items: deck.cards!
+                        items: deck.cards
                             .map((e) => MapEntry(e.card, e.count))
                             .toList(),
                       ),

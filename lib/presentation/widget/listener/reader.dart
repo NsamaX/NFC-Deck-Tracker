@@ -37,12 +37,16 @@ class ReaderListener extends StatelessWidget {
             } else if (state.warningMessage.isNotEmpty) {
               AppSnackBar(
                 context,
-                text: AppLocalization.of(context).translate(state.warningMessage),
+                text:
+                    AppLocalization.of(context).translate(state.warningMessage),
                 type: SnackBarType.warning,
               );
             } else if (state.successMessage.isNotEmpty) {
-              onTagDetected.call(state.lastScannedTag?.collectionId ?? GameConfig.dummy);
-              context.read<ReaderBloc>().add(ReadTagEvent(tag: state.lastScannedTag));
+              onTagDetected
+                  .call(state.lastScannedTag?.collectionId ?? GameConfig.dummy);
+              context
+                  .read<ReaderBloc>()
+                  .add(ReadTagEvent(tag: state.lastScannedTag));
             }
 
             context.read<NfcBloc>().add(ClearNFCMessagesEvent());
@@ -59,13 +63,15 @@ class ReaderListener extends StatelessWidget {
             } else if (state.warningMessage.isNotEmpty) {
               AppSnackBar(
                 context,
-                text: AppLocalization.of(context).translate(state.warningMessage),
+                text:
+                    AppLocalization.of(context).translate(state.warningMessage),
                 type: SnackBarType.warning,
               );
             } else if (state.successMessage.isNotEmpty) {
               AppSnackBar(
                 context,
-                text: AppLocalization.of(context).translate(state.successMessage),
+                text:
+                    AppLocalization.of(context).translate(state.successMessage),
                 type: SnackBarType.success,
               );
 

@@ -24,7 +24,9 @@ class SettingSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (title != null) _buildTitle(context, title: title),
-              ...content.map((item) => _buildContentItem(context, item: item)).toList(),
+              ...content
+                  .map((item) => _buildContentItem(context, item: item))
+                  .toList(),
             ],
           );
         }).toList(),
@@ -55,9 +57,9 @@ class SettingSection extends StatelessWidget {
   }) {
     final theme = Theme.of(context);
 
-    final icon  = item['icon']  as IconData?;
-    final text  = item['text']  as String?;
-    final info  = item['info']  as String?;
+    final icon = item['icon'] as IconData?;
+    final text = item['text'] as String?;
+    final info = item['info'] as String?;
     final route = item['route'] as String?;
     final onTap = item['onTap'] as VoidCallback?;
 
@@ -90,9 +92,14 @@ class SettingSection extends StatelessWidget {
             ),
             Row(
               children: [
-                if (info != null) Text(info, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.opacityText)),
+                if (info != null)
+                  Text(info,
+                      style: theme.textTheme.bodySmall
+                          ?.copyWith(color: theme.colorScheme.opacityText)),
                 if (info != null) const SizedBox(width: 6.0),
-                if (route != null) Icon(Icons.arrow_forward_ios_rounded, color: theme.colorScheme.opacityText),
+                if (route != null)
+                  Icon(Icons.arrow_forward_ios_rounded,
+                      color: theme.colorScheme.opacityText),
               ],
             ),
           ],

@@ -11,9 +11,11 @@ class AppBarMenuItem {
     this.enabled = true,
   });
 
-  static AppBarMenuItem empty() => const AppBarMenuItem(label: SizedBox.shrink());
+  static AppBarMenuItem empty() =>
+      const AppBarMenuItem(label: SizedBox.shrink());
 
-  static AppBarMenuItem back() => const AppBarMenuItem(label: Icons.arrow_back_ios_new_rounded, action: '/back');
+  static AppBarMenuItem back() => const AppBarMenuItem(
+      label: Icons.arrow_back_ios_new_rounded, action: '/back');
 
   Widget buildLabel(BuildContext context, {required bool isTitle}) {
     final theme = Theme.of(context);
@@ -24,7 +26,8 @@ class AppBarMenuItem {
           text,
           style: isTitle
               ? theme.textTheme.titleMedium
-              : theme.textTheme.bodyMedium?.copyWith(color: theme.appBarTheme.iconTheme?.color),
+              : theme.textTheme.bodyMedium
+                  ?.copyWith(color: theme.appBarTheme.iconTheme?.color),
           textAlign: TextAlign.center,
         ),
       Widget widget => widget,
@@ -49,26 +52,23 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? Center(child: _buildMenuContent(context, menu[0], isTitle: true))
           : Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: menu
-                  .asMap()
-                  .entries
-                  .map((entry) {
-                    final isTitleItem = _isTitle(entry.key);
-                    return Expanded(
-                      flex: isTitleItem ? 4 : 1,
-                      child: _buildMenuContent(
-                        context,
-                        entry.value,
-                        isTitle: isTitleItem,
-                      ),
-                    );
-                  })
-                  .toList(),
+              children: menu.asMap().entries.map((entry) {
+                final isTitleItem = _isTitle(entry.key);
+                return Expanded(
+                  flex: isTitleItem ? 4 : 1,
+                  child: _buildMenuContent(
+                    context,
+                    entry.value,
+                    isTitle: isTitleItem,
+                  ),
+                );
+              }).toList(),
             ),
     );
   }
 
-  Widget _buildMenuContent(BuildContext context, AppBarMenuItem item, {required bool isTitle}) {
+  Widget _buildMenuContent(BuildContext context, AppBarMenuItem item,
+      {required bool isTitle}) {
     if (item.label is SizedBox && (item.label as SizedBox).width == 24) {
       return GestureDetector(
         onTap: item.enabled ? () => _handleTap(context, item.action) : null,

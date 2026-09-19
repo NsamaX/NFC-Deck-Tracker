@@ -27,8 +27,8 @@ class CreateCardUsecase {
     final uploadedUrl = await imageRepository.upload(imagePath: card.imageUrl!);
 
     final duplicateCount = await cardRepository.check(
-      collectionId: card.collectionId!,
-      name: card.name!,
+      collectionId: card.collectionId,
+      name: card.name,
     );
 
     final isDuplicate = duplicateCount > 0;
@@ -42,7 +42,7 @@ class CreateCardUsecase {
     );
 
     await collectionRepository.touch(
-      collectionId: card.collectionId!,
+      collectionId: card.collectionId,
     );
 
     await const SyncPolicy().write(

@@ -6,7 +6,7 @@ class GenerateShareDeckClipboardUsecase {
     required String nameLabel,
     required String totalLabel,
   }) {
-    final cardList = deck.cards ?? [];
+    final cardList = deck.cards;
     final totalCount = cardList.fold<int>(0, (sum, e) => sum + e.count);
 
     final lines = <String>[];
@@ -16,9 +16,9 @@ class GenerateShareDeckClipboardUsecase {
     lines.add('Card List:');
 
     for (final cardInDeck in cardList) {
-      final name = cardInDeck.card.name?.trim();
+      final name = cardInDeck.card.name.trim();
       final count = cardInDeck.count;
-      lines.add('   • ${name ?? "Unknown"} × $count');
+      lines.add('   • ${name.isEmpty ? "Unknown" : name} × $count');
     }
 
     return lines.join('\n');

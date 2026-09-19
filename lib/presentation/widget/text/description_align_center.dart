@@ -17,7 +17,8 @@ class DescriptionAlignCenter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final spacing = bottomSpacing + (bottomNavHeight ? kBottomNavigationBarHeight : 0);
+    final spacing =
+        bottomSpacing + (bottomNavHeight ? kBottomNavigationBarHeight : 0);
 
     return Padding(
       padding: const EdgeInsets.all(WidgetConstant.paddingAround),

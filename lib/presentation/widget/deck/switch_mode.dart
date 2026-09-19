@@ -41,7 +41,9 @@ class DeckSwitchMode extends StatelessWidget {
           ),
           AnimatedAlign(
             duration: _animationDuration,
-            alignment: isAnalyzeModeEnabled ? Alignment.centerRight : Alignment.centerLeft,
+            alignment: isAnalyzeModeEnabled
+                ? Alignment.centerRight
+                : Alignment.centerLeft,
             child: Container(
               width: _width,
               height: _height,

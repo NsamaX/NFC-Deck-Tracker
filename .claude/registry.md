@@ -289,6 +289,8 @@ only decide ids, timestamps, and which repository methods to bind.
 Source: `lib/domain/entity/`
 Check: classes
 Consumers: every layer. Data maps these to models in `lib/data/mapper/`.
+Ids, names, card lists, and `isSynced` are non-null; an empty string or list
+means "not set yet" (a blank form), so guards test `isEmpty`, never `null`.
 
 ### CardEntity (`card.dart`)
 

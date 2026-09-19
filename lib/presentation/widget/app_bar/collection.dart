@@ -42,9 +42,9 @@ class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
             confirmButtonText: locale.translate('common.button_ok'),
             onConfirm: (value) {
               context.read<CollectionBloc>().add(CreateCollectionEvent(
-                userId: userId,
-                name: value,
-              ));
+                    userId: userId,
+                    name: value,
+                  ));
             },
             closeDialog: () => Navigator.of(context).pop(),
             showDialog: (dialog) => showCupertinoDialog(

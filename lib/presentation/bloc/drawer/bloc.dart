@@ -11,11 +11,13 @@ class DrawerBloc extends Bloc<DrawerEvent, DrawerState> {
     on<CloseDrawerEvent>(_onCloseDrawer);
   }
 
-  void _onToggleFeatureDrawer(ToggleFeatureDrawerEvent event, Emitter<DrawerState> emit) {
+  void _onToggleFeatureDrawer(
+      ToggleFeatureDrawerEvent event, Emitter<DrawerState> emit) {
     emit(state.copyWith(visibleFeatureDrawer: !state.visibleFeatureDrawer));
   }
 
-  void _onToggleHistoryDrawer(ToggleHistoryDrawerEvent event, Emitter<DrawerState> emit) {
+  void _onToggleHistoryDrawer(
+      ToggleHistoryDrawerEvent event, Emitter<DrawerState> emit) {
     emit(state.copyWith(visibleHistoryDrawer: !state.visibleHistoryDrawer));
   }
 

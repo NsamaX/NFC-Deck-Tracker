@@ -51,7 +51,7 @@ class DeckItem extends StatelessWidget {
           ],
         ),
         child: Text(
-          deck.name ?? locale.translate('common.unknown'),
+          deck.name.isEmpty ? locale.translate('common.unknown') : deck.name,
           style: theme.textTheme.titleSmall,
           textAlign: TextAlign.center,
         ),
@@ -60,9 +60,9 @@ class DeckItem extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    context.read<DeckBloc>().add(SetCurrentDeckEvent(deckId: deck.deckId!));
+    context.read<DeckBloc>().add(SetCurrentDeckEvent(deckId: deck.deckId));
 
-    context.read<DeckBloc>().add(FetchCardInDeckEvent(deckId: deck.deckId!));
+    context.read<DeckBloc>().add(FetchCardInDeckEvent(deckId: deck.deckId));
 
     Navigator.of(context).pushNamed(RouteConstant.deck_builder);
   }
@@ -77,7 +77,7 @@ class DeckItem extends StatelessWidget {
           width: 30,
           height: 30,
           child: Icon(
-            Icons.close_rounded, 
+            Icons.close_rounded,
             color: Theme.of(context).appBarTheme.iconTheme?.color,
             size: 26,
           ),
@@ -87,6 +87,9 @@ class DeckItem extends StatelessWidget {
   }
 
   void _onDelete(BuildContext context) {
-    context.read<DeckBloc>().add(DeleteDeckEvent(userId: userId, deckId: deck.deckId!, locale: AppLocalization.of(context)));
+    context.read<DeckBloc>().add(DeleteDeckEvent(
+        userId: userId,
+        deckId: deck.deckId,
+        locale: AppLocalization.of(context)));
   }
 }

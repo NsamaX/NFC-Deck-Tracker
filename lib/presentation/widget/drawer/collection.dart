@@ -43,7 +43,9 @@ class CollectionDrawer extends StatelessWidget {
                     'collectionName': recentGame,
                   },
                 ),
-                image: GameConfig.instance.gameImagePaths.where((e) => e.contains(recentId)).first,
+                image: GameConfig.instance.gameImagePaths
+                    .where((e) => e.contains(recentId))
+                    .first,
               ),
             _buildItem(
               context: context,
@@ -113,8 +115,7 @@ class CollectionDrawer extends StatelessWidget {
               child: Image.asset(
                 image,
                 fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) =>
-                    const Icon(Icons.broken_image),
+                errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
               ),
             );
     }

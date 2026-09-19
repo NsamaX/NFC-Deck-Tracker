@@ -42,7 +42,8 @@ class _JoinRoomScannerPageState extends State<QRCodeScanner> {
         });
         if (result != null) {
           widget.recordBloc.add(ImportRecordEvent(userId: result!));
-        };
+        }
+        ;
       });
     });
   }
@@ -72,7 +73,8 @@ class _JoinRoomScannerPageState extends State<QRCodeScanner> {
             left: 16.0,
             child: SafeArea(
               child: IconButton(
-                icon: Icon(Icons.arrow_back_ios_new_rounded, color: Colors.white, size: 30),
+                icon: Icon(Icons.arrow_back_ios_new_rounded,
+                    color: Colors.white, size: 30),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },

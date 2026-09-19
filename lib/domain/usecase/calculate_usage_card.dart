@@ -35,7 +35,7 @@ class CalculateUsageCardUsecase {
 
     return cardStats.values
         .map((data) => UsageCardStats(
-              cardName: data.card.name ?? 'Unknown',
+              cardName: data.card.name.isEmpty ? 'Unknown' : data.card.name,
               drawCount: data.drawCount,
               returnCount: data.returnCount,
             ))
@@ -43,18 +43,13 @@ class CalculateUsageCardUsecase {
   }
 
   CardEntity _findOrCreateCard(DeckEntity deck, DataEntity log) {
-    try {
-      return deck.cards
-              ?.firstWhere(
-                (c) =>
-                    c.card.cardId == log.cardId &&
-                    c.card.collectionId == log.collectionId,
-              )
-              .card ??
-          _createUnknownCard(log);
-    } catch (_) {
-      return _createUnknownCard(log);
+    for (final c in deck.cards) {
+      if (c.card.cardId == log.cardId &&
+          c.card.collectionId == log.collectionId) {
+        return c.card;
+      }
     }
+    return _createUnknownCard(log);
   }
 
   CardEntity _createUnknownCard(DataEntity log) => CardEntity(

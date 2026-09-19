@@ -38,14 +38,16 @@ class CardCustomInfo extends StatelessWidget {
           context,
           controller: descriptionController,
           hintText: locale.translate('card.description'),
-          onChanged: (text) => cardBloc.add(SetCardDescriptionEvent(description: text)),
+          onChanged: (text) =>
+              cardBloc.add(SetCardDescriptionEvent(description: text)),
         ),
         const SizedBox(height: 26.0),
         _buildField(
           context,
           controller: abilityController,
           hintText: locale.translate('card.ability'),
-          onChanged: (text) => cardBloc.add(SetCardAdditionalDataEvent(additionalData: {'>': text})),
+          onChanged: (text) => cardBloc
+              .add(SetCardAdditionalDataEvent(additionalData: {'>': text})),
           isTextArea: true,
         ),
       ],
@@ -67,7 +69,8 @@ class CardCustomInfo extends StatelessWidget {
       builder: (context, value, _) {
         final hasText = value.text.isNotEmpty;
         final hintStyle = TextStyle(
-          color: theme.textTheme.bodySmall!.color!.withAlpha((hasText ? 255 : (0.2 * 255)).toInt()),
+          color: theme.textTheme.bodySmall!.color!
+              .withAlpha((hasText ? 255 : (0.2 * 255)).toInt()),
         );
 
         final textField = TextField(
@@ -87,10 +90,12 @@ class CardCustomInfo extends StatelessWidget {
         if (isTextArea) {
           return Container(
             height: 120.0,
-            padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
             decoration: BoxDecoration(
               border: Border.all(
-                color: theme.textTheme.bodySmall!.color!.withAlpha((hasText ? 255 : (0.2 * 255)).toInt()),
+                color: theme.textTheme.bodySmall!.color!
+                    .withAlpha((hasText ? 255 : (0.2 * 255)).toInt()),
                 width: 1.0,
               ),
               borderRadius: BorderRadius.circular(8.0),
@@ -110,7 +115,8 @@ class CardCustomInfo extends StatelessWidget {
                     opacity: hasText ? 0.2 : 1.0,
                     child: const Padding(
                       padding: EdgeInsets.only(top: 4.0),
-                      child: Text("*", style: TextStyle(fontSize: 18, color: Colors.white)),
+                      child: Text("*",
+                          style: TextStyle(fontSize: 18, color: Colors.white)),
                     ),
                   ),
                 if (showAsterisk) const SizedBox(width: 4.0),

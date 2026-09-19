@@ -27,23 +27,25 @@ class LanguagePage extends StatelessWidget {
         ],
       ),
       body: SettingLanguage(
-        language: [{
-          'content': LanguageManager.languageNames.entries.map((entry) {
-            final code = entry.key;
-            final name = entry.value;
+        language: [
+          {
+            'content': LanguageManager.languageNames.entries.map((entry) {
+              final code = entry.key;
+              final name = entry.value;
 
-            return {
-              'text': name,
-              'onTap': () {
-                context.read<ApplicationBloc>().add(UpdateSettingEvent(
-                  key: AppConfig.keyLocale,
-                  value: code,
-                ));
-              },
-              'mark': code == locale.locale.languageCode,
-            };
-          }).toList(),
-        }],
+              return {
+                'text': name,
+                'onTap': () {
+                  context.read<ApplicationBloc>().add(UpdateSettingEvent(
+                        key: AppConfig.keyLocale,
+                        value: code,
+                      ));
+                },
+                'mark': code == locale.locale.languageCode,
+              };
+            }).toList(),
+          }
+        ],
       ),
     );
   }

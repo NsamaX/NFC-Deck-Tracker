@@ -26,11 +26,17 @@ class NfcIcon extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _buildIcon(angle: -90, offsetX: WidgetConstant.NfcButtonDot + 6, color: color),
+            _buildIcon(
+                angle: -90,
+                offsetX: WidgetConstant.NfcButtonDot + 6,
+                color: color),
             const SizedBox(width: 4),
             _buildDot(color),
             const SizedBox(width: 4),
-            _buildIcon(angle: 90, offsetX: -WidgetConstant.NfcButtonDot - 6, color: color),
+            _buildIcon(
+                angle: 90,
+                offsetX: -WidgetConstant.NfcButtonDot - 6,
+                color: color),
           ],
         ),
       ),
@@ -48,7 +54,8 @@ class NfcIcon extends StatelessWidget {
         duration: WidgetConstant.NfcTransitionDuration,
         turns: angle / 360,
         curve: Curves.easeInOut,
-        child: Icon(Icons.wifi_rounded, size: WidgetConstant.NfcButtonIcon, color: color),
+        child: Icon(Icons.wifi_rounded,
+            size: WidgetConstant.NfcButtonIcon, color: color),
       ),
     );
   }

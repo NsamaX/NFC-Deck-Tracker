@@ -19,7 +19,7 @@ class RecordMapper {
         deckId: entity.deckId,
         data: entity.data.map(DataMapper.toModel).toList(),
         createdAt: entity.createdAt ?? DateTime.now(),
-        isSynced: entity.isSynced ?? false,
+        isSynced: entity.isSynced,
         updatedAt: entity.updatedAt ?? DateTime.now(),
       );
 }

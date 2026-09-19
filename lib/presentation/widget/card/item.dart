@@ -43,7 +43,8 @@ class CardItem extends StatelessWidget {
     final theme = Theme.of(context);
 
     final isEditMode = context.read<DeckBloc>().state.isEditMode;
-    final selected = context.read<DeckBloc>().state.selectedCard.cardId == card.cardId;
+    final selected =
+        context.read<DeckBloc>().state.selectedCard.cardId == card.cardId;
 
     return GestureDetector(
       onTap: () => _onTap(context),
@@ -91,7 +92,7 @@ class CardItem extends StatelessWidget {
   }
 
   void _writeTag(BuildContext context, CardEntity cardToWrtie) {
-    if (cardToWrtie.cardId != null && cardToWrtie.collectionId != null) {
+    if (cardToWrtie.cardId.isNotEmpty && cardToWrtie.collectionId.isNotEmpty) {
       context.read<NfcBloc>().add(StartNfcSessionEvent(card: cardToWrtie));
     }
   }

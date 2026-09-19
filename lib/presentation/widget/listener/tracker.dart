@@ -26,10 +26,15 @@ class TrackerListener extends StatelessWidget {
       listeners: [
         BlocListener<NfcBloc, NfcState>(
           listenWhen: (previous, current) =>
-              previous.errorMessage != current.errorMessage && current.errorMessage.isNotEmpty ||
-              previous.warningMessage != current.warningMessage && current.warningMessage.isNotEmpty ||
-              current.lastScannedTag != null && previous.lastScannedTag != current.lastScannedTag ||
-              current.lastScannedTag != null && current.successMessage.isNotEmpty && previous.successMessage != current.successMessage,
+              previous.errorMessage != current.errorMessage &&
+                  current.errorMessage.isNotEmpty ||
+              previous.warningMessage != current.warningMessage &&
+                  current.warningMessage.isNotEmpty ||
+              current.lastScannedTag != null &&
+                  previous.lastScannedTag != current.lastScannedTag ||
+              current.lastScannedTag != null &&
+                  current.successMessage.isNotEmpty &&
+                  previous.successMessage != current.successMessage,
           listener: (context, state) {
             if (state.errorMessage.isNotEmpty) {
               AppSnackBar(
@@ -47,7 +52,9 @@ class TrackerListener extends StatelessWidget {
             } else if (state.successMessage.isNotEmpty) {
               final tag = state.lastScannedTag!;
               context.read<ReaderBloc>().add(ReadTagEvent(tag: tag));
-              context.read<TrackerBloc>().add(TrackingInteractionEvent(tag: tag));
+              context
+                  .read<TrackerBloc>()
+                  .add(TrackingInteractionEvent(tag: tag));
             }
             context.read<NfcBloc>().add(ClearNFCMessagesEvent());
           },
@@ -66,9 +73,12 @@ class TrackerListener extends StatelessWidget {
         ),
         BlocListener<ReaderBloc, ReaderState>(
           listenWhen: (previous, current) =>
-              previous.errorMessage != current.errorMessage && current.errorMessage.isNotEmpty ||
-              previous.warningMessage != current.warningMessage && current.warningMessage.isNotEmpty ||
-              previous.successMessage != current.successMessage && current.successMessage.isNotEmpty,
+              previous.errorMessage != current.errorMessage &&
+                  current.errorMessage.isNotEmpty ||
+              previous.warningMessage != current.warningMessage &&
+                  current.warningMessage.isNotEmpty ||
+              previous.successMessage != current.successMessage &&
+                  current.successMessage.isNotEmpty,
           listener: (context, state) {
             final localize = AppLocalization.of(context).translate;
             if (state.errorMessage.isNotEmpty) {
@@ -93,21 +103,22 @@ class TrackerListener extends StatelessWidget {
           listener: (context, state) {
             if (state.warningMessage.isEmpty && state.actionLog.isNotEmpty) {
               context.read<RecordBloc>().add(UpdateRecordEvent(
-                data: state.actionLog.last,
-              ));
+                    data: state.actionLog.last,
+                  ));
             }
           },
         ),
         BlocListener<RecordBloc, RecordState>(
           listenWhen: (previous, current) =>
-              previous.currentRecord.data.length != current.currentRecord.data.length,
+              previous.currentRecord.data.length !=
+              current.currentRecord.data.length,
           listener: (context, state) {
             final trackerState = context.read<TrackerBloc>().state;
 
             context.read<UsageCardBloc>().add(CalculateUsageCardEvent(
-              deck: trackerState.originalDeck,
-              record: state.currentRecord,
-            ));
+                  deck: trackerState.originalDeck,
+                  record: state.currentRecord,
+                ));
           },
         ),
       ],

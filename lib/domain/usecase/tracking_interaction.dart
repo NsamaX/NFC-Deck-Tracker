@@ -22,13 +22,13 @@ class TrackingInteractionUsecase {
     required List<DataEntity> logs,
     required TagEntity tag,
   }) {
-    final cardIndex = deck.cards?.indexWhere(
+    final cardIndex = deck.cards.indexWhere(
       (c) =>
           c.card.cardId == tag.cardId &&
           c.card.collectionId == tag.collectionId,
     );
 
-    if (cardIndex == null || cardIndex == -1) {
+    if (cardIndex == -1) {
       return TrackingInteractionResult(
         updatedDeck: deck,
         newLog: null,
@@ -36,7 +36,7 @@ class TrackingInteractionUsecase {
       );
     }
 
-    final cardInDeck = deck.cards![cardIndex];
+    final cardInDeck = deck.cards[cardIndex];
     final previousLogs = logs.where((log) => log.tagId == tag.tagId).toList();
 
     PlayerAction nextAction;
@@ -74,7 +74,7 @@ class TrackingInteractionUsecase {
     final updatedCard = cardInDeck.copyWith(count: newCount);
     final updatedCards = [
       updatedCard,
-      ...deck.cards!.where(
+      ...deck.cards.where(
         (c) =>
             c.card.cardId != tag.cardId ||
             c.card.collectionId != tag.collectionId,

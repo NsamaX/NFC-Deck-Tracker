@@ -40,11 +40,10 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final deckState = deckBloc.state;
-    final deckName = deckState.currentDeck.name ?? '';
-    final hasCards = deckState.currentDeck.cards?.isNotEmpty == true;
-    final collectionId = hasCards
-        ? deckState.currentDeck.cards?.first.card.collectionId ?? ''
-        : '';
+    final deckName = deckState.currentDeck.name;
+    final hasCards = deckState.currentDeck.cards.isNotEmpty == true;
+    final collectionId =
+        hasCards ? deckState.currentDeck.cards.first.card.collectionId : '';
 
     List<AppBarMenuItem> menuItems;
 
@@ -59,7 +58,10 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         onChanged: (value) {
           final trimmed = value.trim();
-          deckBloc.add(SetDeckNameEvent(name: trimmed.isNotEmpty ? trimmed : locale.translate('page_deck_builder.app_bar')));
+          deckBloc.add(SetDeckNameEvent(
+              name: trimmed.isNotEmpty
+                  ? trimmed
+                  : locale.translate('page_deck_builder.app_bar')));
         },
         onSubmitted: (_) {
           final trimmed = nameController.text.trim();
@@ -90,16 +92,23 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
             buildCupertinoActionDialog(
               theme: theme,
               title: locale.translate('page_deck_builder.dialog_delete_title'),
-              content: locale.translate('page_deck_builder.dialog_delete_content'),
+              content:
+                  locale.translate('page_deck_builder.dialog_delete_content'),
               cancelButtonText: locale.translate('common.button_cancel'),
               confirmButtonText: locale.translate('common.button_confirm'),
               onPressed: () {
-                deckBloc.add(DeleteDeckEvent(userId: userId, deckId: deckState.currentDeck.deckId!, locale: locale));
+                deckBloc.add(DeleteDeckEvent(
+                    userId: userId,
+                    deckId: deckState.currentDeck.deckId,
+                    locale: locale));
                 Navigator.of(context).pop();
-                AppSnackBar(context, text: locale.translate('page_deck_builder.snack_bar_delete'));
+                AppSnackBar(context,
+                    text:
+                        locale.translate('page_deck_builder.snack_bar_delete'));
               },
               closeDialog: () => Navigator.of(context).pop(),
-              showDialog: (dialog) => showCupertinoDialog(context: context, builder: (_) => dialog),
+              showDialog: (dialog) =>
+                  showCupertinoDialog(context: context, builder: (_) => dialog),
             );
           },
         ),
@@ -131,7 +140,8 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: Icons.ios_share_rounded,
           action: () {
             deckBloc.add(ShareEvent(locale: locale));
-            AppSnackBar(context, text: locale.translate('page_deck_builder.snack_bar_share'));
+            AppSnackBar(context,
+                text: locale.translate('page_deck_builder.snack_bar_share'));
           },
         ),
         AppBarMenuItem(label: deckName),
@@ -151,7 +161,8 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
                 transitionDuration: const Duration(milliseconds: 200),
                 pageBuilder: (_, __, ___) => const TutorailNFCIcon(),
               );
-              applicationBloc.add(UpdateSettingEvent(key: AppConfig.keyTutorial, value: false));
+              applicationBloc.add(
+                  UpdateSettingEvent(key: AppConfig.keyTutorial, value: false));
             }
           },
         ),

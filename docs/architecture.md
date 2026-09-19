@@ -99,7 +99,9 @@ The following review findings need separate behavior changes:
 
 - Account transitions in Settings and Landing have existing sign-in/sign-out
   inconsistencies. Settings clears local data without checking sign-in success.
-- Nullable `copyWith` fields cannot always be explicitly cleared.
+- Entity ids, names, card lists, and `isSynced` are non-null with empty
+  defaults; `updatedAt`, `imageUrl`, `description`, and `additionalData` stay
+  nullable, and `copyWith` cannot clear those to null.
 - Local deck updates update card membership rather than all deck metadata.
   Multi-row local writes (`create_deck`, `update_deck`, `clear_user_data`) run
   inside `SQLiteService.transaction`, where a failed write rolls back the rest.

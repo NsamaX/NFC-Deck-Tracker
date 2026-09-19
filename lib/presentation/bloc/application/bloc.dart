@@ -69,7 +69,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     clearUserDataUsecase.call(isGuest: state.guestId != null);
   }
 
-  ApplicationState _mapUpdatedState(ApplicationState state, String key, dynamic value) {
+  ApplicationState _mapUpdatedState(
+      ApplicationState state, String key, dynamic value) {
     switch (key) {
       case AppConfig.keyLocale:
         return state.copyWith(locale: Locale(value));
@@ -90,9 +91,10 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
 
   String getPageRoute({required int index}) {
     return const <int, String>{
-      0: RouteConstant.my_deck,
-      1: RouteConstant.tag_reader,
-      2: RouteConstant.setting,
-    }[index] ?? RouteConstant.not_found;
+          0: RouteConstant.my_deck,
+          1: RouteConstant.tag_reader,
+          2: RouteConstant.setting,
+        }[index] ??
+        RouteConstant.not_found;
   }
 }

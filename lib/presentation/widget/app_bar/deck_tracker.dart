@@ -18,11 +18,8 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;
   final NfcBloc nfcBloc;
 
-  const DeckTrackerAppBar({
-    super.key, 
-    required this.userId,
-    required this.nfcBloc
-  });
+  const DeckTrackerAppBar(
+      {super.key, required this.userId, required this.nfcBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -49,7 +46,9 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? Icons.wifi_tethering_rounded
           : Icons.wifi_tethering_off_rounded,
       action: () {
-        isSessionActive ? nfcBloc.add(StopNfcSessionEvent()) : nfcBloc.add(StartNfcSessionEvent());
+        isSessionActive
+            ? nfcBloc.add(StopNfcSessionEvent())
+            : nfcBloc.add(StartNfcSessionEvent());
       },
     );
 
@@ -64,8 +63,10 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
           action: () => {
             buildCupertinoMultipleChoicesDialog(
               theme: Theme.of(context),
-              title: locale.translate('page_deck_tracker.dialog_reset_deck_title'),
-              content: locale.translate('page_deck_tracker.dialog_reset_deck_content'),
+              title:
+                  locale.translate('page_deck_tracker.dialog_reset_deck_title'),
+              content: locale
+                  .translate('page_deck_tracker.dialog_reset_deck_content'),
               choices: [
                 DialogChoice(
                   text: locale.translate('page_deck_tracker.button_reset'),

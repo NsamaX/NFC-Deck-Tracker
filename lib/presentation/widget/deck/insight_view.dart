@@ -47,7 +47,7 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
     if (!_hasLoaded) {
       widget.recordBloc.add(FetchRecordEvent(
         userId: widget.userId,
-        deckId: widget.trackerBloc.state.originalDeck.deckId!,
+        deckId: widget.trackerBloc.state.originalDeck.deckId,
       ));
 
       _hasLoaded = true;
@@ -92,18 +92,26 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
         return HistoryListView(
           section: [
             {
-              'title': widget.locale.translate('page_deck_tracker.history_title'),
+              'title':
+                  widget.locale.translate('page_deck_tracker.history_title'),
               'content': state.records.map((record) {
                 return {
                   'key': record.recordId,
                   'info': DateFormat('HH:mm:ss').format(record.createdAt!),
                   'text': DateFormat('yyyy-MM-dd').format(record.createdAt!),
                   'onTap': () {
-                    widget.recordBloc.add(FindRecordEvent(recordId: record.recordId));
-                    widget.recordBloc.add(GetCardFromRecordEvent(recordId: record.recordId, deck: widget.trackerBloc.state.originalDeck));
-                    widget.readerBloc.add(SetReadedCardsEvent(readedCards: widget.recordBloc.state.cards));
-                    widget.trackerBloc.add(LoadDeckFromRecordEvent(record: record));
-                    widget.usageCardBloc.add(CalculateUsageCardEvent(deck: widget.trackerBloc.state.originalDeck, record: record));
+                    widget.recordBloc
+                        .add(FindRecordEvent(recordId: record.recordId));
+                    widget.recordBloc.add(GetCardFromRecordEvent(
+                        recordId: record.recordId,
+                        deck: widget.trackerBloc.state.originalDeck));
+                    widget.readerBloc.add(SetReadedCardsEvent(
+                        readedCards: widget.recordBloc.state.cards));
+                    widget.trackerBloc
+                        .add(LoadDeckFromRecordEvent(record: record));
+                    widget.usageCardBloc.add(CalculateUsageCardEvent(
+                        deck: widget.trackerBloc.state.originalDeck,
+                        record: record));
                   },
                   'onDel': () {
                     widget.recordBloc.add(DeleteRecordEvent(

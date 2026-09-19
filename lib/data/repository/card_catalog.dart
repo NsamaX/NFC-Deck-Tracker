@@ -44,7 +44,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
         await cardRepository.fetchForLocal(collectionId: collectionId);
     for (final card in localCards) {
       final entity = card;
-      cardMap[entity.cardId!] = entity;
+      cardMap[entity.cardId] = entity;
     }
 
     final bool isFirstLoad = localCards.isEmpty;
@@ -116,7 +116,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
             await cardRepository.save(cards: apiCards);
             for (final card in apiCards) {
               final entity = card;
-              cardMap[entity.cardId!] = entity;
+              cardMap[entity.cardId] = entity;
             }
             LoggerUtil.d(
                 '[API] Loaded page: ${jsonEncode(page)} → ${apiCards.length} cards');
@@ -150,7 +150,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
           await cardRepository.save(cards: remoteCards);
           for (final card in remoteCards) {
             final entity = card;
-            cardMap[entity.cardId!] = entity;
+            cardMap[entity.cardId] = entity;
           }
           LoggerUtil.d('[Remote] Cards loaded from remote Firestore');
         } else {

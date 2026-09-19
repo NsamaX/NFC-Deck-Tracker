@@ -12,7 +12,7 @@ class PinColorEvent extends PinCardEvent {
   final Color color;
 
   const PinColorEvent({
-    required this.cardId, 
+    required this.cardId,
     required this.color,
   });
 

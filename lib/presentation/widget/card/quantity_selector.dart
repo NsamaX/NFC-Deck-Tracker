@@ -78,7 +78,8 @@ class CardQuantitySelector extends StatelessWidget {
     );
   }
 
-  double _calculateLeft(int selectedIndex) => selectedIndex * _width + selectedIndex * _spacing;
+  double _calculateLeft(int selectedIndex) =>
+      selectedIndex * _width + selectedIndex * _spacing;
 
   Widget _buildQuantityItem(BuildContext context, {required int index}) {
     final theme = Theme.of(context);

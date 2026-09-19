@@ -161,7 +161,7 @@ class ToggleDeleteEvent extends DeckEvent {
   final String deckId;
 
   const ToggleDeleteEvent({
-    required this.userId, 
+    required this.userId,
     required this.deckId,
   });
 

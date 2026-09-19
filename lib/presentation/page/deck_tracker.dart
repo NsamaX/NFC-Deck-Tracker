@@ -89,7 +89,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
                 PresentationScope.read(context).createReaderBloc(collectionId)),
         BlocProvider(
             create: (_) =>
-                PresentationScope.read(context).createRecordBloc(deck.deckId!)),
+                PresentationScope.read(context).createRecordBloc(deck.deckId)),
         BlocProvider(
             create: (_) =>
                 PresentationScope.read(context).createTrackerBloc(deck)),

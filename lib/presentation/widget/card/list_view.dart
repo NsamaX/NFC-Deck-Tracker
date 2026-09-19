@@ -58,6 +58,10 @@ class CardListView extends StatelessWidget {
 
   void _deleteCard(BrowseCardBloc Bloc, String userId, String cardId) {
     final card = cards.firstWhere((c) => c.cardId == cardId);
-    Bloc.add(DeleteCardEvent(userId: userId, collectionId: card.collectionId!, cardId: card.cardId!, imageUrl: card.imageUrl!));
+    Bloc.add(DeleteCardEvent(
+        userId: userId,
+        collectionId: card.collectionId,
+        cardId: card.cardId,
+        imageUrl: card.imageUrl!));
   }
 }

@@ -11,7 +11,7 @@ class _GridConfig {
   final double aspectRatio;
 
   const _GridConfig({
-    required this.spacing, 
+    required this.spacing,
     required this.aspectRatio,
   });
 }
@@ -67,7 +67,8 @@ class DeckOrCardGridView extends StatelessWidget {
   }) {
     if (item is DeckEntity) return DeckItem(userId: userId, deck: item);
     if (item is CardEntity) return CardItem(card: item);
-    if (item is MapEntry<CardEntity, int>) return CardItem(card: item.key, count: item.value);
+    if (item is MapEntry<CardEntity, int>)
+      return CardItem(card: item.key, count: item.value);
 
     return const SizedBox();
   }

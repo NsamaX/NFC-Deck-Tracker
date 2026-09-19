@@ -27,17 +27,15 @@ class CardQuantityControl extends StatelessWidget {
         children: [
           _buildCountIndicator(context),
           const SizedBox(height: _spacing),
-          _buildActionButton(
-            context,
-            icon: Icons.add,
-            onPressed: () => context.read<DeckBloc>().add(AddCardEvent(card: card))
-          ),
+          _buildActionButton(context,
+              icon: Icons.add,
+              onPressed: () =>
+                  context.read<DeckBloc>().add(AddCardEvent(card: card))),
           const SizedBox(height: _spacing),
-          _buildActionButton(
-            context,
-            icon: Icons.remove,
-            onPressed: () => context.read<DeckBloc>().add(RemoveCardEvent(card: card))
-          ),
+          _buildActionButton(context,
+              icon: Icons.remove,
+              onPressed: () =>
+                  context.read<DeckBloc>().add(RemoveCardEvent(card: card))),
         ],
       ),
     );
@@ -56,7 +54,8 @@ class CardQuantityControl extends StatelessWidget {
       child: Center(
         child: Text(
           count.toString(),
-          style: theme.textTheme.bodyMedium?.copyWith(color: theme.textTheme.bodyMedium?.color),
+          style: theme.textTheme.bodyMedium
+              ?.copyWith(color: theme.textTheme.bodyMedium?.color),
           textAlign: TextAlign.center,
         ),
       ),

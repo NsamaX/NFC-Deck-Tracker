@@ -53,21 +53,25 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
     on<CloseEditModeEvent>(_onCloseEditMode);
   }
 
-  Future<void> _onFetchDeck(FetchDeckEvent event, Emitter<DeckState> emit) async {
+  Future<void> _onFetchDeck(
+      FetchDeckEvent event, Emitter<DeckState> emit) async {
     emit(state.copyWith(isLoading: true));
     final deck = await fetchDeckUsecase(userId: event.userId);
     emit(state.copyWith(decks: deck, isLoading: false));
   }
 
-  Future<void> _onFetchCardInDeck(FetchCardInDeckEvent event, Emitter<DeckState> emit) async {
+  Future<void> _onFetchCardInDeck(
+      FetchCardInDeckEvent event, Emitter<DeckState> emit) async {
     emit(state.copyWith(isLoading: true));
     final cards = await fetchCardInDeckUsecase(deckId: event.deckId);
-    emit(state.copyWith(isLoading: false, currentDeck: state.currentDeck.copyWith(cards: cards)));
+    emit(state.copyWith(
+        isLoading: false,
+        currentDeck: state.currentDeck.copyWith(cards: cards)));
   }
 
   Future<void> _onAddCard(AddCardEvent event, Emitter<DeckState> emit) async {
     final cards = await updateCardInDeckUsecase.call(
-      cardInDeck: state.currentDeck.cards ?? [],
+      cardInDeck: state.currentDeck.cards,
       card: event.card,
       quantity: event.quantity,
     );
@@ -77,9 +81,10 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
     ));
   }
 
-  Future<void> _onRemoveCard(RemoveCardEvent event, Emitter<DeckState> emit) async {
+  Future<void> _onRemoveCard(
+      RemoveCardEvent event, Emitter<DeckState> emit) async {
     final cards = await updateCardInDeckUsecase.call(
-      cardInDeck: state.currentDeck.cards ?? [],
+      cardInDeck: state.currentDeck.cards,
       card: event.card,
       quantity: -1,
     );
@@ -106,20 +111,23 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
     emit(state.copyWith(currentDeck: deck, isNewDeck: true));
   }
 
-  Future<void> _onCreateDeck(CreateDeckEvent event, Emitter<DeckState> emit) async {
+  Future<void> _onCreateDeck(
+      CreateDeckEvent event, Emitter<DeckState> emit) async {
     await createDeckUsecase.call(userId: event.userId, deck: state.currentDeck);
     final decks = await fetchDeckUsecase(userId: event.userId);
     emit(state.copyWith(decks: decks, isNewDeck: false));
   }
 
-  Future<void> _onDeleteDeck(DeleteDeckEvent event, Emitter<DeckState> emit) async {
+  Future<void> _onDeleteDeck(
+      DeleteDeckEvent event, Emitter<DeckState> emit) async {
     await deleteDeckUsecase.call(userId: event.userId, deckId: event.deckId);
     emit(state.copyWith(
       decks: state.decks.where((deck) => deck.deckId != event.deckId).toList(),
     ));
   }
 
-  Future<void> _onUpdateDeck(UpdateDeckEvent event, Emitter<DeckState> emit) async {
+  Future<void> _onUpdateDeck(
+      UpdateDeckEvent event, Emitter<DeckState> emit) async {
     if (!state.isChange) return;
 
     await updateDeckUsecase.call(userId: event.userId, deck: state.currentDeck);
@@ -139,13 +147,16 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
 
   void _onSetCurrentDeck(SetCurrentDeckEvent event, Emitter<DeckState> emit) {
     emit(state.copyWith(
-      currentDeck: state.decks.firstWhere((deck) => deck.deckId == event.deckId),
+      currentDeck:
+          state.decks.firstWhere((deck) => deck.deckId == event.deckId),
       isNewDeck: false,
     ));
   }
 
   void _onSetDeckName(SetDeckNameEvent event, Emitter<DeckState> emit) {
-    emit(state.copyWith(currentDeck: state.currentDeck.copyWith(name: event.name), isChange: true));
+    emit(state.copyWith(
+        currentDeck: state.currentDeck.copyWith(name: event.name),
+        isChange: true));
   }
 
   void _onSetCardQuantity(SetCardQuantityEvent event, Emitter<DeckState> emit) {
@@ -155,8 +166,10 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
   Future<void> _onShare(ShareEvent event, Emitter<DeckState> emit) async {
     final text = await generateShareDeckClipboardUsecase(
       deck: state.currentDeck,
-      nameLabel: event.locale.translate('page_deck_builder.clipboard_deck_name'),
-      totalLabel: event.locale.translate('page_deck_builder.clipboard_total_cards'),
+      nameLabel:
+          event.locale.translate('page_deck_builder.clipboard_deck_name'),
+      totalLabel:
+          event.locale.translate('page_deck_builder.clipboard_total_cards'),
     );
     Clipboard.setData(ClipboardData(text: text));
   }

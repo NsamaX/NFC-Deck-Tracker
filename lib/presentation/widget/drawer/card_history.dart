@@ -26,12 +26,15 @@ class CardHistoryDrawer extends StatelessWidget {
     final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final reversedCards = List<CardEntity>.from(readerBloc.state.readedCards.reversed);
+    final reversedCards =
+        List<CardEntity>.from(readerBloc.state.readedCards.reversed);
 
     return AnimatedPositioned(
       duration: WidgetConstant.drawerTransitionDuration,
       curve: Curves.easeInOut,
-      left: drawerBloc.state.visibleHistoryDrawer ? 0 : -WidgetConstant.historyDrawerWidth,
+      left: drawerBloc.state.visibleHistoryDrawer
+          ? 0
+          : -WidgetConstant.historyDrawerWidth,
       top: 0,
       bottom: 0,
       child: Container(

@@ -10,7 +10,6 @@ class BrowseCardState extends Equatable {
   const BrowseCardState({
     this.cards = const [],
     this.visibleCards = const [],
-
     this.isLoading = false,
     this.errorMessage = '',
   });

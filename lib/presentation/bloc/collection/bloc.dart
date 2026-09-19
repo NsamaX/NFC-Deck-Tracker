@@ -32,12 +32,14 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     on<DeleteCollectionEvent>(_onDeleteCollection);
   }
 
-  Future<void> _onFetchCollection(FetchCollectionEvent event, Emitter<CollectionState> emit) async {
+  Future<void> _onFetchCollection(
+      FetchCollectionEvent event, Emitter<CollectionState> emit) async {
     final collections = await fetchCollectionUsecase(userId: event.userId);
     emit(state.copyWith(collections: collections));
   }
 
-  Future<void> _onFetchUsedCardDistinct(FetchUsedCardDistinctEvent event, Emitter<CollectionState> emit) async {
+  Future<void> _onFetchUsedCardDistinct(
+      FetchUsedCardDistinctEvent event, Emitter<CollectionState> emit) async {
     emit(state.copyWith(isLoading: true));
     try {
       await fetchDeckUsecase(userId: event.userId);
@@ -48,14 +50,20 @@ class CollectionBloc extends Bloc<CollectionEvent, CollectionState> {
     }
   }
 
-  Future<void> _onCreateCollection(CreateCollectionEvent event, Emitter<CollectionState> emit) async {
+  Future<void> _onCreateCollection(
+      CreateCollectionEvent event, Emitter<CollectionState> emit) async {
     await createCollectionUsecase(userId: event.userId, name: event.name);
     final collections = await fetchCollectionUsecase(userId: event.userId);
     emit(state.copyWith(collections: collections));
   }
 
-  Future<void> _onDeleteCollection(DeleteCollectionEvent event, Emitter<CollectionState> emit) async {
-    await deleteCollectionUsecase(userId: event.userId, collectionId: event.collectionId);
-    emit(state.copyWith(collections: state.collections.where((c) => c.collectionId != event.collectionId).toList()));
+  Future<void> _onDeleteCollection(
+      DeleteCollectionEvent event, Emitter<CollectionState> emit) async {
+    await deleteCollectionUsecase(
+        userId: event.userId, collectionId: event.collectionId);
+    emit(state.copyWith(
+        collections: state.collections
+            .where((c) => c.collectionId != event.collectionId)
+            .toList()));
   }
 }

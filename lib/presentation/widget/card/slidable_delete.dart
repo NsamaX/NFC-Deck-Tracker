@@ -13,14 +13,14 @@ ActionPane? buildCardSlidableDelete({
   final theme = Theme.of(context);
   final locale = AppLocalization.of(context);
 
-  if (card.cardId == null) return null;
+  if (card.cardId.isEmpty) return null;
 
   return ActionPane(
     motion: const StretchMotion(),
     extentRatio: 0.26,
     children: [
       SlidableAction(
-        onPressed: (_) => onDelete(card.cardId!),
+        onPressed: (_) => onDelete(card.cardId),
         backgroundColor: theme.colorScheme.error,
         foregroundColor: theme.iconTheme.color,
         label: locale.translate('common.button_delete'),

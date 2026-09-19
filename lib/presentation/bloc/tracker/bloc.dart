@@ -27,18 +27,22 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
     on<ResetDeckEvent>(_onResetDeck);
   }
 
-  void _onToggleAdvancedMode(ToggleAdvancedModeEvent event, Emitter<TrackerState> emit) {
+  void _onToggleAdvancedMode(
+      ToggleAdvancedModeEvent event, Emitter<TrackerState> emit) {
     emit(state.copyWith(isAdvancedMode: !state.isAdvancedMode));
   }
 
-  void _onToggleAnalysisMode(ToggleAnalysisModeEvent event, Emitter<TrackerState> emit) {
+  void _onToggleAnalysisMode(
+      ToggleAnalysisModeEvent event, Emitter<TrackerState> emit) {
     emit(state.copyWith(isAnalysisMode: !state.isAnalysisMode));
   }
 
-  void _onTrackingInteraction(TrackingInteractionEvent event, Emitter<TrackerState> emit) {
+  void _onTrackingInteraction(
+      TrackingInteractionEvent event, Emitter<TrackerState> emit) {
     emit(state.copyWith(warningMessage: ''));
 
-    final result = trackingInteractionUsecase(deck: state.currentDeck, logs: state.actionLog, tag: event.tag);
+    final result = trackingInteractionUsecase(
+        deck: state.currentDeck, logs: state.actionLog, tag: event.tag);
 
     if (result.errorKey != null) {
       emit(state.copyWith(warningMessage: result.errorKey));
@@ -48,10 +52,12 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
     if (result.newLog == null) return;
 
     final updatedActionLog = [...state.actionLog, result.newLog!];
-    emit(state.copyWith(currentDeck: result.updatedDeck, actionLog: updatedActionLog));
+    emit(state.copyWith(
+        currentDeck: result.updatedDeck, actionLog: updatedActionLog));
   }
 
-  void _onLoadDeckFromRecord(LoadDeckFromRecordEvent event, Emitter<TrackerState> emit) {
+  void _onLoadDeckFromRecord(
+      LoadDeckFromRecordEvent event, Emitter<TrackerState> emit) {
     DeckEntity simulatedDeck = state.originalDeck;
     List<DataEntity> simulatedActionLog = [];
 
@@ -59,7 +65,10 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState> {
       final result = trackingInteractionUsecase(
         deck: simulatedDeck,
         logs: simulatedActionLog,
-        tag: TagEntity(tagId: log.tagId, collectionId: log.collectionId, cardId: log.cardId),
+        tag: TagEntity(
+            tagId: log.tagId,
+            collectionId: log.collectionId,
+            cardId: log.cardId),
       );
 
       if (result.newLog != null) {

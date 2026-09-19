@@ -21,12 +21,12 @@ class MemoryDecks extends Fake implements DeckRepository {
   int remoteCalls = 0;
   @override
   Future<void> createForLocal({required DeckEntity deck}) async =>
-      local[deck.deckId!] = deck;
+      local[deck.deckId] = deck;
   @override
   Future<bool> createForRemote(
       {required String userId, required DeckEntity deck}) async {
     remoteCalls++;
-    if (remoteSucceeds) remote[deck.deckId!] = deck;
+    if (remoteSucceeds) remote[deck.deckId] = deck;
     return remoteSucceeds;
   }
 
@@ -97,7 +97,7 @@ void main() {
     expect(repository.local.values.single.name, 'Renamed');
     expect(repository.local.values.single.updatedAt, isNotNull);
     await DeleteDeckUsecase(deckRepository: repository)(
-        userId: '', deckId: decks.single.deckId!);
+        userId: '', deckId: decks.single.deckId);
     expect(repository.local, isEmpty);
     expect(repository.remoteCalls, 0);
   });

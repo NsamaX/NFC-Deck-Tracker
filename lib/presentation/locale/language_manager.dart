@@ -28,7 +28,8 @@ class LanguageManager {
       supportedLanguages = UnmodifiableListView(languageCodes);
       languageNames = UnmodifiableMapView(Map.fromEntries(entries));
 
-      LoggerUtil.i('Supported languages loaded: ${supportedLanguages.join(", ")}');
+      LoggerUtil.i(
+          'Supported languages loaded: ${supportedLanguages.join(", ")}');
     } on Exception catch (e) {
       supportedLanguages = UnmodifiableListView([]);
       languageNames = UnmodifiableMapView({});
@@ -39,20 +40,24 @@ class LanguageManager {
   static Future<List<String>> _discoverLanguageCodes() async {
     final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
 
-    return manifest.listAssets()
-        .where((key) => key.startsWith('$_localePath/') && key.endsWith('.json'))
+    return manifest
+        .listAssets()
+        .where(
+            (key) => key.startsWith('$_localePath/') && key.endsWith('.json'))
         .map((key) => key.split('/').last.split('.').first)
         .toList();
   }
 
-  static Future<MapEntry<String, String>> _loadLanguageNameEntry(String code) async {
+  static Future<MapEntry<String, String>> _loadLanguageNameEntry(
+      String code) async {
     try {
       final jsonString = await rootBundle.loadString('$_localePath/$code.json');
       final Map<String, dynamic> langData = json.decode(jsonString);
       final languageName = langData['language_name'] as String?;
       return MapEntry(code, languageName ?? code);
     } on Exception catch (e) {
-      LoggerUtil.w('Could not load name for language "$code", using code as name. Error: $e');
+      LoggerUtil.w(
+          'Could not load name for language "$code", using code as name. Error: $e');
       return MapEntry(code, code);
     }
   }

@@ -100,7 +100,7 @@ class CardListTile extends StatelessWidget {
                     )
                   : (!isTrack &&
                           onDelete != null &&
-                          !GameConfig.instance.isSupported(card!.collectionId!))
+                          !GameConfig.instance.isSupported(card!.collectionId))
                       ? buildCardSlidableDelete(
                           context: context,
                           card: card!,

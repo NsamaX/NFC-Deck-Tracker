@@ -22,7 +22,6 @@ void main() async {
 
   await dotenv.load();
   if (!RuntimeConfig.guestMode) {
-
     await Firebase.initializeApp();
   }
   await initServiceLocator();

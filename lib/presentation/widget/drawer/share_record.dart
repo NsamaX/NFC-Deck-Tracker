@@ -25,7 +25,8 @@ class ShareRecordDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<DrawerBloc, DrawerState>(
-      buildWhen: (previous, current) => previous.visibleFeatureDrawer != current.visibleFeatureDrawer,
+      buildWhen: (previous, current) =>
+          previous.visibleFeatureDrawer != current.visibleFeatureDrawer,
       builder: (context, state) {
         return AnimatedPositioned(
           duration: const Duration(milliseconds: 160),
@@ -131,7 +132,8 @@ class _DrawerContainer extends StatelessWidget {
           onTap: () => Navigator.of(context).pop(),
           child: Center(
             child: GestureDetector(
-              onTap: () => recordBloc.add(ShareRecordEvent(userId: userId, cards: cards)),
+              onTap: () => recordBloc
+                  .add(ShareRecordEvent(userId: userId, cards: cards)),
               child: QRCodeGeneretor(userId: userId),
             ),
           ),
@@ -199,5 +201,6 @@ class DoubleTrianglePainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant DoubleTrianglePainter oldDelegate) => color != oldDelegate.color;
+  bool shouldRepaint(covariant DoubleTrianglePainter oldDelegate) =>
+      color != oldDelegate.color;
 }

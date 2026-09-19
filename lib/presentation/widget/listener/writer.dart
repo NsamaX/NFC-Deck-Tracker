@@ -27,8 +27,8 @@ class WriterListener extends StatelessWidget {
           );
 
           context.read<NfcBloc>().add(RestartNfcSessionEvent(
-            card: context.read<DeckBloc>().state.selectedCard,
-          ));
+                card: context.read<DeckBloc>().state.selectedCard,
+              ));
         } else if (state.warningMessage.isNotEmpty) {
           AppSnackBar(
             context,

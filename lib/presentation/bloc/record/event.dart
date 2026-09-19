@@ -12,7 +12,7 @@ class FetchRecordEvent extends RecordEvent {
   final String deckId;
 
   const FetchRecordEvent({
-    required this.userId, 
+    required this.userId,
     required this.deckId,
   });
 
@@ -60,7 +60,7 @@ class GetCardFromRecordEvent extends RecordEvent {
   final DeckEntity deck;
 
   const GetCardFromRecordEvent({
-    required this.recordId, 
+    required this.recordId,
     required this.deck,
   });
 
@@ -84,7 +84,7 @@ class DeleteRecordEvent extends RecordEvent {
   final String recordId;
 
   const DeleteRecordEvent({
-    required this.userId, 
+    required this.userId,
     required this.recordId,
   });
 

@@ -62,7 +62,8 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(
           label: locale.translate('page_card_detail.toggle_add'),
           action: () {
-            deckBloc.add(AddCardEvent(card: card, quantity: deckBloc.state.cardQuantity));
+            deckBloc.add(AddCardEvent(
+                card: card, quantity: deckBloc.state.cardQuantity));
             AppSnackBar(
               context,
               text: locale.translate('page_card_detail.snack_bar_add'),
@@ -72,7 +73,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       );
     } else if (onCustom) {
-      final nameFilled = (cardState.name ?? '').trim().isNotEmpty;
+      final nameFilled = (cardState.name).trim().isNotEmpty;
       if (cardState.imageUrl != null && nameFilled) {
         menuItems.add(AppBarMenuItem.empty());
         menuItems.add(

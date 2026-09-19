@@ -24,7 +24,9 @@ class SettingLanguage extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               if (title != null) _buildTitle(context, title: title),
-              ...content.map((item) => _buildItem(context, item: item)).toList(),
+              ...content
+                  .map((item) => _buildItem(context, item: item))
+                  .toList(),
             ],
           );
         }).toList(),
@@ -42,7 +44,8 @@ class SettingLanguage extends StatelessWidget {
       padding: const EdgeInsets.only(left: 20.0, top: 16.0, bottom: 8.0),
       child: Text(
         title,
-        style: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.primary),
+        style: theme.textTheme.bodyMedium
+            ?.copyWith(color: theme.colorScheme.primary),
       ),
     );
   }
@@ -65,14 +68,17 @@ class SettingLanguage extends StatelessWidget {
         decoration: BoxDecoration(
           color: theme.appBarTheme.backgroundColor,
           border: Border(
-            bottom: BorderSide(color: theme.colorScheme.opacityText, width: 1.0),
+            bottom:
+                BorderSide(color: theme.colorScheme.opacityText, width: 1.0),
           ),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             if (text != null) Text(text, style: theme.textTheme.bodySmall),
-            if (mark) Icon(Icons.check_rounded, size: 18.0, color: theme.colorScheme.opacityText),
+            if (mark)
+              Icon(Icons.check_rounded,
+                  size: 18.0, color: theme.colorScheme.opacityText),
           ],
         ),
       ),

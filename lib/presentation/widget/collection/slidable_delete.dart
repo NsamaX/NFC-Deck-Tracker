@@ -26,4 +26,3 @@ ActionPane? buildCollectionSlidableDelete({
     ],
   );
 }
- 

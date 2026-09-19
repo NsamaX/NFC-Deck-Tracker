@@ -9,17 +9,17 @@ import 'progress_indicator.dart';
 import 'text.dart';
 
 extension CustomColorScheme on ColorScheme {
-  Color get active      => AppColor.active;
-  Color get success     => AppColor.success;
-  Color get warning     => AppColor.warning;
-  Color get error       => AppColor.error;
+  Color get active => AppColor.active;
+  Color get success => AppColor.success;
+  Color get warning => AppColor.warning;
+  Color get error => AppColor.error;
 
-  Color get pinColor1   => AppColor.pinColor1;
-  Color get pinColor2   => AppColor.pinColor2;
-  Color get pinColor3   => AppColor.pinColor3;
+  Color get pinColor1 => AppColor.pinColor1;
+  Color get pinColor2 => AppColor.pinColor2;
+  Color get pinColor3 => AppColor.pinColor3;
 
   Color get opacityText => AppColor.opacityText;
-  Color get tutorial    => AppColor.tutorial;
+  Color get tutorial => AppColor.tutorial;
 }
 
 class AppThemes {
@@ -34,12 +34,19 @@ class AppThemes {
 
     return baseTheme.copyWith(
       scaffoldBackgroundColor: isDark ? AppColor.dark2 : AppColor.light1,
-      iconTheme: isDark ? AppIconThemes.dark.defaultIcon : AppIconThemes.light.defaultIcon,
+      iconTheme: isDark
+          ? AppIconThemes.dark.defaultIcon
+          : AppIconThemes.light.defaultIcon,
       appBarTheme: isDark ? AppBarStyles.dark : AppBarStyles.light,
-      bottomNavigationBarTheme: isDark ? AppBottomNavBarStyles.dark : AppBottomNavBarStyles.light,
-      progressIndicatorTheme: isDark ? AppProgressIndicatorStyles.dark : AppProgressIndicatorStyles.light,
+      bottomNavigationBarTheme:
+          isDark ? AppBottomNavBarStyles.dark : AppBottomNavBarStyles.light,
+      progressIndicatorTheme: isDark
+          ? AppProgressIndicatorStyles.dark
+          : AppProgressIndicatorStyles.light,
       elevatedButtonTheme: ElevatedButtonThemeData(
-        style: isDark ? AppButtonStyles.darkElevated : AppButtonStyles.lightElevated,
+        style: isDark
+            ? AppButtonStyles.darkElevated
+            : AppButtonStyles.lightElevated,
       ),
       textTheme: baseTheme.textTheme.copyWith(
         titleLarge: textStyles.titleLarge,

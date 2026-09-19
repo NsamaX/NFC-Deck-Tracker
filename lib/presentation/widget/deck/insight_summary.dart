@@ -71,8 +71,7 @@ class DeckInsightSummary extends StatelessWidget {
       usageCardStat.fold(0, (sum, stat) => sum + stat.returnCount);
 
   double _percentagePlayed() {
-    final totalCards =
-        (initialDeck.cards ?? []).fold(0, (sum, e) => sum + e.count);
+    final totalCards = (initialDeck.cards).fold(0, (sum, e) => sum + e.count);
     final playedCardTags = currentRecord.data
         .where((e) => e.playerAction == PlayerAction.take)
         .map((e) => e.tagId)
@@ -83,13 +82,12 @@ class DeckInsightSummary extends StatelessWidget {
   }
 
   int _unusedCardCount() {
-    final allCardNames =
-        (initialDeck.cards ?? []).map((e) => e.card.name).toSet();
+    final allCardNames = (initialDeck.cards).map((e) => e.card.name).toSet();
     final drawnCardIds = currentRecord.data
         .where((e) => e.playerAction == PlayerAction.take)
         .map((e) => e.cardId)
         .toSet();
-    final drawnCardNames = (initialDeck.cards ?? [])
+    final drawnCardNames = (initialDeck.cards)
         .where((e) => drawnCardIds.contains(e.card.cardId))
         .map((e) => e.card.name)
         .toSet();

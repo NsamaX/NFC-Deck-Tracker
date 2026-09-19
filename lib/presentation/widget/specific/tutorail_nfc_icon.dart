@@ -66,7 +66,9 @@ class _TutorailNFCIconState extends State<TutorailNFCIcon> {
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: _currentPage == 1 ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+        crossAxisAlignment: _currentPage == 1
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start,
         children: [
           Text(
             locale.translate(
@@ -152,7 +154,8 @@ class _TutorailNFCIconState extends State<TutorailNFCIcon> {
       child: CustomPaint(
         size: const Size(20, 10),
         painter: _TooltipArrowPainter(
-          color: isDark ? theme.colorScheme.tutorial : theme.colorScheme.onSurface,
+          color:
+              isDark ? theme.colorScheme.tutorial : theme.colorScheme.onSurface,
         ),
       ),
     );

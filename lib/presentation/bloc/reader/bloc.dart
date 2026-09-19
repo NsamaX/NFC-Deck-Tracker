@@ -52,9 +52,11 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
         case 'Exception: INVALID_TAG':
           emit(state.copyWith(errorMessage: 'nfc_snack_bar.error_no_data'));
         case 'Exception: CARD_NOT_FOUND':
-          emit(state.copyWith(warningMessage: 'nfc_snack_bar.error_card_not_found'));
+          emit(state.copyWith(
+              warningMessage: 'nfc_snack_bar.error_card_not_found'));
         case 'Exception: GAME_NOT_SUPPORTED':
-          emit(state.copyWith(errorMessage: 'nfc_snack_bar.error_game_not_supported'));
+          emit(state.copyWith(
+              errorMessage: 'nfc_snack_bar.error_game_not_supported'));
         default:
           emit(state.copyWith(errorMessage: 'nfc_snack_bar.error_unknown'));
       }
@@ -66,11 +68,13 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
     emit(state.copyWith(readedCards: event.readedCards));
   }
 
-  void _onResetReadedCards(ResetReadedCardsEvent event, Emitter<ReaderState> emit) {
+  void _onResetReadedCards(
+      ResetReadedCardsEvent event, Emitter<ReaderState> emit) {
     emit(state.copyWith(readedCards: []));
   }
 
-  void _onClearReaderMessages(ClearReaderMessagesEvent event, Emitter<ReaderState> emit) {
+  void _onClearReaderMessages(
+      ClearReaderMessagesEvent event, Emitter<ReaderState> emit) {
     emit(state.copyWith(
       successMessage: '',
       warningMessage: '',

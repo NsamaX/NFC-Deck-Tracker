@@ -88,7 +88,7 @@ NdefMessage createNDEFMessage({
     final collectionId = card.collectionId;
     final cardId = card.cardId;
 
-    if (collectionId == null || cardId == null) {
+    if (collectionId.isEmpty || cardId.isEmpty) {
       throw Exception('[Validation] Card data is incomplete.');
     }
 

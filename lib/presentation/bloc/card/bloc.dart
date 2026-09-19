@@ -34,15 +34,20 @@ class CardBloc extends Bloc<CardEvent, CardState> {
     emit(state.copyWith(card: state.card.copyWith(imageUrl: event.imageUrl)));
   }
 
-  void _onSetCardDescription(SetCardDescriptionEvent event, Emitter<CardState> emit) {
-    emit(state.copyWith(card: state.card.copyWith(description: event.description)));
+  void _onSetCardDescription(
+      SetCardDescriptionEvent event, Emitter<CardState> emit) {
+    emit(state.copyWith(
+        card: state.card.copyWith(description: event.description)));
   }
 
-  void _onSetCardAdditionalData(SetCardAdditionalDataEvent event, Emitter<CardState> emit) {
-    emit(state.copyWith(card: state.card.copyWith(additionalData: event.additionalData)));
+  void _onSetCardAdditionalData(
+      SetCardAdditionalDataEvent event, Emitter<CardState> emit) {
+    emit(state.copyWith(
+        card: state.card.copyWith(additionalData: event.additionalData)));
   }
 
-  Future<void> _onCreateCard(CreateCardEvent event, Emitter<CardState> emit) async {
+  Future<void> _onCreateCard(
+      CreateCardEvent event, Emitter<CardState> emit) async {
     final updatedCard = state.card.copyWith(
       collectionId: event.collectionId,
       description: event.locale.translate('card.no_description'),
@@ -51,7 +56,9 @@ class CardBloc extends Bloc<CardEvent, CardState> {
     emit(state.copyWith(card: updatedCard));
   }
 
-  Future<void> _onUpdateCard(UpdateCardEvent event, Emitter<CardState> emit) async {
-    await updateCardUsecase(userId: event.userId, card: state.card, oldImageUrl: state.oldImageUrl);
+  Future<void> _onUpdateCard(
+      UpdateCardEvent event, Emitter<CardState> emit) async {
+    await updateCardUsecase(
+        userId: event.userId, card: state.card, oldImageUrl: state.oldImageUrl);
   }
 }

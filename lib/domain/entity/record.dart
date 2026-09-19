@@ -7,7 +7,7 @@ class RecordEntity extends Equatable {
   final String recordId;
   final List<DataEntity> data;
   final DateTime? createdAt;
-  final bool? isSynced;
+  final bool isSynced;
   final DateTime? updatedAt;
 
   const RecordEntity({
@@ -15,7 +15,7 @@ class RecordEntity extends Equatable {
     required this.recordId,
     required this.data,
     this.createdAt,
-    this.isSynced,
+    this.isSynced = false,
     this.updatedAt,
   });
 

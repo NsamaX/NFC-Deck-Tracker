@@ -60,12 +60,16 @@ class _SearchBarWidgetState extends State<SearchBarWidget> {
                 onChanged: widget.onSearchChanged,
                 decoration: InputDecoration(
                   border: InputBorder.none,
-                  prefixIcon: Icon(Icons.search, color: theme.colorScheme.opacityText),
-                  hintText: locale.translate('page_browse_card.search_hint_text'),
-                  hintStyle: theme.textTheme.bodyMedium?.copyWith(color: theme.colorScheme.opacityText),
+                  prefixIcon:
+                      Icon(Icons.search, color: theme.colorScheme.opacityText),
+                  hintText:
+                      locale.translate('page_browse_card.search_hint_text'),
+                  hintStyle: theme.textTheme.bodyMedium
+                      ?.copyWith(color: theme.colorScheme.opacityText),
                   contentPadding: const EdgeInsets.only(bottom: 12.0),
                 ),
-                style: theme.textTheme.bodyMedium?.copyWith(color: Colors.black),
+                style:
+                    theme.textTheme.bodyMedium?.copyWith(color: Colors.black),
               ),
             ),
           ),

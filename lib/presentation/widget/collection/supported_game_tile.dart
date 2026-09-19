@@ -86,7 +86,8 @@ class SupportedGameTile extends StatelessWidget {
         child: Image.asset(
           gameImage,
           fit: BoxFit.cover,
-          errorBuilder: (_, __, ___) => const Icon(Icons.inbox_rounded, color: Colors.black, size: 24),
+          errorBuilder: (_, __, ___) =>
+              const Icon(Icons.inbox_rounded, color: Colors.black, size: 24),
         ),
       ),
     );

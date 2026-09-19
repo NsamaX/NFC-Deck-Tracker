@@ -11,7 +11,7 @@ class GetCardFromRecordUsecase {
     final List<CardEntity> playedCards = [];
     final Map<String, CardEntity> cardMap = {};
 
-    deck.cards?.forEach((cardInDeck) {
+    deck.cards.forEach((cardInDeck) {
       final key = '${cardInDeck.card.collectionId}:${cardInDeck.card.cardId}';
       cardMap[key] = cardInDeck.card;
     });

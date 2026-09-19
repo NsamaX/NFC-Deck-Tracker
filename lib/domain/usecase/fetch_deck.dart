@@ -18,13 +18,13 @@ class FetchDeckUsecase {
       local: await deckRepository.fetchForLocal(),
       fetchRemote: () => deckRepository.fetchForRemote(userId: userId),
       target: SyncTarget(
-        id: (e) => e.deckId!,
+        id: (e) => e.deckId,
         updatedAt: (e) => e.updatedAt,
         isSynced: (e) => e.isSynced == true,
         markSynced: (e, synced) => e.copyWith(isSynced: synced),
         createLocal: (e) => deckRepository.createForLocal(deck: e),
         updateLocal: (e) => deckRepository.updateForLocal(deck: e),
-        deleteLocal: (e) => deckRepository.deleteForLocal(deckId: e.deckId!),
+        deleteLocal: (e) => deckRepository.deleteForLocal(deckId: e.deckId),
         createRemote: (e) =>
             deckRepository.createForRemote(userId: userId, deck: e),
         updateRemote: (e) =>

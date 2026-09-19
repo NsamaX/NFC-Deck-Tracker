@@ -19,12 +19,15 @@ class UsageCardBloc extends Bloc<UsageCardEvent, UsageCardState> {
     on<ResetUsageCardEvent>(_onResetUsageCard);
   }
 
-  Future<void> _onCalculateUsageCard(CalculateUsageCardEvent event, Emitter<UsageCardState> emit) async {
-    final stats = await calculateUsageCardUsecase(deck: event.deck, record: event.record);
+  Future<void> _onCalculateUsageCard(
+      CalculateUsageCardEvent event, Emitter<UsageCardState> emit) async {
+    final stats =
+        await calculateUsageCardUsecase(deck: event.deck, record: event.record);
     emit(state.copyWith(stat: stats));
   }
 
-  void _onResetUsageCard(ResetUsageCardEvent event, Emitter<UsageCardState> emit) {
+  void _onResetUsageCard(
+      ResetUsageCardEvent event, Emitter<UsageCardState> emit) {
     emit(state.copyWith(stat: []));
   }
 }

@@ -27,7 +27,8 @@ class CustomGameTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
-    final formattedDate = DateFormat('yyyy-MM-dd HH:mm').format(collection.updatedAt!);
+    final formattedDate =
+        DateFormat('yyyy-MM-dd HH:mm').format(collection.updatedAt!);
 
     return GestureDetector(
       onTap: () => Navigator.of(context).pushReplacementNamed(
@@ -77,7 +78,9 @@ class CustomGameTile extends StatelessWidget {
                 const SizedBox(width: 12.0),
                 _buildInfoText(
                   context,
-                  locale.translate('page_collection.last_updated').replaceAll('{date}', formattedDate),
+                  locale
+                      .translate('page_collection.last_updated')
+                      .replaceAll('{date}', formattedDate),
                 ),
               ],
             ),

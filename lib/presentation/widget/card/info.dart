@@ -22,7 +22,7 @@ class CardInfo extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          card.name ?? locale.translate('card.no_name'),
+          card.name.isEmpty ? locale.translate('card.no_name') : card.name,
           style: textStyle,
         ),
         const SizedBox(height: 8.0),
@@ -48,7 +48,8 @@ class CardInfo extends StatelessWidget {
     final textStyle = theme.textTheme.bodyMedium;
 
     final entries = additionalData.entries
-        .where((e) => (e.value is String && e.value.isNotEmpty) || e.value is num)
+        .where(
+            (e) => (e.value is String && e.value.isNotEmpty) || e.value is num)
         .map((e) => Padding(
               padding: const EdgeInsets.only(bottom: 8.0),
               child: RichText(

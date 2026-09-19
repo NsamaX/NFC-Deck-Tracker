@@ -177,12 +177,16 @@ class DeckInsightChart extends StatelessWidget {
                     sideTitles: SideTitles(
                       showTitles: true,
                       reservedSize: 60,
-                      getTitlesWidget: (value, _) => _buildRotatedLabel(context, data, value.toInt()),
+                      getTitlesWidget: (value, _) =>
+                          _buildRotatedLabel(context, data, value.toInt()),
                     ),
                   ),
-                  leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-                  rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  leftTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  topTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                  rightTitles:
+                      AxisTitles(sideTitles: SideTitles(showTitles: false)),
                 ),
                 gridData: FlGridData(
                   show: true,
@@ -190,13 +194,16 @@ class DeckInsightChart extends StatelessWidget {
                   drawHorizontalLine: true,
                   verticalInterval: 1,
                   horizontalInterval: 1,
-                  getDrawingHorizontalLine: (_) => FlLine(color: Theme.of(context).dividerColor, strokeWidth: 1.2),
-                  getDrawingVerticalLine: (_) => FlLine(color: Theme.of(context).dividerColor, strokeWidth: 1.2),
+                  getDrawingHorizontalLine: (_) => FlLine(
+                      color: Theme.of(context).dividerColor, strokeWidth: 1.2),
+                  getDrawingVerticalLine: (_) => FlLine(
+                      color: Theme.of(context).dividerColor, strokeWidth: 1.2),
                 ),
                 borderData: FlBorderData(
                   show: true,
                   border: Border(
-                    bottom: BorderSide(color: Theme.of(context).dividerColor, width: 1.2),
+                    bottom: BorderSide(
+                        color: Theme.of(context).dividerColor, width: 1.2),
                     left: BorderSide.none,
                   ),
                 ),

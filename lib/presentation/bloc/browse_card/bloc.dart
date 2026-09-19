@@ -22,7 +22,8 @@ class BrowseCardBloc extends Bloc<BrowseCardEvent, BrowseCardState> {
     on<DeleteCardEvent>(_onDeleteCard);
   }
 
-  Future<void> _onFetchCard(FetchCardEvent event, Emitter<BrowseCardState> emit) async {
+  Future<void> _onFetchCard(
+      FetchCardEvent event, Emitter<BrowseCardState> emit) async {
     if (state.isLoading) return;
 
     emit(state.copyWith(
@@ -67,12 +68,13 @@ class BrowseCardBloc extends Bloc<BrowseCardEvent, BrowseCardState> {
     }
 
     final results = state.cards.where((card) {
-      return (card.name ?? '').toLowerCase().contains(keyword);
+      return (card.name).toLowerCase().contains(keyword);
     }).toList();
 
     emit(state.copyWith(
       visibleCards: results,
-      errorMessage: results.isEmpty ? 'page_browse_card.empty_search_result' : '',
+      errorMessage:
+          results.isEmpty ? 'page_browse_card.empty_search_result' : '',
     ));
   }
 
@@ -83,7 +85,8 @@ class BrowseCardBloc extends Bloc<BrowseCardEvent, BrowseCardState> {
     ));
   }
 
-  Future<void> _onDeleteCard(DeleteCardEvent event, Emitter<BrowseCardState> emit) async {
+  Future<void> _onDeleteCard(
+      DeleteCardEvent event, Emitter<BrowseCardState> emit) async {
     await deleteCardUsecase(
       userId: event.userId,
       collectionId: event.collectionId,
@@ -91,8 +94,11 @@ class BrowseCardBloc extends Bloc<BrowseCardEvent, BrowseCardState> {
       imageUrl: event.imageUrl,
     );
 
-    final updatedCards = state.cards.where((card) => card.cardId != event.cardId).toList();
-    final updatedVisibleCards = state.visibleCards.where((card) => card.cardId != event.cardId).toList();
+    final updatedCards =
+        state.cards.where((card) => card.cardId != event.cardId).toList();
+    final updatedVisibleCards = state.visibleCards
+        .where((card) => card.cardId != event.cardId)
+        .toList();
 
     emit(state.copyWith(
       cards: updatedCards,

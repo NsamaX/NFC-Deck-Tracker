@@ -14,18 +14,21 @@ class AppLocalization {
 
   AppLocalization(this.locale);
 
-  static AppLocalization of(BuildContext context) => Localizations.of<AppLocalization>(context, AppLocalization)!;
+  static AppLocalization of(BuildContext context) =>
+      Localizations.of<AppLocalization>(context, AppLocalization)!;
 
   Future<bool> load() async {
     try {
-      final jsonString = await rootBundle.loadString('$_localePath/${locale.languageCode}.json');
+      final jsonString = await rootBundle
+          .loadString('$_localePath/${locale.languageCode}.json');
       _localizedStrings = json.decode(jsonString);
       _isLoaded = true;
       LoggerUtil.i('Localization loaded: ${locale.languageCode}');
       return true;
     } on Exception catch (e) {
       _isLoaded = false;
-      LoggerUtil.e('Failed to load localization for ${locale.languageCode}: $e');
+      LoggerUtil.e(
+          'Failed to load localization for ${locale.languageCode}: $e');
       return false;
     }
   }
@@ -44,7 +47,8 @@ class AppLocalization {
             currentValue.containsKey(part)) {
           currentValue = currentValue[part];
         } else {
-          LoggerUtil.w('Missing translation key: "$key" in locale "${locale.languageCode}"');
+          LoggerUtil.w(
+              'Missing translation key: "$key" in locale "${locale.languageCode}"');
           return key;
         }
       }

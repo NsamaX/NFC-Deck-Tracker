@@ -21,7 +21,7 @@ class DeckTrackerView extends StatelessWidget {
 
     return BlocBuilder<TrackerBloc, TrackerState>(
       builder: (context, trackerState) {
-        final cardList = trackerState.currentDeck.cards ?? [];
+        final cardList = trackerState.currentDeck.cards;
 
         final total = cardList.fold<int>(0, (sum, e) => sum + e.count);
 
@@ -55,8 +55,8 @@ class DeckTrackerView extends StatelessWidget {
 
                       final PlayerAction lastAction =
                           recordBlocInstance.getLastAction(
-                        collectionId: card.collectionId!,
-                        cardId: card.cardId!,
+                        collectionId: card.collectionId,
+                        cardId: card.cardId,
                       );
 
                       return CardListTile(
@@ -73,7 +73,7 @@ class DeckTrackerView extends StatelessWidget {
                         markedColor: pinColorState.pinColor[card.cardId],
                         changeCardColor: (color) {
                           context.read<PinCardBloc>().add(PinColorEvent(
-                                cardId: card.cardId!,
+                                cardId: card.cardId,
                                 color: color,
                               ));
                         },

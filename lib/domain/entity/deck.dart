@@ -3,17 +3,17 @@ import 'package:equatable/equatable.dart';
 import 'card_in_deck.dart';
 
 class DeckEntity extends Equatable {
-  final String? deckId;
-  final String? name;
-  final List<CardInDeckEntity>? cards;
-  final bool? isSynced;
+  final String deckId;
+  final String name;
+  final List<CardInDeckEntity> cards;
+  final bool isSynced;
   final DateTime? updatedAt;
 
   const DeckEntity({
-    this.deckId,
-    this.name,
-    this.cards,
-    this.isSynced,
+    this.deckId = '',
+    this.name = '',
+    this.cards = const [],
+    this.isSynced = false,
     this.updatedAt,
   });
 

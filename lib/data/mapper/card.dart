@@ -15,13 +15,13 @@ class CardMapper {
       );
 
   static CardModel toModel(CardEntity entity) => CardModel(
-        collectionId: entity.collectionId ?? '',
-        cardId: entity.cardId ?? '',
-        name: entity.name ?? '',
+        collectionId: entity.collectionId,
+        cardId: entity.cardId,
+        name: entity.name,
         imageUrl: entity.imageUrl,
         description: entity.description,
         additionalData: entity.additionalData,
-        isSynced: entity.isSynced ?? false,
+        isSynced: entity.isSynced,
         updatedAt: entity.updatedAt ?? DateTime.now(),
       );
 }

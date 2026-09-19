@@ -73,9 +73,14 @@ class HistoryListView extends StatelessWidget {
           if (text != null) Text(text, style: theme.textTheme.bodySmall),
           Row(
             children: [
-              if (info != null) Text(info, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.opacityText)),
+              if (info != null)
+                Text(info,
+                    style: theme.textTheme.bodySmall
+                        ?.copyWith(color: theme.colorScheme.opacityText)),
               if (info != null) const SizedBox(width: 6),
-              if (pop) Icon(Icons.arrow_outward_rounded, size: 16, color: theme.colorScheme.opacityText),
+              if (pop)
+                Icon(Icons.arrow_outward_rounded,
+                    size: 16, color: theme.colorScheme.opacityText),
             ],
           ),
         ],
