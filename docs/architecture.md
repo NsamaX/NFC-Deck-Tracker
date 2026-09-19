@@ -101,8 +101,9 @@ The following review findings need separate behavior changes:
 - Account transitions in Settings and Landing have existing sign-in/sign-out
   inconsistencies. Settings clears local data without checking sign-in success.
 - Nullable `copyWith` fields cannot always be explicitly cleared.
-- Local deck updates update card membership rather than all deck metadata;
-  creation assumes at least one card and lacks a transaction covering all writes.
+- Local deck updates update card membership rather than all deck metadata.
+  Multi-row local writes (`create_deck`, `update_deck`, `clear_user_data`) run
+  inside `SQLiteService.transaction`, where a failed write rolls back the rest.
 - NFC validation, capacity assumptions, and restart behavior retain existing rules.
 
 These are existing findings, not behavior introduced or fixed by this refactor.

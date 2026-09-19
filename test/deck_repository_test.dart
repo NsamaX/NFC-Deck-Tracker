@@ -14,11 +14,31 @@ import 'package:nfc_deck_tracker/domain/usecase/fetch_deck.dart';
 
 class MemorySql extends Fake implements SQLiteService {
   final tables = <String, List<Map<String, dynamic>>>{};
+  int transactions = 0;
+  int writesOutsideTransaction = 0;
+  bool _inTransaction = false;
+
+  @override
+  Future<T> transaction<T>(Future<T> Function(SQLiteService txn) action) async {
+    transactions++;
+    _inTransaction = true;
+    try {
+      return await action(this);
+    } finally {
+      _inTransaction = false;
+    }
+  }
+
+  void _write() {
+    if (!_inTransaction) writesOutsideTransaction++;
+  }
+
   @override
   Future<void> insert(
       {required String table,
       required Map<String, dynamic> data,
       ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.replace}) async {
+    _write();
     tables.putIfAbsent(table, () => []).add(data);
   }
 
@@ -27,6 +47,7 @@ class MemorySql extends Fake implements SQLiteService {
       {required String table,
       required List<Map<String, dynamic>> dataList,
       ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.abort}) async {
+    _write();
     tables.putIfAbsent(table, () => []).addAll(dataList);
   }
 
@@ -75,5 +96,7 @@ void main() {
     expect(decks.single.deckId, row['deckId']);
     expect(decks.single.name, 'Test');
     expect(decks.single.isSynced, isFalse);
+    expect(sql.transactions, 1);
+    expect(sql.writesOutsideTransaction, 0);
   });
 }

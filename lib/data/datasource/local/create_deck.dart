@@ -16,36 +16,42 @@ class CreateDeckLocalDatasource {
   Future<void> create({
     required DeckModel deck,
   }) async {
-    await _sqliteService.insert(
-      table: 'decks', 
-      data: deck.toJsonForLocal(),
-    );
+    await _sqliteService.transaction((txn) async {
+      await txn.insert(
+        table: 'decks',
+        data: deck.toJsonForLocal(),
+      );
 
-    final collectionId = deck.cards.first.card.collectionId;
-    final collection = CollectionModel(
-      collectionId: collectionId,
-      name: GameConfig.instance.isSupported(deck.cards.first.card.collectionId) ? collectionId : 'unknow',
-      isSynced: true,
-      updatedAt: DateTime.now(),
-    );
-    await _sqliteService.insert(
-      table: 'collections',
-      data: collection.toJsonForLocal(),
-      conflictAlgorithm: ConflictAlgorithm.ignore,
-    );
+      final List<CardInDeckModel> cards = deck.cards;
+      if (cards.isEmpty) return;
 
-    final List<CardInDeckModel> cards = deck.cards;
-    for (final card in cards) {
-      await _sqliteService.insert(
-        table: 'cards',
-        data: card.card.toJsonForLocal(),
+      final collectionId = cards.first.card.collectionId;
+      final collection = CollectionModel(
+        collectionId: collectionId,
+        name: GameConfig.instance.isSupported(collectionId)
+            ? collectionId
+            : 'unknow',
+        isSynced: true,
+        updatedAt: DateTime.now(),
+      );
+      await txn.insert(
+        table: 'collections',
+        data: collection.toJsonForLocal(),
         conflictAlgorithm: ConflictAlgorithm.ignore,
       );
-    }
 
-    await _sqliteService.insertBatch(
-      table: 'cardsInDeck',
-      dataList: deck.toJsonForCardsInDeck(),
-    );
+      for (final card in cards) {
+        await txn.insert(
+          table: 'cards',
+          data: card.card.toJsonForLocal(),
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+      }
+
+      await txn.insertBatch(
+        table: 'cardsInDeck',
+        dataList: deck.toJsonForCardsInDeck(),
+      );
+    });
   }
 }

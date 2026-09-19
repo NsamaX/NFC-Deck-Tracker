@@ -6,12 +6,19 @@ import '@database_service.dart';
 
 class SQLiteService {
   final DatabaseService _databaseService;
+  final DatabaseExecutor? _transaction;
 
   SQLiteService({
     required DatabaseService databaseService,
-  }) : _databaseService = databaseService;
+  })  : _databaseService = databaseService,
+        _transaction = null;
 
-  Future<Database> getDatabase() async {
+  SQLiteService._inTransaction(this._databaseService, this._transaction);
+
+  bool get inTransaction => _transaction != null;
+
+  Future<DatabaseExecutor> getDatabase() async {
+    if (_transaction != null) return _transaction;
     try {
       return _databaseService.database;
     } catch (e) {
@@ -20,11 +27,21 @@ class SQLiteService {
     }
   }
 
+  Future<T> transaction<T>(
+    Future<T> Function(SQLiteService txn) action,
+  ) async {
+    if (_transaction != null) return action(this);
+    final Database db = await _databaseService.database;
+    return db.transaction(
+      (txn) => action(SQLiteService._inTransaction(_databaseService, txn)),
+    );
+  }
+
   Future<List<Map<String, dynamic>>> queryTable({
     required String sql,
   }) async {
     try {
-      final Database db = await getDatabase();
+      final DatabaseExecutor db = await getDatabase();
       final result = await db.rawQuery(sql);
 
       final sqlLines = sql
@@ -55,7 +72,7 @@ class SQLiteService {
     String? orderBy,
   }) async {
     try {
-      final Database db = await getDatabase();
+      final DatabaseExecutor db = await getDatabase();
 
       await _ensureTableExists(
         db: db,
@@ -69,7 +86,8 @@ class SQLiteService {
         orderBy: orderBy,
       );
 
-      LoggerUtil.i('Query\nTable: $table\nWHERE: $where\nARGS : $whereArgs\nReturned: ${result.length} rows');
+      LoggerUtil.i(
+          'Query\nTable: $table\nWHERE: $where\nARGS : $whereArgs\nReturned: ${result.length} rows');
 
       return result;
     } catch (e) {
@@ -84,7 +102,7 @@ class SQLiteService {
     ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.replace,
   }) async {
     try {
-      final Database db = await getDatabase();
+      final DatabaseExecutor db = await getDatabase();
 
       await _ensureTableExists(
         db: db,
@@ -100,6 +118,7 @@ class SQLiteService {
       LoggerUtil.i('Inserted data into "$table" successfully');
     } catch (e) {
       LoggerUtil.e('Failed to insert data into "$table": $e');
+      if (inTransaction) rethrow;
     }
   }
 
@@ -111,17 +130,18 @@ class SQLiteService {
     const int chunkSize = 500;
 
     try {
-      final Database db = await getDatabase();
+      final DatabaseExecutor db = await getDatabase();
 
       await _ensureTableExists(
         db: db,
         table: table,
       );
 
-      await db.transaction((txn) async {
+      await transaction((txn) async {
+        final DatabaseExecutor executor = await txn.getDatabase();
         for (int i = 0; i < dataList.length; i += chunkSize) {
           final chunk = dataList.skip(i).take(chunkSize);
-          final batch = txn.batch();
+          final batch = executor.batch();
 
           for (final data in chunk) {
             batch.insert(
@@ -141,6 +161,7 @@ class SQLiteService {
       LoggerUtil.i('Inserted batch data into "$table" successfully');
     } catch (e) {
       LoggerUtil.e('Failed to insert batch into "$table": $e');
+      if (inTransaction) rethrow;
     }
   }
 
@@ -151,7 +172,7 @@ class SQLiteService {
     required List<dynamic> whereArgs,
   }) async {
     try {
-      final Database db = await getDatabase();
+      final DatabaseExecutor db = await getDatabase();
 
       await _ensureTableExists(
         db: db,
@@ -168,6 +189,7 @@ class SQLiteService {
       LoggerUtil.i('Updated data in "$table" successfully');
     } catch (e) {
       LoggerUtil.e('Failed to update data in "$table": $e');
+      if (inTransaction) rethrow;
     }
   }
 
@@ -177,7 +199,7 @@ class SQLiteService {
     List<dynamic>? whereArgs,
   }) async {
     try {
-      final Database db = await getDatabase();
+      final DatabaseExecutor db = await getDatabase();
 
       await _ensureTableExists(
         db: db,
@@ -190,19 +212,19 @@ class SQLiteService {
         whereArgs: whereArgs,
       );
 
-      LoggerUtil.i(
-          where == null
-              ? 'Deleted all data from "$table"'
-              : 'Deleted data from "$table" with condition: $where');
+      LoggerUtil.i(where == null
+          ? 'Deleted all data from "$table"'
+          : 'Deleted data from "$table" with condition: $where');
       return true;
     } catch (e) {
       LoggerUtil.e('Failed to delete data from "$table": $e');
+      if (inTransaction) rethrow;
       return false;
     }
   }
 
   Future<void> _ensureTableExists({
-    required Database db,
+    required DatabaseExecutor db,
     required String table,
   }) async {
     try {
