@@ -28,7 +28,6 @@ lib/
 ├── domain/                      # Business logic, use cases, and entities
 ├── presentation/                # UI components, localization, theming, and Blocs
 ├── util/                        # Reusable utilities (e.g., logger, extensions, helpers)
-├── firebase_options.dart        # Firebase configuration file (auto-generated)
 ├── main.dart                    # App entry point and bootstrap logic
 ├── nfc_life_cycle_observer.dart # NFC lifecycle management
 ```
@@ -77,9 +76,10 @@ lib/
 
 ---
 
-### **`firebase_options.dart`**
+### **Guest and online configuration**
 
-  * Auto-generated Firebase configuration file used for `Firebase.initializeApp()`.
+  * `.config/runtime.dart` selects Guest mode with `--dart-define=GUEST_MODE=true`.
+  * Online mobile builds initialize Firebase from the native platform configuration files.
 
 ---
 
@@ -91,7 +91,9 @@ lib/
 
 ## ⚠️ Development Notes
 
-To run the application correctly, you must set up Firebase and create a `.env` file with the required variables (e.g., Supabase URL and anon key). For detailed setup instructions, refer to the [thesis document](../documents/NFC_Deck_Tracker_Thesis_Silpakorn_2024.pdf).
+Guest builds run without Firebase or Supabase credentials. Online builds need
+the native Firebase configuration and Supabase values in `.env`. See the
+[project README](../README.md#local-configuration) for the current emulator setup.
 
 > ℹ️ This documentation provides guidance to developers contributing to the app’s core structure, ensuring a consistent and understandable codebase.
 

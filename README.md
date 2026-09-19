@@ -16,6 +16,52 @@ A mobile application for managing and tracking trading card game (TCG) decks in 
 
 ## Local configuration
 
+### Guest mode on an Android emulator
+
+Guest mode stores decks, collections, cards, and settings locally. It skips
+Firebase and Supabase initialization, keeps selected images on the device,
+and hides Google sign-in and remote card catalogs. Cloud sync and record
+sharing are unavailable in this mode. NFC scanning requires a physical device.
+
+On this Windows workspace, a local Android SDK, JDK 21, and the
+`NFC_Deck_API_35` emulator are installed under the ignored `.local/` directory.
+Start the emulator and app with:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\run-guest.ps1
+```
+
+Use `-BuildOnly` to create an x86_64 debug APK, or `-DeviceId <id>` to run on an
+already connected device. The script sets tool paths for its process only;
+it does not change system-wide settings. It also disables Windows desktop
+plugin generation for that shell, so Android development does not require
+Windows Developer Mode.
+
+For manual commands in PowerShell:
+
+```powershell
+. .\scripts\android-env.ps1
+flutter pub get
+flutter devices
+flutter run -d emulator-5554 --dart-define=GUEST_MODE=true
+flutter test --dart-define=GUEST_MODE=true
+```
+
+Guest mode needs no real values in `.env`; the launcher copies `.env.example`
+if the file is missing. On another machine, install the
+[Android toolchain](https://docs.flutter.dev/platform-integration/android/setup)
+and create an emulator first. The local SDK and emulator are not part of Git.
+This setup uses Flutter 3.41.1, JDK 21, Android SDK 36, and an Android 35 emulator.
+
+Android build compatibility notes: `nfc_manager` 3.x compiles with Kotlin 1.9
+language/API compatibility, and Kotlin incremental compilation is disabled to
+avoid cache errors when the Pub cache and project are on different Windows
+drives. The QR scanner uses the
+[compatibility fork](https://pub.dev/packages/qr_code_scanner_plus) at version
+2.1.2 to support the newer Android build tools without changing its UI.
+
+### Online mode
+
 Copy `.env.example` to `.env` in the project root, then fill in
 `SUPABASE_URL` and `SUPABASE_ANON_KEY` for your Supabase project.
 The app already loads this file through `flutter_dotenv`.
@@ -24,15 +70,16 @@ The app already loads this file through `flutter_dotenv`.
 template. Flutter bundles `.env` as an asset, so use the client anon key,
 never a service-role key or other server credentials.
 
-Firebase configuration is separate from `.env`. Restore or generate
-`lib/firebase_options.dart` and the Firebase configuration files for your target
-platform (for Android, `android/app/google-services.json`) before running the
-app. The Android build also references local release signing settings in
-`android/key.properties` and `android/app/proguard-rules.pro`, which are absent
-from this checkout and need to be configured before building.
+Firebase configuration is separate from `.env`. Online mode initializes
+Firebase from the native mobile configuration: restore
+`android/app/google-services.json` for Android, or configure
+`ios/Runner/GoogleService-Info.plist` for iOS. The Android Google Services plugin
+is applied when its configuration file exists. Release signing still needs
+your own `android/key.properties` and keystore; debug builds use Android's
+debug signing and do not require release credentials.
 
 After configuring the project and installing the Flutter SDK, run
-`flutter pub get` and `flutter run`.
+`flutter pub get` and `flutter run` (without `GUEST_MODE=true`).
 
 ## Demo
 

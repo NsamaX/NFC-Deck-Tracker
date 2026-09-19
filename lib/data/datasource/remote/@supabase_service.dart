@@ -6,12 +6,15 @@ import 'package:uuid/uuid.dart';
 import 'package:nfc_deck_tracker/util/logger.dart';
 
 class SupabaseService {
-  final SupabaseClient supabase;
+  final SupabaseClient? _supabase;
+  SupabaseClient get supabase => _supabase!;
   final String path = 'cards';
 
   SupabaseService({
-    required this.supabase,
-  });
+    required SupabaseClient supabase,
+  }) : _supabase = supabase;
+
+  SupabaseService.offline() : _supabase = null;
 
   String? _getFilePathFromImageUrl(String imageUrl) {
     try {
@@ -37,6 +40,8 @@ class SupabaseService {
   Future<String?> uploadImage({
     required String imagePath,
   }) async {
+    // The image picker already copies images into the app documents directory.
+    if (_supabase == null) return imagePath;
     if (!imagePath.contains('.')) {
       LoggerUtil.e('❌ Invalid image path (no extension): $imagePath');
       return null;
@@ -78,6 +83,7 @@ class SupabaseService {
     required String oldImageUrl,
     required String newImagePath,
   }) async {
+    if (_supabase == null) return newImagePath;
     if (!newImagePath.contains('.')) {
       LoggerUtil.e('❌ Invalid new image path (no extension): $newImagePath');
       return null;
@@ -120,6 +126,7 @@ class SupabaseService {
   Future<bool> deleteImage({
     required List<String> imageUrls,
   }) async {
+    if (_supabase == null) return true;
     if (imageUrls.isEmpty) {
       LoggerUtil.i('ℹ️ No image URLs provided for deletion.');
       return true;

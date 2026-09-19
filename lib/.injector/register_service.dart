@@ -15,6 +15,7 @@ import 'package:nfc_deck_tracker/data/datasource/remote/@firestore_service.dart'
 import 'package:nfc_deck_tracker/util/logger.dart';
 
 import 'service_locator.dart';
+import '../.config/runtime.dart';
 
 Future<void> registerService() async {
   try {
@@ -22,20 +23,26 @@ Future<void> registerService() async {
     await _SharedPreferences();
     await _Database();
     await _Sqlite();
-    await _Firestore();
-    await _Supabase();
+    if (RuntimeConfig.guestMode) {
+      locator.registerLazySingleton(() => FirestoreService.offline());
+      locator.registerLazySingleton(() => SupabaseService.offline());
+    } else {
+      await _Firestore();
+      await _Supabase();
+    }
 
     LoggerUtil.buffer('✔️ All services registered successfully.');
   } catch (e) {
     LoggerUtil.buffer('❌ Failed to setup services: $e');
+    rethrow;
   }
 }
 
 Future<void> _Misc() async {
-  if (!locator.isRegistered<FirebaseAuth>()) {
+  if (!RuntimeConfig.guestMode && !locator.isRegistered<FirebaseAuth>()) {
     locator.registerLazySingleton(() => FirebaseAuth.instance);
   }
-  if (!locator.isRegistered<FirebaseFirestore>()) {
+  if (!RuntimeConfig.guestMode && !locator.isRegistered<FirebaseFirestore>()) {
     locator.registerLazySingleton(() => FirebaseFirestore.instance);
   }
   locator.registerLazySingleton<RouteObserver<ModalRoute>>(() => RouteObserver<ModalRoute>());
@@ -69,7 +76,8 @@ Future<void> _Supabase() async {
   if (!locator.isRegistered<SupabaseClient>()) {
     final supabaseUrl = dotenv.env['SUPABASE_URL'];
     final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
-    if (supabaseUrl == null || supabaseAnonKey == null) {
+    if (supabaseUrl == null || supabaseUrl.trim().isEmpty ||
+        supabaseAnonKey == null || supabaseAnonKey.trim().isEmpty) {
       throw Exception('❌ Supabase URL or anon key is missing.');
     }
     final client = SupabaseClient(supabaseUrl, supabaseAnonKey);

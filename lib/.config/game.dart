@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'runtime.dart';
 
 class GameConfig {
   static GameConfig? _instance;
@@ -16,7 +17,7 @@ class GameConfig {
   static final Map<String, Map<String, String>> _environments = {
     'development': {
       dummy: '',
-      pokemon: 'https://api.pokemontcg.io/v2/',
+      if (!RuntimeConfig.guestMode) pokemon: 'https://api.pokemontcg.io/v2/',
     },
     'production': {
       dummy: '',

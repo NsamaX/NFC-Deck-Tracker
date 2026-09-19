@@ -1,7 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:nfc_deck_tracker/presentation/auth/session.dart';
+
 import 'package:flutter/material.dart';
 
-import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
@@ -28,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Future<void> _signOutIfLoggedIn() async {
-    final user = locator<FirebaseAuth>().currentUser;
+    final user = AuthSession.currentUser;
     if (user != null) {
       await signInWithGoogle();
       LoggerUtil.w('User signed out automatically on LandingPage');

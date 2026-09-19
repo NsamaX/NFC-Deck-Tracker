@@ -1,7 +1,8 @@
+import 'package:nfc_deck_tracker/presentation/auth/session.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
@@ -68,7 +69,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
+    userId = AuthSession.currentUser?.uid ?? '';
     collectionId = GameConfig.dummy;
     deck = context.read<DeckBloc>().state.currentDeck;
   }

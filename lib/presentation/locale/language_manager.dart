@@ -37,10 +37,9 @@ class LanguageManager {
   }
 
   static Future<List<String>> _discoverLanguageCodes() async {
-    final manifestContent = await rootBundle.loadString('AssetManifest.json');
-    final Map<String, dynamic> manifestMap = json.decode(manifestContent);
+    final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
 
-    return manifestMap.keys
+    return manifest.listAssets()
         .where((key) => key.startsWith('$_localePath/') && key.endsWith('.json'))
         .map((key) => key.split('/').last.split('.').first)
         .toList();

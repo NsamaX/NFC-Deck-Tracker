@@ -1,6 +1,7 @@
+import 'package:nfc_deck_tracker/presentation/auth/session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 
@@ -24,7 +25,7 @@ class _MyDeckPage extends State<MyDeckPage> with RouteAware {
   @override
   void initState() {
     super.initState();
-    userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
+    userId = AuthSession.currentUser?.uid ?? '';
     context.read<DeckBloc>().add(FetchDeckEvent(userId: userId));
   }
 

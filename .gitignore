@@ -71,3 +71,6 @@ app.*.map.json
 # 📄 Local-only documents
 # ---------------------------------------------
 documents-private/
+
+# Local Android SDK, JDK, emulator images, and setup downloads
+.local/

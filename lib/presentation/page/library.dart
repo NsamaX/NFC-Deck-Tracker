@@ -1,5 +1,6 @@
+import 'package:nfc_deck_tracker/presentation/auth/session.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
@@ -35,7 +36,7 @@ class _LibraryPageContent extends State<_LibraryPageState> {
   @override
   void initState() {
     super.initState();
-    userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
+    userId = AuthSession.currentUser?.uid ?? '';
     context.read<CollectionBloc>().add(FetchUsedCardDistinctEvent(userId: userId));
   }
 

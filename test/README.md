@@ -1,6 +1,6 @@
 # Unit and widget tests
 
-No Dart unit or widget tests have been implemented yet.
+Run `flutter test --dart-define=GUEST_MODE=true` from the project root.
 
-Add tests here using filenames ending in `_test.dart`. Once tests exist, run
-them from the project root with `flutter test`.
+`guest_mode_test.dart` checks dependency initialization without cloud credentials,
+offline sync results, local image paths, and bundled language discovery.

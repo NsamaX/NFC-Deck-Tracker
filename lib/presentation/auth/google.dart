@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../../.config/runtime.dart';
 
 enum SignInResult {
   success,
@@ -12,6 +13,7 @@ final _auth = FirebaseAuth.instance;
 final _googleSignIn = GoogleSignIn();
 
 Future<SignInResult> signInWithGoogle() async {
+  if (RuntimeConfig.guestMode) return SignInResult.failed;
   try {
     await _googleSignIn.signOut();
 
@@ -42,6 +44,7 @@ Future<SignInResult> signInWithGoogle() async {
 }
 
 Future<void> signOutFromGoogle() async {
+  if (RuntimeConfig.guestMode) return;
   if (_auth.currentUser == null) return;
 
   await Future.wait([

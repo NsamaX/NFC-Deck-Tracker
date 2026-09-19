@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter/services.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 import '.config/api.dart';
 import '.config/game.dart';
+import '.config/runtime.dart';
 import '.injector/service_locator.dart';
 
 // ignore_for_file: unused_import
@@ -27,7 +28,7 @@ import 'presentation/theme/@theme.dart';
 
 import 'util/logger.dart';
 
-import 'firebase_options.dart';
+import 'presentation/auth/session.dart';
 import 'nfc_life_cycle_observer.dart';
 
 void main() async {
@@ -39,6 +40,10 @@ void main() async {
   ]);
 
   await dotenv.load();
+  if (!RuntimeConfig.guestMode) {
+    // Android/iOS load their native Firebase configuration files.
+    await Firebase.initializeApp();
+  }
   await initServiceLocator();
 
   // await locator<DatabaseService>().deleteDatabaseFile();
@@ -48,7 +53,6 @@ void main() async {
   GameConfig.load(ApiConfig.instance.environment);
 
   await Future.wait([
-    Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform),
     LanguageManager.initialize(),
   ]);
 
@@ -87,7 +91,7 @@ class _AppRootState extends State<AppRoot> {
   }
 
   bool get _isUserLoggedIn {
-    final isLoggedIn = locator<FirebaseAuth>().currentUser?.uid != null;
+    final isLoggedIn = AuthSession.currentUser?.uid != null;
     final isGuest = locator<ApplicationBloc>().state.guestId != null;
     return isLoggedIn || isGuest;
   }

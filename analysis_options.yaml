@@ -22,6 +22,8 @@ linter:
   # producing the lint.
   rules:
 analyzer:
+  exclude:
+    - .local/**
   # errors:
     # invalid_use_of_protected_member: ignore
     # avoid_print: false  # Uncomment to disable the `avoid_print` rule

@@ -1,6 +1,7 @@
+import 'package:nfc_deck_tracker/presentation/auth/session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
@@ -36,7 +37,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       final args = getArguments(context);
-      userId = locator<FirebaseAuth>().currentUser?.uid ?? '';
+      userId = AuthSession.currentUser?.uid ?? '';
       collectionId = args['collectionId'];
       collectionName = args['collectionName'];
       onAdd = args['onAdd'] ?? false;

@@ -7,6 +7,7 @@ import '../widget/button/guest_sign_in.dart';
 import '../widget/text/description_align_center.dart';
 import '../widget/text/title_align_center.dart';
 import '../constant.dart';
+import '../../.config/runtime.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -18,6 +19,7 @@ class SignInPage extends StatelessWidget {
     return Scaffold(
       body: StreamBuilder<List<ConnectivityResult>>(
         stream: Connectivity().onConnectivityChanged,
+        initialData: const [ConnectivityResult.none],
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(
@@ -41,11 +43,11 @@ class SignInPage extends StatelessWidget {
                 TitleAlignCenter(
                   text: locale.translate('page_sign_in.title'),
                 ),
-                if (isOnline) ...[
+                if (isOnline && !RuntimeConfig.guestMode) ...[
                   const SizedBox(height: 80.0),
                   const ButtonGoogleSignIn(),
                   const SizedBox(height: 80.0),
-                ] else ...[
+                ] else if (!RuntimeConfig.guestMode) ...[
                   Image.asset(
                     'assets/image/internet-lost.png',
                     fit: BoxFit.cover,

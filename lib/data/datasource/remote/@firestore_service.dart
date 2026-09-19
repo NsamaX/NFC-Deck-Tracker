@@ -4,18 +4,23 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:nfc_deck_tracker/util/logger.dart';
 
 class FirestoreService {
-  final FirebaseFirestore firestore;
-  final FirebaseStorage storage;
+  final FirebaseFirestore? _firestore;
+  final FirebaseStorage? storage;
+
+  FirebaseFirestore get firestore => _firestore!;
 
   FirestoreService({
-    required this.firestore,
+    required FirebaseFirestore firestore,
     required this.storage,
-  });
+  }) : _firestore = firestore;
+
+  FirestoreService.offline() : _firestore = null, storage = null;
 
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> queryCollection({
     required String collectionPath,
     Query<Map<String, dynamic>> Function(Query<Map<String, dynamic>>)? queryBuilder,
   }) async {
+    if (_firestore == null) return [];
     try {
       Query<Map<String, dynamic>> query = firestore.collection(collectionPath);
       if (queryBuilder != null) query = queryBuilder(query);
@@ -34,6 +39,7 @@ class FirestoreService {
     required String collectionPath,
     required String documentId,
   }) async {
+    if (_firestore == null) return null;
     try {
       final doc = await firestore.collection(collectionPath).doc(documentId).get();
       if (!doc.exists) return null;
@@ -50,6 +56,7 @@ class FirestoreService {
     required Map<String, dynamic> data,
     bool merge = true,
   }) async {
+    if (_firestore == null) return false;
     try {
       await firestore.collection(collectionPath).doc(documentId).set(data, SetOptions(merge: merge));
       LoggerUtil.i('📝 Set document "$documentId" in "$collectionPath" successfully');
@@ -65,6 +72,7 @@ class FirestoreService {
     required String documentId,
     required Map<String, dynamic> data,
   }) async {
+    if (_firestore == null) return false;
     try {
       await firestore.collection(collectionPath).doc(documentId).update(data);
       LoggerUtil.i('🔔 Updated document "$documentId" in "$collectionPath" successfully');
@@ -82,6 +90,7 @@ class FirestoreService {
     required List<dynamic> valuesToAdd,
     bool remove = false,
   }) async {
+    if (_firestore == null) return false;
     try {
       final fieldUpdate = {
         fieldName: remove
@@ -102,6 +111,7 @@ class FirestoreService {
     required String collectionPath,
     required String documentId,
   }) async {
+    if (_firestore == null) return false;
     try {
       await firestore.collection(collectionPath).doc(documentId).delete();
       LoggerUtil.i('🗑️ Deleted document "$documentId" from "$collectionPath" successfully');

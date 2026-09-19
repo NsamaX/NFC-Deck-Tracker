@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/.config/app.dart';
+import 'package:nfc_deck_tracker/.config/runtime.dart';
 
 import '../../auth/google.dart';
 import '../../bloc/application/bloc.dart';
@@ -33,7 +34,7 @@ class SettingBuilder {
           'text': locale.translate('page_setting.section_account_library'),
           'route': RouteConstant.library,
         },
-        {
+        if (!RuntimeConfig.guestMode) {
           'icon': user == null 
               ? Icons.login_rounded 
               : Icons.logout_rounded,

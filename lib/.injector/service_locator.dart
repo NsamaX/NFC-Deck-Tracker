@@ -24,6 +24,7 @@ Future<void> initServiceLocator() async {
     LoggerUtil.buffer('👌 Service locator register completed successfully.');
   } catch (e) {
     LoggerUtil.buffer('❌ Failed to register service locator: $e');
+    rethrow;
   }
   LoggerUtil.flush();
 }
