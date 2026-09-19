@@ -98,8 +98,10 @@ services still require hardware/configuration; these tests do not prove them.
 
 The following review findings need separate behavior changes:
 
-- Account transitions in Settings and Landing have existing sign-in/sign-out
-  inconsistencies. Settings clears local data without checking sign-in success.
+- Sign-in and sign-out flows were corrected in code (Landing and Settings call
+  `signOut`, Settings clears local data only after a successful sign-in, a
+  Google sign-in no longer assigns a guest id, and the guest id is never used
+  as a `userId`). They have not been exercised against real Firebase yet.
 - Entity ids, names, card lists, and `isSynced` are non-null with empty
   defaults; `updatedAt`, `imageUrl`, `description`, and `additionalData` stay
   nullable, and `copyWith` cannot clear those to null.

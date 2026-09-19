@@ -28,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
   Future<void> _signOutIfLoggedIn() async {
     final user = PresentationScope.read(context).session.currentUser;
     if (user != null) {
-      await PresentationScope.read(context).session.signInWithGoogle();
+      await PresentationScope.read(context).session.signOut();
       LoggerUtil.w('User signed out automatically on LandingPage');
     }
   }

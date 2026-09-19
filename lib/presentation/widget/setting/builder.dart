@@ -41,19 +41,15 @@ class SettingBuilder {
                 ? locale.translate('page_setting.section_account_sign_in')
                 : locale.translate('page_setting.section_account_sign_out'),
             'onTap': () async {
+              final session = PresentationScope.read(context).session;
               if (user == null) {
-                await PresentationScope.read(context)
-                    .session
-                    .signInWithGoogle()
-                    .then((_) {
-                  applicationBloc.add(UpdateSettingsEvent(
-                      (s) => s.copyWith(clearGuestId: true)));
-                  applicationBloc.add(ClearUserDataEvent());
-                });
+                final result = await session.signInWithGoogle();
+                if (result != SignInResult.success) return;
+                applicationBloc.add(UpdateSettingsEvent(
+                    (s) => s.copyWith(clearGuestId: true)));
+                applicationBloc.add(ClearUserDataEvent());
               } else {
-                await PresentationScope.read(context)
-                    .session
-                    .signInWithGoogle();
+                await session.signOut();
                 applicationBloc.add(UpdateSettingsEvent(
                     (s) => s.copyWith(guestId: const Uuid().v4())));
                 applicationBloc.add(ClearUserDataEvent());

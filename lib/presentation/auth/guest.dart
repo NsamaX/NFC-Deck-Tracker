@@ -9,11 +9,22 @@ const _uuid = Uuid();
 
 Future<void> signInAsGuest(BuildContext context) async {
   if (!context.mounted) return;
+  context
+      .read<ApplicationBloc>()
+      .add(UpdateSettingsEvent((s) => s.copyWith(guestId: _uuid.v4())));
+  enterApp(context);
+}
 
+Future<void> signInAsUser(BuildContext context) async {
+  if (!context.mounted) return;
+  context
+      .read<ApplicationBloc>()
+      .add(UpdateSettingsEvent((s) => s.copyWith(clearGuestId: true)));
+  enterApp(context);
+}
+
+void enterApp(BuildContext context) {
   final applicationBloc = context.read<ApplicationBloc>();
-  final guestId = _uuid.v4();
-
-  applicationBloc.add(UpdateSettingsEvent((s) => s.copyWith(guestId: guestId)));
 
   applicationBloc.add(SetPageIndexEvent(
     index: RouteConstant.on_boarding_index,

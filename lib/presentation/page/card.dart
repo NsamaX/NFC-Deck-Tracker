@@ -96,9 +96,8 @@ class _CardPageContent extends State<_CardContent> {
     final onCustom = args['onCustom'] ?? false;
     final onNFC = args['onNFC'] ?? false;
     final onAdd = args['onAdd'] ?? false;
-    final userId = PresentationScope.read(context).session.currentUser?.uid ??
-        PresentationScope.read(context).applicationBloc.state.guestId ??
-        '';
+    final userId =
+        PresentationScope.read(context).session.currentUser?.uid ?? '';
     final cardBloc = context.read<CardBloc>();
 
     return WriterListener(
