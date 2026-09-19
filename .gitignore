@@ -42,3 +42,6 @@ app.*.symbols
 app.*.map.json
 documents-private/
 .local/
+
+.obsidian-graph/.obsidian/
+.obsidian-graph/.GRAPH-CONTEXT.md

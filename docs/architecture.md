@@ -62,6 +62,19 @@ does not reorganize the project into feature folders.
   `GuestSessionRepository` and offline cloud services without Firebase setup.
 - Settings default exclusions and diagnostic logging are injected into domain.
 
+## Tooling
+
+```powershell
+dart run tool/graph.dart            # .obsidian-graph/ notes, .VIOLATIONS.md, .GRAPH-CONTEXT.md
+dart run tool/verify_registry.dart  # .claude/registry.md against ports, use cases, entities
+dart run tool/verify.dart           # graph --check, registry, dart analyze
+```
+
+Open `.obsidian-graph/` as an Obsidian vault. Warm colors mark violations,
+cool colors mark ports, use cases, blocs, pages, and composition. Rules live in
+`tool/rules.dart` and mirror `test/architecture_test.dart`; change both
+together.
+
 ## Verification
 
 ```powershell

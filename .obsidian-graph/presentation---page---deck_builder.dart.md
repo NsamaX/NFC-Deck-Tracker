@@ -1,0 +1,28 @@
+---
+tags:
+  - layer/presentation
+  - role/page
+  - coupling/high
+---
+
+# deck_builder.dart
+
+`lib/presentation/page/deck_builder.dart`
+
+## Imports
+- [[presentation---bloc---application---bloc.dart]]
+- [[presentation---bloc---deck---bloc.dart]]
+- [[presentation---bloc---nfc---bloc.dart]]
+- [[presentation---dependencies.dart]]
+- [[presentation---locale---localization.dart]]
+- [[presentation---widget---app_bar---deck_view.dart]]
+- [[presentation---widget---app_bar---new_deck.dart]]
+- [[presentation---widget---deck---total_card_in_deck.dart]]
+- [[presentation---widget---listener---writer.dart]]
+- [[presentation---widget---shared---deck_or_card_grid_view.dart]]
+- [[presentation---widget---text---description_align_center.dart]]
+
+## Packages
+- `package:flutter/material.dart`
+- `package:flutter_bloc/flutter_bloc.dart`
+
