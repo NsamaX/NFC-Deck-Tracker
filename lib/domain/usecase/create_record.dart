@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
 
+import '../service/sync_policy.dart';
 import '../repository/record.dart';
 
 import '../entity/record.dart';
@@ -21,18 +22,13 @@ class CreateRecordUsecase {
       recordId: recordId,
     );
 
-    bool synced = false;
-    if (userId.isNotEmpty) {
-      final success = await recordRepository.createForRemote(
-        userId: userId,
-        record: updatedRecord.copyWith(isSynced: true),
-      );
-
-      if (success) synced = true;
-    }
-
-    final finalEntity = updatedRecord.copyWith(isSynced: synced);
-    final recordToSave = finalEntity;
-    await recordRepository.createForLocal(record: recordToSave);
+    await const SyncPolicy().write(
+      userId: userId,
+      entity: updatedRecord,
+      markSynced: (e, synced) => e.copyWith(isSynced: synced),
+      remote: (e) =>
+          recordRepository.createForRemote(userId: userId, record: e),
+      local: (e) => recordRepository.createForLocal(record: e),
+    );
   }
 }

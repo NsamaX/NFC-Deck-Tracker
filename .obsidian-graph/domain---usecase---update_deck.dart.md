@@ -2,6 +2,7 @@
 tags:
   - layer/domain
   - role/usecase
+  - coupling/medium
 ---
 
 # update_deck.dart
@@ -11,4 +12,5 @@ tags:
 ## Imports
 - [[domain---entity---deck.dart]]
 - [[domain---repository---deck.dart]]
+- [[domain---service---sync_policy.dart]]
 

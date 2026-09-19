@@ -1,3 +1,4 @@
+import '../service/sync_policy.dart';
 import '../repository/card.dart';
 import '../repository/image.dart';
 
@@ -30,18 +31,12 @@ class UpdateCardUsecase {
       updatedAt: now,
     );
 
-    bool synced = false;
-    if (userId.isNotEmpty) {
-      final success = await cardRepository.updateForRemote(
-        userId: userId,
-        card: updatedCard.copyWith(isSynced: true),
-      );
-
-      if (success) synced = true;
-    }
-
-    final finalEntity = updatedCard.copyWith(isSynced: synced);
-    final cardToSave = finalEntity;
-    await cardRepository.updateForLocal(card: cardToSave);
+    await const SyncPolicy().write(
+      userId: userId,
+      entity: updatedCard,
+      markSynced: (e, synced) => e.copyWith(isSynced: synced),
+      remote: (e) => cardRepository.updateForRemote(userId: userId, card: e),
+      local: (e) => cardRepository.updateForLocal(card: e),
+    );
   }
 }

@@ -1,3 +1,4 @@
+import '../service/sync_policy.dart';
 import '../repository/deck.dart';
 
 class DeleteDeckUsecase {
@@ -11,13 +12,11 @@ class DeleteDeckUsecase {
     required String userId,
     required String deckId,
   }) async {
-    await deckRepository.deleteForLocal(deckId: deckId);
-
-    if (userId.isNotEmpty) {
-      await deckRepository.deleteForRemote(
-        userId: userId,
-        deckId: deckId,
-      );
-    }
+    await const SyncPolicy().delete(
+      userId: userId,
+      local: () => deckRepository.deleteForLocal(deckId: deckId),
+      remote: () =>
+          deckRepository.deleteForRemote(userId: userId, deckId: deckId),
+    );
   }
 }

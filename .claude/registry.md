@@ -132,6 +132,16 @@ Check: classes
 Diagnostic sink injected into use cases; `SilentDomainLogger` is the default.
 `lib/util/domain_logger.dart` adapts it to `LoggerUtil`.
 
+### SyncPolicy (`sync_policy.dart`)
+
+The single owner of offline-first rules, used by every `Create*`, `Update*`,
+`Delete*`, and `Fetch*` use case. `write` calls remote first when signed in and
+stores the resulting `isSynced`; `delete` removes local then remote;
+`reconcile` imports newer remote rows, uploads unsynced and newer local rows,
+then deletes synced local rows missing remotely (rows uploaded in the same
+pass are kept). A `RemoteUnavailableException` skips the whole pass.
+`SyncTarget<T>` adapts an aggregate's repository to it.
+
 ---
 
 ## Use cases
@@ -141,10 +151,8 @@ Check: classes
 Consumers: presentation blocs and pages, through `PresentationDependencies` or
 constructor injection.
 
-Sync policy for `Fetch*` use cases: read local, then when `userId` is not empty
-import remote rows missing locally, upload unsynced local rows, and delete local
-rows that no longer exist remotely. `Create*`/`Update*`/`Delete*` write remote
-first when `userId` is not empty and store the resulting `isSynced` flag locally.
+All sync behavior comes from `SyncPolicy` (see Domain services); use cases
+only decide ids, timestamps, and which repository methods to bind.
 
 ### CalculateUsageCardUsecase (`calculate_usage_card.dart`)
 

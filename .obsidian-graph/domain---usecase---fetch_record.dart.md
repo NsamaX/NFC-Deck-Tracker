@@ -13,5 +13,5 @@ tags:
 - [[domain---entity---record.dart]]
 - [[domain---repository---record.dart]]
 - [[domain---service---domain_logger.dart]]
-- [[domain---value---remote_unavailable.dart]]
+- [[domain---service---sync_policy.dart]]
 

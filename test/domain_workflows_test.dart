@@ -158,6 +158,33 @@ void main() {
     expect(repository.local, isEmpty);
   });
 
+  test('an unsynced local deck uploaded during fetch is kept, not deleted',
+      () async {
+    final repository = MemoryDecks();
+    repository.local['offline'] = DeckEntity(
+        deckId: 'offline',
+        name: 'Made offline',
+        isSynced: false,
+        updatedAt: DateTime(2024));
+    final decks =
+        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    expect(decks.single.deckId, 'offline');
+    expect(decks.single.isSynced, isTrue);
+    expect(repository.remote.containsKey('offline'), isTrue);
+    expect(repository.local['offline']!.isSynced, isTrue);
+  });
+
+  test('a newer local deck is pushed to remote during fetch', () async {
+    final repository = MemoryDecks();
+    final old = DeckEntity(
+        deckId: 'd', name: 'Old', isSynced: true, updatedAt: DateTime(2024, 1));
+    repository.remote['d'] = old;
+    repository.local['d'] =
+        old.copyWith(name: 'New', updatedAt: DateTime(2024, 2));
+    await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    expect(repository.remote['d']!.name, 'New');
+  });
+
   test('tag lookup prefers local data without calling the API', () async {
     final cards = MemoryCards()
       ..local = const CardEntity(cardId: 'card', collectionId: 'game');

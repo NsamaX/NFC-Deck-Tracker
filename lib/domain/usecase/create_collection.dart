@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
 
+import '../service/sync_policy.dart';
 import '../repository/collection.dart';
 
 import '../entity/collection.dart';
@@ -22,18 +23,13 @@ class CreateCollectionUsecase {
       name: name,
     );
 
-    bool synced = false;
-    if (userId.isNotEmpty) {
-      final success = await collectionRepository.createForRemote(
-        userId: userId,
-        collection: newCollection.copyWith(isSynced: true),
-      );
-
-      if (success) synced = true;
-    }
-
-    final finalEntity = newCollection.copyWith(isSynced: synced);
-    final collectionToSave = finalEntity;
-    await collectionRepository.createForLocal(collection: collectionToSave);
+    await const SyncPolicy().write(
+      userId: userId,
+      entity: newCollection,
+      markSynced: (e, synced) => e.copyWith(isSynced: synced),
+      remote: (e) =>
+          collectionRepository.createForRemote(userId: userId, collection: e),
+      local: (e) => collectionRepository.createForLocal(collection: e),
+    );
   }
 }

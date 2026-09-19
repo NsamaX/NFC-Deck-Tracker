@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
 
+import '../service/sync_policy.dart';
 import '../repository/card.dart';
 import '../repository/collection.dart';
 import '../repository/image.dart';
@@ -40,20 +41,16 @@ class CreateCardUsecase {
       name: newName,
     );
 
-    bool synced = false;
-    final success = await cardRepository.createForRemote(
-      userId: userId,
-      card: updatedCard.copyWith(isSynced: true),
-    );
-
-    if (success) synced = true;
-
     await collectionRepository.touch(
       collectionId: card.collectionId!,
     );
 
-    final finalEntity = updatedCard.copyWith(isSynced: synced);
-    final cardToSave = finalEntity;
-    await cardRepository.createForLocal(card: cardToSave);
+    await const SyncPolicy().write(
+      userId: userId,
+      entity: updatedCard,
+      markSynced: (e, synced) => e.copyWith(isSynced: synced),
+      remote: (e) => cardRepository.createForRemote(userId: userId, card: e),
+      local: (e) => cardRepository.createForLocal(card: e),
+    );
   }
 }

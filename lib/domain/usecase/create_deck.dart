@@ -1,5 +1,6 @@
 import 'package:uuid/uuid.dart';
 
+import '../service/sync_policy.dart';
 import '../repository/deck.dart';
 
 import '../entity/deck.dart';
@@ -21,18 +22,12 @@ class CreateDeckUsecase {
       deckId: deckId,
     );
 
-    bool synced = false;
-    if (userId.isNotEmpty) {
-      final success = await deckRepository.createForRemote(
-        userId: userId,
-        deck: updatedDeck.copyWith(isSynced: true),
-      );
-
-      if (success) synced = true;
-    }
-
-    final finalEntity = updatedDeck.copyWith(isSynced: synced);
-    final deckToSave = finalEntity;
-    await deckRepository.createForLocal(deck: deckToSave);
+    await const SyncPolicy().write(
+      userId: userId,
+      entity: updatedDeck,
+      markSynced: (e, synced) => e.copyWith(isSynced: synced),
+      remote: (e) => deckRepository.createForRemote(userId: userId, deck: e),
+      local: (e) => deckRepository.createForLocal(deck: e),
+    );
   }
 }

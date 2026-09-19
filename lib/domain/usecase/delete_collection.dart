@@ -1,3 +1,4 @@
+import '../service/sync_policy.dart';
 import '../repository/collection.dart';
 
 class DeleteCollectionUsecase {
@@ -11,13 +12,12 @@ class DeleteCollectionUsecase {
     required String userId,
     required String collectionId,
   }) async {
-    await collectionRepository.deleteForLocal(collectionId: collectionId);
-
-    if (userId.isNotEmpty) {
-      await collectionRepository.deleteForRemote(
-        userId: userId,
-        collectionId: collectionId,
-      );
-    }
+    await const SyncPolicy().delete(
+      userId: userId,
+      local: () =>
+          collectionRepository.deleteForLocal(collectionId: collectionId),
+      remote: () => collectionRepository.deleteForRemote(
+          userId: userId, collectionId: collectionId),
+    );
   }
 }

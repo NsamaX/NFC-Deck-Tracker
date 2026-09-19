@@ -20,7 +20,8 @@ even though runtime calls eventually reach the data layer.
 | Change | Starting point | Change other layers only when |
 | --- | --- | --- |
 | Layout, labels, display state | `presentation/page`, `widget`, `bloc` | Application behavior changes |
-| Create/update/delete/sync rules | `domain/usecase` | A new repository capability is required |
+| Create/update/delete rules | `domain/usecase` | A new repository capability is required |
+| Offline-first sync behavior | `domain/service/sync_policy.dart` | An aggregate needs a new repository method |
 | SQL, JSON, remote storage format | `data/datasource`, `model`, `mapper` | Domain meaning changes |
 | Repository implementation | `data/repository` | The domain contract needs a new operation |
 | API pagination/cache | `data/repository/card_catalog.dart`, `data/datasource/api` | The caller needs a new catalog capability |
@@ -96,9 +97,6 @@ services still require hardware/configuration; these tests do not prove them.
 
 The following review findings need separate behavior changes:
 
-- Sync uses a remote snapshot taken before local uploads; deletion decisions
-  can use stale data. Remote read failures now raise
-  `RemoteUnavailableException` and skip the sync instead of deleting local rows.
 - Account transitions in Settings and Landing have existing sign-in/sign-out
   inconsistencies. Settings clears local data without checking sign-in success.
 - Nullable `copyWith` fields cannot always be explicitly cleared.

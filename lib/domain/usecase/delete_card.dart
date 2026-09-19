@@ -1,3 +1,4 @@
+import '../service/sync_policy.dart';
 import '../repository/card.dart';
 import '../repository/image.dart';
 
@@ -16,16 +17,13 @@ class DeleteCardUsecase {
     required String cardId,
     required String imageUrl,
   }) async {
-    await cardRepository.deleteForLocal(
-        collectionId: collectionId, cardId: cardId);
-
-    if (userId.isNotEmpty) {
-      await cardRepository.deleteForRemote(
-        userId: userId,
-        collectionId: collectionId,
-        cardId: cardId,
-      );
-    }
+    await const SyncPolicy().delete(
+      userId: userId,
+      local: () => cardRepository.deleteForLocal(
+          collectionId: collectionId, cardId: cardId),
+      remote: () => cardRepository.deleteForRemote(
+          userId: userId, collectionId: collectionId, cardId: cardId),
+    );
 
     await imageRepository.delete(imageUrls: [imageUrl]);
   }

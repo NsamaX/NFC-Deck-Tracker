@@ -1,3 +1,4 @@
+import '../service/sync_policy.dart';
 import '../repository/collection.dart';
 
 import '../entity/collection.dart';
@@ -16,18 +17,13 @@ class UpdateCollectionUsecase {
     final DateTime now = DateTime.now();
     final updatedCollection = collection.copyWith(updatedAt: now);
 
-    bool synced = false;
-    if (userId.isNotEmpty) {
-      final success = await collectionRepository.updateForRemote(
-        userId: userId,
-        collection: updatedCollection.copyWith(isSynced: true),
-      );
-
-      if (success) synced = true;
-    }
-
-    final finalEntity = updatedCollection.copyWith(isSynced: synced);
-    final collectionToSave = finalEntity;
-    await collectionRepository.updateForLocal(collection: collectionToSave);
+    await const SyncPolicy().write(
+      userId: userId,
+      entity: updatedCollection,
+      markSynced: (e, synced) => e.copyWith(isSynced: synced),
+      remote: (e) =>
+          collectionRepository.updateForRemote(userId: userId, collection: e),
+      local: (e) => collectionRepository.updateForLocal(collection: e),
+    );
   }
 }

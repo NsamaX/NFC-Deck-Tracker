@@ -2,6 +2,7 @@
 tags:
   - layer/domain
   - role/usecase
+  - coupling/medium
 ---
 
 # delete_card.dart
@@ -11,4 +12,5 @@ tags:
 ## Imports
 - [[domain---repository---card.dart]]
 - [[domain---repository---image.dart]]
+- [[domain---service---sync_policy.dart]]
 

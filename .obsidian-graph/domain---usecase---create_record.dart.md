@@ -2,6 +2,7 @@
 tags:
   - layer/domain
   - role/usecase
+  - coupling/medium
 ---
 
 # create_record.dart
@@ -11,6 +12,7 @@ tags:
 ## Imports
 - [[domain---entity---record.dart]]
 - [[domain---repository---record.dart]]
+- [[domain---service---sync_policy.dart]]
 
 ## Packages
 - `package:uuid/uuid.dart`

@@ -2,7 +2,6 @@
 tags:
   - layer/domain
   - role/value
-  - coupling/medium
 ---
 
 # remote_unavailable.dart
