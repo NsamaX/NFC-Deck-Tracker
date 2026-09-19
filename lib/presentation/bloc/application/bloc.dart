@@ -3,8 +3,7 @@ import 'dart:ui';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.config/app.dart';
-
+import 'package:nfc_deck_tracker/domain/entity/app_settings.dart';
 import 'package:nfc_deck_tracker/domain/usecase/clear_user_data.dart';
 import 'package:nfc_deck_tracker/domain/usecase/init_setting.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
@@ -24,9 +23,9 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     required this.clearUserDataUsecase,
     required this.initSettingUsecase,
     required this.updateSettingUsecase,
-  }) : super(ApplicationState.initial()) {
+  }) : super(const ApplicationState()) {
     on<InitApplicationEvent>(_onInitApplication);
-    on<UpdateSettingEvent>(_onUpdateSetting);
+    on<UpdateSettingsEvent>(_onUpdateSettings);
     on<SetPageIndexEvent>(_onSetPageIndex);
     on<ClearUserDataEvent>(_onClearUserData);
   }
@@ -35,23 +34,20 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     InitApplicationEvent event,
     Emitter<ApplicationState> emit,
   ) async {
-    final updated = await initSettingUsecase.call(AppConfig.defaults);
-
-    ApplicationState newState = state;
-
-    for (final entry in updated.entries) {
-      newState = _mapUpdatedState(newState, entry.key, entry.value);
-    }
-
-    emit(newState.copyWith(currentPageIndex: RouteConstant.on_boarding_index));
+    final settings = await initSettingUsecase.call();
+    emit(state.copyWith(
+      settings: settings,
+      currentPageIndex: RouteConstant.on_boarding_index,
+    ));
   }
 
-  Future<void> _onUpdateSetting(
-    UpdateSettingEvent event,
+  Future<void> _onUpdateSettings(
+    UpdateSettingsEvent event,
     Emitter<ApplicationState> emit,
   ) async {
-    await updateSettingUsecase.call(key: event.key, value: event.value);
-    emit(_mapUpdatedState(state, event.key, event.value));
+    final settings = event.change(state.settings);
+    await updateSettingUsecase.call(settings);
+    emit(state.copyWith(settings: settings));
     LoggerUtil.flush();
   }
 
@@ -66,27 +62,7 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     ClearUserDataEvent event,
     Emitter<ApplicationState> emit,
   ) {
-    clearUserDataUsecase.call(isGuest: state.guestId != null);
-  }
-
-  ApplicationState _mapUpdatedState(
-      ApplicationState state, String key, dynamic value) {
-    switch (key) {
-      case AppConfig.keyLocale:
-        return state.copyWith(locale: Locale(value));
-      case AppConfig.keyIsDark:
-        return state.copyWith(isDark: value);
-      case AppConfig.keyGuestId:
-        return state.copyWith(guestId: value);
-      case AppConfig.keyRecentId:
-        return state.copyWith(recentId: value);
-      case AppConfig.keyRecentGame:
-        return state.copyWith(recentGame: value);
-      case AppConfig.keyTutorial:
-        return state.copyWith(tutorialNfcIcon: value);
-      default:
-        return state;
-    }
+    clearUserDataUsecase.call(isGuest: state.settings.isGuest);
   }
 
   String getPageRoute({required int index}) {

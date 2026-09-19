@@ -1,3 +1,6 @@
+import 'package:nfc_deck_tracker/.config/app.dart';
+
+import '../../../domain/entity/app_settings.dart';
 import '@shared_preferences_service.dart';
 
 class SettingsLocalDatasource {
@@ -5,16 +8,36 @@ class SettingsLocalDatasource {
 
   SettingsLocalDatasource(this._sharedPreferencesService);
 
-  Future<dynamic> load({
-    required String key,
-  }) async {
-    return await _sharedPreferencesService.load(key: key);
+  Future<AppSettings> load() async {
+    const defaults = AppSettings();
+    return AppSettings(
+      locale: await _read<String>(AppConfig.keyLocale) ?? defaults.locale,
+      isDark: await _read<bool>(AppConfig.keyIsDark) ?? defaults.isDark,
+      showNfcTutorial:
+          await _read<bool>(AppConfig.keyTutorial) ?? defaults.showNfcTutorial,
+      guestId: await _read<String>(AppConfig.keyGuestId),
+      recentId: await _read<String>(AppConfig.keyRecentId),
+      recentGame: await _read<String>(AppConfig.keyRecentGame),
+    );
   }
 
-  Future<void> update({
-    required String key,
-    required dynamic value,
-  }) async {
-    await _sharedPreferencesService.save(key: key, value: value);
+  Future<void> save(AppSettings settings) async {
+    await _sharedPreferencesService.save(
+        key: AppConfig.keyLocale, value: settings.locale);
+    await _sharedPreferencesService.save(
+        key: AppConfig.keyIsDark, value: settings.isDark);
+    await _sharedPreferencesService.save(
+        key: AppConfig.keyTutorial, value: settings.showNfcTutorial);
+    await _sharedPreferencesService.save(
+        key: AppConfig.keyGuestId, value: settings.guestId);
+    await _sharedPreferencesService.save(
+        key: AppConfig.keyRecentId, value: settings.recentId);
+    await _sharedPreferencesService.save(
+        key: AppConfig.keyRecentGame, value: settings.recentGame);
+  }
+
+  Future<T?> _read<T>(String key) async {
+    final value = await _sharedPreferencesService.load(key: key);
+    return value is T ? value : null;
   }
 }

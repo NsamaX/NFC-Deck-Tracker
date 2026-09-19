@@ -9,17 +9,10 @@ abstract class ApplicationEvent extends Equatable {
 
 class InitApplicationEvent extends ApplicationEvent {}
 
-class UpdateSettingEvent extends ApplicationEvent {
-  final String key;
-  final dynamic value;
+class UpdateSettingsEvent extends ApplicationEvent {
+  final AppSettings Function(AppSettings current) change;
 
-  const UpdateSettingEvent({
-    required this.key,
-    required this.value,
-  });
-
-  @override
-  List<Object?> get props => [key, value];
+  const UpdateSettingsEvent(this.change);
 }
 
 class SetPageIndexEvent extends ApplicationEvent {

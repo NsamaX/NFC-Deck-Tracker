@@ -1,7 +1,6 @@
 ---
 tags:
   - layer/config
-  - coupling/medium
 ---
 
 # app.dart

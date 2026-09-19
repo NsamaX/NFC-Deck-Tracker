@@ -4,7 +4,6 @@ import 'package:nfc_deck_tracker/domain/entity/session_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:nfc_deck_tracker/.config/app.dart';
 import 'package:nfc_deck_tracker/.config/runtime.dart';
 
 import '../../bloc/application/bloc.dart';
@@ -47,16 +46,16 @@ class SettingBuilder {
                     .session
                     .signInWithGoogle()
                     .then((_) {
-                  applicationBloc.add(UpdateSettingEvent(
-                      key: AppConfig.keyGuestId, value: null));
+                  applicationBloc.add(UpdateSettingsEvent(
+                      (s) => s.copyWith(clearGuestId: true)));
                   applicationBloc.add(ClearUserDataEvent());
                 });
               } else {
                 await PresentationScope.read(context)
                     .session
                     .signInWithGoogle();
-                applicationBloc.add(UpdateSettingEvent(
-                    key: AppConfig.keyGuestId, value: const Uuid().v4()));
+                applicationBloc.add(UpdateSettingsEvent(
+                    (s) => s.copyWith(guestId: const Uuid().v4())));
                 applicationBloc.add(ClearUserDataEvent());
               }
             },
@@ -105,10 +104,8 @@ class SettingBuilder {
           'text': applicationBloc.state.isDark
               ? locale.translate('page_setting.section_preferences_dark_mode')
               : locale.translate('page_setting.section_preferences_light_mode'),
-          'onTap': () => applicationBloc.add(UpdateSettingEvent(
-                key: AppConfig.keyIsDark,
-                value: !applicationBloc.state.isDark,
-              )),
+          'onTap': () => applicationBloc
+              .add(UpdateSettingsEvent((s) => s.copyWith(isDark: !s.isDark))),
         },
       ],
     };

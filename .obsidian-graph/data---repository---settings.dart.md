@@ -10,5 +10,6 @@ tags:
 
 ## Imports
 - [[data---datasource---local---settings.dart]]
+- [[domain---entity---app_settings.dart]]
 - [[domain---repository---settings.dart]]
 

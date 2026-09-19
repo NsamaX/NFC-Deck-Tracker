@@ -139,8 +139,6 @@ void _recordUsecase() {
 
 void _settingUsecase() {
   locator.registerLazySingleton(() => InitSettingUsecase(
-        ignoreDefaultWriteKeys: AppConfig.ignoreDefaultWriteKeys,
-        logger: const AppDomainLogger(),
         settingsRepository: locator<SettingsRepository>(),
       ));
   locator.registerLazySingleton(() => UpdateSettingUsecase(

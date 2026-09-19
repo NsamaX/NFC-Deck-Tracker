@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/api.dart';
-import 'package:nfc_deck_tracker/.config/app.dart';
-
 import '../../bloc/application/bloc.dart';
 import '../../route/constant.dart';
 
@@ -55,14 +53,8 @@ class SupportedGameTile extends StatelessWidget {
 
   void _goToSearchPage(BuildContext context) {
     final applicationBloc = context.read<ApplicationBloc>();
-    applicationBloc.add(UpdateSettingEvent(
-      key: AppConfig.keyRecentId,
-      value: gameKey,
-    ));
-    applicationBloc.add(UpdateSettingEvent(
-      key: AppConfig.keyRecentGame,
-      value: gameKey,
-    ));
+    applicationBloc.add(UpdateSettingsEvent(
+        (s) => s.copyWith(recentId: gameKey, recentGame: gameKey)));
     Navigator.of(context).pushReplacementNamed(
       RouteConstant.browse_card,
       arguments: {

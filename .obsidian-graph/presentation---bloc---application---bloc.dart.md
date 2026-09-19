@@ -10,7 +10,7 @@ tags:
 `lib/presentation/bloc/application/bloc.dart`
 
 ## Imports
-- [[config---app.dart]]
+- [[domain---entity---app_settings.dart]]
 - [[domain---usecase---clear_user_data.dart]]
 - [[domain---usecase---init_setting.dart]]
 - [[domain---usecase---update_setting.dart]]

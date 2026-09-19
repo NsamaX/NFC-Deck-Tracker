@@ -9,3 +9,6 @@ tags:
 
 `lib/domain/repository/settings.dart`
 
+## Imports
+- [[domain---entity---app_settings.dart]]
+

@@ -1,10 +1,7 @@
-abstract interface class SettingsRepository {
-  Future<dynamic> load({
-    required String key,
-  });
+import '../entity/app_settings.dart';
 
-  Future<void> update({
-    required String key,
-    required dynamic value,
-  });
+abstract interface class SettingsRepository {
+  Future<AppSettings> load();
+
+  Future<void> save(AppSettings settings);
 }

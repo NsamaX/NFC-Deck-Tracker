@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'package:nfc_deck_tracker/.config/app.dart';
-
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
 import '../../bloc/application/bloc.dart';
@@ -161,8 +159,8 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
                 transitionDuration: const Duration(milliseconds: 200),
                 pageBuilder: (_, __, ___) => const TutorailNFCIcon(),
               );
-              applicationBloc.add(
-                  UpdateSettingEvent(key: AppConfig.keyTutorial, value: false));
+              applicationBloc.add(UpdateSettingsEvent(
+                  (s) => s.copyWith(showNfcTutorial: false)));
             }
           },
         ),

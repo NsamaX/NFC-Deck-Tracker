@@ -10,7 +10,6 @@ tags:
 `lib/presentation/widget/app_bar/deck_view.dart`
 
 ## Imports
-- [[config---app.dart]]
 - [[domain---entity---card.dart]]
 - [[presentation---bloc---application---bloc.dart]]
 - [[presentation---bloc---deck---bloc.dart]]

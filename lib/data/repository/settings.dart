@@ -1,3 +1,4 @@
+import '../../domain/entity/app_settings.dart';
 import '../../domain/repository/settings.dart';
 import '../datasource/local/settings.dart';
 
@@ -9,17 +10,8 @@ class SettingsRepositoryImpl implements SettingsRepository {
   });
 
   @override
-  Future<dynamic> load({
-    required String key,
-  }) async {
-    return await localDatasource.load(key: key);
-  }
+  Future<AppSettings> load() => localDatasource.load();
 
   @override
-  Future<void> update({
-    required String key,
-    required dynamic value,
-  }) async {
-    await localDatasource.update(key: key, value: value);
-  }
+  Future<void> save(AppSettings settings) => localDatasource.save(settings);
 }

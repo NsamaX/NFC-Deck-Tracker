@@ -10,7 +10,9 @@ import 'package:nfc_deck_tracker/domain/usecase/fetch_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/delete_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/find_card_from_tag.dart';
+import 'package:nfc_deck_tracker/domain/entity/app_settings.dart';
 import 'package:nfc_deck_tracker/domain/usecase/init_setting.dart';
+import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
 import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 
 class MemoryDecks extends Fake implements DeckRepository {
@@ -74,12 +76,11 @@ class MemoryCards extends Fake implements CardRepository {
 }
 
 class MemorySettings implements SettingsRepository {
-  final values = <String, dynamic>{'locale': 'ja'};
+  AppSettings stored = const AppSettings(locale: 'ja');
   @override
-  Future<dynamic> load({required String key}) async => values[key];
+  Future<AppSettings> load() async => stored;
   @override
-  Future<void> update({required String key, required dynamic value}) async =>
-      values[key] = value;
+  Future<void> save(AppSettings settings) async => stored = settings;
 }
 
 void main() {
@@ -204,14 +205,15 @@ void main() {
         lookup(const TagEntity(tagId: 'tag', cardId: '', collectionId: '')),
         throwsException);
   });
-  test('settings preserve stored values and honor injected default exclusions',
-      () async {
-    final repository = MemorySettings();
-    final values = await InitSettingUsecase(
-        settingsRepository: repository, ignoreDefaultWriteKeys: ['guestId'])(
-      {'locale': 'th', 'isDark': true, 'guestId': null},
-    );
-    expect(values, {'locale': 'ja', 'isDark': true});
-    expect(repository.values.containsKey('guestId'), isFalse);
+  test('settings load stored values and can clear the guest id', () async {
+    final repository = MemorySettings()
+      ..stored = const AppSettings(locale: 'ja', guestId: 'g1');
+    final settings = await InitSettingUsecase(settingsRepository: repository)();
+    expect(settings.locale, 'ja');
+    expect(settings.isGuest, isTrue);
+    await UpdateSettingUsecase(settingsRepository: repository)(
+        settings.copyWith(clearGuestId: true));
+    expect(repository.stored.guestId, isNull);
+    expect(repository.stored.locale, 'ja');
   });
 }

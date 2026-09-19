@@ -117,8 +117,8 @@ calls when it is empty.
 
 ### SettingsRepository (`settings.dart`)
 
-- `load` — read one preference by key
-- `update` — write one preference by key
+- `load` — the stored `AppSettings`, with defaults for missing keys
+- `save` — persist every field of `AppSettings`; null fields remove their key
 
 ---
 
@@ -240,7 +240,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### InitSettingUsecase (`init_setting.dart`)
 
-`call(defaultSettings)` — fill missing preference keys and return the effective map.
+`call()` — the stored `AppSettings`.
 
 ### NfcSessionUsecase (`nfc_session.dart`)
 
@@ -280,7 +280,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### UpdateSettingUsecase (`update_setting.dart`)
 
-`call({key, value})` — write one preference.
+`call(settings)` — persist a whole `AppSettings`; callers derive it with `copyWith`.
 
 ---
 
@@ -291,6 +291,12 @@ Check: classes
 Consumers: every layer. Data maps these to models in `lib/data/mapper/`.
 Ids, names, card lists, and `isSynced` are non-null; an empty string or list
 means "not set yet" (a blank form), so guards test `isEmpty`, never `null`.
+
+### AppSettings (`app_settings.dart`)
+
+Typed preferences: `locale`, `isDark`, `showNfcTutorial`, and optional
+`guestId`, `recentId`, `recentGame`. `copyWith(clearGuestId: true)` signs a
+guest out; `isGuest` is `guestId != null`.
 
 ### CardEntity (`card.dart`)
 

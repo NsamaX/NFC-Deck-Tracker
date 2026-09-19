@@ -10,7 +10,6 @@ tags:
 `lib/presentation/page/language.dart`
 
 ## Imports
-- [[config---app.dart]]
 - [[presentation---bloc---application---bloc.dart]]
 - [[presentation---locale---language_manager.dart]]
 - [[presentation---locale---localization.dart]]

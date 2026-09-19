@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.config/app.dart';
-
 import '../bloc/application/bloc.dart';
 import '../locale/language_manager.dart';
 import '../locale/localization.dart';
@@ -36,10 +34,8 @@ class LanguagePage extends StatelessWidget {
               return {
                 'text': name,
                 'onTap': () {
-                  context.read<ApplicationBloc>().add(UpdateSettingEvent(
-                        key: AppConfig.keyLocale,
-                        value: code,
-                      ));
+                  context.read<ApplicationBloc>().add(
+                      UpdateSettingsEvent((s) => s.copyWith(locale: code)));
                 },
                 'mark': code == locale.locale.languageCode,
               };

@@ -9,6 +9,6 @@ tags:
 `lib/domain/usecase/init_setting.dart`
 
 ## Imports
+- [[domain---entity---app_settings.dart]]
 - [[domain---repository---settings.dart]]
-- [[domain---service---domain_logger.dart]]
 

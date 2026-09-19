@@ -62,7 +62,8 @@ refactor does not reorganize the project into feature folders.
   Presentation chooses translation keys for typed notices.
 - Auth exposes `SessionUser`, never Firebase `User`. Guest binds to
   `GuestSessionRepository` and offline cloud services without Firebase setup.
-- Settings default exclusions and diagnostic logging are injected into domain.
+- Settings are a typed `AppSettings` entity; storage keys live in `.config/app.dart`
+  and are read only by `SettingsLocalDatasource`.
 
 ## Tooling
 

@@ -9,5 +9,6 @@ tags:
 `lib/domain/usecase/update_setting.dart`
 
 ## Imports
+- [[domain---entity---app_settings.dart]]
 - [[domain---repository---settings.dart]]
 

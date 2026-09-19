@@ -10,7 +10,6 @@ tags:
 `lib/presentation/widget/setting/builder.dart`
 
 ## Imports
-- [[config---app.dart]]
 - [[config---runtime.dart]]
 - [[domain---entity---session_user.dart]]
 - [[presentation---bloc---application---bloc.dart]]

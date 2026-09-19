@@ -2,7 +2,6 @@
 tags:
   - layer/presentation
   - role/auth
-  - coupling/medium
 ---
 
 # guest.dart
@@ -10,7 +9,6 @@ tags:
 `lib/presentation/auth/guest.dart`
 
 ## Imports
-- [[config---app.dart]]
 - [[presentation---bloc---application---bloc.dart]]
 - [[presentation---route---constant.dart]]
 
