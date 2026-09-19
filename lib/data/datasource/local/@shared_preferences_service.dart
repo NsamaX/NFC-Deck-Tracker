@@ -54,12 +54,14 @@ class SharedPreferencesService {
           success = await _sharedPreferences.setBool(key, value as bool);
           break;
         default:
-          LoggerUtil.e('Unsupported type "${value.runtimeType}" for key "$key"');
+          LoggerUtil.e(
+              'Unsupported type "${value.runtimeType}" for key "$key"');
           return;
       }
 
       if (success) {
-        LoggerUtil.buffer('Saved value for key "$key" value "$value" successfully');
+        LoggerUtil.buffer(
+            'Saved value for key "$key" value "$value" successfully');
       } else {
         LoggerUtil.e('Failed to save value for key "$key"');
       }

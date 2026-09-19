@@ -67,11 +67,13 @@ class DeckModel {
       };
 
   List<Map<String, dynamic>> toJsonForCardsInDeck() {
-    return cards.map((cardInDeck) => {
-          'collectionId': cardInDeck.card.collectionId,
-          'cardId': cardInDeck.card.cardId,
-          'deckId': deckId,
-          'count': cardInDeck.count,
-        }).toList();
+    return cards
+        .map((cardInDeck) => {
+              'collectionId': cardInDeck.card.collectionId,
+              'cardId': cardInDeck.card.cardId,
+              'deckId': deckId,
+              'count': cardInDeck.count,
+            })
+        .toList();
   }
 }

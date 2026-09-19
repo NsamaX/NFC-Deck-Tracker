@@ -15,11 +15,14 @@ class FirestoreService {
     required this.storage,
   }) : _firestore = firestore;
 
-  FirestoreService.offline() : _firestore = null, storage = null;
+  FirestoreService.offline()
+      : _firestore = null,
+        storage = null;
 
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> queryCollection({
     required String collectionPath,
-    Query<Map<String, dynamic>> Function(Query<Map<String, dynamic>>)? queryBuilder,
+    Query<Map<String, dynamic>> Function(Query<Map<String, dynamic>>)?
+        queryBuilder,
   }) async {
     if (_firestore == null) {
       throw const RemoteUnavailableException('Firestore is not configured');
@@ -30,10 +33,12 @@ class FirestoreService {
 
       final result = await query.get();
 
-      LoggerUtil.i('Query\nCollection: $collectionPath\nReturned: ${result.docs.length} documents');
+      LoggerUtil.i(
+          'Query\nCollection: $collectionPath\nReturned: ${result.docs.length} documents');
       return result.docs;
     } catch (e) {
-      LoggerUtil.e('Failed to query Firestore collection "$collectionPath": $e');
+      LoggerUtil.e(
+          'Failed to query Firestore collection "$collectionPath": $e');
       throw RemoteUnavailableException('query $collectionPath: $e');
     }
   }
@@ -46,11 +51,13 @@ class FirestoreService {
       throw const RemoteUnavailableException('Firestore is not configured');
     }
     try {
-      final doc = await firestore.collection(collectionPath).doc(documentId).get();
+      final doc =
+          await firestore.collection(collectionPath).doc(documentId).get();
       if (!doc.exists) return null;
       return doc;
     } catch (e) {
-      LoggerUtil.e('Failed to get document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.e(
+          'Failed to get document "$documentId" in "$collectionPath": $e');
       throw RemoteUnavailableException('get $collectionPath/$documentId: $e');
     }
   }
@@ -63,11 +70,16 @@ class FirestoreService {
   }) async {
     if (_firestore == null) return false;
     try {
-      await firestore.collection(collectionPath).doc(documentId).set(data, SetOptions(merge: merge));
-      LoggerUtil.i('Set document "$documentId" in "$collectionPath" successfully');
+      await firestore
+          .collection(collectionPath)
+          .doc(documentId)
+          .set(data, SetOptions(merge: merge));
+      LoggerUtil.i(
+          'Set document "$documentId" in "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.e('Failed to set document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.e(
+          'Failed to set document "$documentId" in "$collectionPath": $e');
       return false;
     }
   }
@@ -80,10 +92,12 @@ class FirestoreService {
     if (_firestore == null) return false;
     try {
       await firestore.collection(collectionPath).doc(documentId).update(data);
-      LoggerUtil.i('Updated document "$documentId" in "$collectionPath" successfully');
+      LoggerUtil.i(
+          'Updated document "$documentId" in "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.e('Failed to update document "$documentId" in "$collectionPath": $e');
+      LoggerUtil.e(
+          'Failed to update document "$documentId" in "$collectionPath": $e');
       return false;
     }
   }
@@ -103,11 +117,16 @@ class FirestoreService {
             : FieldValue.arrayUnion(valuesToAdd),
       };
 
-      await firestore.collection(collectionPath).doc(documentId).update(fieldUpdate);
-      LoggerUtil.i('${remove ? 'Removed' : 'Added'} values in "$fieldName" of "$documentId"');
+      await firestore
+          .collection(collectionPath)
+          .doc(documentId)
+          .update(fieldUpdate);
+      LoggerUtil.i(
+          '${remove ? 'Removed' : 'Added'} values in "$fieldName" of "$documentId"');
       return true;
     } catch (e) {
-      LoggerUtil.e('Failed to update array field "$fieldName" in "$documentId": $e');
+      LoggerUtil.e(
+          'Failed to update array field "$fieldName" in "$documentId": $e');
       return false;
     }
   }
@@ -119,10 +138,12 @@ class FirestoreService {
     if (_firestore == null) return false;
     try {
       await firestore.collection(collectionPath).doc(documentId).delete();
-      LoggerUtil.i('Deleted document "$documentId" from "$collectionPath" successfully');
+      LoggerUtil.i(
+          'Deleted document "$documentId" from "$collectionPath" successfully');
       return true;
     } catch (e) {
-      LoggerUtil.e('Failed to delete document "$documentId" from "$collectionPath": $e');
+      LoggerUtil.e(
+          'Failed to delete document "$documentId" from "$collectionPath": $e');
       return false;
     }
   }

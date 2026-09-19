@@ -40,7 +40,6 @@ class SupabaseService {
   Future<String?> uploadImage({
     required String imagePath,
   }) async {
-
     if (_supabase == null) return imagePath;
     if (!imagePath.contains('.')) {
       LoggerUtil.e('Invalid image path (no extension): $imagePath');
@@ -114,7 +113,8 @@ class SupabaseService {
         return null;
       }
 
-      final publicUrl = supabase.storage.from(path).getPublicUrl(filePathToUpdate);
+      final publicUrl =
+          supabase.storage.from(path).getPublicUrl(filePathToUpdate);
       LoggerUtil.i('Updated image → $publicUrl');
       return publicUrl;
     } catch (e) {
@@ -143,7 +143,8 @@ class SupabaseService {
     }
 
     if (filePathsToDelete.isEmpty) {
-      LoggerUtil.i('No valid file paths derived from provided URLs for deletion.');
+      LoggerUtil.i(
+          'No valid file paths derived from provided URLs for deletion.');
       return true;
     }
 

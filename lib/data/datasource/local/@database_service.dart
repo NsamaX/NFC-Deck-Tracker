@@ -73,7 +73,8 @@ class DatabaseService {
   ) async {
     try {
       if (oldVersion < _dbVersion) {
-        LoggerUtil.buffer('Migrating database from v$oldVersion to v$newVersion...');
+        LoggerUtil.buffer(
+            'Migrating database from v$oldVersion to v$newVersion...');
 
         final List<String> _migrations = DatabaseConstant.migrations;
         final Batch batch = db.batch();

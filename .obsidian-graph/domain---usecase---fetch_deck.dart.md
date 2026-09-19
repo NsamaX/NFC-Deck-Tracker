@@ -13,4 +13,5 @@ tags:
 - [[domain---entity---deck.dart]]
 - [[domain---repository---deck.dart]]
 - [[domain---service---domain_logger.dart]]
+- [[domain---value---remote_unavailable.dart]]
 

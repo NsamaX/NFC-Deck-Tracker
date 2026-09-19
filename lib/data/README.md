@@ -6,8 +6,9 @@ entities instead of persistence models or SDK objects.
 - `repository/`: grouped implementations and platform adapters.
 - `mapper/`: conversions between storage models and domain entities.
 - `model/`: persistence representations and serialization.
-- `datasource/local/`: SQLite and SharedPreferences operations.
-- `datasource/remote/`: Firestore and Supabase operations.
+- `datasource/local/`: one SQLite or SharedPreferences class per aggregate
+  (`DeckLocalDatasource`, `CardLocalDatasource`, ...), matching `repository/`.
+- `datasource/remote/`: one Firestore class per aggregate.
 - `datasource/api/`: game APIs and pagination strategies.
 - `datasource/device/`: NDEF encoding/decoding used by the NFC adapter.
 

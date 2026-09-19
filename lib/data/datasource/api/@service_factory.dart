@@ -41,7 +41,8 @@ class ServiceFactory {
       if (creator != null) return creator() as T;
     }
 
-    throw Exception('No factory available for collection "$collectionId" and type $T yet.');
+    throw Exception(
+        'No factory available for collection "$collectionId" and type $T yet.');
   }
 
   static T _createDummy<T>() {

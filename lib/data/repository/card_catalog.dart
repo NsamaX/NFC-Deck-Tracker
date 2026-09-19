@@ -1,8 +1,5 @@
 import '../../domain/repository/card_catalog.dart';
 import '../mapper/card.dart';
-import '../datasource/local/update_page.dart';
-import '../datasource/local/find_page.dart';
-import '../datasource/local/create_page.dart';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
@@ -19,22 +16,19 @@ import '../../domain/entity/card.dart';
 import '../../domain/entity/collection.dart';
 import '../../domain/entity/page.dart';
 import '../mapper/page.dart';
+import '../datasource/local/page.dart';
 
 class CardCatalogRepositoryImpl implements CardCatalogRepository {
+  final PageLocalDatasource pageDatasource;
   final CollectionRepository collectionRepository;
-  final CreatePageLocalDatasource createPageLocalDatasource;
   final CardRepository cardRepository;
   final GameApi gameApi;
-  final FindPageLocalDatasource findPageLocalDatasource;
-  final UpdatePageLocalDatasource updatePageLocalDatasource;
 
   CardCatalogRepositoryImpl({
+    required this.pageDatasource,
     required this.collectionRepository,
-    required this.createPageLocalDatasource,
     required this.cardRepository,
     required this.gameApi,
-    required this.findPageLocalDatasource,
-    required this.updatePageLocalDatasource,
   });
 
   Future<List<CardEntity>> fetch({
@@ -77,7 +71,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
             '[Local] Collection already exists, skipping creation in CardCatalogRepositoryImpl');
       }
 
-      await createPageLocalDatasource.create(
+      await pageDatasource.create(
         page: PageMapper.toModel(
           PageEntity(
             collectionId: collectionId,
@@ -89,7 +83,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
 
     if (isSupportedGame) {
       final Map<String, dynamic> localPageMap =
-          await findPageLocalDatasource.find(collectionId: collectionId);
+          await pageDatasource.find(collectionId: collectionId);
       final PagingStrategy pageStrategy =
           ServiceFactory.create(collectionId: collectionId);
 
@@ -130,7 +124,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
             LoggerUtil.d('[API] Page has no more cards: ${jsonEncode(page)}');
             pageMap[pageKey] = true;
 
-            await updatePageLocalDatasource.update(
+            await pageDatasource.update(
               page: PageMapper.toModel(
                 PageEntity(
                   collectionId: collectionId,

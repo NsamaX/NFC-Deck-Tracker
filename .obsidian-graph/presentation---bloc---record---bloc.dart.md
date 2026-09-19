@@ -23,6 +23,7 @@ tags:
 - [[domain---usecase---share_record.dart]]
 - [[domain---usecase---update_record.dart]]
 - [[domain---value---player_action.dart]]
+- [[domain---value---remote_unavailable.dart]]
 - [[presentation---bloc---record---event.dart]]
 - [[presentation---bloc---record---state.dart]]
 

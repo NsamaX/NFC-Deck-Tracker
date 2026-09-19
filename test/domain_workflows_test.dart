@@ -133,9 +133,13 @@ void main() {
       () async {
     final repository = MemoryDecks()..remoteReadable = false;
     final synced = DeckEntity(
-        deckId: 'kept', name: 'Kept', isSynced: true, updatedAt: DateTime(2024));
+        deckId: 'kept',
+        name: 'Kept',
+        isSynced: true,
+        updatedAt: DateTime(2024));
     repository.local['kept'] = synced;
-    final decks = await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    final decks =
+        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
     expect(decks, [synced]);
     expect(repository.local['kept'], synced);
   });
@@ -144,8 +148,12 @@ void main() {
       () async {
     final repository = MemoryDecks();
     repository.local['gone'] = DeckEntity(
-        deckId: 'gone', name: 'Gone', isSynced: true, updatedAt: DateTime(2024));
-    final decks = await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+        deckId: 'gone',
+        name: 'Gone',
+        isSynced: true,
+        updatedAt: DateTime(2024));
+    final decks =
+        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
     expect(decks, isEmpty);
     expect(repository.local, isEmpty);
   });

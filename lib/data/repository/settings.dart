@@ -1,21 +1,18 @@
 import '../../domain/repository/settings.dart';
-import '../datasource/local/load_setting.dart';
-import '../datasource/local/update_setting.dart';
+import '../datasource/local/settings.dart';
 
 class SettingsRepositoryImpl implements SettingsRepository {
-  final LoadSettingLocalDatasource loadSettingLocalDatasource;
-  final UpdateSettingLocalDatasource updateSettingLocalDatasource;
+  final SettingsLocalDatasource localDatasource;
 
   SettingsRepositoryImpl({
-    required this.loadSettingLocalDatasource,
-    required this.updateSettingLocalDatasource,
+    required this.localDatasource,
   });
 
   @override
   Future<dynamic> load({
     required String key,
   }) async {
-    return await loadSettingLocalDatasource.load(key: key);
+    return await localDatasource.load(key: key);
   }
 
   @override
@@ -23,6 +20,6 @@ class SettingsRepositoryImpl implements SettingsRepository {
     required String key,
     required dynamic value,
   }) async {
-    await updateSettingLocalDatasource.update(key: key, value: value);
+    await localDatasource.update(key: key, value: value);
   }
 }

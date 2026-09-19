@@ -3,7 +3,7 @@ tags:
   - layer/data
   - role/datasource-remote
   - entry/service
-  - coupling/high
+  - coupling/medium
 ---
 
 # @firestore_service.dart
@@ -11,6 +11,7 @@ tags:
 `lib/data/datasource/remote/@firestore_service.dart`
 
 ## Imports
+- [[domain---value---remote_unavailable.dart]]
 - [[util---logger.dart]]
 
 ## Packages

@@ -3,7 +3,6 @@ tags:
   - layer/data
   - role/datasource-local
   - entry/service
-  - coupling/medium
 ---
 
 # @shared_preferences_service.dart

@@ -45,7 +45,8 @@ Future<void> _Misc() async {
   if (!RuntimeConfig.guestMode && !locator.isRegistered<FirebaseFirestore>()) {
     locator.registerLazySingleton(() => FirebaseFirestore.instance);
   }
-  locator.registerLazySingleton<RouteObserver<ModalRoute>>(() => RouteObserver<ModalRoute>());
+  locator.registerLazySingleton<RouteObserver<ModalRoute>>(
+      () => RouteObserver<ModalRoute>());
 }
 
 Future<void> _SharedPreferences() async {
@@ -61,23 +62,25 @@ Future<void> _Database() async {
 
 Future<void> _Sqlite() async {
   locator.registerLazySingleton(() => SQLiteService(
-    databaseService: locator<DatabaseService>(),
-  ));
+        databaseService: locator<DatabaseService>(),
+      ));
 }
 
 Future<void> _Firestore() async {
   locator.registerLazySingleton(() => FirestoreService(
-    firestore: FirebaseFirestore.instance,
-    storage: FirebaseStorage.instance,
-  ));
+        firestore: FirebaseFirestore.instance,
+        storage: FirebaseStorage.instance,
+      ));
 }
 
 Future<void> _Supabase() async {
   if (!locator.isRegistered<SupabaseClient>()) {
     final supabaseUrl = dotenv.env['SUPABASE_URL'];
     final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
-    if (supabaseUrl == null || supabaseUrl.trim().isEmpty ||
-        supabaseAnonKey == null || supabaseAnonKey.trim().isEmpty) {
+    if (supabaseUrl == null ||
+        supabaseUrl.trim().isEmpty ||
+        supabaseAnonKey == null ||
+        supabaseAnonKey.trim().isEmpty) {
       throw Exception('Supabase URL or anon key is missing.');
     }
     final client = SupabaseClient(supabaseUrl, supabaseAnonKey);
@@ -85,7 +88,7 @@ Future<void> _Supabase() async {
   }
   if (!locator.isRegistered<SupabaseService>()) {
     locator.registerLazySingleton(() => SupabaseService(
-      supabase: locator<SupabaseClient>(),
-    ));
+          supabase: locator<SupabaseClient>(),
+        ));
   }
 }

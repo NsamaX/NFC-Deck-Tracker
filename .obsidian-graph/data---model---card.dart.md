@@ -2,7 +2,7 @@
 tags:
   - layer/data
   - role/model
-  - coupling/high
+  - coupling/medium
 ---
 
 # card.dart

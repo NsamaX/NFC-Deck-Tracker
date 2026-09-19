@@ -67,15 +67,8 @@ void main() {
     final sql = MemorySql();
     final cloud = FirestoreService.offline();
     final repository = DeckRepositoryImpl(
-      createDeckLocalDatasource: CreateDeckLocalDatasource(sql),
-      createDeckRemoteDatasource: CreateDeckRemoteDatasource(cloud),
-      deleteDeckLocalDatasource: DeleteDeckLocalDatasource(sql),
-      deleteDeckRemoteDatasource: DeleteDeckRemoteDatasource(cloud),
-      fetchCardInDeckLocalDatasource: FetchCardInDeckLocalDatasource(sql),
-      fetchDeckLocalDatasource: FetchDeckLocalDatasource(sql),
-      fetchDeckRemoteDatasource: FetchDeckRemoteDatasource(cloud),
-      updateDeckLocalDatasource: UpdateDeckLocalDatasource(sql),
-      updateDeckRemoteDatasource: UpdateDeckRemoteDatasource(cloud),
+      localDatasource: DeckLocalDatasource(sql),
+      remoteDatasource: DeckRemoteDatasource(cloud),
     );
     await CreateDeckUsecase(deckRepository: repository)(
         userId: '',

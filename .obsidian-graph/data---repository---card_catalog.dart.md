@@ -12,9 +12,7 @@ tags:
 ## Imports
 - [[config---game.dart]]
 - [[data---datasource---api---@service_factory.dart]]
-- [[data---datasource---local---create_page.dart]]
-- [[data---datasource---local---find_page.dart]]
-- [[data---datasource---local---update_page.dart]]
+- [[data---datasource---local---page.dart]]
 - [[data---mapper---card.dart]]
 - [[data---mapper---page.dart]]
 - [[domain---entity---card.dart]]

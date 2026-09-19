@@ -35,9 +35,8 @@ class RecordModel {
     return RecordModel(
       recordId: json['recordId'],
       deckId: json['deckId'],
-      data: (parsedData as List)
-          .map((item) => DataModel.fromJson(item))
-          .toList(),
+      data:
+          (parsedData as List).map((item) => DataModel.fromJson(item)).toList(),
       createdAt: DateTime.parse(json['createdAt']),
       isSynced: (json['isSynced'] == true || json['isSynced'] == 1),
       updatedAt: DateTime.parse(json['updatedAt']),

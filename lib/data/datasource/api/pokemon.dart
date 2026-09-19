@@ -67,13 +67,16 @@ class PokemonApi extends BaseApi implements GameApi {
         'attacks': data['attacks'] ?? [],
         'weaknesses': data['weaknesses'] ?? [],
         'resistances': data['resistances'] ?? [],
-        'retreatCost': (data['retreatCost'] as List<dynamic>?)?.cast<String>() ?? [],
+        'retreatCost':
+            (data['retreatCost'] as List<dynamic>?)?.cast<String>() ?? [],
         'convertedRetreatCost': data['convertedRetreatCost'] ?? 0,
         'rarity': data['rarity'] ?? '',
         'artist': data['artist'] ?? '',
         'set': data['set']?['name'] ?? '',
         'series': data['set']?['series'] ?? '',
-        'nationalPokedexNumbers': (data['nationalPokedexNumbers'] as List<dynamic>?)?.cast<int>() ?? [],
+        'nationalPokedexNumbers':
+            (data['nationalPokedexNumbers'] as List<dynamic>?)?.cast<int>() ??
+                [],
       },
       isSynced: true,
       updatedAt: DateTime.now(),

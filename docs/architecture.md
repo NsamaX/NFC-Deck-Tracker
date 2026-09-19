@@ -34,9 +34,10 @@ Changing a database field should not require importing `DeckModel` into the
 bloc or use case. A rule using existing repository methods should not require
 editing the data layer.
 
-Repositories are grouped by responsibility rather than individual CRUD action.
-Existing use case entry points and datasource operations remain. This refactor
-does not reorganize the project into feature folders.
+Repositories and datasources are grouped by aggregate (`Deck`, `Card`, ...)
+rather than individual CRUD action, so adding a field touches one model, one
+mapper, one local and one remote datasource. Use cases stay one per rule. This
+refactor does not reorganize the project into feature folders.
 
 ## Boundaries and ownership
 

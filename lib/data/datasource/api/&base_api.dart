@@ -47,7 +47,8 @@ abstract class BaseApi {
     required http.Response response,
   }) {
     try {
-      return json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      return json.decode(utf8.decode(response.bodyBytes))
+          as Map<String, dynamic>;
     } catch (e) {
       throw Exception('Failed to decode response: $e');
     }
@@ -66,7 +67,8 @@ abstract class BaseApi {
     if (response.statusCode != 200) {
       final Map<String, dynamic> errorBody = decodeResponse(response: response);
 
-      throw Exception('API Error: ${response.statusCode}, ${response.reasonPhrase}, Response: $errorBody');
+      throw Exception(
+          'API Error: ${response.statusCode}, ${response.reasonPhrase}, Response: $errorBody');
     }
   }
 }

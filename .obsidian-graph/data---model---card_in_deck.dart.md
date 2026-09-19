@@ -2,7 +2,6 @@
 tags:
   - layer/data
   - role/model
-  - coupling/medium
 ---
 
 # card_in_deck.dart

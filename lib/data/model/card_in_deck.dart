@@ -10,8 +10,7 @@ class CardInDeckModel {
   });
 
   factory CardInDeckModel.fromJson(Map<String, dynamic> json) {
-    if (json['card'] == null || 
-        json['count'] == null) {
+    if (json['card'] == null || json['count'] == null) {
       throw FormatException('Missing required fields in CardInDeckModel');
     }
 

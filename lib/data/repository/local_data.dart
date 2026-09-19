@@ -1,15 +1,15 @@
 import '../../domain/repository/local_data.dart';
-import '../datasource/local/clear_user_data.dart';
+import '../datasource/local/user_data.dart';
 
 class LocalDataRepositoryImpl implements LocalDataRepository {
-  final ClearUserDataLocalDatasource clearUserDataLocalDatasource;
+  final UserDataLocalDatasource localDatasource;
 
   LocalDataRepositoryImpl({
-    required this.clearUserDataLocalDatasource,
+    required this.localDatasource,
   });
 
   @override
   Future<void> clear() async {
-    await clearUserDataLocalDatasource.clear();
+    await localDatasource.clear();
   }
 }

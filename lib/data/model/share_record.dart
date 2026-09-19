@@ -13,8 +13,7 @@ class ShareRecordModel {
   });
 
   factory ShareRecordModel.fromJson(Map<String, dynamic> json) {
-    if (json['cards'] == null || 
-        json['data'] == null) {
+    if (json['cards'] == null || json['data'] == null) {
       throw FormatException('Missing required fields in ShareRecordModel');
     }
 

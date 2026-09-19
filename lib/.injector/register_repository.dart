@@ -37,88 +37,38 @@ Future<void> registerRepository() async {
   locator.registerLazySingleton<DeviceRepository>(() => DeviceRepositoryImpl());
   locator.registerLazySingleton<NfcRepository>(() => NfcRepositoryImpl());
   locator.registerLazySingleton<CardRepository>(() => CardRepositoryImpl(
-        checkCardDuplicateNameLocalDatasource:
-            locator<CheckCardDuplicateNameLocalDatasource>(),
-        createCardLocalDatasource: locator<CreateCardLocalDatasource>(),
-        createCardRemoteDatasource: locator<CreateCardRemoteDatasource>(),
-        deleteCardLocalDatasource: locator<DeleteCardLocalDatasource>(),
-        deleteCardRemoteDatasource: locator<DeleteCardRemoteDatasource>(),
-        fetchCardLocalDatasource: locator<FetchCardLocalDatasource>(),
-        fetchCardRemoteDatasource: locator<FetchCardRemoteDatasource>(),
-        fetchUsedCardDistinctLocalDatasource:
-            locator<FetchUsedCardDistinctLocalDatasource>(),
-        findCardLocalDatasource: locator<FindCardLocalDatasource>(),
-        saveCardLocalDatasource: locator<SaveCardLocalDatasource>(),
-        updateCardLocalDatasource: locator<UpdateCardLocalDatasource>(),
-        updateCardRemoteDatasource: locator<UpdateCardRemoteDatasource>(),
+        localDatasource: locator<CardLocalDatasource>(),
+        remoteDatasource: locator<CardRemoteDatasource>(),
       ));
-  locator.registerLazySingleton<CollectionRepository>(() =>
-      CollectionRepositoryImpl(
-        createCollectionLocalDatasource:
-            locator<CreateCollectionLocalDatasource>(),
-        createCollectionRemoteDatasource:
-            locator<CreateCollectionRemoteDatasource>(),
-        deleteCollectionLocalDatasource:
-            locator<DeleteCollectionLocalDatasource>(),
-        deleteCollectionRemoteDatasource:
-            locator<DeleteCollectionRemoteDatasource>(),
-        fetchCollectionLocalDatasource:
-            locator<FetchCollectionLocalDatasource>(),
-        fetchCollectionRemoteDatasource:
-            locator<FetchCollectionRemoteDatasource>(),
-        findCollectionLocalDatasource: locator<FindCollectionLocalDatasource>(),
-        updateCollectionDateLocalDatasource:
-            locator<UpdateCollectionDateLocalDatasource>(),
-        updateCollectionLocalDatasource:
-            locator<UpdateCollectionLocalDatasource>(),
-        updateCollectionRemoteDatasource:
-            locator<UpdateCollectionRemoteDatasource>(),
-      ));
+  locator.registerLazySingleton<CollectionRepository>(
+      () => CollectionRepositoryImpl(
+            localDatasource: locator<CollectionLocalDatasource>(),
+            remoteDatasource: locator<CollectionRemoteDatasource>(),
+          ));
   locator.registerLazySingleton<DeckRepository>(() => DeckRepositoryImpl(
-        createDeckLocalDatasource: locator<CreateDeckLocalDatasource>(),
-        createDeckRemoteDatasource: locator<CreateDeckRemoteDatasource>(),
-        deleteDeckLocalDatasource: locator<DeleteDeckLocalDatasource>(),
-        deleteDeckRemoteDatasource: locator<DeleteDeckRemoteDatasource>(),
-        fetchCardInDeckLocalDatasource:
-            locator<FetchCardInDeckLocalDatasource>(),
-        fetchDeckLocalDatasource: locator<FetchDeckLocalDatasource>(),
-        fetchDeckRemoteDatasource: locator<FetchDeckRemoteDatasource>(),
-        updateDeckLocalDatasource: locator<UpdateDeckLocalDatasource>(),
-        updateDeckRemoteDatasource: locator<UpdateDeckRemoteDatasource>(),
+        localDatasource: locator<DeckLocalDatasource>(),
+        remoteDatasource: locator<DeckRemoteDatasource>(),
       ));
   locator.registerLazySingleton<RecordRepository>(() => RecordRepositoryImpl(
-        createRecordLocalDatasource: locator<CreateRecordLocalDatasource>(),
-        createRecordRemoteDatasource: locator<CreateRecordRemoteDatasource>(),
-        deleteRecordLocalDatasource: locator<DeleteRecordLocalDatasource>(),
-        deleteRecordRemoteDatasource: locator<DeleteRecordRemoteDatasource>(),
-        fetchRecordLocalDatasource: locator<FetchRecordLocalDatasource>(),
-        fetchRecordRemoteDatasource: locator<FetchRecordRemoteDatasource>(),
-        importRecordRemoteDatasource: locator<ImportRecordRemoteDatasource>(),
-        shareRecordRemoteDatasource: locator<ShareRecordRemoteDatasource>(),
-        updateRecordLocalDatasource: locator<UpdateRecordLocalDatasource>(),
-        updateRecordRemoteDatasource: locator<UpdateRecordRemoteDatasource>(),
+        localDatasource: locator<RecordLocalDatasource>(),
+        remoteDatasource: locator<RecordRemoteDatasource>(),
       ));
   locator.registerLazySingleton<ImageRepository>(() => ImageRepositoryImpl(
         supabaseService: locator<SupabaseService>(),
       ));
   locator
       .registerLazySingleton<SettingsRepository>(() => SettingsRepositoryImpl(
-            loadSettingLocalDatasource: locator<LoadSettingLocalDatasource>(),
-            updateSettingLocalDatasource:
-                locator<UpdateSettingLocalDatasource>(),
+            localDatasource: locator<SettingsLocalDatasource>(),
           ));
   locator
       .registerLazySingleton<LocalDataRepository>(() => LocalDataRepositoryImpl(
-            clearUserDataLocalDatasource:
-                locator<ClearUserDataLocalDatasource>(),
+            localDatasource: locator<UserDataLocalDatasource>(),
           ));
   locator.registerFactoryParam<CardCatalogRepository, String, void>(
       (collectionId, _) => CardCatalogRepositoryImpl(
             cardRepository: locator<CardRepository>(),
             collectionRepository: locator<CollectionRepository>(),
             gameApi: locator<GameApi>(param1: collectionId),
-            createPageLocalDatasource: locator<CreatePageLocalDatasource>(),
-            findPageLocalDatasource: locator<FindPageLocalDatasource>(),
-            updatePageLocalDatasource: locator<UpdatePageLocalDatasource>(),
+            pageDatasource: locator<PageLocalDatasource>(),
           ));
 }

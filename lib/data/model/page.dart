@@ -15,9 +15,8 @@ class PageModel {
     }
 
     final rawPaging = json['paging'];
-    final parsedPaging = rawPaging is String
-        ? jsonDecode(rawPaging)
-        : rawPaging ?? {};
+    final parsedPaging =
+        rawPaging is String ? jsonDecode(rawPaging) : rawPaging ?? {};
 
     return PageModel(
       collectionId: json['collectionId'],

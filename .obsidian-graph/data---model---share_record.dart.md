@@ -2,7 +2,6 @@
 tags:
   - layer/data
   - role/model
-  - coupling/medium
 ---
 
 # share_record.dart
