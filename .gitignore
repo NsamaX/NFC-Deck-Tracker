@@ -5,6 +5,11 @@
 *.log
 *.pyc
 *.swp
+*.swo
+*.tmp
+*~
+Thumbs.db
+Desktop.ini
 .DS_Store
 .atom/
 .buildlog/
@@ -34,6 +39,7 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 build/
+coverage/
 **/doc/api/
 **/ios/Flutter/.last_build_id
 
@@ -41,6 +47,8 @@ build/
 # 🔐 Sensitive Files
 # ---------------------------------------------
 .env
+.env.*
+!.env.example
 firebase.json
 lib/firebase_options.dart
 android/app/google-services.json
