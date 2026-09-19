@@ -3,7 +3,7 @@ import '../domain/usecase/session.dart';
 import '../domain/usecase/device.dart';
 import '../presentation/dependencies.dart';
 import '../presentation/bloc/~index.dart';
-import 'service_locator.dart';
+import 'locator.dart';
 
 PresentationDependencies createPresentationDependencies() =>
     PresentationDependencies(

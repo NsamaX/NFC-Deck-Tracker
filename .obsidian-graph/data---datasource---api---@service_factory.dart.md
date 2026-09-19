@@ -3,8 +3,7 @@ tags:
   - layer/data
   - role/datasource-api
   - entry/service
-  - violation/circular-dep
-  - coupling/high
+  - coupling/medium
 ---
 
 # @service_factory.dart
@@ -14,9 +13,7 @@ tags:
 ## Imports
 - [[config---api.dart]]
 - [[config---game.dart]]
-- [[data---datasource---api---~index.dart]]
-- [[data---model---card.dart]]
-
-## Violations
-- Circular dependency
+- [[data---datasource---api---&dummy_api.dart]]
+- [[data---datasource---api---game_api.dart]]
+- [[data---datasource---api---pokemon.dart]]
 

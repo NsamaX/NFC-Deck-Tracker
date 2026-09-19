@@ -2,7 +2,6 @@
 tags:
   - layer/injector
   - entry/composition
-  - violation/circular-dep
   - coupling/medium
 ---
 
@@ -11,7 +10,7 @@ tags:
 `lib/.injector/register_bloc.dart`
 
 ## Imports
-- [[injector---service_locator.dart]]
+- [[injector---locator.dart]]
 - [[domain---entity---card.dart]]
 - [[domain---entity---deck.dart]]
 - [[domain---usecase---nfc_session.dart]]
@@ -21,7 +20,4 @@ tags:
 
 ## Packages
 - `package:flutter/foundation.dart`
-
-## Violations
-- Circular dependency
 

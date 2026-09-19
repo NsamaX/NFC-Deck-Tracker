@@ -1,6 +1,6 @@
 import '../../model/card.dart';
 
-import '@service_factory.dart';
+import 'game_api.dart';
 
 class DummyApi extends GameApi {
   @override

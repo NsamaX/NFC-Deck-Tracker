@@ -1,25 +1,9 @@
 import 'package:nfc_deck_tracker/.config/api.dart';
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import '../../model/card.dart';
-
-import '~index.dart';
-
-abstract class GameApi {
-  Future<List<CardModel>> fetch({
-    required Map<String, dynamic> page,
-  });
-  Future<CardModel?> find({
-    required String cardId,
-  });
-}
-
-abstract class PagingStrategy {
-  Map<String, dynamic> buildPage({
-    required Map<String, dynamic> current,
-    required int offset,
-  });
-}
+import '&dummy_api.dart';
+import 'game_api.dart';
+import 'pokemon.dart';
 
 class ServiceFactory {
   static T create<T>({

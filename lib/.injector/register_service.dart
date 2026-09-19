@@ -14,7 +14,7 @@ import 'package:nfc_deck_tracker/data/datasource/remote/@firestore_service.dart'
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import 'service_locator.dart';
+import 'locator.dart';
 import '../.config/runtime.dart';
 
 Future<void> registerService() async {

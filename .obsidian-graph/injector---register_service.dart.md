@@ -2,7 +2,6 @@
 tags:
   - layer/injector
   - entry/composition
-  - violation/circular-dep
   - coupling/medium
 ---
 
@@ -12,7 +11,7 @@ tags:
 
 ## Imports
 - [[config---runtime.dart]]
-- [[injector---service_locator.dart]]
+- [[injector---locator.dart]]
 - [[data---datasource---local---@database_service.dart]]
 - [[data---datasource---local---@shared_preferences_service.dart]]
 - [[data---datasource---local---@sqlite_service.dart]]
@@ -28,7 +27,4 @@ tags:
 - `package:flutter_dotenv/flutter_dotenv.dart`
 - `package:shared_preferences/shared_preferences.dart`
 - `package:supabase_flutter/supabase_flutter.dart`
-
-## Violations
-- Circular dependency
 

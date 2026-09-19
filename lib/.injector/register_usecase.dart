@@ -13,7 +13,7 @@ import 'package:nfc_deck_tracker/domain/usecase/~index.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
-import 'service_locator.dart';
+import 'locator.dart';
 
 Future<void> registerUsecase() async {
   try {

@@ -10,7 +10,7 @@ tags:
 `lib/.injector/presentation_dependencies.dart`
 
 ## Imports
-- [[injector---service_locator.dart]]
+- [[injector---locator.dart]]
 - [[domain---usecase---device.dart]]
 - [[domain---usecase---session.dart]]
 - [[presentation---bloc---~index.dart]]

@@ -2,7 +2,6 @@
 tags:
   - layer/injector
   - entry/composition
-  - violation/circular-dep
   - coupling/high
 ---
 
@@ -11,8 +10,9 @@ tags:
 `lib/.injector/register_datasource.dart`
 
 ## Imports
-- [[injector---service_locator.dart]]
+- [[injector---locator.dart]]
 - [[data---datasource---api---@service_factory.dart]]
+- [[data---datasource---api---game_api.dart]]
 - [[data---datasource---local---@shared_preferences_service.dart]]
 - [[data---datasource---local---@sqlite_service.dart]]
 - [[data---datasource---local---~index.dart]]
@@ -23,7 +23,4 @@ tags:
 
 ## Packages
 - `package:flutter/foundation.dart`
-
-## Violations
-- Circular dependency
 

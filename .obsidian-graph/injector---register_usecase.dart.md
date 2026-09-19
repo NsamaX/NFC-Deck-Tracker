@@ -2,7 +2,6 @@
 tags:
   - layer/injector
   - entry/composition
-  - violation/circular-dep
   - coupling/high
 ---
 
@@ -12,7 +11,7 @@ tags:
 
 ## Imports
 - [[config---app.dart]]
-- [[injector---service_locator.dart]]
+- [[injector---locator.dart]]
 - [[domain---repository---device.dart]]
 - [[domain---repository---nfc.dart]]
 - [[domain---repository---session.dart]]
@@ -26,7 +25,4 @@ tags:
 
 ## Packages
 - `package:flutter/foundation.dart`
-
-## Violations
-- Circular dependency
 

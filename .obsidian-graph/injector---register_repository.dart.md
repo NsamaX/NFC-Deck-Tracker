@@ -2,7 +2,6 @@
 tags:
   - layer/injector
   - entry/composition
-  - violation/circular-dep
   - coupling/high
 ---
 
@@ -12,8 +11,8 @@ tags:
 
 ## Imports
 - [[config---runtime.dart]]
-- [[injector---service_locator.dart]]
-- [[data---datasource---api---@service_factory.dart]]
+- [[injector---locator.dart]]
+- [[data---datasource---api---game_api.dart]]
 - [[data---datasource---local---~index.dart]]
 - [[data---datasource---remote---@supabase_service.dart]]
 - [[data---datasource---remote---~index.dart]]
@@ -43,7 +42,4 @@ tags:
 ## Packages
 - `package:firebase_auth/firebase_auth.dart`
 - `package:google_sign_in/google_sign_in.dart`
-
-## Violations
-- Circular dependency
 

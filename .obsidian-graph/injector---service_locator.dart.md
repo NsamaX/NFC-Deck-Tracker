@@ -2,8 +2,7 @@
 tags:
   - layer/injector
   - entry/composition
-  - violation/circular-dep
-  - coupling/high
+  - coupling/medium
 ---
 
 # service_locator.dart
@@ -11,6 +10,7 @@ tags:
 `lib/.injector/service_locator.dart`
 
 ## Imports
+- [[injector---locator.dart]]
 - [[injector---register_bloc.dart]]
 - [[injector---register_datasource.dart]]
 - [[injector---register_repository.dart]]
@@ -20,8 +20,4 @@ tags:
 
 ## Packages
 - `package:flutter/foundation.dart`
-- `package:get_it/get_it.dart`
-
-## Violations
-- Circular dependency
 

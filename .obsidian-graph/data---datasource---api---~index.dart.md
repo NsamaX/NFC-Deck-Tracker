@@ -3,7 +3,6 @@ tags:
   - layer/data
   - role/datasource-api
   - entry/barrel
-  - violation/circular-dep
 ---
 
 # ~index.dart
@@ -12,8 +11,6 @@ tags:
 
 ## Imports
 - [[data---datasource---api---&dummy_api.dart]]
+- [[data---datasource---api---game_api.dart]]
 - [[data---datasource---api---pokemon.dart]]
-
-## Violations
-- Circular dependency
 
