@@ -2,6 +2,7 @@
 tags:
   - layer/presentation
   - role/widget
+  - coupling/medium
 ---
 
 # history_list_view.dart
@@ -9,6 +10,7 @@ tags:
 `lib/presentation/widget/specific/history_list_view.dart`
 
 ## Imports
+- [[presentation---constant.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---theme---theme.dart]]
 - [[presentation---widget---shared---list_section.dart]]

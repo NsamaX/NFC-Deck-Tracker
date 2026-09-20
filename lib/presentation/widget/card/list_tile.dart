@@ -10,6 +10,7 @@ import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
 import '../../locale/localization.dart';
+import '../../constant.dart';
 import '../../route/constant.dart';
 
 import 'slidable_delete.dart';
@@ -74,7 +75,7 @@ class CardListTile extends StatelessWidget {
         ),
       ),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 6.0),
+        margin: WidgetConstant.tileSpacing,
         height: 60.0,
         decoration: BoxDecoration(
           color: markColor,

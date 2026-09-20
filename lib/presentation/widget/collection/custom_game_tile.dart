@@ -8,6 +8,7 @@ import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/collection/bloc.dart';
 import '../../locale/localization.dart';
+import '../../constant.dart';
 import '../../route/constant.dart';
 
 import 'slidable_delete.dart';
@@ -40,7 +41,7 @@ class CustomGameTile extends StatelessWidget {
         ),
       ),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 6.0),
+        margin: WidgetConstant.tileSpacing,
         height: 60.0,
         decoration: BoxDecoration(
           color: theme.appBarTheme.backgroundColor,

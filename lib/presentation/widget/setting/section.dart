@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
 import '../shared/list_section.dart';
+import '../../constant.dart';
 
 class SettingSection extends StatelessWidget {
   final List<ListSection<SettingItem>> section;
@@ -14,7 +15,7 @@ class SettingSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 2.0),
+      padding: WidgetConstant.sectionPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: section.map((cat) {
@@ -42,7 +43,7 @@ class SettingSection extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, top: 16.0, bottom: 8.0),
+      padding: WidgetConstant.sectionTitlePadding,
       child: Text(
         title,
         style: theme.textTheme.bodyMedium?.copyWith(
@@ -71,7 +72,7 @@ class SettingSection extends StatelessWidget {
       },
       child: Container(
         height: 40.0,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: WidgetConstant.rowPadding,
         decoration: BoxDecoration(
           color: theme.appBarTheme.backgroundColor,
           border: Border(

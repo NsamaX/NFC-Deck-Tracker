@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/api.dart';
 import '../../bloc/application/bloc.dart';
+import '../../constant.dart';
 import '../../route/constant.dart';
 import '../../route/arguments.dart';
 
@@ -24,7 +25,7 @@ class SupportedGameTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => _goToSearchPage(context),
       child: Container(
-        margin: const EdgeInsets.only(bottom: 6.0),
+        margin: WidgetConstant.tileSpacing,
         height: 60.0,
         decoration: BoxDecoration(
           color: theme.appBarTheme.backgroundColor,

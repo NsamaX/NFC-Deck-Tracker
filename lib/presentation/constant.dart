@@ -1,6 +1,13 @@
+import 'package:flutter/widgets.dart';
+
 class WidgetConstant {
   static const double paddingAround = 20.0;
   static const double paddingVertical = 120.0;
+  static const EdgeInsets sectionTitlePadding =
+      EdgeInsets.only(left: 20.0, top: 16.0, bottom: 8.0);
+  static const EdgeInsets sectionPadding = EdgeInsets.only(top: 2.0);
+  static const EdgeInsets rowPadding = EdgeInsets.symmetric(horizontal: 20.0);
+  static const EdgeInsets tileSpacing = EdgeInsets.only(bottom: 6.0);
 
   static const double NfcButtonIcon = 120.0;
   static const double NfcButtonDot = 40.0;

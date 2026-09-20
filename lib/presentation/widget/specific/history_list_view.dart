@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import '../../locale/localization.dart';
 import '../../theme/theme.dart';
 import '../shared/list_section.dart';
+import '../../constant.dart';
 
 class HistoryListView extends StatelessWidget {
   final List<ListSection<HistoryItem>> section;
@@ -16,7 +17,7 @@ class HistoryListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 2.0),
+      padding: WidgetConstant.sectionPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: section.map((category) {
@@ -39,7 +40,7 @@ class HistoryListView extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, top: 16.0, bottom: 8.0),
+      padding: WidgetConstant.sectionTitlePadding,
       child: Text(
         title,
         style: theme.textTheme.bodyMedium?.copyWith(
@@ -61,7 +62,7 @@ class HistoryListView extends StatelessWidget {
 
     final row = Container(
       height: 40.0,
-      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      padding: WidgetConstant.rowPadding,
       decoration: BoxDecoration(
         color: theme.appBarTheme.backgroundColor,
         border: Border(

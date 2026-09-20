@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
 import '../shared/list_section.dart';
+import '../../constant.dart';
 
 class SettingLanguage extends StatelessWidget {
   final List<ListSection<SettingItem>> language;
@@ -14,7 +15,7 @@ class SettingLanguage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 2.0),
+      padding: WidgetConstant.sectionPadding,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: language.map((category) {
@@ -42,7 +43,7 @@ class SettingLanguage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(left: 20.0, top: 16.0, bottom: 8.0),
+      padding: WidgetConstant.sectionTitlePadding,
       child: Text(
         title,
         style: theme.textTheme.bodyMedium
@@ -65,7 +66,7 @@ class SettingLanguage extends StatelessWidget {
       onTap: onTap,
       child: Container(
         height: 40.0,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: WidgetConstant.rowPadding,
         decoration: BoxDecoration(
           color: theme.appBarTheme.backgroundColor,
           border: Border(
