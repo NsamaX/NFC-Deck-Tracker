@@ -6,6 +6,7 @@ import '../domain/repository/session.dart';
 import '../data/repository/session.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import '../.config/api.dart';
 import '../.config/runtime.dart';
 import 'package:nfc_deck_tracker/data/datasource/api/game_api.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/index.dart';
@@ -69,6 +70,7 @@ Future<void> registerRepository() async {
             cardRepository: locator<CardRepository>(),
             collectionRepository: locator<CollectionRepository>(),
             gameApi: locator<GameApi>(param1: collectionId),
+            defaultBatchSize: ApiConfig.instance.catalogBatchSize,
             pageDatasource: locator<PageLocalDatasource>(),
           ));
 }

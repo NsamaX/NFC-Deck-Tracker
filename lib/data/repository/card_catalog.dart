@@ -2,8 +2,6 @@ import '../../domain/repository/card_catalog.dart';
 import '../mapper/card.dart';
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
-
 import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/data/datasource/api/service_factory.dart';
@@ -24,12 +22,14 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
   final CollectionRepository collectionRepository;
   final CardRepository cardRepository;
   final GameApi gameApi;
+  final int defaultBatchSize;
 
   CardCatalogRepositoryImpl({
     required this.pageDatasource,
     required this.collectionRepository,
     required this.cardRepository,
     required this.gameApi,
+    required this.defaultBatchSize,
   });
 
   Future<List<CardEntity>> fetch({
@@ -37,7 +37,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
     required String collectionId,
     int? batchSize,
   }) async {
-    final int effectiveBatchSize = batchSize ?? (kReleaseMode ? 20 : 1);
+    final int effectiveBatchSize = batchSize ?? defaultBatchSize;
 
     final Map<String, CardEntity> cardMap = {};
 
@@ -92,16 +92,12 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
           Map<String, dynamic>.from(localPageMap);
       final List<Map<String, dynamic>> pagesToFetch = [];
 
-      if (!kReleaseMode) {
-        pagesToFetch.add(pageStrategy.buildPage(current: pageMap, offset: 0));
-      } else {
-        for (int offset = 0; offset < effectiveBatchSize; offset++) {
-          final page = pageStrategy.buildPage(current: pageMap, offset: offset);
-          final pageKey = _normalizeKey(page: page);
+      for (int offset = 0; offset < effectiveBatchSize; offset++) {
+        final page = pageStrategy.buildPage(current: pageMap, offset: offset);
+        final pageKey = _normalizeKey(page: page);
 
-          if (!pageMap.containsKey(pageKey)) {
-            pagesToFetch.add(page);
-          }
+        if (!pageMap.containsKey(pageKey)) {
+          pagesToFetch.add(page);
         }
       }
 
