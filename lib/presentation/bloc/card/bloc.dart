@@ -57,9 +57,10 @@ class CardBloc extends Bloc<CardEvent, CardState>
 
   Future<void> _onCreateCard(
       CreateCardEvent event, Emitter<CardState> emit) async {
+    final typed = state.card.description?.trim() ?? '';
     final updatedCard = state.card.copyWith(
       collectionId: event.collectionId,
-      description: event.defaultDescription,
+      description: typed.isEmpty ? event.defaultDescription : typed,
     );
     await guard(emit, ErrorKeys.save, () async {
       final saved =
