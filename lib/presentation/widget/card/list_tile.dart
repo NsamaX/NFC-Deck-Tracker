@@ -16,11 +16,25 @@ import 'slidable_delete.dart';
 import 'slidable_pin_color.dart';
 import '../../route/arguments.dart';
 
+enum CardTileMode {
+  browse,
+
+  addToDeck,
+
+  editCustom,
+
+  track,
+
+  history,
+}
+
 class CardListTile extends StatelessWidget {
   final CardEntity? card;
+  final CardTileMode mode;
   final int? count;
   final PlayerAction? action;
-  final bool onNFC, onAdd, onCustom, isTrack, lightTheme;
+  final bool nfcEnabled;
+  final bool lightTheme;
   final Color? markedColor;
   final void Function(Color color)? changeCardColor;
   final void Function(String cardId)? onDelete;
@@ -28,12 +42,10 @@ class CardListTile extends StatelessWidget {
   const CardListTile({
     super.key,
     required this.card,
+    this.mode = CardTileMode.browse,
     this.count,
     this.action,
-    this.onNFC = true,
-    this.onAdd = false,
-    this.onCustom = false,
-    this.isTrack = false,
+    this.nfcEnabled = true,
     this.lightTheme = false,
     this.markedColor,
     this.changeCardColor,
@@ -56,9 +68,9 @@ class CardListTile extends StatelessWidget {
         arguments: CardArgs(
           collectionId: card?.collectionId ?? '',
           card: card ?? const CardEntity(),
-          onNFC: onNFC,
-          onAdd: onAdd,
-          onCustom: onCustom,
+          onNFC: nfcEnabled && mode != CardTileMode.track,
+          onAdd: mode == CardTileMode.addToDeck,
+          onCustom: mode == CardTileMode.editCustom,
         ),
       ),
       child: Container(
@@ -85,14 +97,15 @@ class CardListTile extends StatelessWidget {
             ),
             child: Slidable(
               key: ValueKey(card!.cardId),
-              endActionPane: isTrack && changeCardColor != null
+              endActionPane: mode == CardTileMode.track &&
+                      changeCardColor != null
                   ? buildCardSlidablePinColor(
                       context: context,
                       markedColor: markedColor,
                       backgroundColor: backgroundColor,
                       changeCardColor: changeCardColor!,
                     )
-                  : (!isTrack &&
+                  : (mode == CardTileMode.browse &&
                           onDelete != null &&
                           !GameConfig.instance.isSupported(card!.collectionId))
                       ? buildCardSlidableDelete(

@@ -37,14 +37,20 @@ class CardListView extends StatelessWidget {
       itemCount: cards.length,
       itemBuilder: (_, index) => CardListTile(
         card: cards[index],
-        onAdd: BrowseCardArgs.of(context).onAdd,
-        onCustom: !BrowseCardArgs.of(context).onAdd &&
-            !GameConfig.instance.isSupported(cards[index].collectionId),
+        mode: _modeFor(context, cards[index]),
         onDelete: (cardId) => _deleteCard(context, browseCardBloc, cardId),
       ),
       separatorBuilder: (_, __) => const SizedBox(height: 2),
       cacheExtent: 1000,
     );
+  }
+
+  CardTileMode _modeFor(BuildContext context, CardEntity card) {
+    if (BrowseCardArgs.of(context).onAdd) return CardTileMode.addToDeck;
+    if (!GameConfig.instance.isSupported(card.collectionId)) {
+      return CardTileMode.editCustom;
+    }
+    return CardTileMode.browse;
   }
 
   void _deleteCard(BuildContext context, BrowseCardBloc Bloc, String cardId) {

@@ -14,7 +14,6 @@ tags:
 - [[domain---entity---card.dart]]
 - [[domain---entity---deck.dart]]
 - [[domain---usecase---index.dart]]
-- [[domain---usecase---nfc_session.dart]]
 - [[presentation---bloc---index.dart]]
 - [[util---logger.dart]]
 

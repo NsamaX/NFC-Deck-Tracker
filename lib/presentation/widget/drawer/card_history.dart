@@ -49,8 +49,9 @@ class CardHistoryDrawer extends StatelessWidget {
           itemCount: reversedCards.length,
           itemBuilder: (_, index) => CardListTile(
             card: reversedCards[index],
+            mode: CardTileMode.history,
             lightTheme: true,
-            onNFC: onNfc,
+            nfcEnabled: onNfc,
           ),
         ),
       ),

@@ -11,8 +11,8 @@ tags:
 
 ## Imports
 - [[config---runtime.dart]]
+- [[presentation---bloc---application---bloc.dart]]
 - [[presentation---constant.dart]]
-- [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---button---google_sign_in.dart]]
 - [[presentation---widget---button---guest_sign_in.dart]]
@@ -21,4 +21,5 @@ tags:
 
 ## Packages
 - `package:flutter/material.dart`
+- `package:flutter_bloc/flutter_bloc.dart`
 

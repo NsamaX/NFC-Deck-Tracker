@@ -58,8 +58,7 @@ class DeckTrackerView extends StatelessWidget {
                         card: card,
                         count: count,
                         action: lastAction,
-                        onNFC: false,
-                        isTrack: true,
+                        mode: CardTileMode.track,
                         lightTheme: count > 0,
                         markedColor: pinColorState.pinColor[card.cardId],
                         changeCardColor: (color) {

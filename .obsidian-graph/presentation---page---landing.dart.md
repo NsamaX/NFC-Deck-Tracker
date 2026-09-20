@@ -2,7 +2,7 @@
 tags:
   - layer/presentation
   - role/page
-  - coupling/medium
+  - coupling/high
 ---
 
 # landing.dart
@@ -10,6 +10,7 @@ tags:
 `lib/presentation/page/landing.dart`
 
 ## Imports
+- [[presentation---bloc---application---bloc.dart]]
 - [[presentation---constant.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
@@ -21,4 +22,5 @@ tags:
 
 ## Packages
 - `package:flutter/material.dart`
+- `package:flutter_bloc/flutter_bloc.dart`
 
