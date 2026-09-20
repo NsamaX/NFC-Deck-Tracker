@@ -110,30 +110,41 @@ class DeckInsightChart extends StatelessWidget {
       children: [
         _buildYAxis(theme),
         const SizedBox(width: 8),
-        Container(width: 1.2, height: _chartHeight - 54, color: axisColor),
+        Container(
+            width: 1.2,
+            height: _chartHeight - _bottomTitlesHeight + _bodyTopPadding,
+            color: axisColor),
         _buildChartBody(context, draw: draw, ret: ret, data: data),
       ],
     );
   }
 
-  Widget _buildYAxis(ThemeData theme) {
-    final spacing = _chartHeight / _maxY - 21.0;
+  static const double _bottomTitlesHeight = 60.0;
+  static const double _bodyTopPadding = 6.0;
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: List.generate(_maxY, (i) {
-        final value = _maxY - i;
-        final text = value.toString();
-        return Column(
-          children: [
-            Text(
-              value > _maxY - 1 ? '' : text,
-              style: theme.textTheme.bodySmall,
+  Widget _buildYAxis(ThemeData theme) {
+    const plotHeight = _chartHeight - _bottomTitlesHeight;
+    const labelHeight = 16.0;
+
+    return SizedBox(
+      width: 20,
+      height: _chartHeight,
+      child: Stack(
+        children: List.generate(_maxY - 1, (i) {
+          final value = i + 1;
+          final lineY = _bodyTopPadding + plotHeight * (1 - value / _maxY);
+          return Positioned(
+            right: 0,
+            top: lineY - labelHeight / 2,
+            child: SizedBox(
+              height: labelHeight,
+              child: Center(
+                child: Text(value.toString(), style: theme.textTheme.bodySmall),
+              ),
             ),
-            SizedBox(height: spacing),
-          ],
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 
@@ -145,7 +156,7 @@ class DeckInsightChart extends StatelessWidget {
   }) {
     return Expanded(
       child: Padding(
-        padding: const EdgeInsets.only(top: 6),
+        padding: const EdgeInsets.only(top: _bodyTopPadding),
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: SizedBox(
@@ -176,7 +187,7 @@ class DeckInsightChart extends StatelessWidget {
                   bottomTitles: AxisTitles(
                     sideTitles: SideTitles(
                       showTitles: true,
-                      reservedSize: 60,
+                      reservedSize: _bottomTitlesHeight,
                       getTitlesWidget: (value, _) =>
                           _buildRotatedLabel(context, data, value.toInt()),
                     ),
