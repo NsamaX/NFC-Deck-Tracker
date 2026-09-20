@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/card/bloc.dart';
 import '../../locale/localization.dart';
 import '../../theme/theme.dart';
 
 class CardCustomInfo extends StatelessWidget {
-  final CardBloc cardBloc;
   final String collectionId;
   final TextEditingController nameController;
   final TextEditingController descriptionController;
@@ -13,7 +13,6 @@ class CardCustomInfo extends StatelessWidget {
 
   const CardCustomInfo({
     super.key,
-    required this.cardBloc,
     required this.collectionId,
     required this.nameController,
     required this.descriptionController,
@@ -30,7 +29,8 @@ class CardCustomInfo extends StatelessWidget {
           context,
           controller: nameController,
           hintText: locale.translate('card.name'),
-          onChanged: (text) => cardBloc.add(SetCardNameEvent(name: text)),
+          onChanged: (text) =>
+              context.read<CardBloc>().add(SetCardNameEvent(name: text)),
           showAsterisk: true,
         ),
         const SizedBox(height: 16.0),
@@ -38,15 +38,17 @@ class CardCustomInfo extends StatelessWidget {
           context,
           controller: descriptionController,
           hintText: locale.translate('card.description'),
-          onChanged: (text) =>
-              cardBloc.add(SetCardDescriptionEvent(description: text)),
+          onChanged: (text) => context
+              .read<CardBloc>()
+              .add(SetCardDescriptionEvent(description: text)),
         ),
         const SizedBox(height: 26.0),
         _buildField(
           context,
           controller: abilityController,
           hintText: locale.translate('card.ability'),
-          onChanged: (text) => cardBloc
+          onChanged: (text) => context
+              .read<CardBloc>()
               .add(SetCardAdditionalDataEvent(additionalData: {'>': text})),
           isTextArea: true,
         ),

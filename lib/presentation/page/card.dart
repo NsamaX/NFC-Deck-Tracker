@@ -96,7 +96,6 @@ class _CardPageContent extends State<_CardContent> {
     final onCustom = args['onCustom'] ?? false;
     final onNFC = args['onNFC'] ?? false;
     final onAdd = args['onAdd'] ?? false;
-    final cardBloc = context.read<CardBloc>();
 
     return WriterListener(
       child: BlocBuilder<NfcBloc, NfcState>(
@@ -113,10 +112,9 @@ class _CardPageContent extends State<_CardContent> {
               padding: const EdgeInsets.all(40.0),
               children: [
                 if (onCustom) ...[
-                  CardCustomImage(cardBloc: cardBloc),
+                  CardCustomImage(),
                   const SizedBox(height: 24.0),
                   CardCustomInfo(
-                    cardBloc: cardBloc,
                     collectionId: collectionId,
                     nameController: nameController,
                     descriptionController: descriptionController,

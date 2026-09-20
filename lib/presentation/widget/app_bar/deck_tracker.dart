@@ -16,9 +16,7 @@ import '../notification/cupertino_dialog.dart';
 import 'default.dart';
 
 class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final NfcBloc nfcBloc;
-
-  const DeckTrackerAppBar({super.key, required this.nfcBloc});
+  const DeckTrackerAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +36,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
     final usageCardBloc = context.read<UsageCardBloc>();
 
     final isAdvancedMode = trackerBloc.state.isAdvancedMode;
-    final isSessionActive = nfcBloc.state.isSessionActive;
+    final isSessionActive = context.read<NfcBloc>().state.isSessionActive;
 
     final toggleNfcItem = AppBarMenuItem(
       label: isSessionActive
@@ -46,8 +44,8 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
           : Icons.wifi_tethering_off_rounded,
       action: MenuAction.callback(() {
         isSessionActive
-            ? nfcBloc.add(StopNfcSessionEvent())
-            : nfcBloc.add(StartNfcSessionEvent());
+            ? context.read<NfcBloc>().add(StopNfcSessionEvent())
+            : context.read<NfcBloc>().add(StartNfcSessionEvent());
       }),
     );
 

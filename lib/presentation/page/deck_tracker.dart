@@ -10,10 +10,7 @@ import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import '../bloc/deck/bloc.dart';
 import '../bloc/drawer/bloc.dart';
 import '../bloc/nfc/bloc.dart';
-import '../bloc/reader/bloc.dart';
-import '../bloc/record/bloc.dart';
 import '../bloc/tracker/bloc.dart';
-import '../bloc/usage_card/bloc.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_tracker.dart';
 import '../widget/deck/insight_view.dart';
@@ -103,17 +100,12 @@ class _DeckTrackerPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final trackerBloc = context.watch<TrackerBloc>();
-    final readerBloc = context.watch<ReaderBloc>();
     final drawerBloc = context.watch<DrawerBloc>();
-    final recordBloc = context.watch<RecordBloc>();
-    final usageCardBloc = context.watch<UsageCardBloc>();
     final locale = AppLocalization.of(context);
 
     return TrackerListener(
       child: Scaffold(
-        appBar: DeckTrackerAppBar(
-          nfcBloc: context.watch<NfcBloc>(),
-        ),
+        appBar: const DeckTrackerAppBar(),
         body: GestureDetector(
           onTap: () => drawerBloc.add(CloseDrawerEvent()),
           behavior: HitTestBehavior.opaque,
@@ -135,10 +127,6 @@ class _DeckTrackerPageContent extends StatelessWidget {
                       child: trackerBloc.state.isAnalysisMode
                           ? DeckInsightView(
                               locale: locale,
-                              readerBloc: readerBloc,
-                              trackerBloc: trackerBloc,
-                              recordBloc: recordBloc,
-                              usageCardBloc: usageCardBloc,
                             )
                           : DeckTrackerView(),
                     ),
@@ -146,13 +134,10 @@ class _DeckTrackerPageContent extends StatelessWidget {
                 ),
               ),
               CardHistoryDrawer(
-                drawerBloc: drawerBloc,
-                readerBloc: readerBloc,
                 onNfc: false,
               ),
               ShareRecordDrawer(
                 cards: [],
-                recordBloc: recordBloc,
               ),
             ],
           ),

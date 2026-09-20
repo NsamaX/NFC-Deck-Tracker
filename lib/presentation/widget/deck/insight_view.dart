@@ -19,18 +19,10 @@ import '../shared/list_section.dart';
 
 class DeckInsightView extends StatefulWidget {
   final AppLocalization locale;
-  final ReaderBloc readerBloc;
-  final TrackerBloc trackerBloc;
-  final RecordBloc recordBloc;
-  final UsageCardBloc usageCardBloc;
 
   const DeckInsightView({
     super.key,
     required this.locale,
-    required this.readerBloc,
-    required this.trackerBloc,
-    required this.recordBloc,
-    required this.usageCardBloc,
   });
 
   @override
@@ -45,10 +37,10 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
     super.didChangeDependencies();
 
     if (!_hasLoaded) {
-      widget.recordBloc.add(FetchRecordEvent(
-        userId: PresentationScope.read(context).userId,
-        deckId: widget.trackerBloc.state.originalDeck.deckId,
-      ));
+      context.read<RecordBloc>().add(FetchRecordEvent(
+            userId: PresentationScope.read(context).userId,
+            deckId: context.read<TrackerBloc>().state.originalDeck.deckId,
+          ));
 
       _hasLoaded = true;
     }
@@ -56,7 +48,7 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
 
   @override
   Widget build(BuildContext context) {
-    final stat = widget.usageCardBloc.state.stat;
+    final stat = context.read<UsageCardBloc>().state.stat;
 
     return ListView(
       children: [
@@ -75,7 +67,8 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
   }
 
   Widget _buildSummary() {
-    return DeckInsightSummary(summary: widget.usageCardBloc.state.summary);
+    return DeckInsightSummary(
+        summary: context.read<UsageCardBloc>().state.summary);
   }
 
   Widget _buildHistory(List<UsageCardStats> cardStats) {
@@ -91,24 +84,26 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
                   info: DateFormat('HH:mm:ss').format(record.createdAt!),
                   text: DateFormat('yyyy-MM-dd').format(record.createdAt!),
                   onTap: () {
-                    widget.recordBloc
+                    context
+                        .read<RecordBloc>()
                         .add(FindRecordEvent(recordId: record.recordId));
-                    widget.recordBloc.add(GetCardFromRecordEvent(
+                    context.read<RecordBloc>().add(GetCardFromRecordEvent(
                         recordId: record.recordId,
-                        deck: widget.trackerBloc.state.originalDeck));
-                    widget.readerBloc.add(SetReadedCardsEvent(
-                        readedCards: widget.recordBloc.state.cards));
-                    widget.trackerBloc
+                        deck: context.read<TrackerBloc>().state.originalDeck));
+                    context.read<ReaderBloc>().add(SetReadedCardsEvent(
+                        readedCards: context.read<RecordBloc>().state.cards));
+                    context
+                        .read<TrackerBloc>()
                         .add(LoadDeckFromRecordEvent(record: record));
-                    widget.usageCardBloc.add(CalculateUsageCardEvent(
-                        deck: widget.trackerBloc.state.originalDeck,
+                    context.read<UsageCardBloc>().add(CalculateUsageCardEvent(
+                        deck: context.read<TrackerBloc>().state.originalDeck,
                         record: record));
                   },
                   onDelete: () {
-                    widget.recordBloc.add(DeleteRecordEvent(
-                      userId: PresentationScope.read(context).userId,
-                      recordId: record.recordId,
-                    ));
+                    context.read<RecordBloc>().add(DeleteRecordEvent(
+                          userId: PresentationScope.read(context).userId,
+                          recordId: record.recordId,
+                        ));
                   },
                   popAfterTap: true,
                 );

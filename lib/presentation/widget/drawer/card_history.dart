@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
@@ -10,14 +11,10 @@ import '../../constant.dart';
 import '../card/list_tile.dart';
 
 class CardHistoryDrawer extends StatelessWidget {
-  final DrawerBloc drawerBloc;
-  final ReaderBloc readerBloc;
   final bool onNfc;
 
   const CardHistoryDrawer({
     super.key,
-    required this.drawerBloc,
-    required this.readerBloc,
     this.onNfc = true,
   });
 
@@ -26,13 +23,13 @@ class CardHistoryDrawer extends StatelessWidget {
     final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
-    final reversedCards =
-        List<CardEntity>.from(readerBloc.state.readedCards.reversed);
+    final reversedCards = List<CardEntity>.from(
+        context.read<ReaderBloc>().state.readedCards.reversed);
 
     return AnimatedPositioned(
       duration: WidgetConstant.drawerTransitionDuration,
       curve: Curves.easeInOut,
-      left: drawerBloc.state.visibleHistoryDrawer
+      left: context.read<DrawerBloc>().state.visibleHistoryDrawer
           ? 0
           : -WidgetConstant.historyDrawerWidth,
       top: 0,

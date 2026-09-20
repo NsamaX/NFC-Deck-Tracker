@@ -103,10 +103,7 @@ class _TagReaderPageContent extends StatelessWidget {
                 builder: (context, drawerState) {
                   return BlocBuilder<ReaderBloc, ReaderState>(
                     builder: (context, readerState) {
-                      return CardHistoryDrawer(
-                        drawerBloc: context.watch<DrawerBloc>(),
-                        readerBloc: context.watch<ReaderBloc>(),
-                      );
+                      return CardHistoryDrawer();
                     },
                   );
                 },

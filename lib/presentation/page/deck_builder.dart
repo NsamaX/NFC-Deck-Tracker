@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../bloc/application/bloc.dart';
 import '../bloc/deck/bloc.dart';
-import '../bloc/nfc/bloc.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_builder.dart';
 import '../widget/deck/total_card_in_deck.dart';
@@ -43,9 +41,6 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
     final theme = Theme.of(context);
-    final applicationBloc = context.read<ApplicationBloc>();
-    final deckBloc = context.read<DeckBloc>();
-    final nfcBloc = context.read<NfcBloc>();
 
     return WriterListener(
       child: BlocBuilder<DeckBloc, DeckState>(
@@ -55,9 +50,6 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
               nameController: nameController,
               locale: locale,
               theme: theme,
-              applicationBloc: applicationBloc,
-              deckBloc: deckBloc,
-              nfcBloc: nfcBloc,
             ),
             body: BlocBuilder<DeckBloc, DeckState>(
               builder: (context, state) {

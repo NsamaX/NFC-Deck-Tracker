@@ -13,12 +13,10 @@ import '../qr_code/scanner.dart';
 
 class ShareRecordDrawer extends StatelessWidget {
   final List<CardEntity> cards;
-  final RecordBloc recordBloc;
 
   const ShareRecordDrawer({
     super.key,
     required this.cards,
-    required this.recordBloc,
   });
 
   @override
@@ -39,7 +37,6 @@ class ShareRecordDrawer extends StatelessWidget {
               children: [
                 _DrawerContainer(
                   cards: cards,
-                  recordBloc: recordBloc,
                 ),
                 const Positioned(
                   bottom: -20,
@@ -61,11 +58,9 @@ class ShareRecordDrawer extends StatelessWidget {
 
 class _DrawerContainer extends StatelessWidget {
   final List<CardEntity> cards;
-  final RecordBloc recordBloc;
 
   const _DrawerContainer({
     required this.cards,
-    required this.recordBloc,
   });
 
   @override
@@ -105,7 +100,7 @@ class _DrawerContainer extends StatelessWidget {
               Navigator.of(context).push(
                 MaterialPageRoute(
                   builder: (_) => QRCodeScanner(
-                    recordBloc: recordBloc,
+                    recordBloc: context.read<RecordBloc>(),
                   ),
                 ),
               );
@@ -128,7 +123,7 @@ class _DrawerContainer extends StatelessWidget {
           onTap: () => Navigator.of(context).pop(),
           child: Center(
             child: GestureDetector(
-              onTap: () => recordBloc.add(ShareRecordEvent(
+              onTap: () => context.read<RecordBloc>().add(ShareRecordEvent(
                   userId: PresentationScope.read(context).userId,
                   cards: cards)),
               child: QRCodeGeneretor(),

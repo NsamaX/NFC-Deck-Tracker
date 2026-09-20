@@ -10,11 +10,8 @@ import '../../bloc/card/bloc.dart';
 import '../../locale/localization.dart';
 
 class CardCustomImage extends StatelessWidget {
-  final CardBloc cardBloc;
-
   const CardCustomImage({
     super.key,
-    required this.cardBloc,
   });
 
   @override
@@ -85,7 +82,9 @@ class CardCustomImage extends StatelessWidget {
         SnackBar(content: Text(locale.translate('permission.denied_photos'))),
       );
     } else if (selected.status == ImageSelectionStatus.selected) {
-      cardBloc.add(SetCardImageUrlEvent(imageUrl: selected.path!));
+      context
+          .read<CardBloc>()
+          .add(SetCardImageUrlEvent(imageUrl: selected.path!));
     }
   }
 }
