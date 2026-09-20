@@ -188,6 +188,12 @@ class TestWorld {
   final images = PassThroughImages();
 
   late final PresentationDependencies dependencies;
+  final createdBlocs = <BlocBase<dynamic>>[];
+
+  T _track<T extends BlocBase<dynamic>>(T bloc) {
+    createdBlocs.add(bloc);
+    return bloc;
+  }
 
   TestWorld() {
     final session = SessionUsecase(GuestSessionRepository());
@@ -231,7 +237,7 @@ class TestWorld {
             FetchUsedCardDistinctUsecase(cardRepository: cards),
       ),
       routeObserver: RouteObserver<ModalRoute>(),
-      createCardBloc: () => CardBloc(
+      createCardBloc: () => _track(CardBloc(
         createCardUsecase: CreateCardUsecase(
           cardRepository: cards,
           collectionRepository: collections,
@@ -239,18 +245,18 @@ class TestWorld {
         ),
         updateCardUsecase:
             UpdateCardUsecase(cardRepository: cards, imageRepository: images),
-      ),
-      createDrawerBloc: () => DrawerBloc(),
-      createPinCardBloc: () => PinCardBloc(),
-      createBrowseCardBloc: (collectionId) => BrowseCardBloc(
+      )),
+      createDrawerBloc: () => _track(DrawerBloc()),
+      createPinCardBloc: () => _track(PinCardBloc()),
+      createBrowseCardBloc: (collectionId) => _track(BrowseCardBloc(
         deleteCardUsecase:
             DeleteCardUsecase(cardRepository: cards, imageRepository: images),
         fetchCardUsecase: FetchCardUsecase(repository: LocalCatalog(cards)),
-      ),
-      createReaderBloc: (collectionId) => ReaderBloc(
+      )),
+      createReaderBloc: (collectionId) => _track(ReaderBloc(
         findCardFromTagUsecase: FindCardFromTagUsecase(cardRepository: cards),
-      ),
-      createTrackerBloc: (deck) => TrackerBloc(
+      )),
+      createTrackerBloc: (deck) => _track(TrackerBloc(
         deck: deck,
         trackingInteractionUsecase: TrackingInteractionUsecase(),
         calculateUsageCardUsecase: CalculateUsageCardUsecase(),
@@ -261,7 +267,7 @@ class TestWorld {
         deleteRecordUsecase: DeleteRecordUsecase(recordRepository: records),
         importRecordUsecase: ImportRecordUsecase(recordRepository: records),
         shareRecordUsecase: ShareRecordUsecase(recordRepository: records),
-      ),
+      )),
     );
   }
 

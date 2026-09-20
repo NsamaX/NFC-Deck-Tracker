@@ -203,4 +203,30 @@ void main() {
     expect(find.text('No cards found matching your search.'), findsOneWidget);
     expect(find.text('Dragon'), findsNothing);
   });
+
+  testWidgets('page-scoped blocs are closed when their pages are left',
+      (tester) async {
+    final world = makeWorld();
+    const deck = DeckEntity(deckId: 'deck', name: 'Deck');
+    world.decks.local['deck'] = deck;
+    world.dependencies.deckBuilderBloc.add(const OpenDeckEvent(deck: deck));
+    await world.dependencies.deckBuilderBloc.stream
+        .firstWhere((s) => s.currentDeck.deckId == 'deck' && !s.isLoading);
+
+    await world.pump(tester, initialRoute: RouteConstant.deck_builder);
+    await tester.tap(find.byIcon(Icons.play_arrow_rounded));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('OK'));
+    await tester.pumpAndSettle();
+    expect(world.createdBlocs.length, 4);
+    expect(world.createdBlocs.every((b) => !b.isClosed), isTrue);
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+    // Bloc.close completes through real async work, which fake time cannot
+    // advance, so let it run for real before checking.
+    await tester
+        .runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
+    expect(world.createdBlocs.every((b) => b.isClosed), isTrue);
+  });
 }
