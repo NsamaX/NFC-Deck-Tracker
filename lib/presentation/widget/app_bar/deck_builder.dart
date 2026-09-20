@@ -15,7 +15,7 @@ import '../specific/tutorail_nfc_icon.dart';
 
 import 'default.dart';
 
-class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
+class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String userId;
   final TextEditingController nameController;
   final AppLocalization locale;
@@ -24,7 +24,7 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
   final DeckBloc deckBloc;
   final NfcBloc nfcBloc;
 
-  const DeckViewAppBar({
+  const DeckBuilderAppBar({
     super.key,
     required this.userId,
     required this.nameController,
@@ -43,9 +43,45 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
     final collectionId =
         hasCards ? deckState.currentDeck.cards.first.card.collectionId : '';
 
+    final addCardItem = AppBarMenuItem(
+      label: Icons.add_rounded,
+      action: MenuAction.route(
+        RouteConstant.browse_card,
+        arguments: {
+          'collectionId': collectionId,
+          'collectionName': collectionId,
+          'onAdd': true,
+        },
+      ),
+    );
+
     List<AppBarMenuItem> menuItems;
 
-    if (deckState.isEditMode) {
+    if (deckState.isNewDeck && !hasCards) {
+      menuItems = [
+        AppBarMenuItem.back(),
+        AppBarMenuItem(label: deckName),
+        const AppBarMenuItem(
+          label: Icons.add_rounded,
+          action: MenuAction.route(
+            RouteConstant.collection,
+            arguments: {'onAdd': true},
+          ),
+        ),
+      ];
+    } else if (deckState.isNewDeck) {
+      menuItems = [
+        AppBarMenuItem.back(),
+        AppBarMenuItem.empty(),
+        AppBarMenuItem(label: deckName),
+        addCardItem,
+        AppBarMenuItem(
+          label: locale.translate('page_deck_builder.toggle_save'),
+          action: MenuAction.callback(
+              () => deckBloc.add(CreateDeckEvent(userId: userId))),
+        ),
+      ];
+    } else if (deckState.isEditMode) {
       final Widget nameFieldWidget = TextField(
         controller: nameController,
         textAlign: TextAlign.center,
@@ -111,17 +147,7 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
           }),
         ),
         AppBarMenuItem(label: nameFieldWidget),
-        AppBarMenuItem(
-          label: Icons.add_rounded,
-          action: MenuAction.route(
-            RouteConstant.browse_card,
-            arguments: {
-              'collectionId': collectionId,
-              'collectionName': collectionId,
-              'onAdd': true,
-            },
-          ),
-        ),
+        addCardItem,
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_save'),
           action: MenuAction.callback(() {

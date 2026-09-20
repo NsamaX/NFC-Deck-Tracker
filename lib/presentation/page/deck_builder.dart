@@ -6,8 +6,7 @@ import '../bloc/application/bloc.dart';
 import '../bloc/deck/bloc.dart';
 import '../bloc/nfc/bloc.dart';
 import '../locale/localization.dart';
-import '../widget/app_bar/deck_view.dart';
-import '../widget/app_bar/new_deck.dart';
+import '../widget/app_bar/deck_builder.dart';
 import '../widget/deck/total_card_in_deck.dart';
 import '../widget/listener/writer.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
@@ -55,23 +54,15 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
       child: BlocBuilder<DeckBloc, DeckState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: !state.isNewDeck
-                ? DeckViewAppBar(
-                    userId: userId,
-                    nameController: nameController,
-                    locale: locale,
-                    theme: theme,
-                    applicationBloc: applicationBloc,
-                    deckBloc: deckBloc,
-                    nfcBloc: nfcBloc,
-                  )
-                : NewDeckAppBar(
-                    userId: userId,
-                    nameController: nameController,
-                    locale: locale,
-                    theme: theme,
-                    deckBloc: deckBloc,
-                  ),
+            appBar: DeckBuilderAppBar(
+              userId: userId,
+              nameController: nameController,
+              locale: locale,
+              theme: theme,
+              applicationBloc: applicationBloc,
+              deckBloc: deckBloc,
+              nfcBloc: nfcBloc,
+            ),
             body: BlocBuilder<DeckBloc, DeckState>(
               builder: (context, state) {
                 if (state.isLoading) {
