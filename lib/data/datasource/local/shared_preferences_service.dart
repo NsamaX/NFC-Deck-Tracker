@@ -67,6 +67,7 @@ class SharedPreferencesService {
       }
     } catch (e) {
       LoggerUtil.e('Failed to save for key "$key": $e');
+      rethrow;
     }
   }
 
@@ -76,6 +77,7 @@ class SharedPreferencesService {
       LoggerUtil.i('Cleared all SharedPreferences data successfully');
     } catch (e) {
       LoggerUtil.e('Failed to clear SharedPreferences: $e');
+      rethrow;
     }
   }
 }

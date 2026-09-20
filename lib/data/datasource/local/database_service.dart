@@ -63,6 +63,7 @@ class DatabaseService {
       LoggerUtil.buffer('Tables created successfully');
     } catch (e) {
       LoggerUtil.e('Failed to create tables: $e');
+      rethrow;
     }
   }
 
@@ -89,6 +90,7 @@ class DatabaseService {
       }
     } catch (e) {
       LoggerUtil.e('Database migration failed: $e');
+      rethrow;
     }
   }
 
@@ -102,6 +104,7 @@ class DatabaseService {
       LoggerUtil.buffer('Database configured successfully');
     } catch (e) {
       LoggerUtil.e('Failed to configure database: $e');
+      rethrow;
     }
   }
 }

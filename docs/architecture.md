@@ -109,9 +109,10 @@ The following review findings need separate behavior changes:
 - Entity ids, names, card lists, and `isSynced` are non-null with empty
   defaults; `updatedAt`, `imageUrl`, `description`, and `additionalData` stay
   nullable, and `copyWith` cannot clear those to null.
-- Local deck updates update card membership rather than all deck metadata.
-  Multi-row local writes (`create_deck`, `update_deck`, `clear_user_data`) run
-  inside `SQLiteService.transaction`, where a failed write rolls back the rest.
+- Local storage failures (SQLite reads and writes, SharedPreferences writes,
+  schema creation and migration) throw; blocs turn them into `errorMessage`.
+  Multi-row local writes run inside `SQLiteService.transaction`. Remote
+  writes still return `false` because `SyncPolicy` uses that as "not synced".
 - NFC validation, capacity assumptions, and restart behavior retain existing rules.
 
 These are existing findings, not behavior introduced or fixed by this refactor.

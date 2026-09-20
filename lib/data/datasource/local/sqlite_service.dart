@@ -15,8 +15,6 @@ class SQLiteService {
 
   SQLiteService._inTransaction(this._databaseService, this._transaction);
 
-  bool get inTransaction => _transaction != null;
-
   Future<DatabaseExecutor> getDatabase() async {
     if (_transaction != null) return _transaction;
     try {
@@ -61,7 +59,7 @@ class SQLiteService {
       return result;
     } catch (e) {
       LoggerUtil.e('Failed to execute raw query: $e');
-      return [];
+      rethrow;
     }
   }
 
@@ -87,7 +85,7 @@ class SQLiteService {
       return result;
     } catch (e) {
       LoggerUtil.e('Failed to query table "$table": $e');
-      return [];
+      rethrow;
     }
   }
 
@@ -108,7 +106,7 @@ class SQLiteService {
       LoggerUtil.i('Inserted data into "$table" successfully');
     } catch (e) {
       LoggerUtil.e('Failed to insert data into "$table": $e');
-      if (inTransaction) rethrow;
+      rethrow;
     }
   }
 
@@ -144,7 +142,7 @@ class SQLiteService {
       LoggerUtil.i('Inserted batch data into "$table" successfully');
     } catch (e) {
       LoggerUtil.e('Failed to insert batch into "$table": $e');
-      if (inTransaction) rethrow;
+      rethrow;
     }
   }
 
@@ -167,7 +165,7 @@ class SQLiteService {
       LoggerUtil.i('Updated data in "$table" successfully');
     } catch (e) {
       LoggerUtil.e('Failed to update data in "$table": $e');
-      if (inTransaction) rethrow;
+      rethrow;
     }
   }
 
@@ -191,8 +189,7 @@ class SQLiteService {
       return true;
     } catch (e) {
       LoggerUtil.e('Failed to delete data from "$table": $e');
-      if (inTransaction) rethrow;
-      return false;
+      rethrow;
     }
   }
 }

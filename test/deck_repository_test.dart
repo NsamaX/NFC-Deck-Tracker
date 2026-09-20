@@ -11,6 +11,7 @@ import 'package:nfc_deck_tracker/domain/entity/card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/create_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_deck.dart';
+import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 
 class MemorySql extends Fake implements SQLiteService {
   final tables = <String, List<Map<String, dynamic>>>{};
@@ -49,6 +50,33 @@ class MemorySql extends Fake implements SQLiteService {
       ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.abort}) async {
     _write();
     tables.putIfAbsent(table, () => []).addAll(dataList);
+  }
+
+  @override
+  Future<void> update(
+      {required String table,
+      required Map<String, dynamic> data,
+      required String where,
+      required List<dynamic> whereArgs}) async {
+    _write();
+    final rows = tables[table] ?? [];
+    final key = where.split(' ').first;
+    for (var i = 0; i < rows.length; i++) {
+      if (rows[i][key] == whereArgs.first) rows[i] = {...rows[i], ...data};
+    }
+  }
+
+  @override
+  Future<bool> delete(
+      {required String table, String? where, List<dynamic>? whereArgs}) async {
+    _write();
+    if (where == null) {
+      tables[table] = [];
+    } else {
+      final key = where.split(' ').first;
+      tables[table]?.removeWhere((r) => r[key] == whereArgs?.first);
+    }
+    return true;
   }
 
   @override
@@ -91,5 +119,20 @@ void main() {
     expect(decks.single.isSynced, isFalse);
     expect(sql.transactions, 1);
     expect(sql.writesOutsideTransaction, 0);
+  });
+
+  test('updating a deck rewrites its name in the decks table', () async {
+    GameConfig.load('development');
+    final sql = MemorySql();
+    final cloud = FirestoreService.offline();
+    final repository = DeckRepositoryImpl(
+      localDatasource: DeckLocalDatasource(sql),
+      remoteDatasource: DeckRemoteDatasource(cloud),
+    );
+    final saved = await CreateDeckUsecase(deckRepository: repository)(
+        userId: '', deck: const DeckEntity(name: 'Old', cards: []));
+    await UpdateDeckUsecase(deckRepository: repository)(
+        userId: '', deck: saved.copyWith(name: 'New'));
+    expect(sql.tables['decks']!.single['name'], 'New');
   });
 }

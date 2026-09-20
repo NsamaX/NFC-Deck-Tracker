@@ -121,6 +121,13 @@ class DeckLocalDatasource {
     required DeckModel deck,
   }) async {
     await _sqliteService.transaction((txn) async {
+      await txn.update(
+        table: 'decks',
+        data: deck.toJsonForLocal(),
+        where: 'deckId = ?',
+        whereArgs: [deck.deckId],
+      );
+
       final List<CardInDeckModel> cards = deck.cards;
 
       if (cards.isEmpty) {
