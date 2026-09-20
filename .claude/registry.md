@@ -46,7 +46,7 @@ calls when it is empty.
 
 ### CardCatalogRepository (`card_catalog.dart`)
 
-- `fetch` — cards from the external game API or the user's custom collection, batched, cached locally
+- `fetch` — supported games: pages from the game API cached locally; custom collections: `SyncPolicy.reconcile` against the user's remote cards
 
 ### CollectionRepository (`collection.dart`)
 

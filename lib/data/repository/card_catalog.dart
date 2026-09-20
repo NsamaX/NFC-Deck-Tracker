@@ -1,4 +1,5 @@
 import '../../domain/repository/card_catalog.dart';
+import '../../domain/service/sync_policy.dart';
 import '../mapper/card.dart';
 import 'dart:convert';
 
@@ -134,29 +135,33 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
           LoggerUtil.e('[Error] Failed to load page: ${jsonEncode(page)}\n$e');
         }
       }
-    } else if (userId.isNotEmpty) {
-      LoggerUtil.d('[Remote] Fetching cards from remote (custom collection)');
-
-      try {
-        final remoteCards = await cardRepository.fetchForRemote(
-          userId: userId,
-          collectionId: collectionId,
-        );
-
-        if (remoteCards.isNotEmpty) {
-          await cardRepository.save(cards: remoteCards);
-          for (final card in remoteCards) {
-            final entity = card;
-            cardMap[entity.cardId] = entity;
-          }
-          LoggerUtil.d('[Remote] Cards loaded from remote Firestore');
-        } else {
-          LoggerUtil.d('[Remote] No cards found in remote');
-        }
-      } catch (e) {
-        LoggerUtil.e(
-            '[Error] Failed to fetch remote cards for $collectionId\n$e');
-      }
+    } else {
+      final synced = await const SyncPolicy().reconcile<CardEntity>(
+        userId: userId,
+        local: localCards,
+        fetchRemote: () => cardRepository.fetchForRemote(
+            userId: userId, collectionId: collectionId),
+        target: SyncTarget<CardEntity>(
+          id: (e) => e.cardId,
+          updatedAt: (e) => e.updatedAt,
+          isSynced: (e) => e.isSynced,
+          markSynced: (e, value) => e.copyWith(isSynced: value),
+          createLocal: (e) => cardRepository.createForLocal(card: e),
+          updateLocal: (e) => cardRepository.updateForLocal(card: e),
+          deleteLocal: (e) async {
+            await cardRepository.deleteForLocal(
+                collectionId: e.collectionId, cardId: e.cardId);
+            return true;
+          },
+          createRemote: (e) =>
+              cardRepository.createForRemote(userId: userId, card: e),
+          updateRemote: (e) =>
+              cardRepository.updateForRemote(userId: userId, card: e),
+        ),
+      );
+      cardMap
+        ..clear()
+        ..addEntries(synced.map((e) => MapEntry(e.cardId, e)));
     }
 
     return cardMap.values.toList();
