@@ -74,11 +74,6 @@ class SQLiteService {
     try {
       final DatabaseExecutor db = await getDatabase();
 
-      await _ensureTableExists(
-        db: db,
-        table: table,
-      );
-
       final result = await db.query(
         table,
         where: where,
@@ -104,11 +99,6 @@ class SQLiteService {
     try {
       final DatabaseExecutor db = await getDatabase();
 
-      await _ensureTableExists(
-        db: db,
-        table: table,
-      );
-
       await db.insert(
         table,
         data,
@@ -130,13 +120,6 @@ class SQLiteService {
     const int chunkSize = 500;
 
     try {
-      final DatabaseExecutor db = await getDatabase();
-
-      await _ensureTableExists(
-        db: db,
-        table: table,
-      );
-
       await transaction((txn) async {
         final DatabaseExecutor executor = await txn.getDatabase();
         for (int i = 0; i < dataList.length; i += chunkSize) {
@@ -174,11 +157,6 @@ class SQLiteService {
     try {
       final DatabaseExecutor db = await getDatabase();
 
-      await _ensureTableExists(
-        db: db,
-        table: table,
-      );
-
       await db.update(
         table,
         data,
@@ -201,11 +179,6 @@ class SQLiteService {
     try {
       final DatabaseExecutor db = await getDatabase();
 
-      await _ensureTableExists(
-        db: db,
-        table: table,
-      );
-
       await db.delete(
         table,
         where: where,
@@ -220,27 +193,6 @@ class SQLiteService {
       LoggerUtil.e('Failed to delete data from "$table": $e');
       if (inTransaction) rethrow;
       return false;
-    }
-  }
-
-  Future<void> _ensureTableExists({
-    required DatabaseExecutor db,
-    required String table,
-  }) async {
-    try {
-      final int? count = Sqflite.firstIntValue(
-        await db.rawQuery(
-          "SELECT COUNT(*) FROM sqlite_master WHERE type='table' AND name=?",
-          [table],
-        ),
-      );
-
-      if (count == null || count == 0) {
-        throw Exception('Table "$table" does not exist.');
-      }
-    } catch (e) {
-      LoggerUtil.e('Table check failed for "$table": $e');
-      rethrow;
     }
   }
 }
