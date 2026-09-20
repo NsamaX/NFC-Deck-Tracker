@@ -1,6 +1,7 @@
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
@@ -10,6 +11,7 @@ import '../widget/button/max_width.dart';
 import '../widget/text/description_align_center.dart';
 import '../widget/text/title_align_center.dart';
 import '../constant.dart';
+import '../bloc/application/bloc.dart';
 
 class LandingPage extends StatefulWidget {
   const LandingPage({super.key});
@@ -26,7 +28,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   Future<void> _signOutIfLoggedIn() async {
-    final user = PresentationScope.read(context).session.currentUser;
+    final user = context.read<ApplicationBloc>().state.user;
     if (user != null) {
       await PresentationScope.read(context).session.signOut();
       LoggerUtil.w('User signed out automatically on LandingPage');

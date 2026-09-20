@@ -1,4 +1,3 @@
-import '../domain/usecase/nfc_session.dart';
 import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
@@ -34,6 +33,8 @@ void _applicationBloc() {
         clearUserDataUsecase: locator<ClearUserDataUsecase>(),
         initSettingUsecase: locator<InitSettingUsecase>(),
         updateSettingUsecase: locator<UpdateSettingUsecase>(),
+        sessionUsecase: locator<SessionUsecase>(),
+        deviceUsecase: locator<DeviceUsecase>(),
       ));
 }
 

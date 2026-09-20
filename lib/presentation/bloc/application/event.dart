@@ -28,4 +28,22 @@ class SetPageIndexEvent extends ApplicationEvent {
 
 class ClearUserDataEvent extends ApplicationEvent {}
 
+class SessionChangedEvent extends ApplicationEvent {
+  final SessionUser? user;
+
+  const SessionChangedEvent(this.user);
+
+  @override
+  List<Object?> get props => [user];
+}
+
+class ConnectivityChangedEvent extends ApplicationEvent {
+  final bool isOnline;
+
+  const ConnectivityChangedEvent(this.isOnline);
+
+  @override
+  List<Object?> get props => [isOnline];
+}
+
 class DismissApplicationErrorEvent extends ApplicationEvent {}

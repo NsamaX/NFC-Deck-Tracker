@@ -1,4 +1,3 @@
-import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_deck_tracker/domain/entity/session_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -18,9 +17,9 @@ class SettingPage extends StatelessWidget {
     final locale = AppLocalization.of(context);
     final sectionBuilder = SettingBuilder(context);
 
-    return StreamBuilder<SessionUser?>(
-      stream: PresentationScope.read(context).session.authStateChanges(),
-      builder: (context, snapshot) {
+    return BlocSelector<ApplicationBloc, ApplicationState, SessionUser?>(
+      selector: (state) => state.user,
+      builder: (context, user) {
         return Scaffold(
           appBar: DefaultAppBar(
             menu: [
@@ -33,7 +32,7 @@ class SettingPage extends StatelessWidget {
             builder: (context, state) {
               return SettingSection(
                 section: [
-                  sectionBuilder.buildAccountSection(user: snapshot.data),
+                  sectionBuilder.buildAccountSection(user: user),
                   sectionBuilder.buildGeneralSection(),
                   sectionBuilder.buildSupportSection(),
                 ],

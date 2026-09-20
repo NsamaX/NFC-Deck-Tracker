@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../dependencies.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../locale/localization.dart';
 import '../widget/button/google_sign_in.dart';
@@ -8,6 +8,7 @@ import '../widget/text/description_align_center.dart';
 import '../widget/text/title_align_center.dart';
 import '../constant.dart';
 import '../../.config/runtime.dart';
+import '../bloc/application/bloc.dart';
 
 class SignInPage extends StatelessWidget {
   const SignInPage({super.key});
@@ -17,18 +18,9 @@ class SignInPage extends StatelessWidget {
     final locale = AppLocalization.of(context);
 
     return Scaffold(
-      body: StreamBuilder<bool>(
-        stream: PresentationScope.read(context).device.connectivityChanges,
-        initialData: false,
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          final isOnline = snapshot.data!;
-
+      body: BlocSelector<ApplicationBloc, ApplicationState, bool>(
+        selector: (state) => state.isOnline,
+        builder: (context, isOnline) {
           return Padding(
             padding: const EdgeInsets.symmetric(
               horizontal: WidgetConstant.paddingAround,

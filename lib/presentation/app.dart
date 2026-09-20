@@ -44,11 +44,7 @@ class _AppRootState extends State<AppRoot> {
     super.dispose();
   }
 
-  bool get _isUserLoggedIn {
-    final isLoggedIn = _dependencies.session.currentUser?.uid != null;
-    final isGuest = _dependencies.applicationBloc.state.guestId != null;
-    return isLoggedIn || isGuest;
-  }
+  bool get _isUserLoggedIn => _dependencies.applicationBloc.state.isSignedIn;
 
   @override
   Widget build(BuildContext context) {

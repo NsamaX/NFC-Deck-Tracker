@@ -70,6 +70,10 @@ refactor does not reorganize the project into feature folders.
   built (it spans the builder, collection, browse, and card routes) and resets
   itself on `NewDeckEvent`/`OpenDeckEvent`, so no page has to clear another
   page's flags.
+- `ApplicationBloc` is the one source for "who is signed in" and "is the
+  device online": it subscribes to the session and connectivity streams on
+  init and exposes `user`, `isOnline`, and `isSignedIn`; pages never
+  subscribe to those streams themselves.
 - Factory-created blocs are owned/closed by their page or `BlocProvider`.
   Shared blocs use `BlocProvider.value`.
 - UI rendering adapters remain in presentation: QR camera view, images, charts,
