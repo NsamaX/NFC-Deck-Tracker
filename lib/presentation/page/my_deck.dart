@@ -23,7 +23,7 @@ class _MyDeckPage extends State<MyDeckPage> with RouteAware {
   @override
   void initState() {
     super.initState();
-    userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
+    userId = PresentationScope.read(context).userId;
     context.read<DeckBloc>().add(FetchDeckEvent(userId: userId));
   }
 

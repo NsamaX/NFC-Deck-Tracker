@@ -30,7 +30,7 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
     nameController = TextEditingController(
       text: context.read<DeckBloc>().state.currentDeck.name,
     );
-    userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
+    userId = PresentationScope.read(context).userId;
 
     context.read<DeckBloc>().add(CloseEditModeEvent());
   }

@@ -21,6 +21,8 @@ class PresentationDependencies {
   final RecordBloc Function(String) createRecordBloc;
   final TrackerBloc Function(DeckEntity) createTrackerBloc;
 
+  String get userId => session.currentUser?.uid ?? '';
+
   const PresentationDependencies({
     required this.nfcBloc,
     required this.deckBloc,

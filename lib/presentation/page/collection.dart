@@ -26,7 +26,7 @@ class _CollectionPageState extends State<CollectionPage> {
     super.didChangeDependencies();
     if (_userId == null || _onAdd == null) {
       final args = getArguments(context);
-      _userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
+      _userId = PresentationScope.read(context).userId;
       _onAdd = args['onAdd'] ?? false;
     }
   }

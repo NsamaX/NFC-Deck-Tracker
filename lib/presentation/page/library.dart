@@ -34,7 +34,7 @@ class _LibraryPageContent extends State<_LibraryPageState> {
   @override
   void initState() {
     super.initState();
-    userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
+    userId = PresentationScope.read(context).userId;
     context
         .read<CollectionBloc>()
         .add(FetchUsedCardDistinctEvent(userId: userId));

@@ -372,6 +372,8 @@ and return local data without syncing.
 ## Presentation dependencies
 
 `lib/presentation/dependencies.dart` defines `PresentationDependencies`, the
-only thing pages may read from `PresentationScope`. `.injector/
+only thing pages may read from `PresentationScope`. Its `userId` getter is the
+signed-in Firebase uid or an empty string for guests; pages must not derive
+it from the guest id. `.injector/
 presentation_dependencies.dart` builds it from GetIt. Add a field there when a
 page needs a new bloc or use case; do not resolve GetIt from presentation.

@@ -35,7 +35,7 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
     super.didChangeDependencies();
     if (!_isInitialized) {
       final args = getArguments(context);
-      userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
+      userId = PresentationScope.read(context).userId;
       collectionId = args['collectionId'];
       collectionName = args['collectionName'];
       onAdd = args['onAdd'] ?? false;

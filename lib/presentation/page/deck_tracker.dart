@@ -68,7 +68,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    userId = PresentationScope.read(context).session.currentUser?.uid ?? '';
+    userId = PresentationScope.read(context).userId;
     collectionId = GameConfig.dummy;
     deck = context.read<DeckBloc>().state.currentDeck;
   }
