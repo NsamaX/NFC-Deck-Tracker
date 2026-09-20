@@ -17,6 +17,7 @@ tags:
 - [[presentation---locale---language_manager.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---route---constant.dart]]
+- [[presentation---widget---shared---list_section.dart]]
 
 ## Packages
 - `package:flutter/material.dart`

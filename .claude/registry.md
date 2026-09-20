@@ -254,6 +254,10 @@ only decide ids, timestamps, and which repository methods to bind.
 
 `call({userId, shareRecord})` — publish a record to another user.
 
+### SummarizeRecordUsecase (`summarize_record.dart`)
+
+`call({deck, record, stats})` — pure `RecordSummary` (totals, share of the deck played, unused cards) for the insight panel.
+
 ### TrackingInteractionUsecase (`tracking_interaction.dart`)
 
 `call({deck, logs, tag})` — apply one NFC scan to the live tracker; returns `TrackingInteractionResult`.
@@ -329,6 +333,10 @@ Pagination cursor for catalog fetches.
 ### RecordEntity (`record.dart`)
 
 A match record: deck, logs, result, timestamps.
+
+### RecordSummary (`record_summary.dart`)
+
+Aggregate figures of one record over its deck, computed by `SummarizeRecordUsecase`.
 
 ### SelectedImage (`selected_image.dart`)
 

@@ -18,6 +18,7 @@ tags:
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---deck---insight_chart.dart]]
 - [[presentation---widget---deck---insight_summary.dart]]
+- [[presentation---widget---shared---list_section.dart]]
 - [[presentation---widget---specific---history_list_view.dart]]
 
 ## Packages

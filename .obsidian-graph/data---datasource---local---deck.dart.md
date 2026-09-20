@@ -16,6 +16,7 @@ tags:
 - [[data---model---card_in_deck.dart]]
 - [[data---model---collection.dart]]
 - [[data---model---deck.dart]]
+- [[domain---entity---collection.dart]]
 
 ## Packages
 - `package:sqflite/sqflite.dart`

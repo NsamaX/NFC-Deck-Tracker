@@ -2,7 +2,6 @@
 tags:
   - layer/presentation
   - role/widget
-  - coupling/medium
 ---
 
 # insight_summary.dart
@@ -10,10 +9,7 @@ tags:
 `lib/presentation/widget/deck/insight_summary.dart`
 
 ## Imports
-- [[domain---entity---deck.dart]]
-- [[domain---entity---record.dart]]
-- [[domain---entity---usage_card_stats.dart]]
-- [[domain---value---player_action.dart]]
+- [[domain---entity---record_summary.dart]]
 - [[presentation---locale---localization.dart]]
 
 ## Packages

@@ -33,6 +33,7 @@ tags:
 - [[domain---usecase---import_record.dart]]
 - [[domain---usecase---init_setting.dart]]
 - [[domain---usecase---share_record.dart]]
+- [[domain---usecase---summarize_record.dart]]
 - [[domain---usecase---tracking_interaction.dart]]
 - [[domain---usecase---update_card.dart]]
 - [[domain---usecase---update_card_in_deck.dart]]

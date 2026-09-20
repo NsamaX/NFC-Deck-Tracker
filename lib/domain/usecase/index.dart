@@ -20,6 +20,7 @@ export 'get_card_from_record.dart';
 export 'import_record.dart';
 export 'init_setting.dart';
 export 'share_record.dart';
+export 'summarize_record.dart';
 export 'tracking_interaction.dart';
 export 'update_card.dart';
 export 'update_collection.dart';

@@ -27,5 +27,4 @@ tags:
 - `package:equatable/equatable.dart`
 - `package:flutter/services.dart`
 - `package:flutter_bloc/flutter_bloc.dart`
-- `package:uuid/uuid.dart`
 

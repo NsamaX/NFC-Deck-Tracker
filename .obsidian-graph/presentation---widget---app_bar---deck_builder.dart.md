@@ -5,9 +5,9 @@ tags:
   - coupling/high
 ---
 
-# deck_view.dart
+# deck_builder.dart
 
-`lib/presentation/widget/app_bar/deck_view.dart`
+`lib/presentation/widget/app_bar/deck_builder.dart`
 
 ## Imports
 - [[domain---entity---card.dart]]

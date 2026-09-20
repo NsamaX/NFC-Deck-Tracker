@@ -3,17 +3,21 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/record.dart';
+import 'package:nfc_deck_tracker/domain/entity/record_summary.dart';
 import 'package:nfc_deck_tracker/domain/entity/usage_card_stats.dart';
 import 'package:nfc_deck_tracker/domain/usecase/calculate_usage_card.dart';
+import 'package:nfc_deck_tracker/domain/usecase/summarize_record.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class UsageCardBloc extends Bloc<UsageCardEvent, UsageCardState> {
   final CalculateUsageCardUsecase calculateUsageCardUsecase;
+  final SummarizeRecordUsecase summarizeRecordUsecase;
 
   UsageCardBloc({
     required this.calculateUsageCardUsecase,
+    required this.summarizeRecordUsecase,
   }) : super(const UsageCardState()) {
     on<CalculateUsageCardEvent>(_onCalculateUsageCard);
     on<ResetUsageCardEvent>(_onResetUsageCard);
@@ -23,11 +27,13 @@ class UsageCardBloc extends Bloc<UsageCardEvent, UsageCardState> {
       CalculateUsageCardEvent event, Emitter<UsageCardState> emit) async {
     final stats =
         await calculateUsageCardUsecase(deck: event.deck, record: event.record);
-    emit(state.copyWith(stat: stats));
+    final summary = summarizeRecordUsecase(
+        deck: event.deck, record: event.record, stats: stats);
+    emit(state.copyWith(stat: stats, summary: summary));
   }
 
   void _onResetUsageCard(
       ResetUsageCardEvent event, Emitter<UsageCardState> emit) {
-    emit(state.copyWith(stat: []));
+    emit(state.copyWith(stat: [], summary: const RecordSummary()));
   }
 }

@@ -124,5 +124,6 @@ void _trackerBloc() {
 void _usageCardBloc() {
   locator.registerFactory(() => UsageCardBloc(
         calculateUsageCardUsecase: locator<CalculateUsageCardUsecase>(),
+        summarizeRecordUsecase: locator<SummarizeRecordUsecase>(),
       ));
 }

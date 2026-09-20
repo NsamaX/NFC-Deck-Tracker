@@ -62,7 +62,7 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
     return ListView(
       children: [
         _buildChart(stat),
-        _buildSummary(stat),
+        _buildSummary(),
         _buildHistory(stat),
       ],
     );
@@ -75,16 +75,8 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
     );
   }
 
-  Widget _buildSummary(List<UsageCardStats> cardStats) {
-    return DeckInsightSummary(
-      initialDeck: widget.trackerBloc.state.originalDeck,
-      allRecord: widget.recordBloc.state.records,
-      currentRecord: widget.recordBloc.state.currentRecord,
-      usageCardStat: cardStats,
-      selectRecord: (context, recordId) {
-        widget.recordBloc.add(FindRecordEvent(recordId: recordId));
-      },
-    );
+  Widget _buildSummary() {
+    return DeckInsightSummary(summary: widget.usageCardBloc.state.summary);
   }
 
   Widget _buildHistory(List<UsageCardStats> cardStats) {

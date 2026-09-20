@@ -115,6 +115,7 @@ void _localUsecase() {
 
 void _recordUsecase() {
   locator.registerLazySingleton(() => CalculateUsageCardUsecase());
+  locator.registerLazySingleton(() => const SummarizeRecordUsecase());
   locator.registerLazySingleton(() => CreateRecordUsecase(
         recordRepository: locator<RecordRepository>(),
       ));
