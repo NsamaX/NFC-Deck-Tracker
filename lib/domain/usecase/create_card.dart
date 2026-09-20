@@ -18,11 +18,11 @@ class CreateCardUsecase {
     required this.imageRepository,
   });
 
-  Future<void> call({
+  Future<CardEntity> call({
     required String userId,
     required CardEntity card,
   }) async {
-    final String cardId = const Uuid().v4();
+    final String cardId = card.cardId.isEmpty ? const Uuid().v4() : card.cardId;
 
     final uploadedUrl = await imageRepository.upload(imagePath: card.imageUrl!);
 
@@ -45,7 +45,7 @@ class CreateCardUsecase {
       collectionId: card.collectionId,
     );
 
-    await const SyncPolicy().write(
+    return const SyncPolicy().write(
       userId: userId,
       entity: updatedCard,
       markSynced: (e, synced) => e.copyWith(isSynced: synced),

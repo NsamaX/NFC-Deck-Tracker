@@ -175,6 +175,18 @@ void main() {
     expect(repository.local['offline']!.isSynced, isTrue);
   });
 
+  test('creating a deck returns the saved entity with a generated id',
+      () async {
+    final repository = MemoryDecks();
+    final saved = await CreateDeckUsecase(deckRepository: repository)(
+        userId: '', deck: const DeckEntity(name: 'New'));
+    expect(saved.deckId, isNotEmpty);
+    expect(repository.local[saved.deckId], saved);
+    final kept = await CreateDeckUsecase(deckRepository: repository)(
+        userId: '', deck: const DeckEntity(deckId: 'given', name: 'Given'));
+    expect(kept.deckId, 'given');
+  });
+
   test('a newer local deck is pushed to remote during fetch', () async {
     final repository = MemoryDecks();
     final old = DeckEntity(

@@ -12,17 +12,15 @@ class CreateDeckUsecase {
     required this.deckRepository,
   });
 
-  Future<void> call({
+  Future<DeckEntity> call({
     required String userId,
     required DeckEntity deck,
   }) async {
-    final String deckId = const Uuid().v4();
-
     final updatedDeck = deck.copyWith(
-      deckId: deckId,
+      deckId: deck.deckId.isEmpty ? const Uuid().v4() : deck.deckId,
     );
 
-    await const SyncPolicy().write(
+    return const SyncPolicy().write(
       userId: userId,
       entity: updatedDeck,
       markSynced: (e, synced) => e.copyWith(isSynced: synced),

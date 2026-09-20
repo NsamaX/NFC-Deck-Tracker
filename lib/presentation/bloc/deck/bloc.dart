@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
@@ -104,7 +103,6 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
 
   void _onDefaultDeck(DefaultDeckEvent event, Emitter<DeckState> emit) {
     final deck = DeckEntity(
-      deckId: const Uuid().v4(),
       name: event.locale.translate('page_deck_builder.app_bar'),
       cards: const [],
     );

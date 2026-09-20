@@ -12,7 +12,7 @@ class CreateCollectionUsecase {
     required this.collectionRepository,
   });
 
-  Future<void> call({
+  Future<CollectionEntity> call({
     required String userId,
     required String name,
   }) async {
@@ -23,7 +23,7 @@ class CreateCollectionUsecase {
       name: name,
     );
 
-    await const SyncPolicy().write(
+    return const SyncPolicy().write(
       userId: userId,
       entity: newCollection,
       markSynced: (e, synced) => e.copyWith(isSynced: synced),

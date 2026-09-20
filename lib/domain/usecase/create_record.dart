@@ -12,17 +12,15 @@ class CreateRecordUsecase {
     required this.recordRepository,
   });
 
-  Future<void> call({
+  Future<RecordEntity> call({
     required String userId,
     required RecordEntity record,
   }) async {
-    final String recordId = const Uuid().v4();
-
     final updatedRecord = record.copyWith(
-      recordId: recordId,
+      recordId: record.recordId.isEmpty ? const Uuid().v4() : record.recordId,
     );
 
-    await const SyncPolicy().write(
+    return const SyncPolicy().write(
       userId: userId,
       entity: updatedRecord,
       markSynced: (e, synced) => e.copyWith(isSynced: synced),

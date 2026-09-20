@@ -164,19 +164,19 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### CreateCardUsecase (`create_card.dart`)
 
-`call({userId, card})` — upload the image, insert the card, touch its collection.
+`call({userId, card})` — upload the image, insert the card, touch its collection; returns the saved card with its id.
 
 ### CreateCollectionUsecase (`create_collection.dart`)
 
-`call({userId, collection})` — insert a collection with a generated id.
+`call({userId, name})` — insert a collection with a generated id; returns it.
 
 ### CreateDeckUsecase (`create_deck.dart`)
 
-`call({userId, deck})` — insert a deck with a generated id and timestamps.
+`call({userId, deck})` — insert a deck, generating an id when empty; returns the saved deck.
 
 ### CreateRecordUsecase (`create_record.dart`)
 
-`call({userId, record})` — insert a match record.
+`call({userId, record})` — insert a match record, generating an id when empty; returns the saved record.
 
 ### DeleteCardUsecase (`delete_card.dart`)
 

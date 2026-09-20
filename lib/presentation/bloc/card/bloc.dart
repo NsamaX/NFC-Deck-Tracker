@@ -52,8 +52,9 @@ class CardBloc extends Bloc<CardEvent, CardState> {
       collectionId: event.collectionId,
       description: event.locale.translate('card.no_description'),
     );
-    await createCardUsecase(userId: event.userId, card: updatedCard);
-    emit(state.copyWith(card: updatedCard));
+    final saved =
+        await createCardUsecase(userId: event.userId, card: updatedCard);
+    emit(state.copyWith(card: saved));
   }
 
   Future<void> _onUpdateCard(

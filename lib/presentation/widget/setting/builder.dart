@@ -45,8 +45,8 @@ class SettingBuilder {
               if (user == null) {
                 final result = await session.signInWithGoogle();
                 if (result != SignInResult.success) return;
-                applicationBloc.add(UpdateSettingsEvent(
-                    (s) => s.copyWith(clearGuestId: true)));
+                applicationBloc.add(
+                    UpdateSettingsEvent((s) => s.copyWith(clearGuestId: true)));
                 applicationBloc.add(ClearUserDataEvent());
               } else {
                 await session.signOut();

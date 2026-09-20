@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:uuid/uuid.dart';
 
 import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
@@ -42,7 +41,7 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
   }) : super(RecordState(
           currentRecord: RecordEntity(
             deckId: deckId,
-            recordId: Uuid().v4(),
+            recordId: '',
             data: [],
           ),
         )) {
@@ -120,13 +119,14 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
 
   Future<void> _onCreateRecord(
       CreateRecordEvent event, Emitter<RecordState> emit) async {
+    final saved = await createRecordUsecase.call(
+      userId: event.userId,
+      record: state.currentRecord.copyWith(createdAt: DateTime.now()),
+    );
     emit(state.copyWith(
-        currentRecord:
-            state.currentRecord.copyWith(createdAt: DateTime.now())));
-    await createRecordUsecase.call(
-        userId: event.userId, record: state.currentRecord);
-    final updatedRecords = [...state.records, state.currentRecord];
-    emit(state.copyWith(records: updatedRecords));
+      records: [...state.records, saved],
+      currentRecord: RecordEntity(deckId: saved.deckId, recordId: '', data: []),
+    ));
   }
 
   Future<void> _onDeleteRecord(
