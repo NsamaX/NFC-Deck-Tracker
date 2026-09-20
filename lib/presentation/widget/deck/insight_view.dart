@@ -73,10 +73,15 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
               title: AppLocalization.of(context)
                   .translate('page_deck_tracker.history_title'),
               items: state.records.map((record) {
+                final createdAt = record.createdAt;
                 return HistoryItem(
                   key: record.recordId,
-                  info: DateFormat('HH:mm:ss').format(record.createdAt!),
-                  text: DateFormat('yyyy-MM-dd').format(record.createdAt!),
+                  info: createdAt == null
+                      ? ''
+                      : DateFormat('HH:mm:ss').format(createdAt),
+                  text: createdAt == null
+                      ? '-'
+                      : DateFormat('yyyy-MM-dd').format(createdAt),
                   onTap: () => context
                       .read<TrackerBloc>()
                       .add(SelectRecordEvent(recordId: record.recordId)),

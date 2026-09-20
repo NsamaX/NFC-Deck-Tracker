@@ -43,9 +43,18 @@ class CardCustomImage extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
       child: imageUrl.startsWith('http')
-          ? Image.network(imageUrl, fit: BoxFit.cover, gaplessPlayback: true)
-          : Image.file(File(imageUrl),
-              fit: BoxFit.cover, gaplessPlayback: true),
+          ? Image.network(
+              imageUrl,
+              fit: BoxFit.cover,
+              gaplessPlayback: true,
+              errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
+            )
+          : Image.file(
+              File(imageUrl),
+              fit: BoxFit.cover,
+              gaplessPlayback: true,
+              errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),
+            ),
     );
   }
 
