@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/card/bloc.dart';
-import '../../bloc/deck/bloc.dart';
+import '../../bloc/deck_builder/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
 import '../../locale/localization.dart';
 
@@ -27,7 +27,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
     final CardArgs(:collectionId, :card, :onNFC, :onAdd, :onCustom) =
         CardArgs.of(context);
     final locale = AppLocalization.of(context);
-    final deckBloc = context.read<DeckBloc>();
+    final deckBloc = context.read<DeckBuilderBloc>();
     final nfcBloc = context.read<NfcBloc>();
     final cardBloc = context.watch<CardBloc>();
     final cardState = cardBloc.state.card;

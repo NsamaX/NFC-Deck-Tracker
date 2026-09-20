@@ -11,7 +11,7 @@ tags:
 
 ## Imports
 - [[presentation---bloc---card---bloc.dart]]
-- [[presentation---bloc---deck---bloc.dart]]
+- [[presentation---bloc---deck_builder---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]

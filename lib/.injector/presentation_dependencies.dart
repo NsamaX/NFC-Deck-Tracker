@@ -9,6 +9,7 @@ PresentationDependencies createPresentationDependencies() =>
     PresentationDependencies(
       nfcBloc: locator<NfcBloc>(),
       deckBloc: locator<DeckBloc>(),
+      deckBuilderBloc: locator<DeckBuilderBloc>(),
       session: locator<SessionUsecase>(),
       device: locator<DeviceUsecase>(),
       applicationBloc: locator<ApplicationBloc>(),

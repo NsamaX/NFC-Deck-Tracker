@@ -16,6 +16,7 @@ tags:
 - [[presentation---bloc---card---bloc.dart]]
 - [[presentation---bloc---collection---bloc.dart]]
 - [[presentation---bloc---deck---bloc.dart]]
+- [[presentation---bloc---deck_builder---bloc.dart]]
 - [[presentation---bloc---drawer---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---bloc---pin_card---bloc.dart]]

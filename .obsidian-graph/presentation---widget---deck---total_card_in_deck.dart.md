@@ -9,7 +9,7 @@ tags:
 `lib/presentation/widget/deck/total_card_in_deck.dart`
 
 ## Imports
-- [[presentation---bloc---deck---bloc.dart]]
+- [[presentation---bloc---deck_builder---bloc.dart]]
 - [[presentation---locale---localization.dart]]
 
 ## Packages

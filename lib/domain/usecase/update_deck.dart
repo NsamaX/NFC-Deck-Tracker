@@ -10,14 +10,14 @@ class UpdateDeckUsecase {
     required this.deckRepository,
   });
 
-  Future<void> call({
+  Future<DeckEntity> call({
     required String userId,
     required DeckEntity deck,
   }) async {
     final DateTime now = DateTime.now();
     final updatedDeck = deck.copyWith(updatedAt: now);
 
-    await const SyncPolicy().write(
+    return const SyncPolicy().write(
       userId: userId,
       entity: updatedDeck,
       markSynced: (e, synced) => e.copyWith(isSynced: synced),

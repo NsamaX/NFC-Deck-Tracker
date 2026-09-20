@@ -10,77 +10,7 @@ abstract class DeckEvent extends Equatable {
 class FetchDeckEvent extends DeckEvent {
   final String userId;
 
-  const FetchDeckEvent({
-    required this.userId,
-  });
-
-  @override
-  List<Object?> get props => [userId];
-}
-
-class FetchCardInDeckEvent extends DeckEvent {
-  final String deckId;
-
-  const FetchCardInDeckEvent({
-    required this.deckId,
-  });
-
-  @override
-  List<Object?> get props => [deckId];
-}
-
-class AddCardEvent extends DeckEvent {
-  final CardEntity card;
-  final int quantity;
-
-  const AddCardEvent({
-    required this.card,
-    this.quantity = 1,
-  });
-
-  @override
-  List<Object?> get props => [card, quantity];
-}
-
-class RemoveCardEvent extends DeckEvent {
-  final CardEntity card;
-
-  const RemoveCardEvent({
-    required this.card,
-  });
-
-  @override
-  List<Object?> get props => [card];
-}
-
-class SelectCardEvent extends DeckEvent {
-  final CardEntity card;
-
-  const SelectCardEvent({
-    required this.card,
-  });
-
-  @override
-  List<Object?> get props => [card];
-}
-
-class DefaultDeckEvent extends DeckEvent {
-  final String name;
-
-  const DefaultDeckEvent({
-    required this.name,
-  });
-
-  @override
-  List<Object?> get props => [name];
-}
-
-class CreateDeckEvent extends DeckEvent {
-  final String userId;
-
-  const CreateDeckEvent({
-    required this.userId,
-  });
+  const FetchDeckEvent({required this.userId});
 
   @override
   List<Object?> get props => [userId];
@@ -90,72 +20,8 @@ class DeleteDeckEvent extends DeckEvent {
   final String userId;
   final String deckId;
 
-  const DeleteDeckEvent({
-    required this.userId,
-    required this.deckId,
-  });
+  const DeleteDeckEvent({required this.userId, required this.deckId});
 
   @override
   List<Object?> get props => [userId, deckId];
 }
-
-class UpdateDeckEvent extends DeckEvent {
-  final String userId;
-
-  const UpdateDeckEvent({
-    required this.userId,
-  });
-
-  @override
-  List<Object?> get props => [userId];
-}
-
-class SetCurrentDeckEvent extends DeckEvent {
-  final String deckId;
-
-  const SetCurrentDeckEvent({
-    required this.deckId,
-  });
-
-  @override
-  List<Object?> get props => [deckId];
-}
-
-class SetDeckNameEvent extends DeckEvent {
-  final String name;
-
-  const SetDeckNameEvent({
-    required this.name,
-  });
-
-  @override
-  List<Object?> get props => [name];
-}
-
-class SetCardQuantityEvent extends DeckEvent {
-  final int quantity;
-
-  const SetCardQuantityEvent({
-    required this.quantity,
-  });
-
-  @override
-  List<Object?> get props => [quantity];
-}
-
-class ShareEvent extends DeckEvent {
-  final String nameLabel;
-  final String totalLabel;
-
-  const ShareEvent({
-    required this.nameLabel,
-    required this.totalLabel,
-  });
-
-  @override
-  List<Object?> get props => [nameLabel, totalLabel];
-}
-
-class ToggleEditModeEvent extends DeckEvent {}
-
-class CloseEditModeEvent extends DeckEvent {}

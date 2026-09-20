@@ -58,6 +58,7 @@ class _AppRootState extends State<AppRoot> {
         providers: [
           BlocProvider.value(value: _nfcBloc),
           BlocProvider.value(value: _dependencies.deckBloc),
+          BlocProvider.value(value: _dependencies.deckBuilderBloc),
           BlocProvider.value(value: _dependencies.applicationBloc),
         ],
         child: BlocBuilder<ApplicationBloc, ApplicationState>(

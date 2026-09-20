@@ -5,6 +5,7 @@ import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/deck/bloc.dart';
+import '../../bloc/deck_builder/bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/constant.dart';
 
@@ -18,7 +19,7 @@ class DeckItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEditMode = context.read<DeckBloc>().state.isEditMode;
+    final isEditMode = context.read<DeckBuilderBloc>().state.isEditMode;
 
     return Stack(
       children: [
@@ -59,9 +60,7 @@ class DeckItem extends StatelessWidget {
   }
 
   void _onTap(BuildContext context) {
-    context.read<DeckBloc>().add(SetCurrentDeckEvent(deckId: deck.deckId));
-
-    context.read<DeckBloc>().add(FetchCardInDeckEvent(deckId: deck.deckId));
+    context.read<DeckBuilderBloc>().add(OpenDeckEvent(deck: deck));
 
     Navigator.of(context).pushNamed(RouteConstant.deck_builder);
   }

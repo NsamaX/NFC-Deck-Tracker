@@ -66,6 +66,10 @@ refactor does not reorganize the project into feature folders.
 - Blocs import nothing from Flutter beyond `flutter_bloc`: events carry
   already-translated strings, and platform side effects (clipboard,
   navigation, snackbars) run in widgets or listeners reacting to state.
+- `DeckBloc` holds only the deck list; `DeckBuilderBloc` holds the deck being
+  built (it spans the builder, collection, browse, and card routes) and resets
+  itself on `NewDeckEvent`/`OpenDeckEvent`, so no page has to clear another
+  page's flags.
 - Factory-created blocs are owned/closed by their page or `BlocProvider`.
   Shared blocs use `BlocProvider.value`.
 - UI rendering adapters remain in presentation: QR camera view, images, charts,

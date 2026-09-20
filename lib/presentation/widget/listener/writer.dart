@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../bloc/deck/bloc.dart';
+import '../../bloc/deck_builder/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
 import '../../locale/localization.dart';
 
@@ -27,7 +27,7 @@ class WriterListener extends StatelessWidget {
           );
 
           context.read<NfcBloc>().add(RestartNfcSessionEvent(
-                card: context.read<DeckBloc>().state.selectedCard,
+                card: context.read<DeckBuilderBloc>().state.selectedCard,
               ));
         } else if (state.warningMessage.isNotEmpty) {
           AppSnackBar(

@@ -6,6 +6,7 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/application/bloc.dart';
+import '../../bloc/deck_builder/bloc.dart';
 import '../../bloc/deck/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
 import '../../locale/localization.dart';
@@ -28,7 +29,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deckState = context.read<DeckBloc>().state;
+    final deckState = context.read<DeckBuilderBloc>().state;
     final deckName = deckState.currentDeck.name;
     final hasCards = deckState.currentDeck.cards.isNotEmpty == true;
     final collectionId =
@@ -69,8 +70,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(
           label: AppLocalization.of(context)
               .translate('page_deck_builder.toggle_save'),
-          action: MenuAction.callback(() => context.read<DeckBloc>().add(
-              CreateDeckEvent(userId: PresentationScope.read(context).userId))),
+          action: MenuAction.callback(() => context.read<DeckBuilderBloc>().add(
+              SaveDeckEvent(userId: PresentationScope.read(context).userId))),
         ),
       ];
     } else if (deckState.isEditMode) {
@@ -85,7 +86,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
         onChanged: (value) {
           final trimmed = value.trim();
-          context.read<DeckBloc>().add(SetDeckNameEvent(
+          context.read<DeckBuilderBloc>().add(SetDeckNameEvent(
               name: trimmed.isNotEmpty
                   ? trimmed
                   : AppLocalization.of(context)
@@ -98,7 +99,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
               : AppLocalization.of(context)
                   .translate('page_deck_builder.app_bar');
 
-          context.read<DeckBloc>().add(SetDeckNameEvent(name: newName));
+          context.read<DeckBuilderBloc>().add(SetDeckNameEvent(name: newName));
           nameController.text = newName;
         },
       );
@@ -110,7 +111,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
             if (context.read<NfcBloc>().state.isSessionActive) {
               context.read<NfcBloc>().add(StopNfcSessionEvent());
               context
-                  .read<DeckBloc>()
+                  .read<DeckBuilderBloc>()
                   .add(SelectCardEvent(card: const CardEntity()));
             } else {
               context
@@ -153,10 +154,10 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: AppLocalization.of(context)
               .translate('page_deck_builder.toggle_save'),
           action: MenuAction.callback(() {
-            context.read<DeckBloc>().add(UpdateDeckEvent(
-                userId: PresentationScope.read(context).userId));
+            context.read<DeckBuilderBloc>().add(
+                SaveDeckEvent(userId: PresentationScope.read(context).userId));
             context.read<NfcBloc>().add(StopNfcSessionEvent());
-            context.read<DeckBloc>().add(CloseEditModeEvent());
+            context.read<DeckBuilderBloc>().add(CloseEditModeEvent());
           }),
         ),
       ];
@@ -167,7 +168,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: Icons.ios_share_rounded,
           action: MenuAction.callback(() {
             final locale = AppLocalization.of(context);
-            context.read<DeckBloc>().add(ShareEvent(
+            context.read<DeckBuilderBloc>().add(ShareEvent(
                   nameLabel:
                       locale.translate('page_deck_builder.clipboard_deck_name'),
                   totalLabel: locale
@@ -184,7 +185,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: AppLocalization.of(context)
               .translate('page_deck_builder.toggle_edit'),
           action: MenuAction.callback(() {
-            context.read<DeckBloc>().add(ToggleEditModeEvent());
+            context.read<DeckBuilderBloc>().add(ToggleEditModeEvent());
             if (context.read<ApplicationBloc>().state.tutorialNfcIcon) {
               showGeneralDialog(
                 context: context,

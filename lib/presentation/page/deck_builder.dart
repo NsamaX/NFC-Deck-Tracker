@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/deck/bloc.dart';
+import '../bloc/deck_builder/bloc.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/deck_builder.dart';
 import '../widget/deck/total_card_in_deck.dart';
@@ -27,10 +29,10 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
     super.initState();
 
     nameController = TextEditingController(
-      text: context.read<DeckBloc>().state.currentDeck.name,
+      text: context.read<DeckBuilderBloc>().state.currentDeck.name,
     );
 
-    context.read<DeckBloc>().add(CloseEditModeEvent());
+    context.read<DeckBuilderBloc>().add(CloseEditModeEvent());
   }
 
   @override
@@ -45,23 +47,35 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
     final locale = AppLocalization.of(context);
 
     return WriterListener(
-      child: ErrorListener<DeckBloc, DeckState>(
+      child: ErrorListener<DeckBuilderBloc, DeckBuilderState>(
         errorOf: (state) => state.errorMessage,
-        child: BlocListener<DeckBloc, DeckState>(
-          listenWhen: (previous, current) =>
-              previous.shareCount != current.shareCount,
-          listener: (context, state) {
-            Clipboard.setData(ClipboardData(text: state.shareText));
-            AppSnackBar(context,
-                text: locale.translate('page_deck_builder.snack_bar_share'));
-          },
-          child: BlocBuilder<DeckBloc, DeckState>(
+        child: MultiBlocListener(
+          listeners: [
+            BlocListener<DeckBuilderBloc, DeckBuilderState>(
+              listenWhen: (previous, current) =>
+                  previous.shareCount != current.shareCount,
+              listener: (context, state) {
+                Clipboard.setData(ClipboardData(text: state.shareText));
+                AppSnackBar(context,
+                    text:
+                        locale.translate('page_deck_builder.snack_bar_share'));
+              },
+            ),
+            BlocListener<DeckBuilderBloc, DeckBuilderState>(
+              listenWhen: (previous, current) =>
+                  previous.savedCount != current.savedCount,
+              listener: (context, state) => context.read<DeckBloc>().add(
+                  FetchDeckEvent(
+                      userId: PresentationScope.read(context).userId)),
+            ),
+          ],
+          child: BlocBuilder<DeckBuilderBloc, DeckBuilderState>(
             builder: (context, state) {
               return Scaffold(
                 appBar: DeckBuilderAppBar(
                   nameController: nameController,
                 ),
-                body: BlocBuilder<DeckBloc, DeckState>(
+                body: BlocBuilder<DeckBuilderBloc, DeckBuilderState>(
                   builder: (context, state) {
                     if (state.isLoading) {
                       return const Center(child: CircularProgressIndicator());

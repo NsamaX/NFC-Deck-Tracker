@@ -2,7 +2,7 @@
 tags:
   - layer/presentation
   - role/widget
-  - coupling/medium
+  - coupling/high
 ---
 
 # snackbar.dart

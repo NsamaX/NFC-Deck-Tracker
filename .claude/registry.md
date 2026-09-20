@@ -276,7 +276,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### UpdateDeckUsecase (`update_deck.dart`)
 
-`call({userId, deck})` — update a deck with a fresh `updatedAt`.
+`call({userId, deck})` — update a deck with a fresh `updatedAt`; returns the saved deck.
 
 ### UpdateRecordUsecase (`update_record.dart`)
 

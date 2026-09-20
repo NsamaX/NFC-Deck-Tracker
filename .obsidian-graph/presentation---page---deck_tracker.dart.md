@@ -12,7 +12,7 @@ tags:
 ## Imports
 - [[config---game.dart]]
 - [[domain---entity---deck.dart]]
-- [[presentation---bloc---deck---bloc.dart]]
+- [[presentation---bloc---deck_builder---bloc.dart]]
 - [[presentation---bloc---drawer---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---bloc---tracker---bloc.dart]]

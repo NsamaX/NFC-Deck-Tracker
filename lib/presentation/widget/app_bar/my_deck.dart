@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/deck/bloc.dart';
+import '../../bloc/deck_builder/bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/constant.dart';
 
@@ -17,14 +18,13 @@ class MyDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   List<AppBarMenuItem> _buildMenu(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final deckBloc = context.read<DeckBloc>();
     final hasDecks = context.watch<DeckBloc>().state.decks.isNotEmpty;
 
     return [
       AppBarMenuItem(
         label: Icons.open_in_new_rounded,
         action: MenuAction.callback(() {
-          deckBloc.add(DefaultDeckEvent(
+          context.read<DeckBuilderBloc>().add(NewDeckEvent(
               name: locale.translate('page_deck_builder.app_bar')));
           Navigator.of(context).pushNamed(RouteConstant.deck_builder);
         }),
@@ -33,8 +33,8 @@ class MyDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
       hasDecks
           ? AppBarMenuItem(
               label: Icons.edit_rounded,
-              action: MenuAction.callback(
-                  () => deckBloc.add(ToggleEditModeEvent())),
+              action: MenuAction.callback(() =>
+                  context.read<DeckBuilderBloc>().add(ToggleEditModeEvent())),
             )
           : AppBarMenuItem.empty(),
     ];

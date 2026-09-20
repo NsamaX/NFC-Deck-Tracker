@@ -12,6 +12,7 @@ tags:
 ## Imports
 - [[domain---entity---deck.dart]]
 - [[presentation---bloc---deck---bloc.dart]]
+- [[presentation---bloc---deck_builder---bloc.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---route---constant.dart]]

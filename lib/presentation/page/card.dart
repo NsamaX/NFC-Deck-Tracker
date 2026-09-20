@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/card/bloc.dart';
-import '../bloc/deck/bloc.dart';
+import '../bloc/deck_builder/bloc.dart';
 import '../bloc/nfc/bloc.dart';
 import '../widget/app_bar/card.dart';
 import '../widget/card/custom_image.dart';
@@ -128,13 +128,13 @@ class _CardPageContent extends State<_CardContent> {
                   CardInfo(card: card),
                 ],
                 if (onAdd)
-                  BlocSelector<DeckBloc, DeckState, int>(
+                  BlocSelector<DeckBuilderBloc, DeckBuilderState, int>(
                     selector: (state) => state.cardQuantity,
                     builder: (context, quantity) {
                       return CardQuantitySelector(
                         onSelected: (q) {
                           context
-                              .read<DeckBloc>()
+                              .read<DeckBuilderBloc>()
                               .add(SetCardQuantityEvent(quantity: q));
                         },
                         quantityCount: 4,

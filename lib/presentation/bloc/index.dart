@@ -3,6 +3,7 @@ export 'browse_card/bloc.dart';
 export 'card/bloc.dart';
 export 'collection/bloc.dart';
 export 'deck/bloc.dart';
+export 'deck_builder/bloc.dart';
 export 'drawer/bloc.dart';
 export 'nfc/bloc.dart';
 export 'pin_card/bloc.dart';

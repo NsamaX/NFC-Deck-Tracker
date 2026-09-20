@@ -64,14 +64,16 @@ void _collectionBloc() {
 
 void _deckBloc() {
   locator.registerLazySingleton(() => DeckBloc(
-        createDeckUsecase: locator<CreateDeckUsecase>(),
-        deleteDeckUsecase: locator<DeleteDeckUsecase>(),
-        fetchCardInDeckUsecase: locator<FetchCardInDeckUsecase>(),
         fetchDeckUsecase: locator<FetchDeckUsecase>(),
+        deleteDeckUsecase: locator<DeleteDeckUsecase>(),
+      ));
+  locator.registerLazySingleton(() => DeckBuilderBloc(
+        createDeckUsecase: locator<CreateDeckUsecase>(),
+        updateDeckUsecase: locator<UpdateDeckUsecase>(),
+        fetchCardInDeckUsecase: locator<FetchCardInDeckUsecase>(),
+        updateCardInDeckUsecase: locator<UpdateCardInDeckUsecase>(),
         generateShareDeckClipboardUsecase:
             locator<GenerateShareDeckClipboardUsecase>(),
-        updateCardInDeckUsecase: locator<UpdateCardInDeckUsecase>(),
-        updateDeckUsecase: locator<UpdateDeckUsecase>(),
       ));
 }
 

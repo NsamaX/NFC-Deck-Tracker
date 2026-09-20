@@ -7,8 +7,8 @@ import 'package:nfc_deck_tracker/.config/game.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
-import '../bloc/deck/bloc.dart';
 import '../bloc/drawer/bloc.dart';
+import '../bloc/deck_builder/bloc.dart';
 import '../bloc/nfc/bloc.dart';
 import '../bloc/tracker/bloc.dart';
 import '../locale/localization.dart';
@@ -65,7 +65,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     collectionId = GameConfig.dummy;
-    deck = context.read<DeckBloc>().state.currentDeck;
+    deck = context.read<DeckBuilderBloc>().state.currentDeck;
   }
 
   @override

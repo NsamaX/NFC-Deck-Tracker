@@ -1,13 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/repository/deck.dart';
-import 'package:nfc_deck_tracker/domain/usecase/create_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/delete_deck.dart';
-import 'package:nfc_deck_tracker/domain/usecase/fetch_card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_deck.dart';
-import 'package:nfc_deck_tracker/domain/usecase/generate_share_deck_clipboard.dart';
-import 'package:nfc_deck_tracker/domain/usecase/update_card_in_deck.dart';
-import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/deck/bloc.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/error_reporting.dart';
 
@@ -25,14 +20,8 @@ void main() {
       () async {
     final repository = BrokenDecks();
     final bloc = DeckBloc(
-      createDeckUsecase: CreateDeckUsecase(deckRepository: repository),
-      deleteDeckUsecase: DeleteDeckUsecase(deckRepository: repository),
-      fetchCardInDeckUsecase:
-          FetchCardInDeckUsecase(deckRepository: repository),
       fetchDeckUsecase: FetchDeckUsecase(deckRepository: repository),
-      generateShareDeckClipboardUsecase: GenerateShareDeckClipboardUsecase(),
-      updateCardInDeckUsecase: UpdateCardInDeckUsecase(),
-      updateDeckUsecase: UpdateDeckUsecase(deckRepository: repository),
+      deleteDeckUsecase: DeleteDeckUsecase(deckRepository: repository),
     );
 
     bloc.add(const FetchDeckEvent(userId: ''));

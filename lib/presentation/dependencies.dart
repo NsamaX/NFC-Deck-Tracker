@@ -7,6 +7,7 @@ import 'bloc/index.dart';
 class PresentationDependencies {
   final NfcBloc nfcBloc;
   final DeckBloc deckBloc;
+  final DeckBuilderBloc deckBuilderBloc;
   final SessionUsecase session;
   final DeviceUsecase device;
   final ApplicationBloc applicationBloc;
@@ -24,6 +25,7 @@ class PresentationDependencies {
   const PresentationDependencies({
     required this.nfcBloc,
     required this.deckBloc,
+    required this.deckBuilderBloc,
     required this.session,
     required this.device,
     required this.applicationBloc,

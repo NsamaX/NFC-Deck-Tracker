@@ -10,7 +10,7 @@ tags:
 `lib/presentation/widget/listener/writer.dart`
 
 ## Imports
-- [[presentation---bloc---deck---bloc.dart]]
+- [[presentation---bloc---deck_builder---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---notification---snackbar.dart]]

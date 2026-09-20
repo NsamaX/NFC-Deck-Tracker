@@ -42,11 +42,6 @@ class _MyDeckPage extends State<MyDeckPage> with RouteAware {
   }
 
   @override
-  void didPopNext() {
-    context.read<DeckBloc>().add(CloseEditModeEvent());
-  }
-
-  @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
 

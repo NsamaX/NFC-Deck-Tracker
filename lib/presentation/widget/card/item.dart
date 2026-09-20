@@ -5,8 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
-import '../../bloc/deck/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
+import '../../bloc/deck_builder/bloc.dart';
 import '../../route/constant.dart';
 import '../../theme/theme.dart';
 
@@ -25,7 +25,7 @@ class CardItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEditMode = context.watch<DeckBloc>().state.isEditMode;
+    final isEditMode = context.watch<DeckBuilderBloc>().state.isEditMode;
     final isSessionActive = context.watch<NfcBloc>().state.isSessionActive;
 
     return Stack(
@@ -43,9 +43,10 @@ class CardItem extends StatelessWidget {
   Widget _buildCardDisplay(BuildContext context) {
     final theme = Theme.of(context);
 
-    final isEditMode = context.read<DeckBloc>().state.isEditMode;
+    final isEditMode = context.read<DeckBuilderBloc>().state.isEditMode;
     final selected =
-        context.read<DeckBloc>().state.selectedCard.cardId == card.cardId;
+        context.read<DeckBuilderBloc>().state.selectedCard.cardId ==
+            card.cardId;
 
     return GestureDetector(
       onTap: () => _onTap(context),
@@ -78,7 +79,7 @@ class CardItem extends StatelessWidget {
     final isSessionActive = context.read<NfcBloc>().state.isSessionActive;
 
     if (isSessionActive) {
-      context.read<DeckBloc>().add(SelectCardEvent(card: card));
+      context.read<DeckBuilderBloc>().add(SelectCardEvent(card: card));
       _writeTag(context, card);
     } else {
       Navigator.of(context).pushNamed(
