@@ -5,7 +5,12 @@
     "button_confirm": "確認",
     "button_delete": "削除",
     "button_ok": "OK",
-    "unknown": "不明"
+    "unknown": "不明",
+    "error_load": "データを読み込めませんでした。もう一度お試しください。",
+    "error_save": "変更を保存できませんでした。",
+    "error_delete": "削除できませんでした。",
+    "error_share": "記録を共有できませんでした。",
+    "error_import": "共有された記録を取り込めませんでした。"
   },
   "card": {
     "name": "名前",
@@ -20,30 +25,25 @@
     "success_read_tag": "NFCタグからカード情報を読み取りました。",
     "success_write_tag": "NFCタグにカード情報を書き込みました。",
     "warning_rewrite_card": "このカードはすでにタグに書き込まれています。同じデータを再度書き込みます。",
-
     "success_write_tag_new": "新しいタグにデータを書き込みました。",
     "warning_overwrite_unknown_format": "タグに不明なデータが含まれています。上書きします。",
     "warning_rewrite_same_card": "このタグにはすでに同じカードデータが含まれています。上書きします。",
     "warning_overwrite_different_card": "このタグには異なるカードデータが含まれています。上書きします。",
-
     "error_unavailable": "このデバイスではNFCが利用できません。",
     "error_start_session": "NFCセッションを開始できません。もう一度お試しください。",
     "error_restart_session": "NFCセッションの有効期限が切れました。セッションを再開します...",
     "error_process_tag": "NFCタグの処理中にエラーが発生しました。",
     "error_read_tag": "NFCタグからの読み取りに失敗しました。もう一度お試しください。",
     "error_write_tag": "NFCタグへの書き込みに失敗しました。タグが書き込み可能で、十分なストレージ容量があることを確認してから、もう一度お試しください。",
-
     "error_ndef_not_supported": "このタグはNDEFフォーマットをサポートしていません。",
     "error_ndef_not_writable": "このNFCタグは読み取り専用で、書き込みできません。",
     "error_ndef_parse_failed": "タグからのデータ読み取りに失敗しました。フォーマットが正しくないか、空の可能性があります。",
     "error_ndef_create_failed": "タグデータの準備に失敗しました。カード情報を確認してください。",
     "error_ndef_data_too_large": "データが大きすぎてこのタグに保存できません。",
-
     "error_tag_not_detected": "NFCタグが検出されませんでした。タグをデバイスの近くに置いてください。",
     "error_no_data": "NFCタグにデータが見つかりませんでした。",
     "error_card_not_found": "このタグに一致するカードは見つかりませんでした。",
     "error_game_not_supported": "このゲームはアプリでサポートされていません。",
-
     "error_unknown": "不明なエラーが発生しました。後でもう一度お試しください。"
   },
   "bottom_navigation_bar": {

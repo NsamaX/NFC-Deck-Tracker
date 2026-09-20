@@ -11,6 +11,7 @@ tags:
 
 ## Imports
 - [[presentation---bloc---collection---bloc.dart]]
+- [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---notification---cupertino_dialog.dart]]

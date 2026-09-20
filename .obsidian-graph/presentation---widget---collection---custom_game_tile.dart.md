@@ -12,7 +12,9 @@ tags:
 ## Imports
 - [[domain---entity---collection.dart]]
 - [[presentation---bloc---collection---bloc.dart]]
+- [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
+- [[presentation---route---arguments.dart]]
 - [[presentation---route---constant.dart]]
 - [[presentation---widget---collection---slidable_delete.dart]]
 

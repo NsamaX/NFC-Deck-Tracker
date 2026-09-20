@@ -13,11 +13,13 @@ import 'package:nfc_deck_tracker/domain/usecase/update_card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 
 import '../../locale/localization.dart';
+import '../error_reporting.dart';
 
 part 'event.dart';
 part 'state.dart';
 
-class DeckBloc extends Bloc<DeckEvent, DeckState> {
+class DeckBloc extends Bloc<DeckEvent, DeckState>
+    with ErrorReporting<DeckEvent, DeckState> {
   final CreateDeckUsecase createDeckUsecase;
   final DeleteDeckUsecase deleteDeckUsecase;
   final FetchCardInDeckUsecase fetchCardInDeckUsecase;
@@ -55,17 +57,21 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
   Future<void> _onFetchDeck(
       FetchDeckEvent event, Emitter<DeckState> emit) async {
     emit(state.copyWith(isLoading: true));
-    final deck = await fetchDeckUsecase(userId: event.userId);
-    emit(state.copyWith(decks: deck, isLoading: false));
+    await guard(emit, ErrorKeys.load, () async {
+      final decks = await fetchDeckUsecase(userId: event.userId);
+      emit(state.copyWith(decks: decks, isLoading: false));
+    });
   }
 
   Future<void> _onFetchCardInDeck(
       FetchCardInDeckEvent event, Emitter<DeckState> emit) async {
     emit(state.copyWith(isLoading: true));
-    final cards = await fetchCardInDeckUsecase(deckId: event.deckId);
-    emit(state.copyWith(
-        isLoading: false,
-        currentDeck: state.currentDeck.copyWith(cards: cards)));
+    await guard(emit, ErrorKeys.load, () async {
+      final cards = await fetchCardInDeckUsecase(deckId: event.deckId);
+      emit(state.copyWith(
+          isLoading: false,
+          currentDeck: state.currentDeck.copyWith(cards: cards)));
+    });
   }
 
   Future<void> _onAddCard(AddCardEvent event, Emitter<DeckState> emit) async {
@@ -111,36 +117,45 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
 
   Future<void> _onCreateDeck(
       CreateDeckEvent event, Emitter<DeckState> emit) async {
-    await createDeckUsecase.call(userId: event.userId, deck: state.currentDeck);
-    final decks = await fetchDeckUsecase(userId: event.userId);
-    emit(state.copyWith(decks: decks, isNewDeck: false));
+    await guard(emit, ErrorKeys.save, () async {
+      await createDeckUsecase.call(
+          userId: event.userId, deck: state.currentDeck);
+      final decks = await fetchDeckUsecase(userId: event.userId);
+      emit(state.copyWith(decks: decks, isNewDeck: false));
+    });
   }
 
   Future<void> _onDeleteDeck(
       DeleteDeckEvent event, Emitter<DeckState> emit) async {
-    await deleteDeckUsecase.call(userId: event.userId, deckId: event.deckId);
-    emit(state.copyWith(
-      decks: state.decks.where((deck) => deck.deckId != event.deckId).toList(),
-    ));
+    await guard(emit, ErrorKeys.delete, () async {
+      await deleteDeckUsecase.call(userId: event.userId, deckId: event.deckId);
+      emit(state.copyWith(
+        decks:
+            state.decks.where((deck) => deck.deckId != event.deckId).toList(),
+      ));
+    });
   }
 
   Future<void> _onUpdateDeck(
       UpdateDeckEvent event, Emitter<DeckState> emit) async {
     if (!state.isChange) return;
 
-    await updateDeckUsecase.call(userId: event.userId, deck: state.currentDeck);
+    await guard(emit, ErrorKeys.save, () async {
+      await updateDeckUsecase.call(
+          userId: event.userId, deck: state.currentDeck);
 
-    final List<DeckEntity> updatedDecks = state.decks.map((deck) {
-      if (deck.deckId == state.currentDeck.deckId) {
-        return state.currentDeck;
-      }
-      return deck;
-    }).toList();
+      final List<DeckEntity> updatedDecks = state.decks.map((deck) {
+        if (deck.deckId == state.currentDeck.deckId) {
+          return state.currentDeck;
+        }
+        return deck;
+      }).toList();
 
-    emit(state.copyWith(
-      decks: updatedDecks,
-      isChange: false,
-    ));
+      emit(state.copyWith(
+        decks: updatedDecks,
+        isChange: false,
+      ));
+    });
   }
 
   void _onSetCurrentDeck(SetCurrentDeckEvent event, Emitter<DeckState> emit) {
@@ -179,4 +194,8 @@ class DeckBloc extends Bloc<DeckEvent, DeckState> {
   void _onCloseEditMode(CloseEditModeEvent event, Emitter<DeckState> emit) {
     emit(state.copyWith(isEditMode: false, selectedCard: CardEntity()));
   }
+
+  @override
+  DeckState withError(DeckState state, String messageKey) =>
+      state.copyWith(errorMessage: messageKey, isLoading: false);
 }

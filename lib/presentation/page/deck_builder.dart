@@ -8,6 +8,7 @@ import '../widget/deck/total_card_in_deck.dart';
 import '../widget/listener/writer.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
+import '../widget/listener/error.dart';
 
 class DeckBuilderPage extends StatefulWidget {
   const DeckBuilderPage({super.key});
@@ -42,47 +43,50 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
     final locale = AppLocalization.of(context);
 
     return WriterListener(
-      child: BlocBuilder<DeckBloc, DeckState>(
-        builder: (context, state) {
-          return Scaffold(
-            appBar: DeckBuilderAppBar(
-              nameController: nameController,
-            ),
-            body: BlocBuilder<DeckBloc, DeckState>(
-              builder: (context, state) {
-                if (state.isLoading) {
-                  return const Center(child: CircularProgressIndicator());
-                }
+      child: ErrorListener<DeckBloc, DeckState>(
+        errorOf: (state) => state.errorMessage,
+        child: BlocBuilder<DeckBloc, DeckState>(
+          builder: (context, state) {
+            return Scaffold(
+              appBar: DeckBuilderAppBar(
+                nameController: nameController,
+              ),
+              body: BlocBuilder<DeckBloc, DeckState>(
+                builder: (context, state) {
+                  if (state.isLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                final deck = state.currentDeck;
+                  final deck = state.currentDeck;
 
-                if (deck.cards.isEmpty) {
-                  return DescriptionAlignCenter(
-                    text: locale.translate('page_deck_builder.empty_message'),
-                    bottomNavHeight: true,
-                  );
-                }
+                  if (deck.cards.isEmpty) {
+                    return DescriptionAlignCenter(
+                      text: locale.translate('page_deck_builder.empty_message'),
+                      bottomNavHeight: true,
+                    );
+                  }
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 12.0, top: 8.0),
-                      child: TotalCardInDeck(),
-                    ),
-                    Expanded(
-                      child: DeckOrCardGridView(
-                        items: deck.cards
-                            .map((e) => MapEntry(e.card, e.count))
-                            .toList(),
+                  return Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 12.0, top: 8.0),
+                        child: TotalCardInDeck(),
                       ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          );
-        },
+                      Expanded(
+                        child: DeckOrCardGridView(
+                          items: deck.cards
+                              .map((e) => MapEntry(e.card, e.count))
+                              .toList(),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            );
+          },
+        ),
       ),
     );
   }

@@ -13,6 +13,7 @@ tags:
 - [[config---game.dart]]
 - [[presentation---constant.dart]]
 - [[presentation---locale---localization.dart]]
+- [[presentation---route---arguments.dart]]
 - [[presentation---route---constant.dart]]
 
 ## Packages

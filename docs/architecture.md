@@ -53,6 +53,10 @@ refactor does not reorganize the project into feature folders.
 - `PresentationScope` provides typed factories and shared state to pages.
   It cannot resolve arbitrary repositories or SDKs. Constructor injection stays
   in blocs/use cases; GetIt stays in composition.
+- Every bloc that awaits a use case mixes in `ErrorReporting` and runs the
+  call inside `guard(emit, ErrorKeys.x, body)`; a throw becomes
+  `state.errorMessage` (a translation key) and pages show it through
+  `ErrorListener`. Handlers never leave an exception unhandled.
 - Factory-created blocs are owned/closed by their page or `BlocProvider`.
   Shared blocs use `BlocProvider.value`.
 - UI rendering adapters remain in presentation: QR camera view, images, charts,

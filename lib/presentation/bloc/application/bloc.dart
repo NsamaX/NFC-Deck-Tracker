@@ -10,11 +10,13 @@ import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
 import 'package:nfc_deck_tracker/util/logger.dart';
 
 import '../../route/constant.dart';
+import '../error_reporting.dart';
 
 part 'event.dart';
 part 'state.dart';
 
-class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
+class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState>
+    with ErrorReporting<ApplicationEvent, ApplicationState> {
   final ClearUserDataUsecase clearUserDataUsecase;
   final InitSettingUsecase initSettingUsecase;
   final UpdateSettingUsecase updateSettingUsecase;
@@ -34,20 +36,24 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
     InitApplicationEvent event,
     Emitter<ApplicationState> emit,
   ) async {
-    final settings = await initSettingUsecase.call();
-    emit(state.copyWith(
-      settings: settings,
-      currentPageIndex: RouteConstant.on_boarding_index,
-    ));
+    await guard(emit, ErrorKeys.load, () async {
+      final settings = await initSettingUsecase.call();
+      emit(state.copyWith(
+        settings: settings,
+        currentPageIndex: RouteConstant.on_boarding_index,
+      ));
+    });
   }
 
   Future<void> _onUpdateSettings(
     UpdateSettingsEvent event,
     Emitter<ApplicationState> emit,
   ) async {
-    final settings = event.change(state.settings);
-    await updateSettingUsecase.call(settings);
-    emit(state.copyWith(settings: settings));
+    await guard(emit, ErrorKeys.save, () async {
+      final settings = event.change(state.settings);
+      await updateSettingUsecase.call(settings);
+      emit(state.copyWith(settings: settings));
+    });
     LoggerUtil.flush();
   }
 
@@ -73,4 +79,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState> {
         }[index] ??
         RouteConstant.not_found;
   }
+
+  @override
+  ApplicationState withError(ApplicationState state, String messageKey) =>
+      state.copyWith(errorMessage: messageKey);
 }

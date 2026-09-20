@@ -14,7 +14,9 @@ tags:
 - [[presentation---bloc---application---bloc.dart]]
 - [[presentation---bloc---deck---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
+- [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
+- [[presentation---route---arguments.dart]]
 - [[presentation---route---constant.dart]]
 - [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---notification---cupertino_dialog.dart]]
@@ -24,4 +26,5 @@ tags:
 ## Packages
 - `package:flutter/cupertino.dart`
 - `package:flutter/material.dart`
+- `package:flutter_bloc/flutter_bloc.dart`
 

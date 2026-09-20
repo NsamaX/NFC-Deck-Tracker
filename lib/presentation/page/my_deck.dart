@@ -8,6 +8,7 @@ import '../widget/app_bar/my_deck.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
+import '../widget/listener/error.dart';
 
 class MyDeckPage extends StatefulWidget {
   const MyDeckPage({super.key});
@@ -49,27 +50,30 @@ class _MyDeckPage extends State<MyDeckPage> with RouteAware {
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
 
-    return Scaffold(
-      appBar: const MyDeckAppBar(),
-      body: BlocBuilder<DeckBloc, DeckState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
+    return ErrorListener<DeckBloc, DeckState>(
+      errorOf: (state) => state.errorMessage,
+      child: Scaffold(
+        appBar: const MyDeckAppBar(),
+        body: BlocBuilder<DeckBloc, DeckState>(
+          builder: (context, state) {
+            if (state.isLoading) {
+              return const Center(child: CircularProgressIndicator());
+            }
 
-          final deck = state.decks;
-          if (deck.isEmpty) {
-            return DescriptionAlignCenter(
-              text: locale.translate('page_deck_list.empty_message'),
+            final deck = state.decks;
+            if (deck.isEmpty) {
+              return DescriptionAlignCenter(
+                text: locale.translate('page_deck_list.empty_message'),
+              );
+            }
+
+            return DeckOrCardGridView(
+              items: deck,
             );
-          }
-
-          return DeckOrCardGridView(
-            items: deck,
-          );
-        },
+          },
+        ),
+        bottomNavigationBar: const BottomNavigationBarWidget(),
       ),
-      bottomNavigationBar: const BottomNavigationBarWidget(),
     );
   }
 }

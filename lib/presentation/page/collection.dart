@@ -7,6 +7,7 @@ import 'package:nfc_deck_tracker/.config/game.dart';
 import '../bloc/collection/bloc.dart';
 import '../widget/app_bar/collection.dart';
 import '../widget/collection/list_view.dart';
+import '../widget/listener/error.dart';
 
 class CollectionPage extends StatefulWidget {
   const CollectionPage({super.key});
@@ -22,7 +23,10 @@ class _CollectionPageState extends State<CollectionPage> {
     return BlocProvider.value(
       value: dependencies.collectionBloc
         ..add(FetchCollectionEvent(userId: dependencies.userId)),
-      child: const _CollectionPageContent(),
+      child: ErrorListener<CollectionBloc, CollectionState>(
+        errorOf: (state) => state.errorMessage,
+        child: const _CollectionPageContent(),
+      ),
     );
   }
 }

@@ -10,11 +10,12 @@ tags:
 `lib/presentation/widget/app_bar/card.dart`
 
 ## Imports
-- [[domain---entity---card.dart]]
 - [[presentation---bloc---card---bloc.dart]]
 - [[presentation---bloc---deck---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
+- [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
+- [[presentation---route---arguments.dart]]
 - [[presentation---widget---app_bar---default.dart]]
 - [[presentation---widget---notification---snackbar.dart]]
 

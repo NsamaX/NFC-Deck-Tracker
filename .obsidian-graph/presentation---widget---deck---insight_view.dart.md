@@ -15,6 +15,7 @@ tags:
 - [[presentation---bloc---record---bloc.dart]]
 - [[presentation---bloc---tracker---bloc.dart]]
 - [[presentation---bloc---usage_card---bloc.dart]]
+- [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---deck---insight_chart.dart]]
 - [[presentation---widget---deck---insight_summary.dart]]

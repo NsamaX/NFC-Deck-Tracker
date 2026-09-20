@@ -14,6 +14,7 @@ tags:
 - [[presentation---locale---language_manager.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---app_bar---default.dart]]
+- [[presentation---widget---listener---error.dart]]
 - [[presentation---widget---setting---language.dart]]
 - [[presentation---widget---shared---list_section.dart]]
 

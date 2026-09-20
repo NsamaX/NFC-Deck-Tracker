@@ -6,11 +6,13 @@ import 'package:nfc_deck_tracker/domain/usecase/create_card.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_card.dart';
 
 import '../../locale/localization.dart';
+import '../error_reporting.dart';
 
 part 'event.dart';
 part 'state.dart';
 
-class CardBloc extends Bloc<CardEvent, CardState> {
+class CardBloc extends Bloc<CardEvent, CardState>
+    with ErrorReporting<CardEvent, CardState> {
   final CreateCardUsecase createCardUsecase;
   final UpdateCardUsecase updateCardUsecase;
 
@@ -52,14 +54,24 @@ class CardBloc extends Bloc<CardEvent, CardState> {
       collectionId: event.collectionId,
       description: event.locale.translate('card.no_description'),
     );
-    final saved =
-        await createCardUsecase(userId: event.userId, card: updatedCard);
-    emit(state.copyWith(card: saved));
+    await guard(emit, ErrorKeys.save, () async {
+      final saved =
+          await createCardUsecase(userId: event.userId, card: updatedCard);
+      emit(state.copyWith(card: saved));
+    });
   }
 
   Future<void> _onUpdateCard(
       UpdateCardEvent event, Emitter<CardState> emit) async {
-    await updateCardUsecase(
-        userId: event.userId, card: state.card, oldImageUrl: state.oldImageUrl);
+    await guard(emit, ErrorKeys.save, () async {
+      await updateCardUsecase(
+          userId: event.userId,
+          card: state.card,
+          oldImageUrl: state.oldImageUrl);
+    });
   }
+
+  @override
+  CardState withError(CardState state, String messageKey) =>
+      state.copyWith(errorMessage: messageKey);
 }

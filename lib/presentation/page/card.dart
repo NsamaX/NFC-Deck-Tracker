@@ -13,6 +13,7 @@ import '../widget/card/info.dart';
 import '../widget/card/quantity_selector.dart';
 import '../widget/listener/writer.dart';
 import '../route/arguments.dart';
+import '../widget/listener/error.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -40,7 +41,10 @@ class _CardPageState extends State<CardPage> {
   Widget build(BuildContext context) {
     return BlocProvider<CardBloc>.value(
       value: cardBloc,
-      child: const _CardContent(),
+      child: ErrorListener<CardBloc, CardState>(
+        errorOf: (state) => state.errorMessage,
+        child: const _CardContent(),
+      ),
     );
   }
 }

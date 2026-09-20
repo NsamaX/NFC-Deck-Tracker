@@ -2,7 +2,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/value/player_action.dart';
-import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/data.dart';
@@ -16,11 +15,13 @@ import 'package:nfc_deck_tracker/domain/usecase/get_card_from_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/import_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/share_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_record.dart';
+import '../error_reporting.dart';
 
 part 'event.dart';
 part 'state.dart';
 
-class RecordBloc extends Bloc<RecordEvent, RecordState> {
+class RecordBloc extends Bloc<RecordEvent, RecordState>
+    with ErrorReporting<RecordEvent, RecordState> {
   final CreateRecordUsecase createRecordUsecase;
   final DeleteRecordUsecase deleteRecordUsecase;
   final FetchRecordUsecase fetchRecordUsecase;
@@ -58,9 +59,11 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
 
   Future<void> _onFetchRecord(
       FetchRecordEvent event, Emitter<RecordState> emit) async {
-    final records = await fetchRecordUsecase.call(
-        userId: event.userId, deckId: event.deckId);
-    emit(state.copyWith(records: records));
+    await guard(emit, ErrorKeys.load, () async {
+      final records = await fetchRecordUsecase.call(
+          userId: event.userId, deckId: event.deckId);
+      emit(state.copyWith(records: records));
+    });
   }
 
   void _onFindRecord(FindRecordEvent event, Emitter<RecordState> emit) {
@@ -69,31 +72,28 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
     emit(state.copyWith(currentRecord: selected));
   }
 
-  void _onImportRecord(
+  Future<void> _onImportRecord(
       ImportRecordEvent event, Emitter<RecordState> emit) async {
-    final ShareRecordEntity? shareRecordEntity;
-    try {
-      shareRecordEntity = await importRecordUsecase.call(userId: event.userId);
-    } on RemoteUnavailableException {
-      return;
-    }
-    if (shareRecordEntity == null) return;
+    await guard(emit, ErrorKeys.import, () async {
+      final shared = await importRecordUsecase.call(userId: event.userId);
+      if (shared == null) return;
 
-    final updatedData = [
-      ...state.currentRecord.data,
-      ...shareRecordEntity.data,
-    ];
-    updatedData.sort((a, b) => a.timestamp.compareTo(b.timestamp));
+      final updatedData = [...state.currentRecord.data, ...shared.data];
+      updatedData.sort((a, b) => a.timestamp.compareTo(b.timestamp));
 
-    emit(state.copyWith(
-        currentRecord: state.currentRecord.copyWith(data: updatedData)));
+      emit(state.copyWith(
+          currentRecord: state.currentRecord.copyWith(data: updatedData)));
+    });
   }
 
-  void _onShareRecord(ShareRecordEvent event, Emitter<RecordState> emit) async {
-    final shareRecord =
-        ShareRecordEntity(cards: event.cards, data: state.currentRecord.data);
-    await shareRecordUsecase.call(
-        userId: event.userId, shareRecord: shareRecord);
+  Future<void> _onShareRecord(
+      ShareRecordEvent event, Emitter<RecordState> emit) async {
+    await guard(emit, ErrorKeys.share, () async {
+      final shareRecord =
+          ShareRecordEntity(cards: event.cards, data: state.currentRecord.data);
+      await shareRecordUsecase.call(
+          userId: event.userId, shareRecord: shareRecord);
+    });
   }
 
   void _onGetCardFromRecord(
@@ -119,23 +119,29 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
 
   Future<void> _onCreateRecord(
       CreateRecordEvent event, Emitter<RecordState> emit) async {
-    final saved = await createRecordUsecase.call(
-      userId: event.userId,
-      record: state.currentRecord.copyWith(createdAt: DateTime.now()),
-    );
-    emit(state.copyWith(
-      records: [...state.records, saved],
-      currentRecord: RecordEntity(deckId: saved.deckId, recordId: '', data: []),
-    ));
+    await guard(emit, ErrorKeys.save, () async {
+      final saved = await createRecordUsecase.call(
+        userId: event.userId,
+        record: state.currentRecord.copyWith(createdAt: DateTime.now()),
+      );
+      emit(state.copyWith(
+        records: [...state.records, saved],
+        currentRecord:
+            RecordEntity(deckId: saved.deckId, recordId: '', data: []),
+      ));
+    });
   }
 
   Future<void> _onDeleteRecord(
       DeleteRecordEvent event, Emitter<RecordState> emit) async {
-    await deleteRecordUsecase.call(
-        userId: event.userId, recordId: event.recordId);
-    emit(state.copyWith(
-        records:
-            state.records.where((r) => r.recordId != event.recordId).toList()));
+    await guard(emit, ErrorKeys.delete, () async {
+      await deleteRecordUsecase.call(
+          userId: event.userId, recordId: event.recordId);
+      emit(state.copyWith(
+          records: state.records
+              .where((r) => r.recordId != event.recordId)
+              .toList()));
+    });
   }
 
   void _onUpdateRecord(UpdateRecordEvent event, Emitter<RecordState> emit) {
@@ -147,4 +153,8 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
   void _onResetRecord(ResetRecordEvent event, Emitter<RecordState> emit) {
     emit(state.copyWith(currentRecord: state.currentRecord.copyWith(data: [])));
   }
+
+  @override
+  RecordState withError(RecordState state, String messageKey) =>
+      state.copyWith(errorMessage: messageKey);
 }

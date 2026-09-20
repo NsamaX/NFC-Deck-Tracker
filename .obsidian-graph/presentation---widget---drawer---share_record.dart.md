@@ -13,6 +13,7 @@ tags:
 - [[domain---entity---card.dart]]
 - [[presentation---bloc---drawer---bloc.dart]]
 - [[presentation---bloc---record---bloc.dart]]
+- [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---qr_code---generetor.dart]]
 - [[presentation---widget---qr_code---scanner.dart]]

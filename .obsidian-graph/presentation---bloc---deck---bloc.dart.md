@@ -21,6 +21,7 @@ tags:
 - [[domain---usecase---update_deck.dart]]
 - [[presentation---bloc---deck---event.dart]]
 - [[presentation---bloc---deck---state.dart]]
+- [[presentation---bloc---error_reporting.dart]]
 - [[presentation---locale---localization.dart]]
 
 ## Packages

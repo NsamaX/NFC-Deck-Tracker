@@ -20,6 +20,9 @@ import '../widget/drawer/card_history.dart';
 import '../widget/drawer/share_record.dart';
 import '../widget/listener/tracker.dart';
 import '../widget/notification/cupertino_dialog.dart';
+import '../widget/listener/error.dart';
+import '../bloc/record/bloc.dart';
+import '../bloc/usage_card/bloc.dart';
 
 class DeckTrackerPage extends StatefulWidget {
   const DeckTrackerPage({super.key});
@@ -88,7 +91,13 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
             create: (_) =>
                 PresentationScope.read(context).createTrackerBloc(deck)),
       ],
-      child: const _DeckTrackerPageContent(),
+      child: ErrorListener<RecordBloc, RecordState>(
+        errorOf: (state) => state.errorMessage,
+        child: ErrorListener<UsageCardBloc, UsageCardState>(
+          errorOf: (state) => state.errorMessage,
+          child: const _DeckTrackerPageContent(),
+        ),
+      ),
     );
   }
 }

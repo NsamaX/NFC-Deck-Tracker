@@ -12,7 +12,9 @@ tags:
 ## Imports
 - [[domain---entity---card.dart]]
 - [[presentation---bloc---browse_card---bloc.dart]]
+- [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
+- [[presentation---route---arguments.dart]]
 - [[presentation---widget---card---list_tile.dart]]
 
 ## Packages

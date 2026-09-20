@@ -14,6 +14,7 @@ import '../widget/specific/search_bar.dart';
 import '../widget/text/description_align_center.dart';
 import '../constant.dart';
 import '../route/arguments.dart';
+import '../widget/listener/error.dart';
 
 class BrowseCardPage extends StatefulWidget {
   const BrowseCardPage({super.key});
@@ -42,7 +43,10 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
         BlocProvider<CardBloc>(
             create: (_) => PresentationScope.read(context).createCardBloc()),
       ],
-      child: const _BrowseCardContent(),
+      child: ErrorListener<CardBloc, CardState>(
+        errorOf: (state) => state.errorMessage,
+        child: const _BrowseCardContent(),
+      ),
     );
   }
 }

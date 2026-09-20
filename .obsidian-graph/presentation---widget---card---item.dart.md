@@ -13,6 +13,7 @@ tags:
 - [[domain---entity---card.dart]]
 - [[presentation---bloc---deck---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
+- [[presentation---route---arguments.dart]]
 - [[presentation---route---constant.dart]]
 - [[presentation---theme---theme.dart]]
 - [[presentation---widget---card---quantity_control.dart]]

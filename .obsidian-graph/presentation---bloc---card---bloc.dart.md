@@ -15,6 +15,7 @@ tags:
 - [[domain---usecase---update_card.dart]]
 - [[presentation---bloc---card---event.dart]]
 - [[presentation---bloc---card---state.dart]]
+- [[presentation---bloc---error_reporting.dart]]
 - [[presentation---locale---localization.dart]]
 
 ## Packages

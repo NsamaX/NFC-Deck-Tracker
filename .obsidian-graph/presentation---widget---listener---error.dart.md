@@ -2,16 +2,16 @@
 tags:
   - layer/presentation
   - role/widget
+  - coupling/high
 ---
 
-# custom_info.dart
+# error.dart
 
-`lib/presentation/widget/card/custom_info.dart`
+`lib/presentation/widget/listener/error.dart`
 
 ## Imports
-- [[presentation---bloc---card---bloc.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---theme---theme.dart]]
+- [[presentation---widget---notification---snackbar.dart]]
 
 ## Packages
 - `package:flutter/material.dart`

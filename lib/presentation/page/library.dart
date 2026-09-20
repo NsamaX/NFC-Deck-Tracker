@@ -8,6 +8,7 @@ import '../locale/localization.dart';
 import '../widget/app_bar/default.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
+import '../widget/listener/error.dart';
 
 class LibraryPage extends StatelessWidget {
   const LibraryPage({super.key});
@@ -16,7 +17,10 @@ class LibraryPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider.value(
       value: PresentationScope.read(context).collectionBloc,
-      child: const _LibraryPageState(),
+      child: ErrorListener<CollectionBloc, CollectionState>(
+        errorOf: (state) => state.errorMessage,
+        child: const _LibraryPageState(),
+      ),
     );
   }
 }

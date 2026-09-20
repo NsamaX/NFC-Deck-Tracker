@@ -9,6 +9,7 @@ class DeckState extends Equatable {
   final bool isNewDeck;
   final bool isChange;
   final bool isLoading;
+  final String errorMessage;
 
   const DeckState({
     this.decks = const [],
@@ -19,6 +20,7 @@ class DeckState extends Equatable {
     this.isNewDeck = false,
     this.isChange = false,
     this.isLoading = false,
+    this.errorMessage = '',
   });
 
   DeckState copyWith({
@@ -30,6 +32,7 @@ class DeckState extends Equatable {
     bool? isNewDeck,
     bool? isChange,
     bool? isLoading,
+    String? errorMessage,
   }) {
     return DeckState(
       decks: decks ?? this.decks,
@@ -40,6 +43,7 @@ class DeckState extends Equatable {
       isNewDeck: isNewDeck ?? this.isNewDeck,
       isChange: isChange ?? this.isChange,
       isLoading: isLoading ?? this.isLoading,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 
@@ -53,5 +57,6 @@ class DeckState extends Equatable {
         isNewDeck,
         isChange,
         isLoading,
+        errorMessage,
       ];
 }

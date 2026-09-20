@@ -2,6 +2,7 @@
 tags:
   - layer/presentation
   - role/widget
+  - coupling/medium
 ---
 
 # supported_game_tile.dart
@@ -11,6 +12,7 @@ tags:
 ## Imports
 - [[config---api.dart]]
 - [[presentation---bloc---application---bloc.dart]]
+- [[presentation---route---arguments.dart]]
 - [[presentation---route---constant.dart]]
 
 ## Packages

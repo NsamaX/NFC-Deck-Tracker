@@ -19,6 +19,7 @@ tags:
 - [[domain---usecase---fetch_used_card_distinct.dart]]
 - [[presentation---bloc---collection---event.dart]]
 - [[presentation---bloc---collection---state.dart]]
+- [[presentation---bloc---error_reporting.dart]]
 
 ## Packages
 - `package:equatable/equatable.dart`

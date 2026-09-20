@@ -16,6 +16,7 @@ tags:
 - [[domain---usecase---update_setting.dart]]
 - [[presentation---bloc---application---event.dart]]
 - [[presentation---bloc---application---state.dart]]
+- [[presentation---bloc---error_reporting.dart]]
 - [[presentation---route---constant.dart]]
 - [[util---logger.dart]]
 
