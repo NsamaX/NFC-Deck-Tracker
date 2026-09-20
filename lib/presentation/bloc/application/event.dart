@@ -27,3 +27,5 @@ class SetPageIndexEvent extends ApplicationEvent {
 }
 
 class ClearUserDataEvent extends ApplicationEvent {}
+
+class DismissApplicationErrorEvent extends ApplicationEvent {}

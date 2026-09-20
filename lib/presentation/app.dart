@@ -11,6 +11,7 @@ import 'locale/localization_delegate.dart';
 import 'route/generator.dart';
 import 'theme/theme.dart';
 import 'nfc_life_cycle_observer.dart';
+import 'widget/notification/app_error_banner.dart';
 
 class AppRoot extends StatefulWidget {
   final PresentationDependencies dependencies;
@@ -77,6 +78,8 @@ class _AppRootState extends State<AppRoot> {
               initialRoute:
                   RouteGenerator.getInitialRoute(loggedIn: _isUserLoggedIn),
               onGenerateRoute: RouteGenerator.generateRoute,
+              builder: (context, child) =>
+                  AppErrorBanner(child: child ?? const SizedBox.shrink()),
               navigatorObservers: [
                 _routeObserver,
                 _nfcLifecycleObserver,

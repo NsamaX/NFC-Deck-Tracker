@@ -30,6 +30,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState>
     on<UpdateSettingsEvent>(_onUpdateSettings);
     on<SetPageIndexEvent>(_onSetPageIndex);
     on<ClearUserDataEvent>(_onClearUserData);
+    on<DismissApplicationErrorEvent>(
+        (_, emit) => emit(state.copyWith(errorMessage: '')));
   }
 
   Future<void> _onInitApplication(

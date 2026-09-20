@@ -9,7 +9,6 @@ import '../widget/app_bar/default.dart';
 import '../widget/setting/builder.dart';
 import '../widget/setting/section.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
-import '../widget/listener/error.dart';
 
 class SettingPage extends StatelessWidget {
   const SettingPage({super.key});
@@ -22,29 +21,26 @@ class SettingPage extends StatelessWidget {
     return StreamBuilder<SessionUser?>(
       stream: PresentationScope.read(context).session.authStateChanges(),
       builder: (context, snapshot) {
-        return ErrorListener<ApplicationBloc, ApplicationState>(
-          errorOf: (state) => state.errorMessage,
-          child: Scaffold(
-            appBar: DefaultAppBar(
-              menu: [
-                AppBarMenuItem(
-                  label: locale.translate('page_setting.app_bar'),
-                ),
-              ],
-            ),
-            body: BlocBuilder<ApplicationBloc, ApplicationState>(
-              builder: (context, state) {
-                return SettingSection(
-                  section: [
-                    sectionBuilder.buildAccountSection(user: snapshot.data),
-                    sectionBuilder.buildGeneralSection(),
-                    sectionBuilder.buildSupportSection(),
-                  ],
-                );
-              },
-            ),
-            bottomNavigationBar: BottomNavigationBarWidget(),
+        return Scaffold(
+          appBar: DefaultAppBar(
+            menu: [
+              AppBarMenuItem(
+                label: locale.translate('page_setting.app_bar'),
+              ),
+            ],
           ),
+          body: BlocBuilder<ApplicationBloc, ApplicationState>(
+            builder: (context, state) {
+              return SettingSection(
+                section: [
+                  sectionBuilder.buildAccountSection(user: snapshot.data),
+                  sectionBuilder.buildGeneralSection(),
+                  sectionBuilder.buildSupportSection(),
+                ],
+              );
+            },
+          ),
+          bottomNavigationBar: BottomNavigationBarWidget(),
         );
       },
     );

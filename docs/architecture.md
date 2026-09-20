@@ -56,7 +56,9 @@ refactor does not reorganize the project into feature folders.
 - Every bloc that awaits a use case mixes in `ErrorReporting` and runs the
   call inside `guard(emit, ErrorKeys.x, body)`; a throw becomes
   `state.errorMessage` (a translation key) and pages show it through
-  `ErrorListener`. Handlers never leave an exception unhandled.
+  `ErrorListener`; `ApplicationBloc` errors (including startup) show in the
+  global `AppErrorBanner` above the navigator. Handlers never leave an
+  exception unhandled.
 - Factory-created blocs are owned/closed by their page or `BlocProvider`.
   Shared blocs use `BlocProvider.value`.
 - UI rendering adapters remain in presentation: QR camera view, images, charts,
