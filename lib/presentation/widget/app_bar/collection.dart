@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/collection/bloc.dart';
 import '../../locale/localization.dart';
@@ -10,11 +11,8 @@ import '../notification/cupertino_dialog.dart';
 import 'default.dart';
 
 class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String userId;
-
   const CollectionAppBar({
     super.key,
-    required this.userId,
   });
 
   @override
@@ -42,7 +40,7 @@ class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
             confirmButtonText: locale.translate('common.button_ok'),
             onConfirm: (value) {
               context.read<CollectionBloc>().add(CreateCollectionEvent(
-                    userId: userId,
+                    userId: PresentationScope.read(context).userId,
                     name: value,
                   ));
             },

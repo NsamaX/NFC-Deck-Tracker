@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 class QRCodeGeneretor extends StatelessWidget {
-  final String userId;
-
   QRCodeGeneretor({
     super.key,
-    required this.userId,
   });
 
   @override
   Widget build(BuildContext context) {
     return Center(
       child: QrImageView(
-        data: userId,
+        data: PresentationScope.read(context).userId,
         version: QrVersions.auto,
         size: 200.0,
         backgroundColor: Colors.white,

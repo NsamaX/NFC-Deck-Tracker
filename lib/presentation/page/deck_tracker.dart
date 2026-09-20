@@ -32,7 +32,6 @@ class DeckTrackerPage extends StatefulWidget {
 }
 
 class _DeckTrackerPageState extends State<DeckTrackerPage> {
-  late final String userId;
   late final String collectionId;
   late final DeckEntity deck;
 
@@ -68,7 +67,6 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    userId = PresentationScope.read(context).userId;
     collectionId = GameConfig.dummy;
     deck = context.read<DeckBloc>().state.currentDeck;
   }
@@ -94,15 +92,13 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
             create: (_) =>
                 PresentationScope.read(context).createTrackerBloc(deck)),
       ],
-      child: _DeckTrackerPageContent(userId: userId),
+      child: const _DeckTrackerPageContent(),
     );
   }
 }
 
 class _DeckTrackerPageContent extends StatelessWidget {
-  final String userId;
-
-  const _DeckTrackerPageContent({required this.userId});
+  const _DeckTrackerPageContent();
 
   @override
   Widget build(BuildContext context) {
@@ -116,7 +112,6 @@ class _DeckTrackerPageContent extends StatelessWidget {
     return TrackerListener(
       child: Scaffold(
         appBar: DeckTrackerAppBar(
-          userId: userId,
           nfcBloc: context.watch<NfcBloc>(),
         ),
         body: GestureDetector(
@@ -144,7 +139,6 @@ class _DeckTrackerPageContent extends StatelessWidget {
                               trackerBloc: trackerBloc,
                               recordBloc: recordBloc,
                               usageCardBloc: usageCardBloc,
-                              userId: userId,
                             )
                           : DeckTrackerView(),
                     ),
@@ -157,7 +151,6 @@ class _DeckTrackerPageContent extends StatelessWidget {
                 onNfc: false,
               ),
               ShareRecordDrawer(
-                userId: userId,
                 cards: [],
                 recordBloc: recordBloc,
               ),

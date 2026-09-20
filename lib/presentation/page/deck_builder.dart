@@ -1,4 +1,3 @@
-import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +20,6 @@ class DeckBuilderPage extends StatefulWidget {
 
 class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
   late final TextEditingController nameController;
-  late final String userId;
 
   @override
   void initState() {
@@ -30,7 +28,6 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
     nameController = TextEditingController(
       text: context.read<DeckBloc>().state.currentDeck.name,
     );
-    userId = PresentationScope.read(context).userId;
 
     context.read<DeckBloc>().add(CloseEditModeEvent());
   }
@@ -55,7 +52,6 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
         builder: (context, state) {
           return Scaffold(
             appBar: DeckBuilderAppBar(
-              userId: userId,
               nameController: nameController,
               locale: locale,
               theme: theme,
@@ -87,7 +83,6 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
                     ),
                     Expanded(
                       child: DeckOrCardGridView(
-                        userId: userId,
                         items: deck.cards
                             .map((e) => MapEntry(e.card, e.count))
                             .toList(),

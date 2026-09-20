@@ -18,45 +18,39 @@ class CollectionPage extends StatefulWidget {
 }
 
 class _CollectionPageState extends State<CollectionPage> {
-  String? _userId;
   bool? _onAdd;
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    if (_userId == null || _onAdd == null) {
-      final args = getArguments(context);
-      _userId = PresentationScope.read(context).userId;
-      _onAdd = args['onAdd'] ?? false;
-    }
+    _onAdd ??= getArguments(context)['onAdd'] ?? false;
   }
 
   @override
   Widget build(BuildContext context) {
+    final dependencies = PresentationScope.read(context);
     return BlocProvider.value(
-      value: PresentationScope.read(context).collectionBloc
-        ..add(FetchCollectionEvent(userId: _userId!)),
-      child: _CollectionPageContent(userId: _userId!, onAdd: _onAdd!),
+      value: dependencies.collectionBloc
+        ..add(FetchCollectionEvent(userId: dependencies.userId)),
+      child: _CollectionPageContent(onAdd: _onAdd!),
     );
   }
 }
 
 class _CollectionPageContent extends StatelessWidget {
-  final String userId;
   final bool onAdd;
 
-  const _CollectionPageContent({required this.userId, required this.onAdd});
+  const _CollectionPageContent({required this.onAdd});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CollectionAppBar(userId: userId),
+      appBar: const CollectionAppBar(),
       body: BlocBuilder<CollectionBloc, CollectionState>(
         builder: (context, state) {
           return CollectionListView(
             gameKeys: GameConfig.instance.availableGames,
             gameImages: GameConfig.instance.gameImagePaths,
-            userId: userId,
             onAdd: onAdd,
             collections: state.collections,
           );

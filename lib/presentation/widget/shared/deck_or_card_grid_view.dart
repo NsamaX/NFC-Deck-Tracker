@@ -22,12 +22,10 @@ const _gridConfig = {
 };
 
 class DeckOrCardGridView extends StatelessWidget {
-  final String userId;
   final List<Object> items;
 
   const DeckOrCardGridView({
     super.key,
-    required this.userId,
     required this.items,
   });
 
@@ -65,7 +63,7 @@ class DeckOrCardGridView extends StatelessWidget {
     BuildContext context, {
     required Object item,
   }) {
-    if (item is DeckEntity) return DeckItem(userId: userId, deck: item);
+    if (item is DeckEntity) return DeckItem(deck: item);
     if (item is CardEntity) return CardItem(card: item);
     if (item is MapEntry<CardEntity, int>)
       return CardItem(card: item.key, count: item.value);

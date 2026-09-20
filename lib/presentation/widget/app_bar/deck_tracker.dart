@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/drawer/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
@@ -15,11 +16,9 @@ import '../notification/cupertino_dialog.dart';
 import 'default.dart';
 
 class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String userId;
   final NfcBloc nfcBloc;
 
-  const DeckTrackerAppBar(
-      {super.key, required this.userId, required this.nfcBloc});
+  const DeckTrackerAppBar({super.key, required this.nfcBloc});
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +81,8 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
                 DialogChoice(
                   text: locale.translate('page_deck_tracker.button_save'),
                   onPressed: () {
-                    recordBloc.add(CreateRecordEvent(userId: userId));
+                    recordBloc.add(CreateRecordEvent(
+                        userId: PresentationScope.read(context).userId));
                     trackerBloc.add(ResetDeckEvent());
                     recordBloc.add(ResetRecordEvent());
                     readerBloc.add(ResetReadedCardsEvent());

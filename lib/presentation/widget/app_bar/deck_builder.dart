@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/application/bloc.dart';
 import '../../bloc/deck/bloc.dart';
@@ -16,7 +17,6 @@ import '../specific/tutorail_nfc_icon.dart';
 import 'default.dart';
 
 class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String userId;
   final TextEditingController nameController;
   final AppLocalization locale;
   final ThemeData theme;
@@ -26,7 +26,6 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const DeckBuilderAppBar({
     super.key,
-    required this.userId,
     required this.nameController,
     required this.locale,
     required this.theme,
@@ -77,8 +76,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         addCardItem,
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_save'),
-          action: MenuAction.callback(
-              () => deckBloc.add(CreateDeckEvent(userId: userId))),
+          action: MenuAction.callback(() => deckBloc.add(
+              CreateDeckEvent(userId: PresentationScope.read(context).userId))),
         ),
       ];
     } else if (deckState.isEditMode) {
@@ -132,7 +131,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
               confirmButtonText: locale.translate('common.button_confirm'),
               onPressed: () {
                 deckBloc.add(DeleteDeckEvent(
-                    userId: userId,
+                    userId: PresentationScope.read(context).userId,
                     deckId: deckState.currentDeck.deckId,
                     locale: locale));
                 Navigator.of(context).pop();
@@ -151,7 +150,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_save'),
           action: MenuAction.callback(() {
-            deckBloc.add(UpdateDeckEvent(userId: userId));
+            deckBloc.add(UpdateDeckEvent(
+                userId: PresentationScope.read(context).userId));
             nfcBloc.add(StopNfcSessionEvent());
             deckBloc.add(CloseEditModeEvent());
           }),

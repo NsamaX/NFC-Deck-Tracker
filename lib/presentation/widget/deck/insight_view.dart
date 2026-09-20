@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/usage_card_stats.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/reader/bloc.dart';
 import '../../bloc/record/bloc.dart';
@@ -22,7 +23,6 @@ class DeckInsightView extends StatefulWidget {
   final TrackerBloc trackerBloc;
   final RecordBloc recordBloc;
   final UsageCardBloc usageCardBloc;
-  final String userId;
 
   const DeckInsightView({
     super.key,
@@ -31,7 +31,6 @@ class DeckInsightView extends StatefulWidget {
     required this.trackerBloc,
     required this.recordBloc,
     required this.usageCardBloc,
-    required this.userId,
   });
 
   @override
@@ -47,7 +46,7 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
 
     if (!_hasLoaded) {
       widget.recordBloc.add(FetchRecordEvent(
-        userId: widget.userId,
+        userId: PresentationScope.read(context).userId,
         deckId: widget.trackerBloc.state.originalDeck.deckId,
       ));
 
@@ -107,7 +106,7 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
                   },
                   onDelete: () {
                     widget.recordBloc.add(DeleteRecordEvent(
-                      userId: widget.userId,
+                      userId: PresentationScope.read(context).userId,
                       recordId: record.recordId,
                     ));
                   },

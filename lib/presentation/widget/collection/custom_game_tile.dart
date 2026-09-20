@@ -4,6 +4,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/collection.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/collection/bloc.dart';
 import '../../locale/localization.dart';
@@ -13,13 +14,11 @@ import 'slidable_delete.dart';
 
 class CustomGameTile extends StatelessWidget {
   final CollectionEntity collection;
-  final String userId;
   final bool onAdd;
 
   const CustomGameTile({
     super.key,
     required this.collection,
-    required this.userId,
     required this.onAdd,
   });
 
@@ -67,7 +66,7 @@ class CustomGameTile extends StatelessWidget {
               collection: collection,
               onDelete: (collectionId) {
                 context.read<CollectionBloc>().add(DeleteCollectionEvent(
-                      userId: userId,
+                      userId: PresentationScope.read(context).userId,
                       collectionId: collectionId,
                     ));
               },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/card/bloc.dart';
 import '../../bloc/deck/bloc.dart';
@@ -13,7 +14,6 @@ import '../notification/snackbar.dart';
 import 'default.dart';
 
 class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String userId;
   final String collectionId;
   final CardEntity card;
   final bool onNFC;
@@ -22,7 +22,6 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   const CardAppBar({
     Key? key,
-    required this.userId,
     required this.collectionId,
     required this.card,
     required this.onNFC,
@@ -81,7 +80,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
             label: locale.translate('page_browse_card.toggle_create'),
             action: MenuAction.callback(() {
               context.read<CardBloc>().add(CreateCardEvent(
-                    userId: userId,
+                    userId: PresentationScope.read(context).userId,
                     collectionId: collectionId,
                     locale: locale,
                   ));

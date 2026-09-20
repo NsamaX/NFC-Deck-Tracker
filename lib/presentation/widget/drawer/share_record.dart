@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/record/bloc.dart';
 import '../../bloc/drawer/bloc.dart';
@@ -11,13 +12,11 @@ import '../qr_code/generetor.dart';
 import '../qr_code/scanner.dart';
 
 class ShareRecordDrawer extends StatelessWidget {
-  final String userId;
   final List<CardEntity> cards;
   final RecordBloc recordBloc;
 
   const ShareRecordDrawer({
     super.key,
-    required this.userId,
     required this.cards,
     required this.recordBloc,
   });
@@ -39,7 +38,6 @@ class ShareRecordDrawer extends StatelessWidget {
               clipBehavior: Clip.none,
               children: [
                 _DrawerContainer(
-                  userId: userId,
                   cards: cards,
                   recordBloc: recordBloc,
                 ),
@@ -62,12 +60,10 @@ class ShareRecordDrawer extends StatelessWidget {
 }
 
 class _DrawerContainer extends StatelessWidget {
-  final String userId;
   final List<CardEntity> cards;
   final RecordBloc recordBloc;
 
   const _DrawerContainer({
-    required this.userId,
     required this.cards,
     required this.recordBloc,
   });
@@ -132,9 +128,10 @@ class _DrawerContainer extends StatelessWidget {
           onTap: () => Navigator.of(context).pop(),
           child: Center(
             child: GestureDetector(
-              onTap: () => recordBloc
-                  .add(ShareRecordEvent(userId: userId, cards: cards)),
-              child: QRCodeGeneretor(userId: userId),
+              onTap: () => recordBloc.add(ShareRecordEvent(
+                  userId: PresentationScope.read(context).userId,
+                  cards: cards)),
+              child: QRCodeGeneretor(),
             ),
           ),
         ),

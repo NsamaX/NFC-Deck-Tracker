@@ -61,7 +61,6 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
             create: (_) => PresentationScope.read(context).createCardBloc()),
       ],
       child: _BrowseCardContent(
-        userId: userId,
         onAdd: onAdd,
         collectionId: collectionId,
         collectionName: collectionName,
@@ -71,13 +70,11 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
 }
 
 class _BrowseCardContent extends StatefulWidget {
-  final String userId;
   final bool onAdd;
   final String collectionId;
   final String collectionName;
 
   const _BrowseCardContent({
-    required this.userId,
     required this.onAdd,
     required this.collectionId,
     required this.collectionName,
@@ -107,7 +104,7 @@ class _BrowseCardContentState extends State<_BrowseCardContent>
   void didPopNext() {
     if (!GameConfig.instance.isSupported(widget.collectionId)) {
       context.read<BrowseCardBloc>().add(FetchCardEvent(
-            userId: widget.userId,
+            userId: PresentationScope.read(context).userId,
             collectionId: widget.collectionId,
           ));
     }
@@ -169,7 +166,6 @@ class _BrowseCardContentState extends State<_BrowseCardContent>
                 child: CardListView(
                   cards: state.visibleCards,
                   onAdd: widget.onAdd,
-                  userId: widget.userId,
                 ),
               );
             },

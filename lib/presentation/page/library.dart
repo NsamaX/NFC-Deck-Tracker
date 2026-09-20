@@ -64,7 +64,6 @@ class _LibraryPageContent extends State<_LibraryPageState> {
 
           if (cards.isNotEmpty) {
             return DeckOrCardGridView(
-              userId: userId,
               items: cards,
             );
           }

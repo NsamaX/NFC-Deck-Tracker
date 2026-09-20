@@ -65,7 +65,6 @@ class _MyDeckPage extends State<MyDeckPage> with RouteAware {
           }
 
           return DeckOrCardGridView(
-            userId: userId,
             items: deck,
           );
         },

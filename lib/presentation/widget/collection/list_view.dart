@@ -11,7 +11,6 @@ class CollectionListView extends StatelessWidget {
   final List<String> gameKeys;
   final List<String> gameImages;
   final List<CollectionEntity> collections;
-  final String userId;
   final bool onAdd;
 
   const CollectionListView({
@@ -19,7 +18,6 @@ class CollectionListView extends StatelessWidget {
     required this.gameKeys,
     required this.gameImages,
     required this.collections,
-    required this.userId,
     this.onAdd = false,
   });
 
@@ -37,7 +35,6 @@ class CollectionListView extends StatelessWidget {
         children: [
           ...userCollections.map((collection) => CustomGameTile(
                 collection: collection,
-                userId: userId,
                 onAdd: onAdd,
               )),
           if (gameKeys.isNotEmpty)

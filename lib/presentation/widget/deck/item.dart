@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
+import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/deck/bloc.dart';
 import '../../locale/localization.dart';
 import '../../route/constant.dart';
 
 class DeckItem extends StatelessWidget {
-  final String userId;
   final DeckEntity deck;
 
   const DeckItem({
     super.key,
-    required this.userId,
     required this.deck,
   });
 
@@ -88,7 +87,7 @@ class DeckItem extends StatelessWidget {
 
   void _onDelete(BuildContext context) {
     context.read<DeckBloc>().add(DeleteDeckEvent(
-        userId: userId,
+        userId: PresentationScope.read(context).userId,
         deckId: deck.deckId,
         locale: AppLocalization.of(context)));
   }
