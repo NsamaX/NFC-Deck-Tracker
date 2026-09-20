@@ -181,4 +181,26 @@ void main() {
     expect(find.textContaining('Draw 2'), findsOneWidget);
     expect(find.textContaining('100.0%'), findsOneWidget);
   });
+
+  testWidgets(
+      'the search filter survives a refetch after returning to the list',
+      (tester) async {
+    final world = makeWorld();
+    await world.pump(tester, initialRoute: RouteConstant.collection);
+    await tester.tap(find.text('MyCards'));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'zzz');
+    await tester.pumpAndSettle();
+    expect(find.text('No cards found matching your search.'), findsOneWidget);
+    expect(find.text('Dragon'), findsNothing);
+
+    await tester.tap(find.text('Create'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+    expect(find.widgetWithText(TextField, 'zzz'), findsOneWidget);
+    expect(find.text('No cards found matching your search.'), findsOneWidget);
+    expect(find.text('Dragon'), findsNothing);
+  });
 }

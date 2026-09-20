@@ -37,20 +37,8 @@ class BrowseCardBloc extends Bloc<BrowseCardEvent, BrowseCardState> {
         collectionId: event.collectionId,
       );
 
-      if (loadedCards.isEmpty) {
-        emit(state.copyWith(
-          cards: loadedCards,
-          visibleCards: loadedCards,
-          isLoading: false,
-          errorMessage: 'page_browse_card.empty_collection',
-        ));
-      } else {
-        emit(state.copyWith(
-          cards: loadedCards,
-          visibleCards: loadedCards,
-          isLoading: false,
-        ));
-      }
+      final next = state.copyWith(cards: loadedCards, isLoading: false);
+      emit(next.copyWith(errorMessage: _emptyMessageFor(next)));
     } catch (_) {
       emit(state.copyWith(
         errorMessage: 'page_browse_card.error_fetch_card',
@@ -60,29 +48,21 @@ class BrowseCardBloc extends Bloc<BrowseCardEvent, BrowseCardState> {
   }
 
   void _onFilterCard(FilterCardEvent event, Emitter<BrowseCardState> emit) {
-    final keyword = event.query.trim().toLowerCase();
-
-    if (keyword.isEmpty) {
-      add(ClearFilterEvent());
-      return;
-    }
-
-    final results = state.cards.where((card) {
-      return (card.name).toLowerCase().contains(keyword);
-    }).toList();
-
-    emit(state.copyWith(
-      visibleCards: results,
-      errorMessage:
-          results.isEmpty ? 'page_browse_card.empty_search_result' : '',
-    ));
+    final next = state.copyWith(query: event.query);
+    emit(next.copyWith(errorMessage: _emptyMessageFor(next)));
   }
 
   void _onClearFilter(ClearFilterEvent event, Emitter<BrowseCardState> emit) {
-    emit(state.copyWith(
-      visibleCards: state.cards,
-      errorMessage: '',
-    ));
+    final next = state.copyWith(query: '');
+    emit(next.copyWith(errorMessage: _emptyMessageFor(next)));
+  }
+
+  String _emptyMessageFor(BrowseCardState state) {
+    if (state.cards.isEmpty) return 'page_browse_card.empty_collection';
+    if (state.visibleCards.isEmpty) {
+      return 'page_browse_card.empty_search_result';
+    }
+    return '';
   }
 
   Future<void> _onDeleteCard(
@@ -94,15 +74,8 @@ class BrowseCardBloc extends Bloc<BrowseCardEvent, BrowseCardState> {
       imageUrl: event.imageUrl,
     );
 
-    final updatedCards =
-        state.cards.where((card) => card.cardId != event.cardId).toList();
-    final updatedVisibleCards = state.visibleCards
-        .where((card) => card.cardId != event.cardId)
-        .toList();
-
-    emit(state.copyWith(
-      cards: updatedCards,
-      visibleCards: updatedVisibleCards,
-    ));
+    final next = state.copyWith(
+        cards: state.cards.where((c) => c.cardId != event.cardId).toList());
+    emit(next.copyWith(errorMessage: _emptyMessageFor(next)));
   }
 }
