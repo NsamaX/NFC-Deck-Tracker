@@ -29,7 +29,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    final deckState = context.read<DeckBuilderBloc>().state;
+    final deckState = context.watch<DeckBuilderBloc>().state;
     final deckName = deckState.currentDeck.name;
     final hasCards = deckState.currentDeck.cards.isNotEmpty == true;
     final collectionId =

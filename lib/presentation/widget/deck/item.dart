@@ -19,7 +19,7 @@ class DeckItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isEditMode = context.read<DeckBuilderBloc>().state.isEditMode;
+    final isEditMode = context.watch<DeckBuilderBloc>().state.isEditMode;
 
     return Stack(
       children: [

@@ -29,8 +29,8 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
     final locale = AppLocalization.of(context);
     final deckBloc = context.read<DeckBuilderBloc>();
     final nfcBloc = context.read<NfcBloc>();
-    final cardBloc = context.watch<CardBloc>();
-    final cardState = cardBloc.state.card;
+    final cardState = context.watch<CardBloc>().state.card;
+    final isNfcActive = context.watch<NfcBloc>().state.isSessionActive;
 
     final menuItems = <AppBarMenuItem>[
       AppBarMenuItem.back(),
@@ -96,7 +96,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
         menuItems.add(AppBarMenuItem.empty());
       }
     } else if (onNFC) {
-      final isActive = nfcBloc.state.isSessionActive;
+      final isActive = isNfcActive;
       menuItems.add(AppBarMenuItem.empty());
       menuItems.add(
         AppBarMenuItem(

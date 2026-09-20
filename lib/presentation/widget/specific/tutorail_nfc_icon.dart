@@ -28,7 +28,7 @@ class _TutorailNFCIconState extends State<TutorailNFCIcon> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isDark = context.read<ApplicationBloc>().state.isDark;
+    final isDark = context.watch<ApplicationBloc>().state.isDark;
 
     return GestureDetector(
       onTap: _handleTap,

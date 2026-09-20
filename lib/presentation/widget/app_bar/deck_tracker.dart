@@ -28,9 +28,8 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
 
     final drawerBloc = context.read<DrawerBloc>();
     final trackerBloc = context.read<TrackerBloc>();
-
-    final isAdvancedMode = trackerBloc.state.isAdvancedMode;
-    final isSessionActive = context.read<NfcBloc>().state.isSessionActive;
+    final isAdvancedMode = context.watch<TrackerBloc>().state.isAdvancedMode;
+    final isSessionActive = context.watch<NfcBloc>().state.isSessionActive;
 
     final toggleNfcItem = AppBarMenuItem(
       label: isSessionActive

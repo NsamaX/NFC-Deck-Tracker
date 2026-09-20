@@ -43,10 +43,9 @@ class CardItem extends StatelessWidget {
   Widget _buildCardDisplay(BuildContext context) {
     final theme = Theme.of(context);
 
-    final isEditMode = context.read<DeckBuilderBloc>().state.isEditMode;
-    final selected =
-        context.read<DeckBuilderBloc>().state.selectedCard.cardId ==
-            card.cardId;
+    final builderState = context.watch<DeckBuilderBloc>().state;
+    final isEditMode = builderState.isEditMode;
+    final selected = builderState.selectedCard.cardId == card.cardId;
 
     return GestureDetector(
       onTap: () => _onTap(context),
