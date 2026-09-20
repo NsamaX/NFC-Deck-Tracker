@@ -18,11 +18,8 @@ import 'insight_summary.dart';
 import '../shared/list_section.dart';
 
 class DeckInsightView extends StatefulWidget {
-  final AppLocalization locale;
-
   const DeckInsightView({
     super.key,
-    required this.locale,
   });
 
   @override
@@ -77,7 +74,8 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
         return HistoryListView(
           section: [
             ListSection(
-              title: widget.locale.translate('page_deck_tracker.history_title'),
+              title: AppLocalization.of(context)
+                  .translate('page_deck_tracker.history_title'),
               items: state.records.map((record) {
                 return HistoryItem(
                   key: record.recordId,

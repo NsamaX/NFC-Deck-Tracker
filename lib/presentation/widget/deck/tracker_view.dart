@@ -60,10 +60,6 @@ class DeckTrackerView extends StatelessWidget {
                       );
 
                       return CardListTile(
-                        locale: locale,
-                        theme: theme,
-                        navigator: Navigator.of(context),
-                        mediaQuery: MediaQuery.of(context),
                         card: card,
                         count: count,
                         action: lastAction,

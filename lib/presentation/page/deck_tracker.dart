@@ -38,10 +38,9 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      final locale = AppLocalization.of(context);
       if (!_hasShownDialog) {
         _hasShownDialog = true;
-
-        final locale = AppLocalization.of(context);
 
         buildCupertinoAlertDialog(
           theme: Theme.of(context),
@@ -101,7 +100,6 @@ class _DeckTrackerPageContent extends StatelessWidget {
   Widget build(BuildContext context) {
     final trackerBloc = context.watch<TrackerBloc>();
     final drawerBloc = context.watch<DrawerBloc>();
-    final locale = AppLocalization.of(context);
 
     return TrackerListener(
       child: Scaffold(
@@ -125,9 +123,7 @@ class _DeckTrackerPageContent extends StatelessWidget {
                     const SizedBox(height: 8.0),
                     Expanded(
                       child: trackerBloc.state.isAnalysisMode
-                          ? DeckInsightView(
-                              locale: locale,
-                            )
+                          ? DeckInsightView()
                           : DeckTrackerView(),
                     ),
                   ],

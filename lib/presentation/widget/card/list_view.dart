@@ -24,9 +24,6 @@ class CardListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final theme = Theme.of(context);
-    final mediaQuery = MediaQuery.of(context);
-    final navigator = Navigator.of(context);
     final browseCardBloc = context.read<BrowseCardBloc>();
 
     if (cards.isEmpty) {
@@ -41,10 +38,6 @@ class CardListView extends StatelessWidget {
     return ListView.separated(
       itemCount: cards.length,
       itemBuilder: (_, index) => CardListTile(
-        locale: locale,
-        theme: theme,
-        mediaQuery: mediaQuery,
-        navigator: navigator,
         card: cards[index],
         onAdd: onAdd,
         onCustom: onCustom,

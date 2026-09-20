@@ -5,7 +5,6 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 
 import '../../bloc/drawer/bloc.dart';
 import '../../bloc/reader/bloc.dart';
-import '../../locale/localization.dart';
 import '../../constant.dart';
 
 import '../card/list_tile.dart';
@@ -20,8 +19,6 @@ class CardHistoryDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final locale = AppLocalization.of(context);
-    final theme = Theme.of(context);
     final mediaQuery = MediaQuery.of(context);
     final reversedCards = List<CardEntity>.from(
         context.read<ReaderBloc>().state.readedCards.reversed);
@@ -51,10 +48,6 @@ class CardHistoryDrawer extends StatelessWidget {
         child: ListView.builder(
           itemCount: reversedCards.length,
           itemBuilder: (_, index) => CardListTile(
-            locale: locale,
-            theme: theme,
-            mediaQuery: mediaQuery,
-            navigator: Navigator.of(context),
             card: reversedCards[index],
             lightTheme: true,
             onNFC: onNfc,

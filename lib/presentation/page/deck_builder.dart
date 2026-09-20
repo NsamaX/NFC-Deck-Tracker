@@ -40,7 +40,6 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
-    final theme = Theme.of(context);
 
     return WriterListener(
       child: BlocBuilder<DeckBloc, DeckState>(
@@ -48,8 +47,6 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
           return Scaffold(
             appBar: DeckBuilderAppBar(
               nameController: nameController,
-              locale: locale,
-              theme: theme,
             ),
             body: BlocBuilder<DeckBloc, DeckState>(
               builder: (context, state) {

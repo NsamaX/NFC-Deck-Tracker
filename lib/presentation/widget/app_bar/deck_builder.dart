@@ -19,14 +19,10 @@ import 'default.dart';
 
 class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController nameController;
-  final AppLocalization locale;
-  final ThemeData theme;
 
   const DeckBuilderAppBar({
     super.key,
     required this.nameController,
-    required this.locale,
-    required this.theme,
   });
 
   @override
@@ -70,7 +66,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(label: deckName),
         addCardItem,
         AppBarMenuItem(
-          label: locale.translate('page_deck_builder.toggle_save'),
+          label: AppLocalization.of(context)
+              .translate('page_deck_builder.toggle_save'),
           action: MenuAction.callback(() => context.read<DeckBloc>().add(
               CreateDeckEvent(userId: PresentationScope.read(context).userId))),
         ),
@@ -79,23 +76,26 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
       final Widget nameFieldWidget = TextField(
         controller: nameController,
         textAlign: TextAlign.center,
-        style: theme.textTheme.titleMedium,
+        style: Theme.of(context).textTheme.titleMedium,
         decoration: InputDecoration(
           border: InputBorder.none,
-          hintText: locale.translate('page_deck_builder.app_bar'),
+          hintText: AppLocalization.of(context)
+              .translate('page_deck_builder.app_bar'),
         ),
         onChanged: (value) {
           final trimmed = value.trim();
           context.read<DeckBloc>().add(SetDeckNameEvent(
               name: trimmed.isNotEmpty
                   ? trimmed
-                  : locale.translate('page_deck_builder.app_bar')));
+                  : AppLocalization.of(context)
+                      .translate('page_deck_builder.app_bar')));
         },
         onSubmitted: (_) {
           final trimmed = nameController.text.trim();
           final newName = trimmed.isNotEmpty
               ? trimmed
-              : locale.translate('page_deck_builder.app_bar');
+              : AppLocalization.of(context)
+                  .translate('page_deck_builder.app_bar');
 
           context.read<DeckBloc>().add(SetDeckNameEvent(name: newName));
           nameController.text = newName;
@@ -122,21 +122,24 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: Icons.delete_outline_rounded,
           action: MenuAction.callback(() {
             buildCupertinoActionDialog(
-              theme: theme,
-              title: locale.translate('page_deck_builder.dialog_delete_title'),
-              content:
-                  locale.translate('page_deck_builder.dialog_delete_content'),
-              cancelButtonText: locale.translate('common.button_cancel'),
-              confirmButtonText: locale.translate('common.button_confirm'),
+              theme: Theme.of(context),
+              title: AppLocalization.of(context)
+                  .translate('page_deck_builder.dialog_delete_title'),
+              content: AppLocalization.of(context)
+                  .translate('page_deck_builder.dialog_delete_content'),
+              cancelButtonText:
+                  AppLocalization.of(context).translate('common.button_cancel'),
+              confirmButtonText: AppLocalization.of(context)
+                  .translate('common.button_confirm'),
               onPressed: () {
                 context.read<DeckBloc>().add(DeleteDeckEvent(
                     userId: PresentationScope.read(context).userId,
                     deckId: deckState.currentDeck.deckId,
-                    locale: locale));
+                    locale: AppLocalization.of(context)));
                 Navigator.of(context).pop();
                 AppSnackBar(context,
-                    text:
-                        locale.translate('page_deck_builder.snack_bar_delete'));
+                    text: AppLocalization.of(context)
+                        .translate('page_deck_builder.snack_bar_delete'));
               },
               closeDialog: () => Navigator.of(context).pop(),
               showDialog: (dialog) =>
@@ -147,7 +150,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(label: nameFieldWidget),
         addCardItem,
         AppBarMenuItem(
-          label: locale.translate('page_deck_builder.toggle_save'),
+          label: AppLocalization.of(context)
+              .translate('page_deck_builder.toggle_save'),
           action: MenuAction.callback(() {
             context.read<DeckBloc>().add(UpdateDeckEvent(
                 userId: PresentationScope.read(context).userId));
@@ -162,9 +166,12 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(
           label: Icons.ios_share_rounded,
           action: MenuAction.callback(() {
-            context.read<DeckBloc>().add(ShareEvent(locale: locale));
+            context
+                .read<DeckBloc>()
+                .add(ShareEvent(locale: AppLocalization.of(context)));
             AppSnackBar(context,
-                text: locale.translate('page_deck_builder.snack_bar_share'));
+                text: AppLocalization.of(context)
+                    .translate('page_deck_builder.snack_bar_share'));
           }),
         ),
         AppBarMenuItem(label: deckName),
@@ -173,7 +180,8 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           action: const MenuAction.route(RouteConstant.deck_tracker),
         ),
         AppBarMenuItem(
-          label: locale.translate('page_deck_builder.toggle_edit'),
+          label: AppLocalization.of(context)
+              .translate('page_deck_builder.toggle_edit'),
           action: MenuAction.callback(() {
             context.read<DeckBloc>().add(ToggleEditModeEvent());
             if (context.read<ApplicationBloc>().state.tutorialNfcIcon) {

@@ -16,10 +16,6 @@ import 'slidable_delete.dart';
 import 'slidable_pin_color.dart';
 
 class CardListTile extends StatelessWidget {
-  final AppLocalization locale;
-  final ThemeData theme;
-  final MediaQueryData mediaQuery;
-  final NavigatorState navigator;
   final CardEntity? card;
   final int? count;
   final PlayerAction? action;
@@ -30,10 +26,6 @@ class CardListTile extends StatelessWidget {
 
   const CardListTile({
     super.key,
-    required this.locale,
-    required this.theme,
-    required this.mediaQuery,
-    required this.navigator,
     required this.card,
     this.count,
     this.action,
@@ -52,12 +44,13 @@ class CardListTile extends StatelessWidget {
     if (card == null) return const SizedBox();
 
     final systemColor = lightTheme ? Colors.black : Colors.white;
-    final backgroundColor =
-        lightTheme ? Colors.white : theme.appBarTheme.backgroundColor!;
+    final backgroundColor = lightTheme
+        ? Colors.white
+        : Theme.of(context).appBarTheme.backgroundColor!;
     final markColor = markedColor ?? backgroundColor;
 
     return GestureDetector(
-      onTap: () => navigator.pushNamed(
+      onTap: () => Navigator.of(context).pushNamed(
         RouteConstant.card,
         arguments: {
           'collectionId': card?.collectionId,
@@ -111,12 +104,12 @@ class CardListTile extends StatelessWidget {
                 children: [
                   _buildImage(markColor: markColor, iconColor: systemColor),
                   const SizedBox(width: 8.0),
-                  Expanded(child: _buildCardInfo(color: systemColor)),
+                  Expanded(child: _buildCardInfo(context, color: systemColor)),
                   const SizedBox(width: 8.0),
                   if (action != null)
                     _buildActionIcon(action: action!, color: systemColor),
                   const SizedBox(width: 4.0),
-                  if (count != null) _buildCount(color: systemColor),
+                  if (count != null) _buildCount(context, color: systemColor),
                 ],
               ),
             ),
@@ -156,21 +149,22 @@ class CardListTile extends StatelessWidget {
     );
   }
 
-  Widget _buildCardInfo({Color? color}) {
+  Widget _buildCardInfo(BuildContext context, {Color? color}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          card?.name ?? locale.translate('card.no_name'),
-          style: theme.textTheme.bodyMedium?.copyWith(color: color),
+          card?.name ?? AppLocalization.of(context).translate('card.no_name'),
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: color),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
         const SizedBox(height: 4.0),
         Text(
-          card?.description ?? locale.translate('card.no_description'),
-          style: theme.textTheme.bodySmall?.copyWith(color: color),
+          card?.description ??
+              AppLocalization.of(context).translate('card.no_description'),
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(color: color),
           overflow: TextOverflow.ellipsis,
           maxLines: 1,
         ),
@@ -206,12 +200,12 @@ class CardListTile extends StatelessWidget {
     );
   }
 
-  Widget _buildCount({Color? color}) {
+  Widget _buildCount(BuildContext context, {Color? color}) {
     return Padding(
       padding: const EdgeInsets.only(right: 22.0),
       child: Text(
         count.toString(),
-        style: theme.textTheme.titleMedium?.copyWith(color: color),
+        style: Theme.of(context).textTheme.titleMedium?.copyWith(color: color),
       ),
     );
   }
