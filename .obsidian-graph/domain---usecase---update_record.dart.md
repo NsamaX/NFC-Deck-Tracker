@@ -2,7 +2,6 @@
 tags:
   - layer/domain
   - role/usecase
-  - coupling/medium
 ---
 
 # update_record.dart

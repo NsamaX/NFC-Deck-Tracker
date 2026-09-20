@@ -5,10 +5,7 @@ import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/drawer/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
-import '../../bloc/reader/bloc.dart';
-import '../../bloc/record/bloc.dart';
 import '../../bloc/tracker/bloc.dart';
-import '../../bloc/usage_card/bloc.dart';
 import '../../locale/localization.dart';
 
 import '../notification/cupertino_dialog.dart';
@@ -30,10 +27,7 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
     final navigator = Navigator.of(context);
 
     final drawerBloc = context.read<DrawerBloc>();
-    final readerBloc = context.read<ReaderBloc>();
-    final recordBloc = context.read<RecordBloc>();
     final trackerBloc = context.read<TrackerBloc>();
-    final usageCardBloc = context.read<UsageCardBloc>();
 
     final isAdvancedMode = trackerBloc.state.isAdvancedMode;
     final isSessionActive = context.read<NfcBloc>().state.isSessionActive;
@@ -69,22 +63,15 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
                 DialogChoice(
                   text: locale.translate('page_deck_tracker.button_reset'),
                   onPressed: () {
-                    trackerBloc.add(ResetDeckEvent());
-                    recordBloc.add(ResetRecordEvent());
-                    readerBloc.add(ResetReadedCardsEvent());
-                    usageCardBloc.add(ResetUsageCardEvent());
+                    trackerBloc.add(ResetSessionEvent());
                     navigator.pop();
                   },
                 ),
                 DialogChoice(
                   text: locale.translate('page_deck_tracker.button_save'),
                   onPressed: () {
-                    recordBloc.add(CreateRecordEvent(
+                    trackerBloc.add(SaveRecordEvent(
                         userId: PresentationScope.read(context).userId));
-                    trackerBloc.add(ResetDeckEvent());
-                    recordBloc.add(ResetRecordEvent());
-                    readerBloc.add(ResetReadedCardsEvent());
-                    usageCardBloc.add(ResetUsageCardEvent());
                     navigator.pop();
                   },
                 ),

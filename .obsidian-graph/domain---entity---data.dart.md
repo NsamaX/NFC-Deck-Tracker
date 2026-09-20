@@ -2,7 +2,7 @@
 tags:
   - layer/domain
   - role/entity
-  - coupling/high
+  - coupling/medium
 ---
 
 # data.dart

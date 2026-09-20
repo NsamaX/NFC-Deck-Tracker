@@ -20,7 +20,5 @@ tags:
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---bloc---pin_card---bloc.dart]]
 - [[presentation---bloc---reader---bloc.dart]]
-- [[presentation---bloc---record---bloc.dart]]
 - [[presentation---bloc---tracker---bloc.dart]]
-- [[presentation---bloc---usage_card---bloc.dart]]
 

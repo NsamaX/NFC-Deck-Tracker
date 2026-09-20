@@ -5,10 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:nfc_deck_tracker/domain/entity/usage_card_stats.dart';
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
-import '../../bloc/reader/bloc.dart';
-import '../../bloc/record/bloc.dart';
 import '../../bloc/tracker/bloc.dart';
-import '../../bloc/usage_card/bloc.dart';
 import '../../locale/localization.dart';
 
 import '../specific/history_list_view.dart';
@@ -34,9 +31,8 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
     super.didChangeDependencies();
 
     if (!_hasLoaded) {
-      context.read<RecordBloc>().add(FetchRecordEvent(
+      context.read<TrackerBloc>().add(FetchRecordsEvent(
             userId: PresentationScope.read(context).userId,
-            deckId: context.read<TrackerBloc>().state.originalDeck.deckId,
           ));
 
       _hasLoaded = true;
@@ -45,7 +41,7 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
 
   @override
   Widget build(BuildContext context) {
-    final stat = context.read<UsageCardBloc>().state.stat;
+    final stat = context.watch<TrackerBloc>().state.usageStats;
 
     return ListView(
       children: [
@@ -65,11 +61,11 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
 
   Widget _buildSummary() {
     return DeckInsightSummary(
-        summary: context.read<UsageCardBloc>().state.summary);
+        summary: context.watch<TrackerBloc>().state.summary);
   }
 
   Widget _buildHistory(List<UsageCardStats> cardStats) {
-    return BlocBuilder<RecordBloc, RecordState>(
+    return BlocBuilder<TrackerBloc, TrackerState>(
       builder: (context, state) {
         return HistoryListView(
           section: [
@@ -81,24 +77,11 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
                   key: record.recordId,
                   info: DateFormat('HH:mm:ss').format(record.createdAt!),
                   text: DateFormat('yyyy-MM-dd').format(record.createdAt!),
-                  onTap: () {
-                    context
-                        .read<RecordBloc>()
-                        .add(FindRecordEvent(recordId: record.recordId));
-                    context.read<RecordBloc>().add(GetCardFromRecordEvent(
-                        recordId: record.recordId,
-                        deck: context.read<TrackerBloc>().state.originalDeck));
-                    context.read<ReaderBloc>().add(SetReadedCardsEvent(
-                        readedCards: context.read<RecordBloc>().state.cards));
-                    context
-                        .read<TrackerBloc>()
-                        .add(LoadDeckFromRecordEvent(record: record));
-                    context.read<UsageCardBloc>().add(CalculateUsageCardEvent(
-                        deck: context.read<TrackerBloc>().state.originalDeck,
-                        record: record));
-                  },
+                  onTap: () => context
+                      .read<TrackerBloc>()
+                      .add(SelectRecordEvent(recordId: record.recordId)),
                   onDelete: () {
-                    context.read<RecordBloc>().add(DeleteRecordEvent(
+                    context.read<TrackerBloc>().add(DeleteRecordEvent(
                           userId: PresentationScope.read(context).userId,
                           recordId: record.recordId,
                         ));

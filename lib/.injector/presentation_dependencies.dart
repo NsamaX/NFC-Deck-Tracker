@@ -17,9 +17,7 @@ PresentationDependencies createPresentationDependencies() =>
       createCardBloc: () => locator<CardBloc>(),
       createDrawerBloc: () => locator<DrawerBloc>(),
       createPinCardBloc: () => locator<PinCardBloc>(),
-      createUsageCardBloc: () => locator<UsageCardBloc>(),
       createBrowseCardBloc: (id) => locator<BrowseCardBloc>(param1: id),
       createReaderBloc: (id) => locator<ReaderBloc>(param1: id),
-      createRecordBloc: (id) => locator<RecordBloc>(param1: id),
       createTrackerBloc: (deck) => locator<TrackerBloc>(param1: deck),
     );

@@ -59,6 +59,10 @@ refactor does not reorganize the project into feature folders.
   `ErrorListener`; `ApplicationBloc` errors (including startup) show in the
   global `AppErrorBanner` above the navigator. Handlers never leave an
   exception unhandled.
+- One bloc per aggregate of page state: the deck tracker page runs on
+  `TrackerBloc` (session, records, usage stats) plus the shared `ReaderBloc`;
+  cross-bloc coordination happens in a `BlocListener`, never by a widget
+  dispatching to several blocs and reading their state in between.
 - Factory-created blocs are owned/closed by their page or `BlocProvider`.
   Shared blocs use `BlocProvider.value`.
 - UI rendering adapters remain in presentation: QR camera view, images, charts,

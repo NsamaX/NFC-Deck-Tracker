@@ -7,6 +7,4 @@ export 'drawer/bloc.dart';
 export 'nfc/bloc.dart';
 export 'pin_card/bloc.dart';
 export 'reader/bloc.dart';
-export 'record/bloc.dart';
 export 'tracker/bloc.dart';
-export 'usage_card/bloc.dart';

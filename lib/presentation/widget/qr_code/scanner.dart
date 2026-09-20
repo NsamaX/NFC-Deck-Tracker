@@ -3,15 +3,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
-import '../../bloc/record/bloc.dart';
 import '../../locale/localization.dart';
+import '../../bloc/tracker/bloc.dart';
 
 class QRCodeScanner extends StatefulWidget {
-  final RecordBloc recordBloc;
+  final TrackerBloc trackerBloc;
 
   QRCodeScanner({
     super.key,
-    required this.recordBloc,
+    required this.trackerBloc,
   });
 
   @override
@@ -41,7 +41,7 @@ class _JoinRoomScannerPageState extends State<QRCodeScanner> {
           result = scanData.code;
         });
         if (result != null) {
-          widget.recordBloc.add(ImportRecordEvent(userId: result!));
+          widget.trackerBloc.add(ImportRecordEvent(userId: result!));
         }
         ;
       });

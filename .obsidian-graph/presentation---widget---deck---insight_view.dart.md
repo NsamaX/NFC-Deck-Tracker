@@ -2,7 +2,7 @@
 tags:
   - layer/presentation
   - role/widget
-  - coupling/high
+  - coupling/medium
 ---
 
 # insight_view.dart
@@ -11,10 +11,7 @@ tags:
 
 ## Imports
 - [[domain---entity---usage_card_stats.dart]]
-- [[presentation---bloc---reader---bloc.dart]]
-- [[presentation---bloc---record---bloc.dart]]
 - [[presentation---bloc---tracker---bloc.dart]]
-- [[presentation---bloc---usage_card---bloc.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---deck---insight_chart.dart]]

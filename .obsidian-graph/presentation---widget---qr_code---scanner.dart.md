@@ -9,7 +9,7 @@ tags:
 `lib/presentation/widget/qr_code/scanner.dart`
 
 ## Imports
-- [[presentation---bloc---record---bloc.dart]]
+- [[presentation---bloc---tracker---bloc.dart]]
 - [[presentation---locale---localization.dart]]
 
 ## Packages

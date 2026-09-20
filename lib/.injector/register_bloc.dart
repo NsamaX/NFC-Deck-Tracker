@@ -21,9 +21,7 @@ Future<void> registerBloc() async {
     _nfcBloc();
     _pinCardBloc();
     _readerBloc();
-    _recordBloc();
     _trackerBloc();
-    _usageCardBloc();
 
     LoggerUtil.buffer('Bloc registered successfully.');
   } catch (e) {
@@ -99,31 +97,20 @@ void _readerBloc() {
   });
 }
 
-void _recordBloc() {
-  locator
-      .registerFactoryParam<RecordBloc, String, void>((deckId, _) => RecordBloc(
-            deckId: deckId,
-            createRecordUsecase: locator<CreateRecordUsecase>(),
-            deleteRecordUsecase: locator<DeleteRecordUsecase>(),
-            fetchRecordUsecase: locator<FetchRecordUsecase>(),
-            getCardFromRecordUsecase: locator<GetCardFromRecordUsecase>(),
-            importRecordUsecase: locator<ImportRecordUsecase>(),
-            shareRecordUsecase: locator<ShareRecordUsecase>(),
-            updateRecordUsecase: locator<UpdateRecordUsecase>(),
-          ));
-}
 
 void _trackerBloc() {
   locator.registerFactoryParam<TrackerBloc, DeckEntity, void>(
       (deck, _) => TrackerBloc(
             deck: deck,
             trackingInteractionUsecase: locator<TrackingInteractionUsecase>(),
+            calculateUsageCardUsecase: locator<CalculateUsageCardUsecase>(),
+            summarizeRecordUsecase: locator<SummarizeRecordUsecase>(),
+            getCardFromRecordUsecase: locator<GetCardFromRecordUsecase>(),
+            fetchRecordUsecase: locator<FetchRecordUsecase>(),
+            createRecordUsecase: locator<CreateRecordUsecase>(),
+            deleteRecordUsecase: locator<DeleteRecordUsecase>(),
+            importRecordUsecase: locator<ImportRecordUsecase>(),
+            shareRecordUsecase: locator<ShareRecordUsecase>(),
           ));
 }
 
-void _usageCardBloc() {
-  locator.registerFactory(() => UsageCardBloc(
-        calculateUsageCardUsecase: locator<CalculateUsageCardUsecase>(),
-        summarizeRecordUsecase: locator<SummarizeRecordUsecase>(),
-      ));
-}

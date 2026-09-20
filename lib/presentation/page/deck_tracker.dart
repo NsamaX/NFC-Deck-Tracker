@@ -21,8 +21,6 @@ import '../widget/drawer/share_record.dart';
 import '../widget/listener/tracker.dart';
 import '../widget/notification/cupertino_dialog.dart';
 import '../widget/listener/error.dart';
-import '../bloc/record/bloc.dart';
-import '../bloc/usage_card/bloc.dart';
 
 class DeckTrackerPage extends StatefulWidget {
   const DeckTrackerPage({super.key});
@@ -80,23 +78,14 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
             create: (_) => PresentationScope.read(context).createPinCardBloc()),
         BlocProvider(
             create: (_) =>
-                PresentationScope.read(context).createUsageCardBloc()),
-        BlocProvider(
-            create: (_) =>
                 PresentationScope.read(context).createReaderBloc(collectionId)),
-        BlocProvider(
-            create: (_) =>
-                PresentationScope.read(context).createRecordBloc(deck.deckId)),
         BlocProvider(
             create: (_) =>
                 PresentationScope.read(context).createTrackerBloc(deck)),
       ],
-      child: ErrorListener<RecordBloc, RecordState>(
+      child: ErrorListener<TrackerBloc, TrackerState>(
         errorOf: (state) => state.errorMessage,
-        child: ErrorListener<UsageCardBloc, UsageCardState>(
-          errorOf: (state) => state.errorMessage,
-          child: const _DeckTrackerPageContent(),
-        ),
+        child: const _DeckTrackerPageContent(),
       ),
     );
   }

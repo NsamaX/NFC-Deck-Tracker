@@ -3,9 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../bloc/nfc/bloc.dart';
 import '../../bloc/reader/bloc.dart';
-import '../../bloc/record/bloc.dart';
 import '../../bloc/tracker/bloc.dart';
-import '../../bloc/usage_card/bloc.dart';
 import '../../locale/localization.dart';
 
 import '../notification/snackbar.dart';
@@ -99,26 +97,11 @@ class TrackerListener extends StatelessWidget {
         ),
         BlocListener<TrackerBloc, TrackerState>(
           listenWhen: (previous, current) =>
-              previous.actionLog.length != current.actionLog.length,
+              previous.selectionCount != current.selectionCount,
           listener: (context, state) {
-            if (state.warningMessage.isEmpty && state.actionLog.isNotEmpty) {
-              context.read<RecordBloc>().add(UpdateRecordEvent(
-                    data: state.actionLog.last,
-                  ));
-            }
-          },
-        ),
-        BlocListener<RecordBloc, RecordState>(
-          listenWhen: (previous, current) =>
-              previous.currentRecord.data.length !=
-              current.currentRecord.data.length,
-          listener: (context, state) {
-            final trackerState = context.read<TrackerBloc>().state;
-
-            context.read<UsageCardBloc>().add(CalculateUsageCardEvent(
-                  deck: trackerState.originalDeck,
-                  record: state.currentRecord,
-                ));
+            context
+                .read<ReaderBloc>()
+                .add(SetReadedCardsEvent(readedCards: state.playedCards));
           },
         ),
       ],

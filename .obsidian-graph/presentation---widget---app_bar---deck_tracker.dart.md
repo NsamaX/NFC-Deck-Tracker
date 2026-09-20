@@ -2,7 +2,7 @@
 tags:
   - layer/presentation
   - role/widget
-  - coupling/high
+  - coupling/medium
 ---
 
 # deck_tracker.dart
@@ -12,10 +12,7 @@ tags:
 ## Imports
 - [[presentation---bloc---drawer---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
-- [[presentation---bloc---reader---bloc.dart]]
-- [[presentation---bloc---record---bloc.dart]]
 - [[presentation---bloc---tracker---bloc.dart]]
-- [[presentation---bloc---usage_card---bloc.dart]]
 - [[presentation---dependencies.dart]]
 - [[presentation---locale---localization.dart]]
 - [[presentation---widget---app_bar---default.dart]]

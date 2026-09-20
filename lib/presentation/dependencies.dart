@@ -15,10 +15,8 @@ class PresentationDependencies {
   final CardBloc Function() createCardBloc;
   final DrawerBloc Function() createDrawerBloc;
   final PinCardBloc Function() createPinCardBloc;
-  final UsageCardBloc Function() createUsageCardBloc;
   final BrowseCardBloc Function(String) createBrowseCardBloc;
   final ReaderBloc Function(String) createReaderBloc;
-  final RecordBloc Function(String) createRecordBloc;
   final TrackerBloc Function(DeckEntity) createTrackerBloc;
 
   String get userId => session.currentUser?.uid ?? '';
@@ -34,10 +32,8 @@ class PresentationDependencies {
     required this.createCardBloc,
     required this.createDrawerBloc,
     required this.createPinCardBloc,
-    required this.createUsageCardBloc,
     required this.createBrowseCardBloc,
     required this.createReaderBloc,
-    required this.createRecordBloc,
     required this.createTrackerBloc,
   });
 }
