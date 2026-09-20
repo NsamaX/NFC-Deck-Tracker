@@ -14,6 +14,7 @@ import '../specific/history_list_view.dart';
 
 import 'insight_chart.dart';
 import 'insight_summary.dart';
+import '../shared/list_section.dart';
 
 class DeckInsightView extends StatefulWidget {
   final AppLocalization locale;
@@ -91,15 +92,14 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
       builder: (context, state) {
         return HistoryListView(
           section: [
-            {
-              'title':
-                  widget.locale.translate('page_deck_tracker.history_title'),
-              'content': state.records.map((record) {
-                return {
-                  'key': record.recordId,
-                  'info': DateFormat('HH:mm:ss').format(record.createdAt!),
-                  'text': DateFormat('yyyy-MM-dd').format(record.createdAt!),
-                  'onTap': () {
+            ListSection(
+              title: widget.locale.translate('page_deck_tracker.history_title'),
+              items: state.records.map((record) {
+                return HistoryItem(
+                  key: record.recordId,
+                  info: DateFormat('HH:mm:ss').format(record.createdAt!),
+                  text: DateFormat('yyyy-MM-dd').format(record.createdAt!),
+                  onTap: () {
                     widget.recordBloc
                         .add(FindRecordEvent(recordId: record.recordId));
                     widget.recordBloc.add(GetCardFromRecordEvent(
@@ -113,16 +113,16 @@ class _DeckInsightViewWidgetState extends State<DeckInsightView> {
                         deck: widget.trackerBloc.state.originalDeck,
                         record: record));
                   },
-                  'onDel': () {
+                  onDelete: () {
                     widget.recordBloc.add(DeleteRecordEvent(
                       userId: widget.userId,
                       recordId: record.recordId,
                     ));
                   },
-                  'pop': true,
-                };
+                  popAfterTap: true,
+                );
               }).toList(),
-            }
+            ),
           ],
         );
       },

@@ -3,9 +3,10 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 import '../../locale/localization.dart';
 import '../../theme/theme.dart';
+import '../shared/list_section.dart';
 
 class HistoryListView extends StatelessWidget {
-  final List<Map<String, dynamic>> section;
+  final List<ListSection<HistoryItem>> section;
 
   const HistoryListView({
     super.key,
@@ -19,8 +20,8 @@ class HistoryListView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: section.map((category) {
-          final title = category['title'] as String?;
-          final content = category['content'] as List;
+          final title = category.title;
+          final content = category.items;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,15 +49,15 @@ class HistoryListView extends StatelessWidget {
     );
   }
 
-  Widget _buildItem(BuildContext context, Map<String, dynamic> item) {
+  Widget _buildItem(BuildContext context, HistoryItem item) {
     final theme = Theme.of(context);
     final locale = AppLocalization.of(context);
 
-    final text = item['text'] as String?;
-    final info = item['info'] as String?;
-    final onTap = item['onTap'] as VoidCallback?;
-    final onDel = item['onDel'] as VoidCallback?;
-    final pop = item['pop'] is bool && item['pop'] == true;
+    final text = item.text;
+    final info = item.info;
+    final onTap = item.onTap;
+    final onDel = item.onDelete;
+    final pop = item.popAfterTap;
 
     final row = Container(
       height: 40.0,
@@ -70,7 +71,7 @@ class HistoryListView extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          if (text != null) Text(text, style: theme.textTheme.bodySmall),
+          Text(text, style: theme.textTheme.bodySmall),
           Row(
             children: [
               if (info != null)
@@ -91,7 +92,7 @@ class HistoryListView extends StatelessWidget {
 
     return onDel != null
         ? Slidable(
-            key: ValueKey(item['key']),
+            key: ValueKey(item.key),
             endActionPane: ActionPane(
               motion: const DrawerMotion(),
               children: [

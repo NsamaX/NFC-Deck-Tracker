@@ -1,4 +1,5 @@
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
+import 'package:nfc_deck_tracker/presentation/widget/shared/list_section.dart';
 import 'package:flutter/material.dart';
 import 'package:nfc_deck_tracker/domain/entity/session_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -20,27 +21,27 @@ class SettingBuilder {
       : locale = AppLocalization.of(context),
         applicationBloc = context.read<ApplicationBloc>();
 
-  Map<String, dynamic> buildAccountSection({SessionUser? user}) {
-    return {
-      'title': locale.translate('page_setting.section_account_label'),
-      'content': [
-        {
-          'icon': Icons.account_circle_rounded,
-          'text': user?.email ??
+  ListSection<SettingItem> buildAccountSection({SessionUser? user}) {
+    return ListSection(
+      title: locale.translate('page_setting.section_account_label'),
+      items: [
+        SettingItem(
+          icon: Icons.account_circle_rounded,
+          text: user?.email ??
               locale.translate('page_setting.section_account_email'),
-        },
-        {
-          'icon': Icons.bookmark_added_rounded,
-          'text': locale.translate('page_setting.section_account_library'),
-          'route': RouteConstant.library,
-        },
+        ),
+        SettingItem(
+          icon: Icons.bookmark_added_rounded,
+          text: locale.translate('page_setting.section_account_library'),
+          route: RouteConstant.library,
+        ),
         if (!RuntimeConfig.guestMode)
-          {
-            'icon': user == null ? Icons.login_rounded : Icons.logout_rounded,
-            'text': user == null
+          SettingItem(
+            icon: user == null ? Icons.login_rounded : Icons.logout_rounded,
+            text: user == null
                 ? locale.translate('page_setting.section_account_sign_in')
                 : locale.translate('page_setting.section_account_sign_out'),
-            'onTap': () async {
+            onTap: () async {
               final session = PresentationScope.read(context).session;
               if (user == null) {
                 final result = await session.signInWithGoogle();
@@ -55,55 +56,55 @@ class SettingBuilder {
                 applicationBloc.add(ClearUserDataEvent());
               }
             },
-          },
+          ),
       ],
-    };
+    );
   }
 
-  Map<String, dynamic> buildGeneralSection() {
-    return {
-      'title': locale.translate('page_setting.section_app_info_label'),
-      'content': [
-        {
-          'icon': Icons.auto_stories_rounded,
-          'text': locale.translate('page_setting.section_app_info_about'),
-          'route': RouteConstant.about,
-        },
-        {
-          'icon': Icons.privacy_tip_rounded,
-          'text': locale.translate('page_setting.section_app_info_privacy'),
-          'route': RouteConstant.privacy,
-        },
-        {
-          'icon': Icons.balance_rounded,
-          'text': locale.translate('page_setting.section_app_info_terms'),
-          'route': RouteConstant.terms_of_use,
-        },
+  ListSection<SettingItem> buildGeneralSection() {
+    return ListSection(
+      title: locale.translate('page_setting.section_app_info_label'),
+      items: [
+        SettingItem(
+          icon: Icons.auto_stories_rounded,
+          text: locale.translate('page_setting.section_app_info_about'),
+          route: RouteConstant.about,
+        ),
+        SettingItem(
+          icon: Icons.privacy_tip_rounded,
+          text: locale.translate('page_setting.section_app_info_privacy'),
+          route: RouteConstant.privacy,
+        ),
+        SettingItem(
+          icon: Icons.balance_rounded,
+          text: locale.translate('page_setting.section_app_info_terms'),
+          route: RouteConstant.terms_of_use,
+        ),
       ],
-    };
+    );
   }
 
-  Map<String, dynamic> buildSupportSection() {
-    return {
-      'title': locale.translate('page_setting.section_preferences_label'),
-      'content': [
-        {
-          'icon': Icons.language_rounded,
-          'text': locale.translate('page_setting.section_preferences_language'),
-          'info': LanguageManager.getLanguageName(locale.locale.languageCode),
-          'route': RouteConstant.language,
-        },
-        {
-          'icon': applicationBloc.state.isDark
+  ListSection<SettingItem> buildSupportSection() {
+    return ListSection(
+      title: locale.translate('page_setting.section_preferences_label'),
+      items: [
+        SettingItem(
+          icon: Icons.language_rounded,
+          text: locale.translate('page_setting.section_preferences_language'),
+          info: LanguageManager.getLanguageName(locale.locale.languageCode),
+          route: RouteConstant.language,
+        ),
+        SettingItem(
+          icon: applicationBloc.state.isDark
               ? Icons.dark_mode_rounded
               : Icons.light_mode_rounded,
-          'text': applicationBloc.state.isDark
+          text: applicationBloc.state.isDark
               ? locale.translate('page_setting.section_preferences_dark_mode')
               : locale.translate('page_setting.section_preferences_light_mode'),
-          'onTap': () => applicationBloc
+          onTap: () => applicationBloc
               .add(UpdateSettingsEvent((s) => s.copyWith(isDark: !s.isDark))),
-        },
+        ),
       ],
-    };
+    );
   }
 }

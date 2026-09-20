@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
+import '../shared/list_section.dart';
 
 class SettingSection extends StatelessWidget {
-  final List<Map<String, dynamic>> section;
+  final List<ListSection<SettingItem>> section;
 
   const SettingSection({
     super.key,
@@ -17,8 +18,8 @@ class SettingSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: section.map((cat) {
-          final title = cat['title'] as String?;
-          final content = cat['content'] as List;
+          final title = cat.title;
+          final content = cat.items;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,15 +54,15 @@ class SettingSection extends StatelessWidget {
 
   Widget _buildContentItem(
     BuildContext context, {
-    required Map<String, dynamic> item,
+    required SettingItem item,
   }) {
     final theme = Theme.of(context);
 
-    final icon = item['icon'] as IconData?;
-    final text = item['text'] as String?;
-    final info = item['info'] as String?;
-    final route = item['route'] as String?;
-    final onTap = item['onTap'] as VoidCallback?;
+    final icon = item.icon;
+    final text = item.text;
+    final info = item.info;
+    final route = item.route;
+    final onTap = item.onTap;
 
     return GestureDetector(
       onTap: () {
@@ -87,7 +88,7 @@ class SettingSection extends StatelessWidget {
               children: [
                 if (icon != null) Icon(icon),
                 if (icon != null) const SizedBox(width: 12.0),
-                if (text != null) Text(text, style: theme.textTheme.bodySmall),
+                Text(text, style: theme.textTheme.bodySmall),
               ],
             ),
             Row(

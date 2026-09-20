@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../theme/theme.dart';
+import '../shared/list_section.dart';
 
 class SettingLanguage extends StatelessWidget {
-  final List<Map<String, dynamic>> language;
+  final List<ListSection<SettingItem>> language;
 
   const SettingLanguage({
     super.key,
@@ -17,8 +18,8 @@ class SettingLanguage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: language.map((category) {
-          final title = category['title'] as String?;
-          final content = category['content'] as List;
+          final title = category.title;
+          final content = category.items;
 
           return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,13 +53,13 @@ class SettingLanguage extends StatelessWidget {
 
   Widget _buildItem(
     BuildContext context, {
-    required Map<String, dynamic> item,
+    required SettingItem item,
   }) {
     final theme = Theme.of(context);
 
-    final text = item['text'] as String?;
-    final onTap = item['onTap'] as VoidCallback?;
-    final mark = item['mark'] ?? false;
+    final text = item.text;
+    final onTap = item.onTap;
+    final mark = item.mark;
 
     return GestureDetector(
       onTap: onTap,
@@ -75,7 +76,7 @@ class SettingLanguage extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            if (text != null) Text(text, style: theme.textTheme.bodySmall),
+            Text(text, style: theme.textTheme.bodySmall),
             if (mark)
               Icon(Icons.check_rounded,
                   size: 18.0, color: theme.colorScheme.opacityText),

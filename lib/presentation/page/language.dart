@@ -6,6 +6,7 @@ import '../locale/language_manager.dart';
 import '../locale/localization.dart';
 import '../widget/app_bar/default.dart';
 import '../widget/setting/language.dart';
+import '../widget/shared/list_section.dart';
 
 class LanguagePage extends StatelessWidget {
   const LanguagePage({super.key});
@@ -26,21 +27,21 @@ class LanguagePage extends StatelessWidget {
       ),
       body: SettingLanguage(
         language: [
-          {
-            'content': LanguageManager.languageNames.entries.map((entry) {
+          ListSection(
+            items: LanguageManager.languageNames.entries.map((entry) {
               final code = entry.key;
               final name = entry.value;
 
-              return {
-                'text': name,
-                'onTap': () {
+              return SettingItem(
+                text: name,
+                onTap: () {
                   context.read<ApplicationBloc>().add(
                       UpdateSettingsEvent((s) => s.copyWith(locale: code)));
                 },
-                'mark': code == locale.locale.languageCode,
-              };
+                mark: code == locale.locale.languageCode,
+              );
             }).toList(),
-          }
+          ),
         ],
       ),
     );
