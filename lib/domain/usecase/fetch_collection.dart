@@ -31,7 +31,7 @@ class FetchCollectionUsecase {
         updateRemote: (e) =>
             collectionRepository.updateForRemote(userId: userId, collection: e),
         mergeExisting: (local, remote) =>
-            local.name == 'unknow' ? local.copyWith(name: remote.name) : null,
+            local.hasUnknownName ? local.copyWith(name: remote.name) : null,
       ),
     );
   }

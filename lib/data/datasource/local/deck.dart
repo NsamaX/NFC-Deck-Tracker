@@ -1,6 +1,7 @@
 import 'package:nfc_deck_tracker/.config/game.dart';
 import 'package:sqflite/sqflite.dart';
 
+import '../../../domain/entity/collection.dart';
 import '../../model/card.dart';
 import '../../model/card_in_deck.dart';
 import '../../model/collection.dart';
@@ -30,7 +31,7 @@ class DeckLocalDatasource {
         collectionId: collectionId,
         name: GameConfig.instance.isSupported(collectionId)
             ? collectionId
-            : 'unknow',
+            : CollectionEntity.unknownName,
         isSynced: true,
         updatedAt: DateTime.now(),
       );

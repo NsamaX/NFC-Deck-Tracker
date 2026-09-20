@@ -64,7 +64,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
             collectionId: collectionId,
             name: GameConfig.instance.isSupported(collectionId)
                 ? collectionId
-                : 'unknow',
+                : CollectionEntity.unknownName,
             isSynced: isSupportedGame,
           ),
         );

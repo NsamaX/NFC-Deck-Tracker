@@ -1,6 +1,11 @@
 import 'package:equatable/equatable.dart';
 
 class CollectionEntity extends Equatable {
+  // Stored in existing local and remote rows; changing it orphans them.
+  static const String unknownName = 'unknow';
+
+  bool get hasUnknownName => name == unknownName;
+
   final String collectionId;
   final String name;
   final bool isSynced;
