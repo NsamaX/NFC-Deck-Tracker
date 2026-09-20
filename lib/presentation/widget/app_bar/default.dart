@@ -1,8 +1,44 @@
 import 'package:flutter/material.dart';
 
+sealed class MenuAction {
+  const MenuAction();
+
+  const factory MenuAction.back() = _BackAction;
+  const factory MenuAction.route(String route, {Object? arguments}) =
+      _RouteAction;
+  const factory MenuAction.callback(VoidCallback callback) = _CallbackAction;
+
+  void run(BuildContext context) {
+    final navigator = Navigator.of(context);
+    switch (this) {
+      case _BackAction():
+        navigator.pop();
+      case _RouteAction(:final route, :final arguments):
+        navigator.pushNamed(route, arguments: arguments);
+      case _CallbackAction(:final callback):
+        callback();
+    }
+  }
+}
+
+class _BackAction extends MenuAction {
+  const _BackAction();
+}
+
+class _RouteAction extends MenuAction {
+  final String route;
+  final Object? arguments;
+  const _RouteAction(this.route, {this.arguments});
+}
+
+class _CallbackAction extends MenuAction {
+  final VoidCallback callback;
+  const _CallbackAction(this.callback);
+}
+
 class AppBarMenuItem {
   final Object label;
-  final Object? action;
+  final MenuAction? action;
   final bool enabled;
 
   const AppBarMenuItem({
@@ -15,7 +51,7 @@ class AppBarMenuItem {
       const AppBarMenuItem(label: SizedBox.shrink());
 
   static AppBarMenuItem back() => const AppBarMenuItem(
-      label: Icons.arrow_back_ios_new_rounded, action: '/back');
+      label: Icons.arrow_back_ios_new_rounded, action: MenuAction.back());
 
   Widget buildLabel(BuildContext context, {required bool isTitle}) {
     final theme = Theme.of(context);
@@ -71,7 +107,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
       {required bool isTitle}) {
     if (item.label is SizedBox && (item.label as SizedBox).width == 24) {
       return GestureDetector(
-        onTap: item.enabled ? () => _handleTap(context, item.action) : null,
+        onTap: item.enabled ? () => item.action?.run(context) : null,
         child: Opacity(
           opacity: item.enabled ? 1.0 : 0.5,
           child: const SizedBox.shrink(),
@@ -80,7 +116,7 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
     }
 
     return GestureDetector(
-      onTap: item.enabled ? () => _handleTap(context, item.action) : null,
+      onTap: item.enabled ? () => item.action?.run(context) : null,
       child: Opacity(
         opacity: item.enabled ? 1.0 : 0.5,
         child: Container(
@@ -90,25 +126,6 @@ class DefaultAppBar extends StatelessWidget implements PreferredSizeWidget {
         ),
       ),
     );
-  }
-
-  void _handleTap(BuildContext context, Object? action) {
-    if (action == null) return;
-    final navigator = Navigator.of(context);
-
-    switch (action) {
-      case String s:
-        s.startsWith('/back') ? navigator.pop() : navigator.pushNamed(s);
-        break;
-      case Map<String, dynamic> map:
-        navigator.pushNamed(map['route'], arguments: map['arguments']);
-        break;
-      case VoidCallback c:
-        c();
-        break;
-      default:
-        break;
-    }
   }
 
   bool _isTitle(int index) => index == menu.length ~/ 2;

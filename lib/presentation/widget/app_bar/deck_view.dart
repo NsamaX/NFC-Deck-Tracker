@@ -75,18 +75,18 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
       menuItems = [
         AppBarMenuItem(
           label: Icons.nfc_rounded,
-          action: () {
+          action: MenuAction.callback(() {
             if (nfcBloc.state.isSessionActive) {
               nfcBloc.add(StopNfcSessionEvent());
               deckBloc.add(SelectCardEvent(card: const CardEntity()));
             } else {
               nfcBloc.add(StartNfcSessionEvent(card: deckState.selectedCard));
             }
-          },
+          }),
         ),
         AppBarMenuItem(
           label: Icons.delete_outline_rounded,
-          action: () {
+          action: MenuAction.callback(() {
             buildCupertinoActionDialog(
               theme: theme,
               title: locale.translate('page_deck_builder.dialog_delete_title'),
@@ -108,27 +108,27 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
               showDialog: (dialog) =>
                   showCupertinoDialog(context: context, builder: (_) => dialog),
             );
-          },
+          }),
         ),
         AppBarMenuItem(label: nameFieldWidget),
         AppBarMenuItem(
           label: Icons.add_rounded,
-          action: {
-            'route': RouteConstant.browse_card,
-            'arguments': {
+          action: MenuAction.route(
+            RouteConstant.browse_card,
+            arguments: {
               'collectionId': collectionId,
               'collectionName': collectionId,
               'onAdd': true,
             },
-          },
+          ),
         ),
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_save'),
-          action: () {
+          action: MenuAction.callback(() {
             deckBloc.add(UpdateDeckEvent(userId: userId));
             nfcBloc.add(StopNfcSessionEvent());
             deckBloc.add(CloseEditModeEvent());
-          },
+          }),
         ),
       ];
     } else {
@@ -136,20 +136,20 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem.back(),
         AppBarMenuItem(
           label: Icons.ios_share_rounded,
-          action: () {
+          action: MenuAction.callback(() {
             deckBloc.add(ShareEvent(locale: locale));
             AppSnackBar(context,
                 text: locale.translate('page_deck_builder.snack_bar_share'));
-          },
+          }),
         ),
         AppBarMenuItem(label: deckName),
         const AppBarMenuItem(
           label: Icons.play_arrow_rounded,
-          action: RouteConstant.deck_tracker,
+          action: const MenuAction.route(RouteConstant.deck_tracker),
         ),
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_edit'),
-          action: () {
+          action: MenuAction.callback(() {
             deckBloc.add(ToggleEditModeEvent());
             if (applicationBloc.state.tutorialNfcIcon) {
               showGeneralDialog(
@@ -162,7 +162,7 @@ class DeckViewAppBar extends StatelessWidget implements PreferredSizeWidget {
               applicationBloc.add(UpdateSettingsEvent(
                   (s) => s.copyWith(showNfcTutorial: false)));
             }
-          },
+          }),
         ),
       ];
     }

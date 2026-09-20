@@ -45,22 +45,23 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
       label: isSessionActive
           ? Icons.wifi_tethering_rounded
           : Icons.wifi_tethering_off_rounded,
-      action: () {
+      action: MenuAction.callback(() {
         isSessionActive
             ? nfcBloc.add(StopNfcSessionEvent())
             : nfcBloc.add(StartNfcSessionEvent());
-      },
+      }),
     );
 
     if (isAdvancedMode) {
       return [
         AppBarMenuItem(
           label: Icons.access_time_rounded,
-          action: () => drawerBloc.add(ToggleHistoryDrawerEvent()),
+          action: MenuAction.callback(
+              () => drawerBloc.add(ToggleHistoryDrawerEvent())),
         ),
         AppBarMenuItem(
           label: Icons.refresh_rounded,
-          action: () => {
+          action: MenuAction.callback(() {
             buildCupertinoMultipleChoicesDialog(
               theme: Theme.of(context),
               title:
@@ -99,14 +100,15 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
                 context: navigator.context,
                 builder: (_) => dialog,
               ),
-            ),
-          },
+            );
+          }),
         ),
         AppBarMenuItem(label: locale.translate('page_deck_tracker.app_bar')),
         toggleNfcItem,
         AppBarMenuItem(
           label: Icons.build_rounded,
-          action: () => trackerBloc.add(ToggleAdvancedModeEvent()),
+          action: MenuAction.callback(
+              () => trackerBloc.add(ToggleAdvancedModeEvent())),
         ),
       ];
     } else {
@@ -114,19 +116,20 @@ class DeckTrackerAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem.back(),
         AppBarMenuItem(
           label: Icons.people_rounded,
-          action: () => drawerBloc.add(ToggleFeatureDrawerEvent()),
+          action: MenuAction.callback(
+              () => drawerBloc.add(ToggleFeatureDrawerEvent())),
           enabled: false,
         ),
         AppBarMenuItem(label: locale.translate('page_deck_tracker.app_bar')),
         toggleNfcItem,
         AppBarMenuItem(
           label: Icons.build_outlined,
-          action: () {
+          action: MenuAction.callback(() {
             trackerBloc.add(ToggleAdvancedModeEvent());
             if (drawerBloc.state.visibleFeatureDrawer) {
               drawerBloc.add(ToggleFeatureDrawerEvent());
             }
-          },
+          }),
         ),
       ];
     }

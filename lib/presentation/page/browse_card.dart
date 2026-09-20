@@ -127,13 +127,13 @@ class _BrowseCardContentState extends State<_BrowseCardContent>
           !GameConfig.instance.isSupported(widget.collectionId)
               ? AppBarMenuItem(
                   label: locale.translate('page_browse_card.toggle_create'),
-                  action: {
-                    'route': RouteConstant.card,
-                    'arguments': {
+                  action: MenuAction.route(
+                    RouteConstant.card,
+                    arguments: {
                       'collectionId': widget.collectionId,
                       'onCustom': true,
                     },
-                  },
+                  ),
                 )
               : AppBarMenuItem.empty(),
         ],

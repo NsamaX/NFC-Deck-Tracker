@@ -34,7 +34,7 @@ class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       AppBarMenuItem(
         label: locale.translate('page_collection.toggle_new'),
-        action: () {
+        action: MenuAction.callback(() {
           buildCupertinoTextFieldDialog(
             theme: Theme.of(context),
             title: locale.translate('page_collection.dialog_create_title'),
@@ -52,7 +52,7 @@ class CollectionAppBar extends StatelessWidget implements PreferredSizeWidget {
               builder: (_) => dialog,
             ),
           );
-        },
+        }),
       ),
     ];
   }

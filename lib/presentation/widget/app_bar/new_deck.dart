@@ -38,10 +38,10 @@ class NewDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(label: deckName),
         AppBarMenuItem(
           label: Icons.add_rounded,
-          action: {
-            'route': RouteConstant.collection,
-            'arguments': {'onAdd': true},
-          },
+          action: const MenuAction.route(
+            RouteConstant.collection,
+            arguments: {'onAdd': true},
+          ),
         ),
       ];
     } else {
@@ -51,18 +51,19 @@ class NewDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(label: deckName),
         AppBarMenuItem(
           label: Icons.add_rounded,
-          action: {
-            'route': RouteConstant.browse_card,
-            'arguments': {
+          action: MenuAction.route(
+            RouteConstant.browse_card,
+            arguments: {
               'collectionId': collectionId,
               'collectionName': collectionId,
               'onAdd': true,
             },
-          },
+          ),
         ),
         AppBarMenuItem(
           label: locale.translate('page_deck_builder.toggle_save'),
-          action: () => deckBloc.add(CreateDeckEvent(userId: userId)),
+          action: MenuAction.callback(
+              () => deckBloc.add(CreateDeckEvent(userId: userId))),
         ),
       ];
     }

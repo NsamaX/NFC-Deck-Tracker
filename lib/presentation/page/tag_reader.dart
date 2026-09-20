@@ -63,18 +63,18 @@ class _TagReaderPageContent extends StatelessWidget {
         menu: [
           AppBarMenuItem(
             label: Icons.history_rounded,
-            action: () {
+            action: MenuAction.callback(() {
               context.read<DrawerBloc>().add(ToggleHistoryDrawerEvent());
-            },
+            }),
           ),
           AppBarMenuItem(
             label: locale.translate('page_card_reader.app_bar'),
           ),
           AppBarMenuItem(
             label: Icons.search_rounded,
-            action: () {
+            action: MenuAction.callback(() {
               context.read<DrawerBloc>().add(ToggleFeatureDrawerEvent());
-            },
+            }),
           ),
         ],
       ),

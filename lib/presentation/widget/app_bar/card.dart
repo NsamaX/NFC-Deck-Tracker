@@ -61,7 +61,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
       menuItems.add(
         AppBarMenuItem(
           label: locale.translate('page_card_detail.toggle_add'),
-          action: () {
+          action: MenuAction.callback(() {
             deckBloc.add(AddCardEvent(
                 card: card, quantity: deckBloc.state.cardQuantity));
             AppSnackBar(
@@ -69,7 +69,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
               text: locale.translate('page_card_detail.snack_bar_add'),
             );
             Navigator.of(context).pop();
-          },
+          }),
         ),
       );
     } else if (onCustom) {
@@ -79,7 +79,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
         menuItems.add(
           AppBarMenuItem(
             label: locale.translate('page_browse_card.toggle_create'),
-            action: () {
+            action: MenuAction.callback(() {
               context.read<CardBloc>().add(CreateCardEvent(
                     userId: userId,
                     collectionId: collectionId,
@@ -89,7 +89,7 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
                 context,
                 text: locale.translate('page_card_detail.snack_bar_create'),
               );
-            },
+            }),
           ),
         );
       } else {
@@ -104,11 +104,11 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: isActive
               ? Icons.wifi_tethering_rounded
               : Icons.wifi_tethering_off_rounded,
-          action: () {
+          action: MenuAction.callback(() {
             isActive
                 ? nfcBloc.add(StopNfcSessionEvent())
                 : nfcBloc.add(StartNfcSessionEvent(card: card));
-          },
+          }),
         ),
       );
     } else {
