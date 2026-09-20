@@ -22,7 +22,7 @@ class CardCustomImage extends StatelessWidget {
         return _wrapWithTap(
           onTap: () => _pickImage(context),
           child: imageUrl.isNotEmpty
-              ? _buildImage(imageFile: File(imageUrl))
+              ? _buildImage(imageUrl)
               : _buildUploadPlaceholder(context),
         );
       },
@@ -39,10 +39,13 @@ class CardCustomImage extends StatelessWidget {
     );
   }
 
-  Widget _buildImage({required File imageFile}) {
+  Widget _buildImage(String imageUrl) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
-      child: Image.file(imageFile, fit: BoxFit.cover, gaplessPlayback: true),
+      child: imageUrl.startsWith('http')
+          ? Image.network(imageUrl, fit: BoxFit.cover, gaplessPlayback: true)
+          : Image.file(File(imageUrl),
+              fit: BoxFit.cover, gaplessPlayback: true),
     );
   }
 

@@ -62,6 +62,8 @@ class _CardPageContent extends State<_CardContent> {
   late final TextEditingController abilityController;
   late NfcBloc nfcBloc;
 
+  bool _seeded = false;
+
   @override
   void initState() {
     super.initState();
@@ -74,6 +76,15 @@ class _CardPageContent extends State<_CardContent> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     nfcBloc = context.read<NfcBloc>();
+    if (_seeded) return;
+    _seeded = true;
+    final args = CardArgs.of(context);
+    if (args.onCustom && args.card.cardId.isNotEmpty) {
+      context.read<CardBloc>().add(EditCardEvent(card: args.card));
+      nameController.text = args.card.name;
+      descriptionController.text = args.card.description ?? '';
+      abilityController.text = args.card.additionalData?['>']?.toString() ?? '';
+    }
   }
 
   @override

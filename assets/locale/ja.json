@@ -130,7 +130,9 @@
     "toggle_add": "追加",
     "snack_bar_add": "デッキにカードが正常に追加されました！",
     "snack_bar_create": "カスタムカードが正常に作成されました！",
-    "upload_image": "画像をアップロード"
+    "upload_image": "画像をアップロード",
+    "toggle_save": "保存",
+    "snack_bar_save": "カードを保存しました。"
   },
   "page_setting": {
     "app_bar": "設定",

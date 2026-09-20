@@ -107,8 +107,8 @@ The following review findings need separate behavior changes:
   Google sign-in no longer assigns a guest id, and the guest id is never used
   as a `userId`). They have not been exercised against real Firebase yet.
 - Entity ids, names, card lists, and `isSynced` are non-null with empty
-  defaults; `updatedAt`, `imageUrl`, `description`, and `additionalData` stay
-  nullable, and `copyWith` cannot clear those to null.
+  defaults. Optional card fields are cleared with `copyWith(clearX: true)`;
+  timestamps are never cleared, only replaced.
 - Local storage failures (SQLite reads and writes, SharedPreferences writes,
   schema creation and migration) throw; blocs turn them into `errorMessage`.
   Multi-row local writes run inside `SQLiteService.transaction`. Remote

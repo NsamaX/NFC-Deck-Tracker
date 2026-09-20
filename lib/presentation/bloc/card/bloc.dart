@@ -24,6 +24,7 @@ class CardBloc extends Bloc<CardEvent, CardState>
     on<SetCardImageUrlEvent>(_onSetCardImageUrl);
     on<SetCardDescriptionEvent>(_onSetCardDescription);
     on<SetCardAdditionalDataEvent>(_onSetCardAdditionalData);
+    on<EditCardEvent>(_onEditCard);
     on<CreateCardEvent>(_onCreateCard);
     on<UpdateCardEvent>(_onUpdateCard);
   }
@@ -46,6 +47,13 @@ class CardBloc extends Bloc<CardEvent, CardState>
       SetCardAdditionalDataEvent event, Emitter<CardState> emit) {
     emit(state.copyWith(
         card: state.card.copyWith(additionalData: event.additionalData)));
+  }
+
+  void _onEditCard(EditCardEvent event, Emitter<CardState> emit) {
+    emit(state.copyWith(
+      card: event.card,
+      oldImageUrl: event.card.imageUrl ?? '',
+    ));
   }
 
   Future<void> _onCreateCard(

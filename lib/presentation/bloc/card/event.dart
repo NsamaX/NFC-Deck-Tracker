@@ -51,6 +51,15 @@ class SetCardAdditionalDataEvent extends CardEvent {
   List<Object?> get props => [additionalData];
 }
 
+class EditCardEvent extends CardEvent {
+  final CardEntity card;
+
+  const EditCardEvent({required this.card});
+
+  @override
+  List<Object?> get props => [card];
+}
+
 class CreateCardEvent extends CardEvent {
   final String userId;
   final String collectionId;

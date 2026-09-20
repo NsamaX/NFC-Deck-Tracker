@@ -130,7 +130,9 @@
     "toggle_add": "Add",
     "snack_bar_add": "Card successfully added to your deck!",
     "snack_bar_create": "Custom card successfully created!",
-    "upload_image": "Upload Image"
+    "upload_image": "Upload Image",
+    "toggle_save": "Save",
+    "snack_bar_save": "Custom card saved."
   },
   "page_setting": {
     "app_bar": "Settings",

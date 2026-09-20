@@ -264,7 +264,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### UpdateCardUsecase (`update_card.dart`)
 
-`call({userId, card})` — replace the image if changed, then update the card.
+`call({userId, card, oldImageUrl})` — replace the image when it changed from `oldImageUrl`, then update the card; reached from the card page's save action when editing a custom card.
 
 ### UpdateCardInDeckUsecase (`update_card_in_deck.dart`)
 
@@ -304,7 +304,7 @@ guest out; `isGuest` is `guestId != null`.
 
 ### CardEntity (`card.dart`)
 
-A card in a collection: ids, name, description, image URL, game-specific fields.
+A card in a collection: ids, name, description, image URL, game-specific fields. `copyWith(clearImageUrl: true)` (and `clearDescription`, `clearAdditionalData`) reset an optional field to null.
 
 ### CardInDeckEntity (`card_in_deck.dart`)
 

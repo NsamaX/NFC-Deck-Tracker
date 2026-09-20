@@ -30,14 +30,18 @@ class CardEntity extends Equatable {
     Map<String, dynamic>? additionalData,
     bool? isSynced,
     DateTime? updatedAt,
+    bool clearImageUrl = false,
+    bool clearDescription = false,
+    bool clearAdditionalData = false,
   }) =>
       CardEntity(
         collectionId: collectionId ?? this.collectionId,
         cardId: cardId ?? this.cardId,
         name: name ?? this.name,
-        imageUrl: imageUrl ?? this.imageUrl,
-        description: description ?? this.description,
-        additionalData: additionalData ?? this.additionalData,
+        imageUrl: clearImageUrl ? null : imageUrl ?? this.imageUrl,
+        description: clearDescription ? null : description ?? this.description,
+        additionalData:
+            clearAdditionalData ? null : additionalData ?? this.additionalData,
         isSynced: isSynced ?? this.isSynced,
         updatedAt: updatedAt ?? this.updatedAt,
       );

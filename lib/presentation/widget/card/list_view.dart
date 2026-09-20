@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import 'package:nfc_deck_tracker/.config/game.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
@@ -37,6 +38,8 @@ class CardListView extends StatelessWidget {
       itemBuilder: (_, index) => CardListTile(
         card: cards[index],
         onAdd: BrowseCardArgs.of(context).onAdd,
+        onCustom: !BrowseCardArgs.of(context).onAdd &&
+            !GameConfig.instance.isSupported(cards[index].collectionId),
         onDelete: (cardId) => _deleteCard(context, browseCardBloc, cardId),
       ),
       separatorBuilder: (_, __) => const SizedBox(height: 2),

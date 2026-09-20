@@ -130,7 +130,9 @@
     "toggle_add": "เพิ่ม",
     "snack_bar_add": "เพิ่มการ์ดเข้าเด็คของคุณสำเร็จแล้ว!",
     "snack_bar_create": "สร้างการ์ดกำหนดเองสำเร็จแล้ว!",
-    "upload_image": "อัปโหลดรูปภาพ"
+    "upload_image": "อัปโหลดรูปภาพ",
+    "toggle_save": "บันทึก",
+    "snack_bar_save": "บันทึกการ์ดแล้ว"
   },
   "page_setting": {
     "app_bar": "ตั้งค่า",

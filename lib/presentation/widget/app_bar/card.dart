@@ -62,20 +62,30 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
       );
     } else if (onCustom) {
       final nameFilled = (cardState.name).trim().isNotEmpty;
+      final isEditing = cardState.cardId.isNotEmpty;
       if (cardState.imageUrl != null && nameFilled) {
         menuItems.add(AppBarMenuItem.empty());
         menuItems.add(
           AppBarMenuItem(
-            label: locale.translate('page_browse_card.toggle_create'),
+            label: locale.translate(isEditing
+                ? 'page_card_detail.toggle_save'
+                : 'page_browse_card.toggle_create'),
             action: MenuAction.callback(() {
-              context.read<CardBloc>().add(CreateCardEvent(
-                    userId: PresentationScope.read(context).userId,
-                    collectionId: collectionId,
-                    locale: locale,
-                  ));
+              final userId = PresentationScope.read(context).userId;
+              if (isEditing) {
+                context.read<CardBloc>().add(UpdateCardEvent(userId: userId));
+              } else {
+                context.read<CardBloc>().add(CreateCardEvent(
+                      userId: userId,
+                      collectionId: collectionId,
+                      locale: locale,
+                    ));
+              }
               AppSnackBar(
                 context,
-                text: locale.translate('page_card_detail.snack_bar_create'),
+                text: locale.translate(isEditing
+                    ? 'page_card_detail.snack_bar_save'
+                    : 'page_card_detail.snack_bar_create'),
               );
             }),
           ),
