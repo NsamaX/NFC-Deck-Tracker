@@ -11,6 +11,7 @@ import '../../route/constant.dart';
 import '../../theme/theme.dart';
 
 import 'quantity_control.dart';
+import '../../route/arguments.dart';
 
 class CardItem extends StatelessWidget {
   final CardEntity card;
@@ -82,11 +83,11 @@ class CardItem extends StatelessWidget {
     } else {
       Navigator.of(context).pushNamed(
         RouteConstant.card,
-        arguments: {
-          'collectionId': card.collectionId,
-          'card': card,
-          'onNFC': true,
-        },
+        arguments: CardArgs(
+          collectionId: card.collectionId,
+          card: card,
+          onNFC: true,
+        ),
       );
     }
   }

@@ -11,14 +11,12 @@ class CollectionListView extends StatelessWidget {
   final List<String> gameKeys;
   final List<String> gameImages;
   final List<CollectionEntity> collections;
-  final bool onAdd;
 
   const CollectionListView({
     super.key,
     required this.gameKeys,
     required this.gameImages,
     required this.collections,
-    this.onAdd = false,
   });
 
   @override
@@ -35,7 +33,6 @@ class CollectionListView extends StatelessWidget {
         children: [
           ...userCollections.map((collection) => CustomGameTile(
                 collection: collection,
-                onAdd: onAdd,
               )),
           if (gameKeys.isNotEmpty)
             ListView.builder(
@@ -45,7 +42,6 @@ class CollectionListView extends StatelessWidget {
               itemBuilder: (ctx, index) => SupportedGameTile(
                 gameKey: gameKeys[index],
                 gameImage: gameImages[index],
-                onAdd: onAdd,
               ),
             ),
         ],

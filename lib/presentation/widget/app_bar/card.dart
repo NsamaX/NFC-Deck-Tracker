@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
 import '../../bloc/card/bloc.dart';
@@ -12,22 +11,10 @@ import '../../locale/localization.dart';
 import '../notification/snackbar.dart';
 
 import 'default.dart';
+import '../../route/arguments.dart';
 
 class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String collectionId;
-  final CardEntity card;
-  final bool onNFC;
-  final bool onAdd;
-  final bool onCustom;
-
-  const CardAppBar({
-    Key? key,
-    required this.collectionId,
-    required this.card,
-    required this.onNFC,
-    required this.onAdd,
-    required this.onCustom,
-  }) : super(key: key);
+  const CardAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +24,8 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   List<AppBarMenuItem> _buildMenu(BuildContext context) {
+    final CardArgs(:collectionId, :card, :onNFC, :onAdd, :onCustom) =
+        CardArgs.of(context);
     final locale = AppLocalization.of(context);
     final deckBloc = context.read<DeckBloc>();
     final nfcBloc = context.read<NfcBloc>();

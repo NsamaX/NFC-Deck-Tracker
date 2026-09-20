@@ -4,17 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/.config/api.dart';
 import '../../bloc/application/bloc.dart';
 import '../../route/constant.dart';
+import '../../route/arguments.dart';
 
 class SupportedGameTile extends StatelessWidget {
   final String gameKey;
   final String gameImage;
-  final bool onAdd;
 
   const SupportedGameTile({
     super.key,
     required this.gameKey,
     required this.gameImage,
-    required this.onAdd,
   });
 
   @override
@@ -57,11 +56,11 @@ class SupportedGameTile extends StatelessWidget {
         (s) => s.copyWith(recentId: gameKey, recentGame: gameKey)));
     Navigator.of(context).pushReplacementNamed(
       RouteConstant.browse_card,
-      arguments: {
-        'collectionId': gameKey,
-        'collectionName': gameKey,
-        'onAdd': onAdd,
-      },
+      arguments: BrowseCardArgs(
+        collectionId: gameKey,
+        collectionName: gameKey,
+        onAdd: CollectionArgs.of(context).onAdd,
+      ),
     );
   }
 

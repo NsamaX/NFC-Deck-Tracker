@@ -11,15 +11,14 @@ import '../../locale/localization.dart';
 import '../../route/constant.dart';
 
 import 'slidable_delete.dart';
+import '../../route/arguments.dart';
 
 class CustomGameTile extends StatelessWidget {
   final CollectionEntity collection;
-  final bool onAdd;
 
   const CustomGameTile({
     super.key,
     required this.collection,
-    required this.onAdd,
   });
 
   @override
@@ -32,11 +31,11 @@ class CustomGameTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.of(context).pushReplacementNamed(
         RouteConstant.browse_card,
-        arguments: {
-          'collectionId': collection.collectionId,
-          'collectionName': collection.name,
-          'onAdd': onAdd,
-        },
+        arguments: BrowseCardArgs(
+          collectionId: collection.collectionId,
+          collectionName: collection.name,
+          onAdd: CollectionArgs.of(context).onAdd,
+        ),
       ),
       child: Container(
         margin: const EdgeInsets.only(bottom: 6.0),

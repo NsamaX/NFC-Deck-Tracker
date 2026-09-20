@@ -14,6 +14,7 @@ import '../../route/constant.dart';
 
 import 'slidable_delete.dart';
 import 'slidable_pin_color.dart';
+import '../../route/arguments.dart';
 
 class CardListTile extends StatelessWidget {
   final CardEntity? card;
@@ -52,13 +53,13 @@ class CardListTile extends StatelessWidget {
     return GestureDetector(
       onTap: () => Navigator.of(context).pushNamed(
         RouteConstant.card,
-        arguments: {
-          'collectionId': card?.collectionId,
-          'card': card,
-          'onNFC': onNFC,
-          'onAdd': onAdd,
-          'onCustom': onCustom,
-        },
+        arguments: CardArgs(
+          collectionId: card?.collectionId ?? '',
+          card: card ?? const CardEntity(),
+          onNFC: onNFC,
+          onAdd: onAdd,
+          onCustom: onCustom,
+        ),
       ),
       child: Container(
         margin: const EdgeInsets.only(bottom: 6.0),

@@ -16,6 +16,7 @@ import '../notification/snackbar.dart';
 import '../specific/tutorail_nfc_icon.dart';
 
 import 'default.dart';
+import '../../route/arguments.dart';
 
 class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
   final TextEditingController nameController;
@@ -37,11 +38,11 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
       label: Icons.add_rounded,
       action: MenuAction.route(
         RouteConstant.browse_card,
-        arguments: {
-          'collectionId': collectionId,
-          'collectionName': collectionId,
-          'onAdd': true,
-        },
+        arguments: BrowseCardArgs(
+          collectionId: collectionId,
+          collectionName: collectionId,
+          onAdd: true,
+        ),
       ),
     );
 
@@ -55,7 +56,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
           label: Icons.add_rounded,
           action: MenuAction.route(
             RouteConstant.collection,
-            arguments: {'onAdd': true},
+            arguments: CollectionArgs(onAdd: true),
           ),
         ),
       ];

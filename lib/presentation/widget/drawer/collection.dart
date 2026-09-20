@@ -5,6 +5,7 @@ import 'package:nfc_deck_tracker/.config/game.dart';
 import '../../locale/localization.dart';
 import '../../route/constant.dart';
 import '../../constant.dart';
+import '../../route/arguments.dart';
 
 class CollectionDrawer extends StatelessWidget {
   final bool isOpen;
@@ -38,10 +39,10 @@ class CollectionDrawer extends StatelessWidget {
                 onTap: () => _navigate(
                   context: context,
                   route: RouteConstant.browse_card,
-                  arguments: {
-                    'collectionId': recentId,
-                    'collectionName': recentGame,
-                  },
+                  arguments: BrowseCardArgs(
+                    collectionId: recentId,
+                    collectionName: recentGame,
+                  ),
                 ),
                 image: GameConfig.instance.gameImagePaths
                     .where((e) => e.contains(recentId))
@@ -64,7 +65,7 @@ class CollectionDrawer extends StatelessWidget {
   void _navigate({
     required BuildContext context,
     required String route,
-    Map<String, dynamic>? arguments,
+    Object? arguments,
   }) {
     Navigator.of(context).pushNamed(route, arguments: arguments);
   }

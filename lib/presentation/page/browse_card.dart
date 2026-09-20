@@ -4,8 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 
-import 'argument.dart';
-
 import '../bloc/browse_card/bloc.dart';
 import '../bloc/card/bloc.dart';
 import '../locale/localization.dart';
@@ -15,6 +13,7 @@ import '../widget/card/list_view.dart';
 import '../widget/specific/search_bar.dart';
 import '../widget/text/description_align_center.dart';
 import '../constant.dart';
+import '../route/arguments.dart';
 
 class BrowseCardPage extends StatefulWidget {
   const BrowseCardPage({super.key});
@@ -24,27 +23,10 @@ class BrowseCardPage extends StatefulWidget {
 }
 
 class _BrowseCardPageState extends State<BrowseCardPage> {
-  late final String userId;
-  late final String collectionId;
-  late final String collectionName;
-  late final bool onAdd;
-  bool _isInitialized = false;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (!_isInitialized) {
-      final args = getArguments(context);
-      userId = PresentationScope.read(context).userId;
-      collectionId = args['collectionId'];
-      collectionName = args['collectionName'];
-      onAdd = args['onAdd'] ?? false;
-      _isInitialized = true;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+    final args = BrowseCardArgs.of(context);
+    final collectionId = args.collectionId;
     return MultiBlocProvider(
       providers: [
         BlocProvider<BrowseCardBloc>(
@@ -53,32 +35,20 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
                 ? collectionId
                 : GameConfig.dummy,
           )..add(FetchCardEvent(
-              userId: userId,
+              userId: PresentationScope.read(context).userId,
               collectionId: collectionId,
             )),
         ),
         BlocProvider<CardBloc>(
             create: (_) => PresentationScope.read(context).createCardBloc()),
       ],
-      child: _BrowseCardContent(
-        onAdd: onAdd,
-        collectionId: collectionId,
-        collectionName: collectionName,
-      ),
+      child: const _BrowseCardContent(),
     );
   }
 }
 
 class _BrowseCardContent extends StatefulWidget {
-  final bool onAdd;
-  final String collectionId;
-  final String collectionName;
-
-  const _BrowseCardContent({
-    required this.onAdd,
-    required this.collectionId,
-    required this.collectionName,
-  });
+  const _BrowseCardContent();
 
   @override
   State<_BrowseCardContent> createState() => _BrowseCardContentState();
@@ -102,10 +72,11 @@ class _BrowseCardContentState extends State<_BrowseCardContent>
 
   @override
   void didPopNext() {
-    if (!GameConfig.instance.isSupported(widget.collectionId)) {
+    if (!GameConfig.instance
+        .isSupported(BrowseCardArgs.of(context).collectionId)) {
       context.read<BrowseCardBloc>().add(FetchCardEvent(
             userId: PresentationScope.read(context).userId,
-            collectionId: widget.collectionId,
+            collectionId: BrowseCardArgs.of(context).collectionId,
           ));
     }
   }
@@ -121,15 +92,16 @@ class _BrowseCardContentState extends State<_BrowseCardContent>
           AppBarMenuItem(
             label: locale.translate('page_browse_card.app_bar'),
           ),
-          !GameConfig.instance.isSupported(widget.collectionId)
+          !GameConfig.instance
+                  .isSupported(BrowseCardArgs.of(context).collectionId)
               ? AppBarMenuItem(
                   label: locale.translate('page_browse_card.toggle_create'),
                   action: MenuAction.route(
                     RouteConstant.card,
-                    arguments: {
-                      'collectionId': widget.collectionId,
-                      'onCustom': true,
-                    },
+                    arguments: CardArgs(
+                      collectionId: BrowseCardArgs.of(context).collectionId,
+                      onCustom: true,
+                    ),
                   ),
                 )
               : AppBarMenuItem.empty(),
@@ -163,10 +135,7 @@ class _BrowseCardContentState extends State<_BrowseCardContent>
               }
 
               return Expanded(
-                child: CardListView(
-                  cards: state.visibleCards,
-                  onAdd: widget.onAdd,
-                ),
+                child: CardListView(cards: state.visibleCards),
               );
             },
           ),

@@ -2,8 +2,6 @@ import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/domain/entity/card.dart';
-
 import '../bloc/card/bloc.dart';
 import '../bloc/deck/bloc.dart';
 import '../bloc/nfc/bloc.dart';
@@ -14,8 +12,7 @@ import '../widget/card/image.dart';
 import '../widget/card/info.dart';
 import '../widget/card/quantity_selector.dart';
 import '../widget/listener/writer.dart';
-
-import 'argument.dart';
+import '../route/arguments.dart';
 
 class CardPage extends StatefulWidget {
   const CardPage({super.key});
@@ -90,24 +87,14 @@ class _CardPageContent extends State<_CardContent> {
 
   @override
   Widget build(BuildContext context) {
-    final args = getArguments(context);
-    final card = args['card'] as CardEntity? ?? CardEntity();
-    final collectionId = args['collectionId'] as String;
-    final onCustom = args['onCustom'] ?? false;
-    final onNFC = args['onNFC'] ?? false;
-    final onAdd = args['onAdd'] ?? false;
+    final CardArgs(:card, :collectionId, :onCustom, :onAdd) =
+        CardArgs.of(context);
 
     return WriterListener(
       child: BlocBuilder<NfcBloc, NfcState>(
         builder: (context, state) {
           return Scaffold(
-            appBar: CardAppBar(
-              collectionId: collectionId,
-              card: card,
-              onNFC: onNFC,
-              onAdd: onAdd,
-              onCustom: onCustom,
-            ),
+            appBar: const CardAppBar(),
             body: ListView(
               padding: const EdgeInsets.all(40.0),
               children: [

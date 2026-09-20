@@ -8,17 +8,14 @@ import '../../bloc/browse_card/bloc.dart';
 import '../../locale/localization.dart';
 
 import 'list_tile.dart';
+import '../../route/arguments.dart';
 
 class CardListView extends StatelessWidget {
   final List<CardEntity> cards;
-  final bool onAdd;
-  final bool onCustom;
 
   const CardListView({
     super.key,
     required this.cards,
-    this.onAdd = false,
-    this.onCustom = false,
   });
 
   @override
@@ -39,8 +36,7 @@ class CardListView extends StatelessWidget {
       itemCount: cards.length,
       itemBuilder: (_, index) => CardListTile(
         card: cards[index],
-        onAdd: onAdd,
-        onCustom: onCustom,
+        onAdd: BrowseCardArgs.of(context).onAdd,
         onDelete: (cardId) => _deleteCard(context, browseCardBloc, cardId),
       ),
       separatorBuilder: (_, __) => const SizedBox(height: 2),
