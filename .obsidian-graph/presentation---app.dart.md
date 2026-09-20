@@ -17,6 +17,7 @@ tags:
 - [[presentation---nfc_life_cycle_observer.dart]]
 - [[presentation---route---generator.dart]]
 - [[presentation---theme---theme.dart]]
+- [[presentation---widget---notification---app_error_banner.dart]]
 - [[util---logger.dart]]
 
 ## Packages

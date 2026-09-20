@@ -2,16 +2,15 @@
 tags:
   - layer/presentation
   - role/widget
-  - coupling/medium
 ---
 
-# error.dart
+# app_error_banner.dart
 
-`lib/presentation/widget/listener/error.dart`
+`lib/presentation/widget/notification/app_error_banner.dart`
 
 ## Imports
+- [[presentation---bloc---application---bloc.dart]]
 - [[presentation---locale---localization.dart]]
-- [[presentation---widget---notification---snackbar.dart]]
 
 ## Packages
 - `package:flutter/material.dart`

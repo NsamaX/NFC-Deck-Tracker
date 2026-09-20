@@ -10,6 +10,7 @@ tags:
 `lib/presentation/widget/card/list_view.dart`
 
 ## Imports
+- [[config---game.dart]]
 - [[domain---entity---card.dart]]
 - [[presentation---bloc---browse_card---bloc.dart]]
 - [[presentation---dependencies.dart]]

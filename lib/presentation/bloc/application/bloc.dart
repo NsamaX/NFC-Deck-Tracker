@@ -66,11 +66,13 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState>
     emit(state.copyWith(currentPageIndex: event.index));
   }
 
-  void _onClearUserData(
+  Future<void> _onClearUserData(
     ClearUserDataEvent event,
     Emitter<ApplicationState> emit,
-  ) {
-    clearUserDataUsecase.call(isGuest: state.settings.isGuest);
+  ) async {
+    await guard(emit, ErrorKeys.delete, () async {
+      await clearUserDataUsecase.call(isGuest: state.settings.isGuest);
+    });
   }
 
   String getPageRoute({required int index}) {
