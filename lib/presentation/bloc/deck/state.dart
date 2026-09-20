@@ -10,6 +10,8 @@ class DeckState extends Equatable {
   final bool isChange;
   final bool isLoading;
   final String errorMessage;
+  final String shareText;
+  final int shareCount;
 
   const DeckState({
     this.decks = const [],
@@ -21,6 +23,8 @@ class DeckState extends Equatable {
     this.isChange = false,
     this.isLoading = false,
     this.errorMessage = '',
+    this.shareText = '',
+    this.shareCount = 0,
   });
 
   DeckState copyWith({
@@ -33,6 +37,8 @@ class DeckState extends Equatable {
     bool? isChange,
     bool? isLoading,
     String? errorMessage,
+    String? shareText,
+    int? shareCount,
   }) {
     return DeckState(
       decks: decks ?? this.decks,
@@ -44,6 +50,8 @@ class DeckState extends Equatable {
       isChange: isChange ?? this.isChange,
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
+      shareText: shareText ?? this.shareText,
+      shareCount: shareCount ?? this.shareCount,
     );
   }
 
@@ -58,5 +66,7 @@ class DeckState extends Equatable {
         isChange,
         isLoading,
         errorMessage,
+        shareText,
+        shareCount,
       ];
 }

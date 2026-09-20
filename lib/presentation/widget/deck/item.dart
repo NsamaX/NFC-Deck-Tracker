@@ -87,8 +87,6 @@ class DeckItem extends StatelessWidget {
 
   void _onDelete(BuildContext context) {
     context.read<DeckBloc>().add(DeleteDeckEvent(
-        userId: PresentationScope.read(context).userId,
-        deckId: deck.deckId,
-        locale: AppLocalization.of(context)));
+        userId: PresentationScope.read(context).userId, deckId: deck.deckId));
   }
 }

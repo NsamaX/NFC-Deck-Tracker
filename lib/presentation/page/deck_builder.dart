@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../bloc/deck/bloc.dart';
@@ -9,6 +10,7 @@ import '../widget/listener/writer.dart';
 import '../widget/shared/deck_or_card_grid_view.dart';
 import '../widget/text/description_align_center.dart';
 import '../widget/listener/error.dart';
+import '../widget/notification/snackbar.dart';
 
 class DeckBuilderPage extends StatefulWidget {
   const DeckBuilderPage({super.key});
@@ -45,47 +47,57 @@ class _DeckBuilderPage extends State<DeckBuilderPage> with RouteAware {
     return WriterListener(
       child: ErrorListener<DeckBloc, DeckState>(
         errorOf: (state) => state.errorMessage,
-        child: BlocBuilder<DeckBloc, DeckState>(
-          builder: (context, state) {
-            return Scaffold(
-              appBar: DeckBuilderAppBar(
-                nameController: nameController,
-              ),
-              body: BlocBuilder<DeckBloc, DeckState>(
-                builder: (context, state) {
-                  if (state.isLoading) {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  final deck = state.currentDeck;
-
-                  if (deck.cards.isEmpty) {
-                    return DescriptionAlignCenter(
-                      text: locale.translate('page_deck_builder.empty_message'),
-                      bottomNavHeight: true,
-                    );
-                  }
-
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 12.0, top: 8.0),
-                        child: TotalCardInDeck(),
-                      ),
-                      Expanded(
-                        child: DeckOrCardGridView(
-                          items: deck.cards
-                              .map((e) => MapEntry(e.card, e.count))
-                              .toList(),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            );
+        child: BlocListener<DeckBloc, DeckState>(
+          listenWhen: (previous, current) =>
+              previous.shareCount != current.shareCount,
+          listener: (context, state) {
+            Clipboard.setData(ClipboardData(text: state.shareText));
+            AppSnackBar(context,
+                text: locale.translate('page_deck_builder.snack_bar_share'));
           },
+          child: BlocBuilder<DeckBloc, DeckState>(
+            builder: (context, state) {
+              return Scaffold(
+                appBar: DeckBuilderAppBar(
+                  nameController: nameController,
+                ),
+                body: BlocBuilder<DeckBloc, DeckState>(
+                  builder: (context, state) {
+                    if (state.isLoading) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    final deck = state.currentDeck;
+
+                    if (deck.cards.isEmpty) {
+                      return DescriptionAlignCenter(
+                        text:
+                            locale.translate('page_deck_builder.empty_message'),
+                        bottomNavHeight: true,
+                      );
+                    }
+
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(right: 12.0, top: 8.0),
+                          child: TotalCardInDeck(),
+                        ),
+                        Expanded(
+                          child: DeckOrCardGridView(
+                            items: deck.cards
+                                .map((e) => MapEntry(e.card, e.count))
+                                .toList(),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+              );
+            },
+          ),
         ),
       ),
     );

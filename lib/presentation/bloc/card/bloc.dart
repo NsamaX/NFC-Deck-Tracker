@@ -5,7 +5,6 @@ import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/usecase/create_card.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_card.dart';
 
-import '../../locale/localization.dart';
 import '../error_reporting.dart';
 
 part 'event.dart';
@@ -60,7 +59,7 @@ class CardBloc extends Bloc<CardEvent, CardState>
       CreateCardEvent event, Emitter<CardState> emit) async {
     final updatedCard = state.card.copyWith(
       collectionId: event.collectionId,
-      description: event.locale.translate('card.no_description'),
+      description: event.defaultDescription,
     );
     await guard(emit, ErrorKeys.save, () async {
       final saved =

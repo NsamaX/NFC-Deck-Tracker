@@ -65,14 +65,14 @@ class SelectCardEvent extends DeckEvent {
 }
 
 class DefaultDeckEvent extends DeckEvent {
-  final AppLocalization locale;
+  final String name;
 
   const DefaultDeckEvent({
-    required this.locale,
+    required this.name,
   });
 
   @override
-  List<Object?> get props => [locale];
+  List<Object?> get props => [name];
 }
 
 class CreateDeckEvent extends DeckEvent {
@@ -89,16 +89,14 @@ class CreateDeckEvent extends DeckEvent {
 class DeleteDeckEvent extends DeckEvent {
   final String userId;
   final String deckId;
-  final AppLocalization locale;
 
   const DeleteDeckEvent({
     required this.userId,
     required this.deckId,
-    required this.locale,
   });
 
   @override
-  List<Object?> get props => [userId, deckId, locale];
+  List<Object?> get props => [userId, deckId];
 }
 
 class UpdateDeckEvent extends DeckEvent {
@@ -146,14 +144,16 @@ class SetCardQuantityEvent extends DeckEvent {
 }
 
 class ShareEvent extends DeckEvent {
-  final AppLocalization locale;
+  final String nameLabel;
+  final String totalLabel;
 
   const ShareEvent({
-    required this.locale,
+    required this.nameLabel,
+    required this.totalLabel,
   });
 
   @override
-  List<Object?> get props => [locale];
+  List<Object?> get props => [nameLabel, totalLabel];
 }
 
 class ToggleEditModeEvent extends DeckEvent {}

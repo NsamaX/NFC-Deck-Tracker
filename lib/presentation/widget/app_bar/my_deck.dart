@@ -24,7 +24,8 @@ class MyDeckAppBar extends StatelessWidget implements PreferredSizeWidget {
       AppBarMenuItem(
         label: Icons.open_in_new_rounded,
         action: MenuAction.callback(() {
-          deckBloc.add(DefaultDeckEvent(locale: locale));
+          deckBloc.add(DefaultDeckEvent(
+              name: locale.translate('page_deck_builder.app_bar')));
           Navigator.of(context).pushNamed(RouteConstant.deck_builder);
         }),
       ),

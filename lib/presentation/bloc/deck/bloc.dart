@@ -1,5 +1,4 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
@@ -12,7 +11,6 @@ import 'package:nfc_deck_tracker/domain/usecase/generate_share_deck_clipboard.da
 import 'package:nfc_deck_tracker/domain/usecase/update_card_in_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 
-import '../../locale/localization.dart';
 import '../error_reporting.dart';
 
 part 'event.dart';
@@ -109,7 +107,7 @@ class DeckBloc extends Bloc<DeckEvent, DeckState>
 
   void _onDefaultDeck(DefaultDeckEvent event, Emitter<DeckState> emit) {
     final deck = DeckEntity(
-      name: event.locale.translate('page_deck_builder.app_bar'),
+      name: event.name,
       cards: const [],
     );
     emit(state.copyWith(currentDeck: deck, isNewDeck: true));
@@ -177,14 +175,12 @@ class DeckBloc extends Bloc<DeckEvent, DeckState>
   }
 
   Future<void> _onShare(ShareEvent event, Emitter<DeckState> emit) async {
-    final text = await generateShareDeckClipboardUsecase(
+    final text = generateShareDeckClipboardUsecase(
       deck: state.currentDeck,
-      nameLabel:
-          event.locale.translate('page_deck_builder.clipboard_deck_name'),
-      totalLabel:
-          event.locale.translate('page_deck_builder.clipboard_total_cards'),
+      nameLabel: event.nameLabel,
+      totalLabel: event.totalLabel,
     );
-    Clipboard.setData(ClipboardData(text: text));
+    emit(state.copyWith(shareText: text, shareCount: state.shareCount + 1));
   }
 
   void _onToggleEditMode(ToggleEditModeEvent event, Emitter<DeckState> emit) {

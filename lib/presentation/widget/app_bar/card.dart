@@ -78,7 +78,8 @@ class CardAppBar extends StatelessWidget implements PreferredSizeWidget {
                 context.read<CardBloc>().add(CreateCardEvent(
                       userId: userId,
                       collectionId: collectionId,
-                      locale: locale,
+                      defaultDescription:
+                          locale.translate('card.no_description'),
                     ));
               }
               AppSnackBar(

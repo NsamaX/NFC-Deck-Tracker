@@ -135,8 +135,7 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () {
                 context.read<DeckBloc>().add(DeleteDeckEvent(
                     userId: PresentationScope.read(context).userId,
-                    deckId: deckState.currentDeck.deckId,
-                    locale: AppLocalization.of(context)));
+                    deckId: deckState.currentDeck.deckId));
                 Navigator.of(context).pop();
                 AppSnackBar(context,
                     text: AppLocalization.of(context)
@@ -167,12 +166,13 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
         AppBarMenuItem(
           label: Icons.ios_share_rounded,
           action: MenuAction.callback(() {
-            context
-                .read<DeckBloc>()
-                .add(ShareEvent(locale: AppLocalization.of(context)));
-            AppSnackBar(context,
-                text: AppLocalization.of(context)
-                    .translate('page_deck_builder.snack_bar_share'));
+            final locale = AppLocalization.of(context);
+            context.read<DeckBloc>().add(ShareEvent(
+                  nameLabel:
+                      locale.translate('page_deck_builder.clipboard_deck_name'),
+                  totalLabel: locale
+                      .translate('page_deck_builder.clipboard_total_cards'),
+                ));
           }),
         ),
         AppBarMenuItem(label: deckName),

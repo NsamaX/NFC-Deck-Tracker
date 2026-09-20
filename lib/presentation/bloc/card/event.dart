@@ -63,16 +63,16 @@ class EditCardEvent extends CardEvent {
 class CreateCardEvent extends CardEvent {
   final String userId;
   final String collectionId;
-  final AppLocalization locale;
+  final String defaultDescription;
 
   const CreateCardEvent({
     required this.userId,
     required this.collectionId,
-    required this.locale,
+    required this.defaultDescription,
   });
 
   @override
-  List<Object?> get props => [userId, collectionId, locale];
+  List<Object?> get props => [userId, collectionId, defaultDescription];
 }
 
 class UpdateCardEvent extends CardEvent {
