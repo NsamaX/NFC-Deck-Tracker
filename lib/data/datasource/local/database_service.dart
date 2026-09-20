@@ -104,31 +104,4 @@ class DatabaseService {
       LoggerUtil.e('Failed to configure database: $e');
     }
   }
-
-  Future<void> closeDatabase() async {
-    try {
-      final Database? db = await _database;
-
-      await db?.close();
-      _database = null;
-
-      LoggerUtil.buffer('Database closed successfully.');
-    } catch (e) {
-      LoggerUtil.e('Failed to close database: $e');
-    }
-  }
-
-  Future<void> deleteDatabaseFile() async {
-    try {
-      final String dbPath = await getDatabasesPath();
-      final String path = join(dbPath, _db);
-
-      await closeDatabase();
-      await deleteDatabase(path);
-
-      LoggerUtil.i('Database "$_db" deleted successfully.');
-    } catch (e) {
-      LoggerUtil.e('Failed to delete database "$_db": $e');
-    }
-  }
 }

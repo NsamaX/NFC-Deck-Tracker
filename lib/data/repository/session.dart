@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/foundation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import 'package:nfc_deck_tracker/util/logger.dart';
+
 import '../../domain/entity/session_user.dart';
 import '../../domain/repository/session.dart';
 
@@ -42,9 +44,7 @@ class FirebaseSessionRepository implements SessionRepository {
       await _auth.signInWithCredential(credential);
       return SignInResult.success;
     } on Exception catch (e) {
-      if (kDebugMode) {
-        print('Sign-in with Google failed: $e');
-      }
+      LoggerUtil.e('Sign-in with Google failed: $e');
       return SignInResult.failed;
     }
   }

@@ -102,35 +102,6 @@ class FirestoreService {
     }
   }
 
-  Future<bool> updateArrayField({
-    required String collectionPath,
-    required String documentId,
-    required String fieldName,
-    required List<dynamic> valuesToAdd,
-    bool remove = false,
-  }) async {
-    if (_firestore == null) return false;
-    try {
-      final fieldUpdate = {
-        fieldName: remove
-            ? FieldValue.arrayRemove(valuesToAdd)
-            : FieldValue.arrayUnion(valuesToAdd),
-      };
-
-      await firestore
-          .collection(collectionPath)
-          .doc(documentId)
-          .update(fieldUpdate);
-      LoggerUtil.i(
-          '${remove ? 'Removed' : 'Added'} values in "$fieldName" of "$documentId"');
-      return true;
-    } catch (e) {
-      LoggerUtil.e(
-          'Failed to update array field "$fieldName" in "$documentId": $e');
-      return false;
-    }
-  }
-
   Future<bool> delete({
     required String collectionPath,
     required String documentId,

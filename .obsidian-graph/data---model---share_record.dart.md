@@ -12,6 +12,3 @@ tags:
 - [[data---model---card.dart]]
 - [[data---model---data.dart]]
 
-## Packages
-- `dart:convert`
-

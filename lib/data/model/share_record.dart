@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'card.dart';
 import 'data.dart';
 
@@ -35,11 +33,4 @@ class ShareRecordModel {
         'cards': cards.map((card) => card.toJsonForRemote()).toList(),
         'data': data.map((d) => d.toJson()).toList(),
       };
-
-  String toJsonString() => json.encode(toJson());
-
-  factory ShareRecordModel.fromJsonString(String jsonString) {
-    final Map<String, dynamic> jsonMap = json.decode(jsonString);
-    return ShareRecordModel.fromJson(jsonMap);
-  }
 }

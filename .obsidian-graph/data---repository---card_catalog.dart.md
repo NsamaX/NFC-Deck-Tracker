@@ -22,9 +22,9 @@ tags:
 - [[domain---repository---card.dart]]
 - [[domain---repository---card_catalog.dart]]
 - [[domain---repository---collection.dart]]
+- [[domain---service---sync_policy.dart]]
 - [[util---logger.dart]]
 
 ## Packages
 - `dart:convert`
-- `package:flutter/foundation.dart`
 

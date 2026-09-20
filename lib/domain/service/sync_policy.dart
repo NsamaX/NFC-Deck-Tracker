@@ -32,7 +32,7 @@ class SyncPolicy {
 
   const SyncPolicy({this.logger = const SilentDomainLogger()});
 
-  bool isSignedIn(String userId) => userId.isNotEmpty;
+  bool _isSignedIn(String userId) => userId.isNotEmpty;
 
   Future<T> write<T>({
     required String userId,
@@ -42,7 +42,7 @@ class SyncPolicy {
     required Future<void> Function(T entity) local,
   }) async {
     var synced = false;
-    if (isSignedIn(userId)) {
+    if (_isSignedIn(userId)) {
       synced = await remote(markSynced(entity, true));
     }
     final saved = markSynced(entity, synced);
@@ -56,7 +56,7 @@ class SyncPolicy {
     required Future<void> Function() remote,
   }) async {
     await local();
-    if (isSignedIn(userId)) await remote();
+    if (_isSignedIn(userId)) await remote();
   }
 
   Future<List<T>> reconcile<T>({
@@ -66,7 +66,7 @@ class SyncPolicy {
     required SyncTarget<T> target,
   }) async {
     final result = [...local];
-    if (!isSignedIn(userId)) return result;
+    if (!_isSignedIn(userId)) return result;
 
     final List<T> remoteList;
     try {

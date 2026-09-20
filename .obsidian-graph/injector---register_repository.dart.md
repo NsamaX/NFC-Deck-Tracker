@@ -10,6 +10,7 @@ tags:
 `lib/.injector/register_repository.dart`
 
 ## Imports
+- [[config---api.dart]]
 - [[config---runtime.dart]]
 - [[injector---locator.dart]]
 - [[data---datasource---api---game_api.dart]]

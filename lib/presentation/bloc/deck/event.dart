@@ -156,19 +156,6 @@ class ShareEvent extends DeckEvent {
   List<Object?> get props => [locale];
 }
 
-class ToggleDeleteEvent extends DeckEvent {
-  final String userId;
-  final String deckId;
-
-  const ToggleDeleteEvent({
-    required this.userId,
-    required this.deckId,
-  });
-
-  @override
-  List<Object?> get props => [userId, deckId];
-}
-
 class ToggleEditModeEvent extends DeckEvent {}
 
 class CloseEditModeEvent extends DeckEvent {}
