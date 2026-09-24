@@ -156,7 +156,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### CalculateUsageCardUsecase (`calculate_usage_card.dart`)
 
-`call({deck, record})` — per-card play statistics of one record, as `UsageCardStats`.
+`call({deck, record})` — per-card play statistics of one record, as `UsageCardStats`; logs that are neither `take` nor `give` are skipped.
 
 ### ClearUserDataUsecase (`clear_user_data.dart`)
 

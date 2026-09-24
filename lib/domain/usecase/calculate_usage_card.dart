@@ -16,20 +16,16 @@ class CalculateUsageCardUsecase {
     final cardStats = <String, _CardStatsData>{};
 
     for (final log in record.data) {
-      final key = '${log.collectionId}:${log.cardId}';
-      cardStats[key] ??= _CardStatsData(_findOrCreateCard(deck, log));
+      final action = log.playerAction;
+      if (action != PlayerAction.take && action != PlayerAction.give) continue;
 
-      switch (log.playerAction) {
-        case PlayerAction.take:
-          cardStats[key]!.drawCount++;
-          break;
-        case PlayerAction.give:
-          cardStats[key]!.returnCount++;
-          break;
-        case PlayerAction.none:
-          throw UnimplementedError('PlayerAction.none is not handled.');
-        case PlayerAction.unknown:
-          throw UnimplementedError('PlayerAction.unknown is not handled.');
+      final key = '${log.collectionId}:${log.cardId}';
+      final stats =
+          cardStats[key] ??= _CardStatsData(_findOrCreateCard(deck, log));
+      if (action == PlayerAction.take) {
+        stats.drawCount++;
+      } else {
+        stats.returnCount++;
       }
     }
 

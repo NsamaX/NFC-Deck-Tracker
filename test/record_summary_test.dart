@@ -5,15 +5,18 @@ import 'package:nfc_deck_tracker/domain/entity/data.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/record.dart';
 import 'package:nfc_deck_tracker/domain/entity/usage_card_stats.dart';
+import 'package:nfc_deck_tracker/domain/usecase/calculate_usage_card.dart';
 import 'package:nfc_deck_tracker/domain/usecase/summarize_record.dart';
 import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 
-DataEntity take(String tag, String card) => DataEntity(
+DataEntity take(String tag, String card,
+        [PlayerAction action = PlayerAction.take]) =>
+    DataEntity(
       tagId: tag,
       collectionId: 'c',
       cardId: card,
       location: 'hand',
-      playerAction: PlayerAction.take,
+      playerAction: action,
       timestamp: DateTime(2024),
     );
 
@@ -51,5 +54,22 @@ void main() {
       stats: const [],
     );
     expect(summary.percentagePlayed, 0);
+  });
+
+  test('usage stats skip logs without a take or give action', () async {
+    final record = RecordEntity(
+      deckId: 'd',
+      recordId: 'r',
+      data: [
+        take('t1', 'a'),
+        take('t2', 'a', PlayerAction.give),
+        take('t3', 'a', PlayerAction.none),
+        take('t4', 'b', PlayerAction.unknown),
+      ],
+    );
+    final stats = await CalculateUsageCardUsecase()(deck: deck, record: record);
+    expect(stats, const [
+      UsageCardStats(cardName: 'A', drawCount: 1, returnCount: 1),
+    ]);
   });
 }
