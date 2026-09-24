@@ -5,6 +5,7 @@ import 'package:nfc_deck_tracker/domain/entity/data.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/record.dart';
 import 'package:nfc_deck_tracker/domain/entity/share_record.dart';
+import 'package:nfc_deck_tracker/domain/entity/tag.dart';
 import 'package:nfc_deck_tracker/domain/repository/record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/calculate_usage_card.dart';
 import 'package:nfc_deck_tracker/domain/usecase/create_record.dart';
@@ -104,5 +105,41 @@ void main() {
     expect(bloc.state.usageStats, isEmpty);
     expect(bloc.state.currentDeck, deck);
     await bloc.close();
+  });
+
+  test('tracking reports a card outside the deck and applies one inside it',
+      () {
+    final track = TrackingInteractionUsecase();
+    final outside = track(
+        deck: deck,
+        logs: const [],
+        tag: const TagEntity(tagId: 't', cardId: 'x', collectionId: 'c'));
+    expect(outside.outcome, TrackingOutcome.notInDeck);
+    expect(outside.newLog, isNull);
+
+    final inside = track(
+        deck: deck,
+        logs: const [],
+        tag: const TagEntity(tagId: 't', cardId: 'a', collectionId: 'c'));
+    expect(inside.outcome, TrackingOutcome.applied);
+    expect(inside.newLog!.playerAction, PlayerAction.take);
+
+    final exhausted = track(
+        deck: inside.updatedDeck,
+        logs: const [],
+        tag: const TagEntity(tagId: 't2', cardId: 'a', collectionId: 'c'));
+    expect(exhausted.outcome, TrackingOutcome.ignored);
+  });
+
+  test('a tag outside the deck surfaces as a tracker warning', () async {
+    final bloc = makeBloc(MemoryRecords());
+    addTearDown(bloc.close);
+
+    bloc.add(const TrackingInteractionEvent(
+        tag: TagEntity(tagId: 't', cardId: 'x', collectionId: 'c')));
+    final state =
+        await bloc.stream.firstWhere((s) => s.warningMessage.isNotEmpty);
+    expect(state.warningMessage,
+        'page_deck_tracker.snack_bar_not_part_of_current_deck');
   });
 }

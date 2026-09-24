@@ -4,15 +4,21 @@ import '../entity/deck.dart';
 import '../entity/data.dart';
 import '../entity/tag.dart';
 
+enum TrackingOutcome {
+  applied,
+  notInDeck,
+  ignored,
+}
+
 class TrackingInteractionResult {
   final DeckEntity updatedDeck;
   final DataEntity? newLog;
-  final String? errorKey;
+  final TrackingOutcome outcome;
 
   TrackingInteractionResult({
     required this.updatedDeck,
     required this.newLog,
-    this.errorKey,
+    this.outcome = TrackingOutcome.ignored,
   });
 }
 
@@ -32,7 +38,7 @@ class TrackingInteractionUsecase {
       return TrackingInteractionResult(
         updatedDeck: deck,
         newLog: null,
-        errorKey: 'page_deck_tracker.snack_bar_not_part_of_current_deck',
+        outcome: TrackingOutcome.notInDeck,
       );
     }
 
@@ -94,6 +100,7 @@ class TrackingInteractionUsecase {
     return TrackingInteractionResult(
       updatedDeck: deck.copyWith(cards: updatedCards),
       newLog: newLog,
+      outcome: TrackingOutcome.applied,
     );
   }
 }

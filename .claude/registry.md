@@ -260,7 +260,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### TrackingInteractionUsecase (`tracking_interaction.dart`)
 
-`call({deck, logs, tag})` — apply one NFC scan to the live tracker; returns `TrackingInteractionResult`.
+`call({deck, logs, tag})` — apply one NFC scan to the live tracker; returns `TrackingInteractionResult` with a `TrackingOutcome` (`applied`, `notInDeck`, `ignored`) that `TrackerBloc` maps to a warning.
 
 ### UpdateCardUsecase (`update_card.dart`)
 

@@ -83,11 +83,17 @@ class TrackerBloc extends Bloc<TrackerEvent, TrackerState>
     final result = trackingInteractionUsecase(
         deck: state.currentDeck, logs: state.actionLog, tag: event.tag);
 
-    if (result.errorKey != null) {
-      emit(state.copyWith(warningMessage: result.errorKey));
-      return;
+    switch (result.outcome) {
+      case TrackingOutcome.notInDeck:
+        emit(state.copyWith(
+            warningMessage:
+                'page_deck_tracker.snack_bar_not_part_of_current_deck'));
+        return;
+      case TrackingOutcome.ignored:
+        return;
+      case TrackingOutcome.applied:
+        break;
     }
-    if (result.newLog == null) return;
 
     final record = state.currentRecord
         .copyWith(data: [...state.currentRecord.data, result.newLog!]);
