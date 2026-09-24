@@ -23,6 +23,8 @@ class CollectionDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final locale = AppLocalization.of(context);
+    final games = GameConfig.instance.availableGames;
+    final recentIndex = games.indexOf(recentId);
 
     return AnimatedPositioned(
       duration: WidgetConstant.drawerTransitionDuration,
@@ -34,7 +36,7 @@ class CollectionDrawer extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (recentId.isNotEmpty)
+            if (recentIndex != -1)
               _buildItem(
                 context: context,
                 onTap: () => _navigate(
@@ -45,9 +47,7 @@ class CollectionDrawer extends StatelessWidget {
                     collectionName: recentGame,
                   ),
                 ),
-                image: GameConfig.instance.gameImagePaths
-                    .where((e) => e.contains(recentId))
-                    .first,
+                image: GameConfig.instance.gameImagePaths[recentIndex],
               ),
             _buildItem(
               context: context,

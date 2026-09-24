@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+﻿import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/card_in_deck.dart';
@@ -229,5 +229,17 @@ void main() {
     await tester
         .runAsync(() => Future<void>.delayed(const Duration(milliseconds: 50)));
     expect(world.createdBlocs.every((b) => b.isClosed), isTrue);
+  });
+
+  testWidgets('the tag reader opens when the last game is no longer offered',
+      (tester) async {
+    final world = makeWorld();
+    world.settings.stored = world.settings.stored
+        .copyWith(recentId: 'pokemon', recentGame: 'pokemon');
+
+    await world.pump(tester, initialRoute: RouteConstant.tag_reader);
+
+    expect(tester.takeException(), isNull);
+    expect(find.text('Collections'), findsOneWidget);
   });
 }
