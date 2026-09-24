@@ -1,5 +1,0 @@
-PRODUCT_NAME = nfc_deck_tracker
-
-PRODUCT_BUNDLE_IDENTIFIER = com.tacticsv.nfc_deck_tracker
-
-PRODUCT_COPYRIGHT = Copyright © 2024 com.tacticsv. All rights reserved.
