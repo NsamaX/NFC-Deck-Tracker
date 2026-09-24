@@ -8,3 +8,6 @@ tags:
 
 `lib/domain/entity/selected_image.dart`
 
+## Packages
+- `package:equatable/equatable.dart`
+

@@ -13,5 +13,6 @@ tags:
 - [[domain---entity---card.dart]]
 - [[domain---repository---card.dart]]
 - [[domain---repository---image.dart]]
+- [[domain---service---clock.dart]]
 - [[domain---service---sync_policy.dart]]
 

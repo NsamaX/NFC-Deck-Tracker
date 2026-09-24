@@ -2,6 +2,7 @@
 tags:
   - layer/domain
   - role/usecase
+  - coupling/medium
 ---
 
 # update_record.dart
@@ -11,5 +12,6 @@ tags:
 ## Imports
 - [[domain---entity---record.dart]]
 - [[domain---repository---record.dart]]
+- [[domain---service---clock.dart]]
 - [[domain---service---sync_policy.dart]]
 

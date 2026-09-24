@@ -13,5 +13,6 @@ tags:
 - [[domain---entity---data.dart]]
 - [[domain---entity---deck.dart]]
 - [[domain---entity---tag.dart]]
+- [[domain---service---clock.dart]]
 - [[domain---value---player_action.dart]]
 

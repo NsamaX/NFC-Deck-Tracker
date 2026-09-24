@@ -1,10 +1,9 @@
-import 'package:nfc_deck_tracker/domain/value/player_action.dart';
-
 import '../entity/card.dart';
 import '../entity/data.dart';
 import '../entity/deck.dart';
 import '../entity/record.dart';
 import '../entity/usage_card_stats.dart';
+import '../value/player_action.dart';
 
 class CalculateUsageCardUsecase {
   CalculateUsageCardUsecase();

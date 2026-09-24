@@ -1,3 +1,4 @@
+import '../service/clock.dart';
 import '../service/sync_policy.dart';
 import '../repository/collection.dart';
 
@@ -5,16 +6,18 @@ import '../entity/collection.dart';
 
 class UpdateCollectionUsecase {
   final CollectionRepository collectionRepository;
+  final Clock clock;
 
   UpdateCollectionUsecase({
     required this.collectionRepository,
+    this.clock = const Clock(),
   });
 
   Future<void> call({
     required String userId,
     required CollectionEntity collection,
   }) async {
-    final DateTime now = DateTime.now();
+    final DateTime now = clock.now();
     final updatedCollection = collection.copyWith(updatedAt: now);
 
     await const SyncPolicy().write(

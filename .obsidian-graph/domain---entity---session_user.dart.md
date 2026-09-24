@@ -9,3 +9,6 @@ tags:
 
 `lib/domain/entity/session_user.dart`
 
+## Packages
+- `package:equatable/equatable.dart`
+

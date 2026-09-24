@@ -127,10 +127,21 @@ calls when it is empty.
 Source: `lib/domain/service/`
 Check: classes
 
+### Clock (`clock.dart`)
+
+`now()` — current time. Use cases that stamp `updatedAt` or a log timestamp
+take it as an optional constructor argument defaulting to `const Clock()`;
+tests pass a subclass with a fixed time.
+
 ### DomainLogger (`domain_logger.dart`)
 
 Diagnostic sink injected into use cases; `SilentDomainLogger` is the default.
 `lib/util/domain_logger.dart` adapts it to `LoggerUtil`.
+
+### IdGenerator (`id_generator.dart`)
+
+`next()` — a new UUID v4. `Create*` use cases take it like `Clock` and call it
+only when the entity has no id yet.
 
 ### SyncPolicy (`sync_policy.dart`)
 

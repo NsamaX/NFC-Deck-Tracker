@@ -1,5 +1,4 @@
-import 'package:uuid/uuid.dart';
-
+import '../service/id_generator.dart';
 import '../service/sync_policy.dart';
 import '../repository/deck.dart';
 
@@ -7,9 +6,11 @@ import '../entity/deck.dart';
 
 class CreateDeckUsecase {
   final DeckRepository deckRepository;
+  final IdGenerator idGenerator;
 
   CreateDeckUsecase({
     required this.deckRepository,
+    this.idGenerator = const IdGenerator(),
   });
 
   Future<DeckEntity> call({
@@ -17,7 +18,7 @@ class CreateDeckUsecase {
     required DeckEntity deck,
   }) async {
     final updatedDeck = deck.copyWith(
-      deckId: deck.deckId.isEmpty ? const Uuid().v4() : deck.deckId,
+      deckId: deck.deckId.isEmpty ? idGenerator.next() : deck.deckId,
     );
 
     return const SyncPolicy().write(

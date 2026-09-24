@@ -1,5 +1,4 @@
-import 'package:uuid/uuid.dart';
-
+import '../service/id_generator.dart';
 import '../service/sync_policy.dart';
 import '../repository/collection.dart';
 
@@ -7,16 +6,18 @@ import '../entity/collection.dart';
 
 class CreateCollectionUsecase {
   final CollectionRepository collectionRepository;
+  final IdGenerator idGenerator;
 
   CreateCollectionUsecase({
     required this.collectionRepository,
+    this.idGenerator = const IdGenerator(),
   });
 
   Future<CollectionEntity> call({
     required String userId,
     required String name,
   }) async {
-    final String collectionId = const Uuid().v4();
+    final String collectionId = idGenerator.next();
 
     final newCollection = CollectionEntity(
       collectionId: collectionId,

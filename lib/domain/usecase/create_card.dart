@@ -1,5 +1,4 @@
-import 'package:uuid/uuid.dart';
-
+import '../service/id_generator.dart';
 import '../service/sync_policy.dart';
 import '../repository/card.dart';
 import '../repository/collection.dart';
@@ -11,18 +10,21 @@ class CreateCardUsecase {
   final CardRepository cardRepository;
   final CollectionRepository collectionRepository;
   final ImageRepository imageRepository;
+  final IdGenerator idGenerator;
 
   CreateCardUsecase({
     required this.cardRepository,
     required this.collectionRepository,
     required this.imageRepository,
+    this.idGenerator = const IdGenerator(),
   });
 
   Future<CardEntity> call({
     required String userId,
     required CardEntity card,
   }) async {
-    final String cardId = card.cardId.isEmpty ? const Uuid().v4() : card.cardId;
+    final String cardId =
+        card.cardId.isEmpty ? idGenerator.next() : card.cardId;
 
     final imagePath = card.imageUrl;
     final uploadedUrl = imagePath == null || imagePath.isEmpty

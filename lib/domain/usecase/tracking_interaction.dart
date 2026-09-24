@@ -1,8 +1,9 @@
-import 'package:nfc_deck_tracker/domain/value/player_action.dart';
+import '../service/clock.dart';
 
 import '../entity/deck.dart';
 import '../entity/data.dart';
 import '../entity/tag.dart';
+import '../value/player_action.dart';
 
 enum TrackingOutcome {
   applied,
@@ -23,6 +24,12 @@ class TrackingInteractionResult {
 }
 
 class TrackingInteractionUsecase {
+  final Clock clock;
+
+  TrackingInteractionUsecase({
+    this.clock = const Clock(),
+  });
+
   TrackingInteractionResult call({
     required DeckEntity deck,
     required List<DataEntity> logs,
@@ -94,7 +101,7 @@ class TrackingInteractionUsecase {
       cardId: tag.cardId,
       location: location,
       playerAction: nextAction,
-      timestamp: DateTime.now(),
+      timestamp: clock.now(),
     );
 
     return TrackingInteractionResult(

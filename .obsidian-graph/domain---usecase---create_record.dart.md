@@ -12,8 +12,6 @@ tags:
 ## Imports
 - [[domain---entity---record.dart]]
 - [[domain---repository---record.dart]]
+- [[domain---service---id_generator.dart]]
 - [[domain---service---sync_policy.dart]]
-
-## Packages
-- `package:uuid/uuid.dart`
 

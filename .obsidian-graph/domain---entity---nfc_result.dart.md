@@ -12,3 +12,6 @@ tags:
 ## Imports
 - [[domain---entity---tag.dart]]
 
+## Packages
+- `package:equatable/equatable.dart`
+

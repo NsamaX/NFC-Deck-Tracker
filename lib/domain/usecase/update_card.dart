@@ -1,3 +1,4 @@
+import '../service/clock.dart';
 import '../service/sync_policy.dart';
 import '../repository/card.dart';
 import '../repository/image.dart';
@@ -7,10 +8,12 @@ import '../entity/card.dart';
 class UpdateCardUsecase {
   final CardRepository cardRepository;
   final ImageRepository imageRepository;
+  final Clock clock;
 
   UpdateCardUsecase({
     required this.cardRepository,
     required this.imageRepository,
+    this.clock = const Clock(),
   });
 
   Future<void> call({
@@ -19,7 +22,7 @@ class UpdateCardUsecase {
     required String oldImageUrl,
   }) async {
     String? finalImageUrl;
-    final DateTime now = DateTime.now();
+    final DateTime now = clock.now();
 
     final newImagePath = card.imageUrl;
     if (newImagePath != null &&
