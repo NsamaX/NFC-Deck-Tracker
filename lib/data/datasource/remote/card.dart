@@ -33,18 +33,12 @@ class CardRemoteDatasource {
     required String userId,
     required String collectionId,
   }) async {
-    final snapshot = await _firestoreService.queryCollection(
-      collectionPath: 'users/$userId/collections/$collectionId/cards',
+    final path = 'users/$userId/collections/$collectionId/cards';
+    return _firestoreService.fetchDocuments(
+      collectionPath: path,
+      parse: (id, data) => CardModel.fromJson(
+          {...data, 'cardId': id, 'collectionId': collectionId}),
     );
-
-    return snapshot.map((doc) {
-      final data = doc.data();
-      return CardModel.fromJson({
-        ...data,
-        'cardId': doc.id,
-        'collectionId': collectionId,
-      });
-    }).toList();
   }
 
   Future<bool> update({

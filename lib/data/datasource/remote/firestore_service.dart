@@ -43,6 +43,37 @@ class FirestoreService {
     }
   }
 
+  Future<List<T>> fetchDocuments<T>({
+    required String collectionPath,
+    Query<Map<String, dynamic>> Function(Query<Map<String, dynamic>>)?
+        queryBuilder,
+    required T Function(String id, Map<String, dynamic> data) parse,
+  }) async {
+    final docs = await queryCollection(
+        collectionPath: collectionPath, queryBuilder: queryBuilder);
+    return parseDocuments(
+      collectionPath: collectionPath,
+      documents: {for (final doc in docs) doc.id: doc.data()},
+      parse: parse,
+    );
+  }
+
+  static List<T> parseDocuments<T>({
+    required String collectionPath,
+    required Map<String, Map<String, dynamic>> documents,
+    required T Function(String id, Map<String, dynamic> data) parse,
+  }) {
+    return documents.entries.map((doc) {
+      try {
+        return parse(doc.key, doc.value);
+      } catch (e) {
+        LoggerUtil.e('Malformed document ${doc.key} in "$collectionPath": $e');
+        throw RemoteUnavailableException(
+            'malformed $collectionPath/${doc.key}: $e');
+      }
+    }).toList();
+  }
+
   Future<DocumentSnapshot<Map<String, dynamic>>?> getDocument({
     required String collectionPath,
     required String documentId,

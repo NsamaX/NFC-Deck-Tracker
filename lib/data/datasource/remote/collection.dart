@@ -50,17 +50,12 @@ class CollectionRemoteDatasource {
   Future<List<CollectionModel>> fetch({
     required String userId,
   }) async {
-    final snapshot = await _firestoreService.queryCollection(
-      collectionPath: 'users/$userId/collections',
+    final path = 'users/$userId/collections';
+    return _firestoreService.fetchDocuments(
+      collectionPath: path,
+      parse: (id, data) =>
+          CollectionModel.fromJson({...data, 'collectionId': id}),
     );
-
-    return snapshot.map((doc) {
-      final data = doc.data();
-      return CollectionModel.fromJson({
-        ...data,
-        'collectionId': doc.id,
-      });
-    }).toList();
   }
 
   Future<bool> update({

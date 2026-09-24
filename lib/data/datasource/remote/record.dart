@@ -33,18 +33,12 @@ class RecordRemoteDatasource {
     required String userId,
     required String deckId,
   }) async {
-    final snapshot = await _firestoreService.queryCollection(
-      collectionPath: 'users/$userId/records',
+    final path = 'users/$userId/records';
+    return _firestoreService.fetchDocuments(
+      collectionPath: path,
       queryBuilder: (query) => query.where('deckId', isEqualTo: deckId),
+      parse: (id, data) => RecordModel.fromJson({...data, 'recordId': id}),
     );
-
-    return snapshot.map((doc) {
-      final data = doc.data();
-      return RecordModel.fromJson({
-        ...data,
-        'recordId': doc.id,
-      });
-    }).toList();
   }
 
   Future<ShareRecordModel?> import({

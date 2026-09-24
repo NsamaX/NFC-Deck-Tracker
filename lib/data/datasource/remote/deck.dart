@@ -1,5 +1,3 @@
-import 'package:nfc_deck_tracker/util/logger.dart';
-
 import '../../model/deck.dart';
 
 import 'firestore_service.dart';
@@ -42,26 +40,11 @@ class DeckRemoteDatasource {
   Future<List<DeckModel>> fetch({
     required String userId,
   }) async {
-    final snapshot = await _firestoreService.queryCollection(
-      collectionPath: 'users/$userId/decks',
+    final path = 'users/$userId/decks';
+    return _firestoreService.fetchDocuments(
+      collectionPath: path,
+      parse: (id, data) => DeckModel.fromJsonForRemote({...data, 'deckId': id}),
     );
-
-    final List<DeckModel> decks = [];
-
-    for (final doc in snapshot) {
-      final data = doc.data();
-
-      try {
-        data['deckId'] = doc.id;
-
-        final deck = DeckModel.fromJsonForRemote(data);
-        decks.add(deck);
-      } catch (e) {
-        LoggerUtil.w('Skipped malformed document ${doc.id}: $e');
-      }
-    }
-
-    return decks;
   }
 
   Future<bool> update({
