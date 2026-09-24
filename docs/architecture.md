@@ -110,14 +110,29 @@ flutter build apk --debug --target-platform android-x64 --dart-define=GUEST_MODE
 
 `test/architecture_test.dart` enforces import direction, including relative paths,
 exports, parts, and indirect project dependencies. Other tests cover domain
-workflows with in-memory ports, repository/entity/SQL mapping, typed NFC events,
+workflows with in-memory ports, repositories against a real in-memory SQLite
+(`sqflite_common_ffi`, so foreign key cascades match a device), typed NFC events,
 the existing NDEF format, and Guest composition without cloud credentials.
 Emulator smoke testing checks startup/navigation. Physical NFC and real online
 services still require hardware/configuration; these tests do not prove them.
 
-## Behavior intentionally deferred
+## Data rules
 
-The following review findings need separate behavior changes:
+- Built-in game collections (`GameConfig.availableGames`) are catalog cache,
+  not user data: `CollectionRepository.fetchForLocal` excludes them, so sync
+  never uploads or deletes them, and clearing user data keeps them.
+- Every cards, cardsInDeck, and pages row references a collection or card
+  with `ON DELETE CASCADE`. Never `INSERT OR REPLACE` a parent row; it deletes
+  and cascades. `SQLiteService.insert` aborts on conflict by default, and
+  catalog cards go through `upsertBatch`.
+- A malformed remote document raises `RemoteUnavailableException`, so
+  `SyncPolicy.reconcile` keeps local data instead of treating it as deleted.
+- The catalog stores a paging cursor per collection and loads the next
+  `ApiConfig.catalogBatchSize` pages on each browse until the API is empty.
+- NFC reads accept read-only tags; writes check `isWritable` and the tag's
+  `maxSize`. The `coId:`/`caId:` text record format is unchanged.
+
+## Open items
 
 - Sign-in and sign-out flows were corrected in code (Landing and Settings call
   `signOut`, Settings clears local data only after a successful sign-in, a
@@ -130,6 +145,8 @@ The following review findings need separate behavior changes:
   schema creation and migration) throw; blocs turn them into `errorMessage`.
   Multi-row local writes run inside `SQLiteService.transaction`. Remote
   writes still return `false` because `SyncPolicy` uses that as "not synced".
-- NFC validation, capacity assumptions, and restart behavior retain existing rules.
-
-These are existing findings, not behavior introduced or fixed by this refactor.
+- Release builds use the `production` game environment, which lists no
+  supported game, so the catalog, tag lookup, and built-in collections only
+  apply to debug builds.
+- The sync, NFC, and image changes above are covered by unit tests only;
+  they still need a device run against real Firebase, Supabase, and tags.
