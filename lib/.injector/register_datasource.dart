@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-import 'package:nfc_deck_tracker/data/datasource/api/service_factory.dart';
-import 'package:nfc_deck_tracker/data/datasource/api/game_api.dart';
+import '../.config/api.dart';
+
+import 'package:nfc_deck_tracker/data/datasource/api/api_client.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/game_api_registry.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/shared_preferences_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/sqlite_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/index.dart';
@@ -15,7 +17,7 @@ import 'locator.dart';
 
 Future<void> registerDataSource() async {
   try {
-    _serviceFactoryRemoteDatasource();
+    _gameApis();
 
     _cardLocalDatasource();
     _collectionLocalDatasource();
@@ -37,10 +39,11 @@ Future<void> registerDataSource() async {
   }
 }
 
-void _serviceFactoryRemoteDatasource() {
-  locator.registerFactoryParam<GameApi, String, void>((collectionId, _) {
-    return ServiceFactory.create(collectionId: collectionId);
-  });
+void _gameApis() {
+  locator.registerLazySingleton(
+      () => ApiClient(userAgent: ApiConfig.userAgent),
+      dispose: (client) => client.close());
+  locator.registerLazySingleton(() => GameApiRegistry(locator<ApiClient>()));
 }
 
 void _cardLocalDatasource() {

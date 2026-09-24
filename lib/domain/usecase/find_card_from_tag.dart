@@ -39,6 +39,7 @@ class FindCardFromTagUsecase {
     if (apiCard == null) {
       throw const CardLookupException(CardLookupFailure.cardNotFound);
     }
+    await cardRepository.save(cards: [apiCard]);
     return apiCard;
   }
 }

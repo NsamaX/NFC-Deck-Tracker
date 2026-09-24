@@ -47,21 +47,15 @@ void _cardUsecase() {
         cardRepository: locator<CardRepository>(),
         imageRepository: locator<ImageRepository>(),
       ));
-  locator
-      .registerFactoryParam<FetchCardUsecase, String, void>((collectionId, _) {
-    return FetchCardUsecase(
-      repository: locator<CardCatalogRepository>(param1: collectionId),
-    );
-  });
+  locator.registerLazySingleton(() => FetchCardUsecase(
+        repository: locator<CardCatalogRepository>(),
+      ));
   locator.registerLazySingleton(() => FetchUsedCardDistinctUsecase(
         cardRepository: locator<CardRepository>(),
       ));
-  locator.registerFactoryParam<FindCardFromTagUsecase, String, void>(
-      (collectionId, _) {
-    return FindCardFromTagUsecase(
-      cardRepository: locator<CardRepository>(),
-    );
-  });
+  locator.registerLazySingleton(() => FindCardFromTagUsecase(
+        cardRepository: locator<CardRepository>(),
+      ));
   locator.registerLazySingleton(() => UpdateCardUsecase(
         cardRepository: locator<CardRepository>(),
         imageRepository: locator<ImageRepository>(),

@@ -1,6 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nfc_deck_tracker/data/datasource/api/game_api.dart';
-import 'package:nfc_deck_tracker/data/datasource/api/pokemon.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/api_client.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/game_api_registry.dart';
+import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/index.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/sqlite_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/remote/firestore_service.dart';
@@ -23,81 +25,102 @@ import 'support/sqlite.dart';
 class PagedApi implements GameApi {
   final int lastPage;
   final requested = <int>[];
+  int? failOn;
   PagedApi(this.lastPage);
 
   @override
-  Future<CardPage> fetch({required Map<String, dynamic> page}) async {
-    final number = page['page'] as int;
+  Future<CardPage> fetch(Map<String, dynamic> cursor) async {
+    final number = cursor['page'] as int? ?? 1;
     requested.add(number);
-    if (number > lastPage) return const CardPage(cards: [], hasMore: false);
+    if (number == failOn) throw const RemoteUnavailableException('offline');
     return CardPage(cards: [
       CardModel(
-          collectionId: 'pokemon',
+          collectionId: 'magic',
           cardId: 'p$number',
           name: 'Card $number',
           isSynced: true,
           updatedAt: DateTime(2024)),
-    ], hasMore: true);
+    ], next: number < lastPage ? {'page': number + 1} : null);
   }
 
   @override
-  Future<CardModel?> find({required String cardId}) async => null;
+  Future<CardModel?> find(String cardId) async => null;
 }
+
+GameApiRegistry registryWith(GameApi api) => GameApiRegistry(
+      ApiClient(userAgent: 'test'),
+      factories: {'magic': (_, __) => api},
+      isEnabled: isMagic,
+      baseUrlFor: (_) => '',
+    );
 
 class EmptyCollectionRemote extends Fake implements CollectionRemoteDatasource {
   @override
   Future<List<CollectionModel>> fetch({required String userId}) async => [];
 }
 
-bool isPokemon(String id) => id == 'pokemon';
+bool isMagic(String id) => id == 'magic';
 
 void main() {
   late SQLiteService sql;
   late CardRepositoryImpl cards;
   late CollectionRepositoryImpl collections;
+  late PagedApi api;
 
   setUp(() async {
     sql = await openTestDatabase();
+    api = PagedApi(3);
     cards = CardRepositoryImpl(
-      localDatasource: CardLocalDatasource(sql, isBuiltIn: isPokemon),
+      apis: registryWith(api),
+      localDatasource: CardLocalDatasource(sql, isBuiltIn: isMagic),
       remoteDatasource: CardRemoteDatasource(FirestoreService.offline()),
     );
     collections = CollectionRepositoryImpl(
-      localDatasource: CollectionLocalDatasource(sql, isBuiltIn: isPokemon),
+      localDatasource: CollectionLocalDatasource(sql, isBuiltIn: isMagic),
       remoteDatasource: EmptyCollectionRemote(),
     );
   });
 
-  CardCatalogRepositoryImpl catalog(GameApi api) => CardCatalogRepositoryImpl(
+  CardCatalogRepositoryImpl catalog() => CardCatalogRepositoryImpl(
         pageDatasource: PageLocalDatasource(sql),
         collectionRepository: collections,
         cardRepository: cards,
-        gameApi: api,
+        apis: registryWith(api),
         defaultBatchSize: 2,
-        isBuiltIn: isPokemon,
-        pagingFor: (_) => PokemonPagingStrategy(),
+        isBuiltIn: isMagic,
       );
 
   test('each catalog fetch continues paging until the API runs out', () async {
-    final api = PagedApi(3);
-    final repository = catalog(api);
+    final repository = catalog();
 
-    expect(await repository.fetch(userId: '', collectionId: 'pokemon'),
+    expect(await repository.fetch(userId: '', collectionId: 'magic'),
         hasLength(2));
-    expect(await repository.fetch(userId: '', collectionId: 'pokemon'),
+    expect(await repository.fetch(userId: '', collectionId: 'magic'),
         hasLength(3));
-    await repository.fetch(userId: '', collectionId: 'pokemon');
+    await repository.fetch(userId: '', collectionId: 'magic');
 
-    expect(api.requested, [1, 2, 3, 4]);
+    expect(api.requested, [1, 2, 3]);
+  });
+
+  test('a failed page is retried on the next fetch, not skipped', () async {
+    final repository = catalog();
+    api.failOn = 2;
+    expect(await repository.fetch(userId: '', collectionId: 'magic'),
+        hasLength(1));
+    api.failOn = null;
+    expect(await repository.fetch(userId: '', collectionId: 'magic'),
+        hasLength(3));
+    expect(api.requested, [1, 2, 2, 3]);
   });
 
   test('refreshing catalog cards keeps them in existing decks', () async {
     final decks = DeckRepositoryImpl(
-      localDatasource: DeckLocalDatasource(sql, isBuiltIn: isPokemon),
+      localDatasource: DeckLocalDatasource(sql, isBuiltIn: isMagic),
       remoteDatasource: DeckRemoteDatasource(FirestoreService.offline()),
     );
-    await catalog(PagedApi(1)).fetch(userId: '', collectionId: 'pokemon');
-    final card = (await cards.fetchForLocal(collectionId: 'pokemon')).single;
+    api = PagedApi(1);
+    await catalog().fetch(userId: '', collectionId: 'magic');
+    final card = (await cards.fetchForLocal(collectionId: 'magic')).single;
     await CreateDeckUsecase(deckRepository: decks)(
         userId: '',
         deck: DeckEntity(
@@ -110,7 +133,8 @@ void main() {
   });
 
   test('user cards exclude cached catalog cards', () async {
-    await catalog(PagedApi(1)).fetch(userId: '', collectionId: 'pokemon');
+    api = PagedApi(1);
+    await catalog().fetch(userId: '', collectionId: 'magic');
     await collections.createForLocal(
         collection: const CollectionEntity(collectionId: 'mine', name: 'M'));
     await cards.createForLocal(
@@ -121,14 +145,14 @@ void main() {
 
   test('syncing collections online keeps built-in game collections', () async {
     final decks = DeckRepositoryImpl(
-      localDatasource: DeckLocalDatasource(sql, isBuiltIn: isPokemon),
+      localDatasource: DeckLocalDatasource(sql, isBuiltIn: isMagic),
       remoteDatasource: DeckRemoteDatasource(FirestoreService.offline()),
     );
     await CreateDeckUsecase(deckRepository: decks)(
         userId: '',
         deck: const DeckEntity(name: 'D', cards: [
           CardInDeckEntity(
-              card: CardEntity(collectionId: 'pokemon', cardId: 'p1'), count: 2)
+              card: CardEntity(collectionId: 'magic', cardId: 'p1'), count: 2)
         ]));
 
     final synced = await FetchCollectionUsecase(

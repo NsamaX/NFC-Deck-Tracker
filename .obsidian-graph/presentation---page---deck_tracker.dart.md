@@ -10,7 +10,6 @@ tags:
 `lib/presentation/page/deck_tracker.dart`
 
 ## Imports
-- [[config---game.dart]]
 - [[domain---entity---deck.dart]]
 - [[presentation---bloc---deck_builder---bloc.dart]]
 - [[presentation---bloc---drawer---bloc.dart]]

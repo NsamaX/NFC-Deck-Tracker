@@ -1,6 +1,10 @@
 import 'package:nfc_deck_tracker/.config/game.dart';
 
+import 'package:sqflite/sqflite.dart';
+
+import '../../../domain/entity/collection.dart';
 import '../../model/card.dart';
+import '../../model/collection.dart';
 
 import 'sqlite_service.dart';
 
@@ -93,12 +97,26 @@ class CardLocalDatasource {
   Future<void> save({
     required List<CardModel> cards,
   }) async {
-    final cardsJson = cards.map((card) => card.toJsonForLocal()).toList();
-    await _sqliteService.upsertBatch(
-      table: 'cards',
-      dataList: cardsJson,
-      keyColumns: const ['collectionId', 'cardId'],
-    );
+    await _sqliteService.transaction((txn) async {
+      for (final collectionId in {for (final c in cards) c.collectionId}) {
+        final isBuiltIn = _isBuiltIn(collectionId);
+        await txn.insert(
+          table: 'collections',
+          data: CollectionModel(
+            collectionId: collectionId,
+            name: isBuiltIn ? collectionId : CollectionEntity.unknownName,
+            isSynced: isBuiltIn,
+            updatedAt: DateTime.now(),
+          ).toJsonForLocal(),
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+      }
+      await txn.upsertBatch(
+        table: 'cards',
+        dataList: cards.map((card) => card.toJsonForLocal()).toList(),
+        keyColumns: const ['collectionId', 'cardId'],
+      );
+    });
   }
 
   Future<void> update({

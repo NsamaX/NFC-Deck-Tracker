@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:nfc_deck_tracker/.config/game.dart';
 
@@ -113,7 +114,7 @@ class CollectionDrawer extends StatelessWidget {
           ? const Icon(Icons.inbox_rounded, color: Colors.black, size: 36)
           : ClipRRect(
               borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
+              child: SvgPicture.asset(
                 image,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => const Icon(Icons.broken_image),

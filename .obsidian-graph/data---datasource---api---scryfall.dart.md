@@ -5,17 +5,13 @@ tags:
   - coupling/medium
 ---
 
-# pokemon.dart
+# scryfall.dart
 
-`lib/data/datasource/api/pokemon.dart`
+`lib/data/datasource/api/scryfall.dart`
 
 ## Imports
 - [[config---game.dart]]
-- [[data---datasource---api---base_api.dart]]
+- [[data---datasource---api---api_client.dart]]
 - [[data---datasource---api---game_api.dart]]
 - [[data---model---card.dart]]
-- [[domain---value---remote_unavailable.dart]]
-
-## Packages
-- `package:http/http.dart`
 

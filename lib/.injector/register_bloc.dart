@@ -40,11 +40,10 @@ void _applicationBloc() {
 }
 
 void _browseCardBloc() {
-  locator.registerFactoryParam<BrowseCardBloc, String, void>(
-      (collectionId, _) => BrowseCardBloc(
-            deleteCardUsecase: locator<DeleteCardUsecase>(),
-            fetchCardUsecase: locator<FetchCardUsecase>(param1: collectionId),
-          ));
+  locator.registerFactory(() => BrowseCardBloc(
+        deleteCardUsecase: locator<DeleteCardUsecase>(),
+        fetchCardUsecase: locator<FetchCardUsecase>(),
+      ));
 }
 
 void _cardBloc() {
@@ -93,12 +92,9 @@ void _pinCardBloc() {
 }
 
 void _readerBloc() {
-  locator.registerFactoryParam<ReaderBloc, String, void>((collectionId, _) {
-    return ReaderBloc(
-      findCardFromTagUsecase:
-          locator<FindCardFromTagUsecase>(param1: collectionId),
-    );
-  });
+  locator.registerFactory(() => ReaderBloc(
+        findCardFromTagUsecase: locator<FindCardFromTagUsecase>(),
+      ));
 }
 
 

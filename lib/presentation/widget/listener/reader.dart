@@ -1,8 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.config/game.dart';
-
 import '../../bloc/drawer/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
 import '../../bloc/reader/bloc.dart';
@@ -12,12 +10,10 @@ import '../notification/snackbar.dart';
 
 class ReaderListener extends StatelessWidget {
   final Widget child;
-  final Function(String) onTagDetected;
 
   const ReaderListener({
     super.key,
     required this.child,
-    required this.onTagDetected,
   });
 
   @override
@@ -42,8 +38,6 @@ class ReaderListener extends StatelessWidget {
                 type: SnackBarType.warning,
               );
             } else if (state.successMessage.isNotEmpty) {
-              onTagDetected
-                  .call(state.lastScannedTag?.collectionId ?? GameConfig.dummy);
               context
                   .read<ReaderBloc>()
                   .add(ReadTagEvent(tag: state.lastScannedTag));

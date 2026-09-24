@@ -13,4 +13,9 @@ tags:
 - [[config---game.dart]]
 - [[data---datasource---local---sqlite_service.dart]]
 - [[data---model---card.dart]]
+- [[data---model---collection.dart]]
+- [[domain---entity---collection.dart]]
+
+## Packages
+- `package:sqflite/sqflite.dart`
 

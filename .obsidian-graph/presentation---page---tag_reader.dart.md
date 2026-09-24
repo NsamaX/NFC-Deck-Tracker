@@ -10,7 +10,6 @@ tags:
 `lib/presentation/page/tag_reader.dart`
 
 ## Imports
-- [[config---game.dart]]
 - [[presentation---bloc---application---bloc.dart]]
 - [[presentation---bloc---drawer---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]

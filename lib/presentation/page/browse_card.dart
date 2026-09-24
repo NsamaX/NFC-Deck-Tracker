@@ -31,11 +31,8 @@ class _BrowseCardPageState extends State<BrowseCardPage> {
     return MultiBlocProvider(
       providers: [
         BlocProvider<BrowseCardBloc>(
-          create: (_) => PresentationScope.read(context).createBrowseCardBloc(
-            GameConfig.instance.isSupported(collectionId)
-                ? collectionId
-                : GameConfig.dummy,
-          )..add(FetchCardEvent(
+          create: (_) => PresentationScope.read(context).createBrowseCardBloc()
+            ..add(FetchCardEvent(
               userId: PresentationScope.read(context).userId,
               collectionId: collectionId,
             )),

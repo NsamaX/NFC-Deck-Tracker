@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import '../.config/api.dart';
 import '../.config/runtime.dart';
-import 'package:nfc_deck_tracker/data/datasource/api/game_api.dart';
+import 'package:nfc_deck_tracker/data/datasource/api/game_api_registry.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/index.dart';
 import 'package:nfc_deck_tracker/data/datasource/remote/index.dart';
 import 'package:nfc_deck_tracker/data/datasource/remote/supabase_service.dart';
@@ -40,6 +40,7 @@ Future<void> registerRepository() async {
   locator.registerLazySingleton<CardRepository>(() => CardRepositoryImpl(
         localDatasource: locator<CardLocalDatasource>(),
         remoteDatasource: locator<CardRemoteDatasource>(),
+        apis: locator<GameApiRegistry>(),
       ));
   locator.registerLazySingleton<CollectionRepository>(
       () => CollectionRepositoryImpl(
@@ -65,11 +66,11 @@ Future<void> registerRepository() async {
       .registerLazySingleton<LocalDataRepository>(() => LocalDataRepositoryImpl(
             localDatasource: locator<UserDataLocalDatasource>(),
           ));
-  locator.registerFactoryParam<CardCatalogRepository, String, void>(
-      (collectionId, _) => CardCatalogRepositoryImpl(
+  locator.registerLazySingleton<CardCatalogRepository>(
+      () => CardCatalogRepositoryImpl(
             cardRepository: locator<CardRepository>(),
             collectionRepository: locator<CollectionRepository>(),
-            gameApi: locator<GameApi>(param1: collectionId),
+            apis: locator<GameApiRegistry>(),
             defaultBatchSize: ApiConfig.instance.catalogBatchSize,
             pageDatasource: locator<PageLocalDatasource>(),
           ));

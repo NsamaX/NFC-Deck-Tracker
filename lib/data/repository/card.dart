@@ -1,7 +1,6 @@
 import '../../domain/entity/card.dart';
 import '../../domain/repository/card.dart';
-import '../datasource/api/service_factory.dart';
-import '../datasource/api/game_api.dart';
+import '../datasource/api/game_api_registry.dart';
 import '../mapper/card.dart';
 import '../datasource/local/card.dart';
 import '../datasource/remote/card.dart';
@@ -9,10 +8,12 @@ import '../datasource/remote/card.dart';
 class CardRepositoryImpl implements CardRepository {
   final CardLocalDatasource localDatasource;
   final CardRemoteDatasource remoteDatasource;
+  final GameApiRegistry apis;
 
   CardRepositoryImpl({
     required this.localDatasource,
     required this.remoteDatasource,
+    required this.apis,
   });
 
   @override
@@ -97,8 +98,11 @@ class CardRepositoryImpl implements CardRepository {
     required String collectionId,
     required String cardId,
   }) async {
-    final GameApi gameApi = ServiceFactory.create(collectionId: collectionId);
-    final model = await gameApi.find(cardId: cardId);
+    final api = apis.forCollection(collectionId);
+    if (api == null) {
+      throw UnsupportedError('No card API for "$collectionId"');
+    }
+    final model = await api.find(cardId);
     return model == null ? null : CardMapper.toEntity(model);
   }
 

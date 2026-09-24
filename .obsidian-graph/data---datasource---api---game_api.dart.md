@@ -2,7 +2,6 @@
 tags:
   - layer/data
   - role/datasource-api
-  - coupling/medium
 ---
 
 # game_api.dart

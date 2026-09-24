@@ -10,9 +10,10 @@ tags:
 `lib/.injector/register_datasource.dart`
 
 ## Imports
+- [[config---api.dart]]
 - [[injector---locator.dart]]
-- [[data---datasource---api---game_api.dart]]
-- [[data---datasource---api---service_factory.dart]]
+- [[data---datasource---api---api_client.dart]]
+- [[data---datasource---api---game_api_registry.dart]]
 - [[data---datasource---local---index.dart]]
 - [[data---datasource---local---shared_preferences_service.dart]]
 - [[data---datasource---local---sqlite_service.dart]]

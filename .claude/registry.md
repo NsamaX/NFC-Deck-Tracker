@@ -236,7 +236,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### FindCardFromTagUsecase (`find_card_from_tag.dart`)
 
-`call(tag)` — local lookup, then the game API; failures throw `CardLookupException` (see Values).
+`call(tag)` — local lookup, then the game API, saving an API result locally; failures throw `CardLookupException` (see Values).
 
 ### GenerateShareDeckClipboardUsecase (`generate_share_deck_clipboard.dart`)
 

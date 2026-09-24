@@ -8,7 +8,7 @@ import '../../domain/repository/card_catalog.dart';
 import '../../domain/repository/collection.dart';
 import '../../domain/service/sync_policy.dart';
 import '../datasource/api/game_api.dart';
-import '../datasource/api/service_factory.dart';
+import '../datasource/api/game_api_registry.dart';
 import '../datasource/local/page.dart';
 import '../mapper/card.dart';
 import '../model/page.dart';
@@ -17,22 +17,18 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
   final PageLocalDatasource pageDatasource;
   final CollectionRepository collectionRepository;
   final CardRepository cardRepository;
-  final GameApi gameApi;
+  final GameApiRegistry apis;
   final int defaultBatchSize;
   final bool Function(String collectionId) _isBuiltIn;
-  final PagingStrategy Function(String collectionId) _pagingFor;
 
   CardCatalogRepositoryImpl({
     required this.pageDatasource,
     required this.collectionRepository,
     required this.cardRepository,
-    required this.gameApi,
+    required this.apis,
     required this.defaultBatchSize,
     bool Function(String collectionId)? isBuiltIn,
-    PagingStrategy Function(String collectionId)? pagingFor,
-  })  : _isBuiltIn = isBuiltIn ?? ((id) => GameConfig.instance.isSupported(id)),
-        _pagingFor = pagingFor ??
-            ((id) => ServiceFactory.create<PagingStrategy>(collectionId: id));
+  }) : _isBuiltIn = isBuiltIn ?? ((id) => GameConfig.instance.isSupported(id));
 
   @override
   Future<List<CardEntity>> fetch({
@@ -76,31 +72,35 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
   }) async {
     final state = await pageDatasource.find(collectionId: collectionId);
     if (state['exhausted'] == true) return;
+    final api = apis.forCollection(collectionId);
+    if (api == null) return;
 
-    final strategy = _pagingFor(collectionId);
     var cursor = Map<String, dynamic>.from(state['cursor'] as Map? ?? {});
     var exhausted = false;
+    var loaded = 0;
 
-    for (var i = 0; i < batchSize; i++) {
-      final request = strategy.buildPage(current: cursor, offset: 0);
+    for (; loaded < batchSize; loaded++) {
       final CardPage page;
       try {
-        page = await gameApi.fetch(page: request);
+        page = await api.fetch(cursor);
       } catch (e) {
-        LoggerUtil.e('[API] Failed to load $collectionId page $request: $e');
+        LoggerUtil.e('[API] Failed to load $collectionId page $cursor: $e');
         break;
       }
       if (page.cards.isNotEmpty) {
         await cardRepository.save(
             cards: page.cards.map(CardMapper.toEntity).toList());
       }
-      cursor = strategy.buildPage(current: cursor, offset: 1);
-      if (!page.hasMore) {
+      final next = page.next;
+      if (next == null) {
         exhausted = true;
+        loaded++;
         break;
       }
+      cursor = next;
     }
 
+    if (loaded == 0) return;
     await pageDatasource.save(
       page: PageModel(
         collectionId: collectionId,

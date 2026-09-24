@@ -18,4 +18,5 @@ tags:
 
 ## Packages
 - `package:flutter/material.dart`
+- `package:flutter_svg/flutter_svg.dart`
 

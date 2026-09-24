@@ -13,7 +13,8 @@ offline sync results, local image paths, and bundled language discovery.
   sync, catalog paging, built-in collections surviving collection sync.
 - `database_migration_test.dart`: schema upgrades run each version step once
   and roll back on failure.
-- `game_api_test.dart`: API status and network failures versus missing cards.
+- `game_api_test.dart`: `ApiClient` retries, request sharing, 404 memory, and
+  spacing; the Scryfall adapter against `MockClient`.
 - `image_repository_test.dart`: local image files removed when replaced or deleted.
 - `remote_parse_test.dart`: malformed Firestore documents keep local data.
 - `card_image_test.dart`: card create/update and guest data clearing when a

@@ -98,12 +98,19 @@ Domain never holds translation keys: it returns enums (`CardLookupFailure`,
 
 ### Add a supported game
 
-1. Implement `GameApi` and `PagingStrategy` in `lib/data/datasource/api/`.
-   `fetch` returns `CardPage(cards, hasMore)`; `find` returns `null` only for
-   a missing card and throws `RemoteUnavailableException` when unreachable.
-2. Register both in `ServiceFactory._apiRegistry` / `_pagingRegistry`.
-3. Add the base URL to `GameConfig._environments` for each environment
-   that should offer the game, and `assets/image/game/<key>.png`.
+1. Implement `GameApi` in `lib/data/datasource/api/<game>.dart` with a
+   `(ApiClient client, String baseUrl)` constructor (`scryfall.dart` is the
+   reference):
+   - `fetch(cursor)` returns `CardPage(cards, next)`; an empty cursor is the
+     first page and `next: null` marks the last page.
+   - `find(cardId)` returns `null` when the API answers 4xx.
+   - Every request goes through `ApiClient.getJson`; pass `minInterval` if
+     the API asks for request spacing. Never create an `http.Client`.
+2. Add the constructor to `GameApiRegistry.builtIn` under a `GameConfig`
+   id constant.
+3. Add the base URL to `GameConfig._environments` for each environment that
+   should offer the game, and `assets/image/game/<id>.png`.
+4. Test the adapter with `MockClient` (see `test/game_api_test.dart`).
 
 ### Change the SQLite schema
 
@@ -164,8 +171,16 @@ Conventions:
 - Remote reads throw `RemoteUnavailableException` when Firestore is offline,
   unconfigured, or returns a malformed document, so `reconcile` keeps local
   data. Remote writes return `false`, which `SyncPolicy` records as unsynced.
-- The catalog stores a paging cursor per collection and loads the next
-  `ApiConfig.catalogBatchSize` pages on each browse until the API is empty.
+- Game APIs share one `ApiClient`: one connection pool, a User-Agent,
+  per-host request spacing, up to two retries on 429/5xx or network errors
+  (honoring `Retry-After`), one request for concurrent identical GETs, and a
+  10-minute memory of 404s. Persistent failures surface as
+  `RemoteUnavailableException`.
+- The catalog stores the API's paging cursor per collection and loads the
+  next `ApiConfig.catalogBatchSize` pages on each browse until `next` is
+  null. A failed page stops the batch without advancing the cursor.
+- A card found through the API during a tag scan is saved locally, so later
+  scans of that card never call the API.
 - Local image files are deleted by `ImageRepositoryImpl` once replaced,
   uploaded, or cleared.
 - NFC reads accept read-only tags; writes check `isWritable` and the tag's

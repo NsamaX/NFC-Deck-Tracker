@@ -11,17 +11,13 @@ class GameConfig {
     return _instance!;
   }
 
-  static const String dummy = 'dummy';
-  static const String pokemon = 'pokemon';
+  static const String magic = 'magic';
 
   static final Map<String, Map<String, String>> _environments = {
     'development': {
-      dummy: '',
-      if (!RuntimeConfig.guestMode) pokemon: 'https://api.pokemontcg.io/v2/',
+      if (!RuntimeConfig.guestMode) magic: 'https://api.scryfall.com/',
     },
-    'production': {
-      dummy: '',
-    },
+    'production': {},
   };
 
   final String environment;
@@ -32,11 +28,11 @@ class GameConfig {
     required this.environment,
     required Map<String, String> environmentData,
   })  : availableGames = List.unmodifiable(environmentData.entries
-            .where((e) => e.key != dummy && e.value.isNotEmpty)
+            .where((e) => e.value.isNotEmpty)
             .map((e) => e.key)),
         gameImagePaths = List.unmodifiable(environmentData.entries
-            .where((e) => e.key != dummy && e.value.isNotEmpty)
-            .map((e) => 'assets/image/game/${e.key}.png'));
+            .where((e) => e.value.isNotEmpty)
+            .map((e) => 'assets/image/game/${e.key}.svg'));
 
   static void load(String environment) {
     if (_instance?.environment == environment) {

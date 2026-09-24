@@ -2,8 +2,6 @@ import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.config/game.dart';
-
 import '../bloc/application/bloc.dart';
 import '../bloc/drawer/bloc.dart';
 import '../bloc/nfc/bloc.dart';
@@ -16,21 +14,8 @@ import '../widget/listener/reader.dart';
 import '../widget/shared/bottom_navigation_bar.dart';
 import '../widget/specific/nfc_icon.dart';
 
-class TagReaderPage extends StatefulWidget {
+class TagReaderPage extends StatelessWidget {
   const TagReaderPage({super.key});
-
-  @override
-  State<TagReaderPage> createState() => _TagReaderPageState();
-}
-
-class _TagReaderPageState extends State<TagReaderPage> {
-  String _collectionId = GameConfig.dummy;
-
-  void _onTagDetected(String newCollectionId) {
-    setState(() {
-      _collectionId = newCollectionId;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,20 +24,15 @@ class _TagReaderPageState extends State<TagReaderPage> {
         BlocProvider(
             create: (_) => PresentationScope.read(context).createDrawerBloc()),
         BlocProvider(
-            create: (_) => PresentationScope.read(context)
-                .createReaderBloc(_collectionId)),
+            create: (_) => PresentationScope.read(context).createReaderBloc()),
       ],
-      child: _TagReaderPageContent(onTagDetected: _onTagDetected),
+      child: const _TagReaderPageContent(),
     );
   }
 }
 
 class _TagReaderPageContent extends StatelessWidget {
-  final void Function(String) onTagDetected;
-
-  const _TagReaderPageContent({
-    required this.onTagDetected,
-  });
+  const _TagReaderPageContent();
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +59,6 @@ class _TagReaderPageContent extends StatelessWidget {
         ],
       ),
       body: ReaderListener(
-        onTagDetected: onTagDetected,
         child: GestureDetector(
           onTap: () {
             context.read<DrawerBloc>().add(CloseDrawerEvent());

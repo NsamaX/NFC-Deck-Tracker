@@ -16,8 +16,8 @@ class PresentationDependencies {
   final CardBloc Function() createCardBloc;
   final DrawerBloc Function() createDrawerBloc;
   final PinCardBloc Function() createPinCardBloc;
-  final BrowseCardBloc Function(String) createBrowseCardBloc;
-  final ReaderBloc Function(String) createReaderBloc;
+  final BrowseCardBloc Function() createBrowseCardBloc;
+  final ReaderBloc Function() createReaderBloc;
   final TrackerBloc Function(DeckEntity) createTrackerBloc;
 
   String get userId => session.currentUser?.uid ?? '';

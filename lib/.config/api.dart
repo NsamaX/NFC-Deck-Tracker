@@ -14,6 +14,8 @@ class ApiConfig {
     return _instance!;
   }
 
+  static const String userAgent = 'NFCDeckTracker/1.0';
+
   static const Map<String, int> _catalogBatchSizes = {
     'development': 1,
     'production': 20,

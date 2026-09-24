@@ -74,6 +74,13 @@ class MemoryCards extends Fake implements CardRepository {
   @override
   Future<List<CardEntity>> fetchUserCards() async => local.values.toList();
   @override
+  Future<void> save({required List<CardEntity> cards}) async {
+    for (final card in cards) {
+      local[card.cardId] = card;
+    }
+  }
+
+  @override
   Future<int> check(
           {required String collectionId, required String name}) async =>
       0;
@@ -250,12 +257,12 @@ class TestWorld {
       )),
       createDrawerBloc: () => _track(DrawerBloc()),
       createPinCardBloc: () => _track(PinCardBloc()),
-      createBrowseCardBloc: (collectionId) => _track(BrowseCardBloc(
+      createBrowseCardBloc: () => _track(BrowseCardBloc(
         deleteCardUsecase:
             DeleteCardUsecase(cardRepository: cards, imageRepository: images),
         fetchCardUsecase: FetchCardUsecase(repository: LocalCatalog(cards)),
       )),
-      createReaderBloc: (collectionId) => _track(ReaderBloc(
+      createReaderBloc: () => _track(ReaderBloc(
         findCardFromTagUsecase: FindCardFromTagUsecase(cardRepository: cards),
       )),
       createTrackerBloc: (deck) => _track(TrackerBloc(

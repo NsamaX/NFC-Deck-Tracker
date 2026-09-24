@@ -19,10 +19,10 @@ A game is available only when it has a non-empty URL in that environment.
 1. `game.dart`: add a game ID constant and its base URL under each
    environment.
 2. `data/datasource/api/`: add `<game>.dart` with a `GameApi` implementation
-   (`fetch`, `find`) and a `PagingStrategy` implementation (`buildPage`).
-   Use `pokemon.dart` as the reference.
-3. `data/datasource/api/service_factory.dart`: register the game in
-   `_apiRegistry` and `_pagingRegistry`.
+   (`fetch`, `find`) that sends requests through `ApiClient`. Use
+   `scryfall.dart` as the reference.
+3. `data/datasource/api/game_api_registry.dart`: add the constructor to
+   `GameApiRegistry.builtIn`.
 4. `assets/image/game/<game>.png`: add the game icon, named after the game ID.
 
 ## Related

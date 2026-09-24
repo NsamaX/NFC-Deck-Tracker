@@ -65,6 +65,10 @@ class MemoryCards extends Fake implements CardRepository {
   CardEntity? api;
   bool apiFails = false;
   int apiCalls = 0;
+  final saved = <CardEntity>[];
+  @override
+  Future<void> save({required List<CardEntity> cards}) async =>
+      saved.addAll(cards);
   @override
   Future<CardEntity?> findForLocal(
           {required String collectionId, required String cardId}) async =>
@@ -220,6 +224,7 @@ void main() {
       ..api = const CardEntity(cardId: 'card', collectionId: 'game');
     expect(await FindCardFromTagUsecase(cardRepository: cards)(tag), cards.api);
     expect(cards.apiCalls, 1);
+    expect(cards.saved, [cards.api]);
   });
   Matcher failsWith(CardLookupFailure failure) => throwsA(
       isA<CardLookupException>().having((e) => e.failure, 'failure', failure));

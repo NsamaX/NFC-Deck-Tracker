@@ -10,7 +10,6 @@ tags:
 `lib/presentation/widget/listener/reader.dart`
 
 ## Imports
-- [[config---game.dart]]
 - [[presentation---bloc---drawer---bloc.dart]]
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---bloc---reader---bloc.dart]]

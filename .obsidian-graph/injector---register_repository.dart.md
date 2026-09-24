@@ -13,7 +13,7 @@ tags:
 - [[config---api.dart]]
 - [[config---runtime.dart]]
 - [[injector---locator.dart]]
-- [[data---datasource---api---game_api.dart]]
+- [[data---datasource---api---game_api_registry.dart]]
 - [[data---datasource---local---index.dart]]
 - [[data---datasource---remote---index.dart]]
 - [[data---datasource---remote---supabase_service.dart]]

@@ -2,6 +2,7 @@
 tags:
   - layer/data
   - role/model
+  - coupling/medium
 ---
 
 # collection.dart

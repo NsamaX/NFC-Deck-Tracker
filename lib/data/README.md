@@ -13,7 +13,7 @@ objects.
 | `mapper/` | Conversions between models and domain entities. |
 | `datasource/local/` | SQLite and SharedPreferences access, one class per aggregate. |
 | `datasource/remote/` | Firestore and Supabase access, one class per aggregate. |
-| `datasource/api/` | Game card APIs, paging strategies, and `ServiceFactory`. |
+| `datasource/api/` | Game card APIs, the shared `ApiClient`, and `GameApiRegistry`. |
 | `datasource/device/` | NDEF encoding and decoding for the NFC adapter. |
 
 ## Notes

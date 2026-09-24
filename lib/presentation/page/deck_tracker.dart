@@ -3,8 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:nfc_deck_tracker/.config/game.dart';
-
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 
 import '../bloc/drawer/bloc.dart';
@@ -30,7 +28,6 @@ class DeckTrackerPage extends StatefulWidget {
 }
 
 class _DeckTrackerPageState extends State<DeckTrackerPage> {
-  late final String collectionId;
   late final DeckEntity deck;
 
   bool _hasShownDialog = false;
@@ -64,7 +61,6 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    collectionId = GameConfig.dummy;
     deck = context.read<DeckBuilderBloc>().state.currentDeck;
   }
 
@@ -77,8 +73,7 @@ class _DeckTrackerPageState extends State<DeckTrackerPage> {
         BlocProvider(
             create: (_) => PresentationScope.read(context).createPinCardBloc()),
         BlocProvider(
-            create: (_) =>
-                PresentationScope.read(context).createReaderBloc(collectionId)),
+            create: (_) => PresentationScope.read(context).createReaderBloc()),
         BlocProvider(
             create: (_) =>
                 PresentationScope.read(context).createTrackerBloc(deck)),

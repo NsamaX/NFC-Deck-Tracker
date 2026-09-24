@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:nfc_deck_tracker/.config/api.dart';
 import '../../bloc/application/bloc.dart';
@@ -75,7 +76,7 @@ class SupportedGameTile extends StatelessWidget {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(8),
-        child: Image.asset(
+        child: SvgPicture.asset(
           gameImage,
           fit: BoxFit.cover,
           errorBuilder: (_, __, ___) =>
