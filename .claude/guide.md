@@ -107,10 +107,19 @@ Domain never holds translation keys: it returns enums (`CardLookupFailure`,
 
 ### Change the SQLite schema
 
-Tables are created from `DatabaseConstant.tables` and upgraded by
-`DatabaseService._migrate`. Bump `dbVersion` and add the statements. Note
-that `_migrate` runs every entry in `DatabaseConstant.migrations` on any
-upgrade; key migrations by version before adding a second one.
+`DatabaseConstant.tables` is always the latest schema and runs only on a
+fresh install. To change it:
+
+1. Edit the `CREATE TABLE` statement in `tables`.
+2. Bump `dbVersion` to `n` and add `migrations[n]` with the statements that
+   bring a version `n - 1` file to the same schema.
+3. Add a case to `test/database_migration_test.dart` if the migration moves
+   data, not just columns.
+
+`DatabaseService._migrate` runs `migrations[old + 1]` through
+`migrations[new]` in order inside the upgrade transaction, so a failure
+rolls back and the file stays at its old version. Never edit a migration
+that has shipped.
 
 ### Change sync behavior
 

@@ -1,5 +1,7 @@
 class DatabaseConstant {
   static const String dbName = 'nfc_deck_tracker.db';
+  // Bump when adding a migration. `tables` is always the latest schema and
+  // runs on a fresh install; `migrations[v]` upgrades an existing v-1 file.
   static const int dbVersion = 1;
   static const List<String> tables = [
     '''
@@ -63,5 +65,5 @@ class DatabaseConstant {
     );
     ''',
   ];
-  static const List<String> migrations = [];
+  static const Map<int, List<String>> migrations = {};
 }

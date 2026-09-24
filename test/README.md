@@ -11,6 +11,8 @@ offline sync results, local image paths, and bundled language discovery.
 - `deck_repository_test.dart`, `catalog_repository_test.dart`: repositories
   against a real in-memory SQLite (`support/sqlite.dart`): deck cards through
   sync, catalog paging, built-in collections surviving collection sync.
+- `database_migration_test.dart`: schema upgrades run each version step once
+  and roll back on failure.
 - `game_api_test.dart`: API status and network failures versus missing cards.
 - `image_repository_test.dart`: local image files removed when replaced or deleted.
 - `remote_parse_test.dart`: malformed Firestore documents keep local data.

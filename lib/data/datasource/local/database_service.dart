@@ -8,15 +8,30 @@ import 'database_constant.dart';
 class DatabaseService {
   final DatabaseFactory? _factory;
   final String? _path;
+  final int _version;
+  final List<String> _tables;
+  final Map<int, List<String>> _migrations;
 
-  DatabaseService({DatabaseFactory? factory, String? path})
-      : _factory = factory,
-        _path = path;
+  DatabaseService({
+    DatabaseFactory? factory,
+    String? path,
+    int version = DatabaseConstant.dbVersion,
+    List<String> tables = DatabaseConstant.tables,
+    Map<int, List<String>> migrations = DatabaseConstant.migrations,
+  })  : _factory = factory,
+        _path = path,
+        _version = version,
+        _tables = tables,
+        _migrations = migrations {
+    final invalid = migrations.keys.where((v) => v < 2 || v > version);
+    if (invalid.isNotEmpty) {
+      throw StateError('Migrations $invalid are outside 2..$version');
+    }
+  }
 
   Future<Database>? _database;
 
   static const String _db = DatabaseConstant.dbName;
-  static const int _dbVersion = DatabaseConstant.dbVersion;
 
   Future<Database> get database => _database ??= _initDatabase();
 
@@ -28,7 +43,7 @@ class DatabaseService {
       final Database db = await factory.openDatabase(
         path,
         options: OpenDatabaseOptions(
-          version: _dbVersion,
+          version: _version,
           onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
           onCreate: _createTables,
           onUpgrade: _migrate,
@@ -53,7 +68,6 @@ class DatabaseService {
     int version,
   ) async {
     try {
-      final List<String> _tables = DatabaseConstant.tables;
       final Batch batch = db.batch();
 
       for (final String query in _tables) {
@@ -74,25 +88,17 @@ class DatabaseService {
     int oldVersion,
     int newVersion,
   ) async {
-    try {
-      if (oldVersion < _dbVersion) {
-        LoggerUtil.buffer(
-            'Migrating database from v$oldVersion to v$newVersion...');
-
-        final List<String> _migrations = DatabaseConstant.migrations;
-        final Batch batch = db.batch();
-
-        for (final query in _migrations) {
-          batch.execute(query);
+    for (var version = oldVersion + 1; version <= newVersion; version++) {
+      final statements = _migrations[version] ?? const [];
+      try {
+        for (final statement in statements) {
+          await db.execute(statement);
         }
-
-        await batch.commit();
-
-        LoggerUtil.buffer('Database migrated successfully');
+        LoggerUtil.buffer('Database migrated to v$version');
+      } catch (e) {
+        LoggerUtil.e('Database migration to v$version failed: $e');
+        rethrow;
       }
-    } catch (e) {
-      LoggerUtil.e('Database migration failed: $e');
-      rethrow;
     }
   }
 
