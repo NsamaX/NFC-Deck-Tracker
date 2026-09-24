@@ -122,7 +122,7 @@ const _noticeKeys = {
   NfcNotice.errorReadTag: 'nfc_snack_bar.error_read_tag',
   NfcNotice.errorRestartSession: 'nfc_snack_bar.error_restart_session',
   NfcNotice.errorStartSession: 'nfc_snack_bar.error_start_session',
-  NfcNotice.errorTagCardNotFound: 'nfc_snack_bar.error_tag_card_not_found',
+  NfcNotice.errorTagCardNotFound: 'nfc_snack_bar.error_no_data',
   NfcNotice.errorUnavailable: 'nfc_snack_bar.error_unavailable',
   NfcNotice.errorWriteTag: 'nfc_snack_bar.error_write_tag',
   NfcNotice.successReadTag: 'nfc_snack_bar.success_read_tag',

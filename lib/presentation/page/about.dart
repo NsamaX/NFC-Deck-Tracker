@@ -47,7 +47,7 @@ class _AboutPage extends State<AboutPage> {
 
           if (snapshot.hasError || !snapshot.hasData) {
             return DescriptionAlignCenter(
-              text: locale.translate('common.error_loading'),
+              text: locale.translate('common.error_load'),
               bottomNavHeight: true,
             );
           }

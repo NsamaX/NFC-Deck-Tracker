@@ -23,8 +23,6 @@
   },
   "nfc_snack_bar": {
     "success_read_tag": "NFCタグからカード情報を読み取りました。",
-    "success_write_tag": "NFCタグにカード情報を書き込みました。",
-    "warning_rewrite_card": "このカードはすでにタグに書き込まれています。同じデータを再度書き込みます。",
     "success_write_tag_new": "新しいタグにデータを書き込みました。",
     "warning_overwrite_unknown_format": "タグに不明なデータが含まれています。上書きします。",
     "warning_rewrite_same_card": "このタグにはすでに同じカードデータが含まれています。上書きします。",
@@ -32,7 +30,6 @@
     "error_unavailable": "このデバイスではNFCが利用できません。",
     "error_start_session": "NFCセッションを開始できません。もう一度お試しください。",
     "error_restart_session": "NFCセッションの有効期限が切れました。セッションを再開します...",
-    "error_process_tag": "NFCタグの処理中にエラーが発生しました。",
     "error_read_tag": "NFCタグからの読み取りに失敗しました。もう一度お試しください。",
     "error_write_tag": "NFCタグへの書き込みに失敗しました。タグが書き込み可能で、十分なストレージ容量があることを確認してから、もう一度お試しください。",
     "error_ndef_not_supported": "このタグはNDEFフォーマットをサポートしていません。",
@@ -61,6 +58,7 @@
     "title": "さあ、始めましょう！",
     "offline_message": "現在オフラインです。\n他の方法でのサインインはできません。",
     "snack_bar_sign_in_fail": "サインインに失敗しました。認証情報を確認してもう一度お試しください。",
+    "snack_bar_sign_in_cancelled": "サインインがキャンセルされました。",
     "button_guest_sign_in": "ゲストとして続行"
   },
   "page_deck_list": {
@@ -89,8 +87,6 @@
     "dialog_tracker_tutorial_content": "ゲーム中にカードをスキャンしてデッキを管理できます。スキャンするたびにデッキのステータスが更新されます。スキャンされたカードは取り除かれ、再スキャンされたカードは戻されます。「OK」をタップして続行してください。",
     "dialog_reset_deck_title": "リセットしますか？",
     "dialog_reset_deck_content": "現在のゲームログを保存するか、デッキをリセットするかを選択できます。",
-    "dialog_room_feature_title": "サインインが必要です",
-    "dialog_room_feature_content": "この機能を使用するにはサインインしてください。ルームの作成または参加は、サインインしているユーザーのみが利用できます。",
     "snack_bar_not_part_of_current_deck": "このカードは現在のデッキの一部ではありません。",
     "button_reset": "リセット",
     "button_save": "保存",

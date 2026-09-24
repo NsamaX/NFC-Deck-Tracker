@@ -16,7 +16,6 @@ class AppColor {
   static const Color active = Color(0xFF2196F3);
   static const Color success = Color(0xFF12BA63);
   static const Color warning = Color(0xFFE6A800);
-  static const Color error = Color(0xFFC91B1B);
 
   static const Color pinColor1 = Color(0xFF8FD0FF);
   static const Color pinColor2 = Color(0xFFFDFF8F);

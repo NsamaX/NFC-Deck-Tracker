@@ -12,7 +12,6 @@ extension CustomColorScheme on ColorScheme {
   Color get active => AppColor.active;
   Color get success => AppColor.success;
   Color get warning => AppColor.warning;
-  Color get error => AppColor.error;
 
   Color get pinColor1 => AppColor.pinColor1;
   Color get pinColor2 => AppColor.pinColor2;
