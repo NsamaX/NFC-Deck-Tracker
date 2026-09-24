@@ -1,10 +1,8 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:nfc_deck_tracker/.config/game.dart';
-import 'package:nfc_deck_tracker/data/datasource/local/sqlite_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/local/index.dart';
-import 'package:nfc_deck_tracker/data/datasource/remote/firestore_service.dart';
+import 'package:nfc_deck_tracker/data/datasource/local/sqlite_service.dart';
 import 'package:nfc_deck_tracker/data/datasource/remote/index.dart';
+import 'package:nfc_deck_tracker/data/model/deck.dart';
 import 'package:nfc_deck_tracker/data/repository/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/card_in_deck.dart';
@@ -12,127 +10,115 @@ import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/create_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
+import 'package:nfc_deck_tracker/data/mapper/deck.dart';
 
-class MemorySql extends Fake implements SQLiteService {
-  final tables = <String, List<Map<String, dynamic>>>{};
-  int transactions = 0;
-  int writesOutsideTransaction = 0;
-  bool _inTransaction = false;
+import 'support/sqlite.dart';
 
+class FakeDeckRemote extends Fake implements DeckRemoteDatasource {
+  final decks = <String, DeckModel>{};
   @override
-  Future<T> transaction<T>(Future<T> Function(SQLiteService txn) action) async {
-    transactions++;
-    _inTransaction = true;
-    try {
-      return await action(this);
-    } finally {
-      _inTransaction = false;
-    }
-  }
-
-  void _write() {
-    if (!_inTransaction) writesOutsideTransaction++;
-  }
-
-  @override
-  Future<void> insert(
-      {required String table,
-      required Map<String, dynamic> data,
-      ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.replace}) async {
-    _write();
-    tables.putIfAbsent(table, () => []).add(data);
-  }
-
-  @override
-  Future<void> insertBatch(
-      {required String table,
-      required List<Map<String, dynamic>> dataList,
-      ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.abort}) async {
-    _write();
-    tables.putIfAbsent(table, () => []).addAll(dataList);
-  }
-
-  @override
-  Future<void> update(
-      {required String table,
-      required Map<String, dynamic> data,
-      required String where,
-      required List<dynamic> whereArgs}) async {
-    _write();
-    final rows = tables[table] ?? [];
-    final key = where.split(' ').first;
-    for (var i = 0; i < rows.length; i++) {
-      if (rows[i][key] == whereArgs.first) rows[i] = {...rows[i], ...data};
-    }
-  }
-
-  @override
-  Future<bool> delete(
-      {required String table, String? where, List<dynamic>? whereArgs}) async {
-    _write();
-    if (where == null) {
-      tables[table] = [];
-    } else {
-      final key = where.split(' ').first;
-      tables[table]?.removeWhere((r) => r[key] == whereArgs?.first);
-    }
+  Future<bool> create({required String userId, required DeckModel deck}) async {
+    decks[deck.deckId] = deck;
     return true;
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getTable(
-          {required String table,
-          String? where,
-          List<dynamic>? whereArgs,
-          String? orderBy}) async =>
-      tables[table] ?? [];
+  Future<bool> update({required String userId, required DeckModel deck}) =>
+      create(userId: userId, deck: deck);
+  @override
+  Future<List<DeckModel>> fetch({required String userId}) async =>
+      decks.values.toList();
 }
 
+const ace = CardEntity(collectionId: 'custom', cardId: 'ace', name: 'Ace');
+const king = CardEntity(collectionId: 'custom', cardId: 'king', name: 'King');
+
 void main() {
-  test('entity workflow crosses repository mappings into SQL rows and back',
-      () async {
-    GameConfig.load('development');
-    final sql = MemorySql();
-    final cloud = FirestoreService.offline();
-    final repository = DeckRepositoryImpl(
-      localDatasource: DeckLocalDatasource(sql),
-      remoteDatasource: DeckRemoteDatasource(cloud),
+  late SQLiteService sql;
+  late FakeDeckRemote remote;
+  late DeckRepositoryImpl repository;
+
+  setUp(() async {
+    sql = await openTestDatabase();
+    remote = FakeDeckRemote();
+    repository = DeckRepositoryImpl(
+      localDatasource: DeckLocalDatasource(sql, isBuiltIn: (_) => false),
+      remoteDatasource: remote,
     );
-    await CreateDeckUsecase(deckRepository: repository)(
-        userId: '',
-        deck: const DeckEntity(name: 'Test', cards: [
-          CardInDeckEntity(
-              card: CardEntity(
-                  collectionId: 'custom', cardId: 'card', name: 'Ace'),
-              count: 3),
-        ]));
-    final row = sql.tables['decks']!.single;
-    expect(row['isSynced'], 0);
-    expect(DateTime.tryParse(row['updatedAt']), isNotNull);
-    expect(sql.tables['cards']!.single['cardId'], 'card');
-    expect(sql.tables['cardsInDeck']!.single['count'], 3);
-    expect(sql.tables['cardsInDeck']!.single['deckId'], row['deckId']);
-    final decks =
-        await FetchDeckUsecase(deckRepository: repository)(userId: '');
-    expect(decks.single.deckId, row['deckId']);
-    expect(decks.single.name, 'Test');
-    expect(decks.single.isSynced, isFalse);
-    expect(sql.transactions, 1);
-    expect(sql.writesOutsideTransaction, 0);
   });
 
-  test('updating a deck rewrites its name in the decks table', () async {
-    GameConfig.load('development');
-    final sql = MemorySql();
-    final cloud = FirestoreService.offline();
-    final repository = DeckRepositoryImpl(
-      localDatasource: DeckLocalDatasource(sql),
-      remoteDatasource: DeckRemoteDatasource(cloud),
-    );
+  test('a saved deck is fetched back with its cards', () async {
+    await CreateDeckUsecase(deckRepository: repository)(
+        userId: '',
+        deck: const DeckEntity(
+            name: 'Test', cards: [CardInDeckEntity(card: ace, count: 3)]));
+
+    final decks =
+        await FetchDeckUsecase(deckRepository: repository)(userId: '');
+    expect(decks.single.name, 'Test');
+    expect(decks.single.isSynced, isFalse);
+    expect(decks.single.cards.single.card.name, 'Ace');
+    expect(decks.single.cards.single.count, 3);
+  });
+
+  test('updating a deck replaces its name and card list', () async {
     final saved = await CreateDeckUsecase(deckRepository: repository)(
-        userId: '', deck: const DeckEntity(name: 'Old', cards: []));
+        userId: '',
+        deck: const DeckEntity(
+            name: 'Old', cards: [CardInDeckEntity(card: ace, count: 1)]));
     await UpdateDeckUsecase(deckRepository: repository)(
-        userId: '', deck: saved.copyWith(name: 'New'));
-    expect(sql.tables['decks']!.single['name'], 'New');
+        userId: '',
+        deck: saved.copyWith(
+            name: 'New',
+            cards: const [CardInDeckEntity(card: king, count: 2)]));
+
+    final deck = (await repository.fetchForLocal()).single;
+    expect(deck.name, 'New');
+    expect(deck.cards.map((c) => (c.card.cardId, c.count)), [('king', 2)]);
+    expect(await repository.fetchCardsInDeck(deckId: deck.deckId), deck.cards);
+  });
+
+  test('a newer local deck is pushed to remote with its cards', () async {
+    final saved = await CreateDeckUsecase(deckRepository: repository)(
+        userId: 'u',
+        deck: const DeckEntity(
+            name: 'D', cards: [CardInDeckEntity(card: ace, count: 1)]));
+    remote.decks[saved.deckId] =
+        DeckMapper.toModel(saved.copyWith(updatedAt: DateTime(2020)));
+
+    await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+
+    expect(remote.decks[saved.deckId]!.cards.single.card.cardId, 'ace');
+  });
+
+  test('an empty unsynced deck is created remotely', () async {
+    final saved = await CreateDeckUsecase(deckRepository: repository)(
+        userId: '', deck: const DeckEntity(name: 'Empty'));
+
+    final decks =
+        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+
+    expect(remote.decks.keys, [saved.deckId]);
+    expect(decks.single.isSynced, isTrue);
+  });
+
+  test('a newer remote deck with unknown cards replaces the local one',
+      () async {
+    final saved = await CreateDeckUsecase(deckRepository: repository)(
+        userId: 'u',
+        deck: const DeckEntity(
+            name: 'D', cards: [CardInDeckEntity(card: ace, count: 1)]));
+    remote.decks[saved.deckId] = DeckMapper.toModel(saved.copyWith(
+        name: 'Remote',
+        cards: const [CardInDeckEntity(card: king, count: 4)],
+        updatedAt: DateTime(2100)));
+
+    final decks =
+        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+
+    expect(decks.single.name, 'Remote');
+    final local = (await repository.fetchForLocal()).single;
+    expect(local.cards.single.card.name, 'King');
+    expect(local.cards.single.count, 4);
   });
 }

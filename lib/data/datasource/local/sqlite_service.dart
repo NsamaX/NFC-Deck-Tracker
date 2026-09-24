@@ -37,10 +37,11 @@ class SQLiteService {
 
   Future<List<Map<String, dynamic>>> queryTable({
     required String sql,
+    List<Object?>? arguments,
   }) async {
     try {
       final DatabaseExecutor db = await getDatabase();
-      final result = await db.rawQuery(sql);
+      final result = await db.rawQuery(sql, arguments);
 
       final sqlLines = sql
           .split('\n')
@@ -92,7 +93,7 @@ class SQLiteService {
   Future<void> insert({
     required String table,
     required Map<String, dynamic> data,
-    ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.replace,
+    ConflictAlgorithm conflictAlgorithm = ConflictAlgorithm.abort,
   }) async {
     try {
       final DatabaseExecutor db = await getDatabase();
@@ -142,6 +143,37 @@ class SQLiteService {
       LoggerUtil.i('Inserted batch data into "$table" successfully');
     } catch (e) {
       LoggerUtil.e('Failed to insert batch into "$table": $e');
+      rethrow;
+    }
+  }
+
+  Future<void> upsertBatch({
+    required String table,
+    required List<Map<String, dynamic>> dataList,
+    required List<String> keyColumns,
+  }) async {
+    const int chunkSize = 500;
+    final where = keyColumns.map((c) => '$c = ?').join(' AND ');
+
+    try {
+      await transaction((txn) async {
+        final DatabaseExecutor executor = await txn.getDatabase();
+        for (int i = 0; i < dataList.length; i += chunkSize) {
+          final batch = executor.batch();
+          for (final data in dataList.skip(i).take(chunkSize)) {
+            batch.insert(table, data,
+                conflictAlgorithm: ConflictAlgorithm.ignore);
+            batch.update(table, data,
+                where: where,
+                whereArgs: keyColumns.map((c) => data[c]).toList());
+          }
+          await batch.commit(noResult: true, continueOnError: false);
+        }
+      });
+
+      LoggerUtil.i('Upserted batch data into "$table" successfully');
+    } catch (e) {
+      LoggerUtil.e('Failed to upsert batch into "$table": $e');
       rethrow;
     }
   }

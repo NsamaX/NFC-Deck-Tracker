@@ -1,3 +1,4 @@
+import '../service/clock.dart';
 import '../service/id_generator.dart';
 import '../service/sync_policy.dart';
 import '../repository/collection.dart';
@@ -7,10 +8,12 @@ import '../entity/collection.dart';
 class CreateCollectionUsecase {
   final CollectionRepository collectionRepository;
   final IdGenerator idGenerator;
+  final Clock clock;
 
   CreateCollectionUsecase({
     required this.collectionRepository,
     this.idGenerator = const IdGenerator(),
+    this.clock = const Clock(),
   });
 
   Future<CollectionEntity> call({
@@ -22,6 +25,7 @@ class CreateCollectionUsecase {
     final newCollection = CollectionEntity(
       collectionId: collectionId,
       name: name,
+      updatedAt: clock.now(),
     );
 
     return const SyncPolicy().write(

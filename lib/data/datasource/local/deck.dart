@@ -10,49 +10,26 @@ import '../../model/deck.dart';
 import 'sqlite_service.dart';
 
 class DeckLocalDatasource {
-  final SQLiteService _sqliteService;
+  static const String _cardsInDeckSql = '''
+    SELECT cd.deckId, cd.count, c.*
+    FROM cardsInDeck cd
+    JOIN cards c ON c.collectionId = cd.collectionId AND c.cardId = cd.cardId
+  ''';
 
-  DeckLocalDatasource(this._sqliteService);
+  final SQLiteService _sqliteService;
+  final bool Function(String collectionId) _isBuiltIn;
+
+  DeckLocalDatasource(
+    this._sqliteService, {
+    bool Function(String collectionId)? isBuiltIn,
+  }) : _isBuiltIn = isBuiltIn ?? GameConfig.instance.isSupported;
 
   Future<void> create({
     required DeckModel deck,
   }) async {
     await _sqliteService.transaction((txn) async {
-      await txn.insert(
-        table: 'decks',
-        data: deck.toJsonForLocal(),
-      );
-
-      final List<CardInDeckModel> cards = deck.cards;
-      if (cards.isEmpty) return;
-
-      final collectionId = cards.first.card.collectionId;
-      final collection = CollectionModel(
-        collectionId: collectionId,
-        name: GameConfig.instance.isSupported(collectionId)
-            ? collectionId
-            : CollectionEntity.unknownName,
-        isSynced: true,
-        updatedAt: DateTime.now(),
-      );
-      await txn.insert(
-        table: 'collections',
-        data: collection.toJsonForLocal(),
-        conflictAlgorithm: ConflictAlgorithm.ignore,
-      );
-
-      for (final card in cards) {
-        await txn.insert(
-          table: 'cards',
-          data: card.card.toJsonForLocal(),
-          conflictAlgorithm: ConflictAlgorithm.ignore,
-        );
-      }
-
-      await txn.insertBatch(
-        table: 'cardsInDeck',
-        dataList: deck.toJsonForCardsInDeck(),
-      );
+      await txn.insert(table: 'decks', data: deck.toJsonForLocal());
+      await _writeCards(txn, deck);
     });
   }
 
@@ -67,15 +44,21 @@ class DeckLocalDatasource {
   }
 
   Future<List<DeckModel>> fetch() async {
-    final result = await _sqliteService.getTable(
-      table: 'decks',
-    );
-    return result.map((row) {
-      final DeckModel deck = DeckModel.fromJsonForLocal(row);
+    final decks = await _sqliteService.getTable(table: 'decks');
+    final rows = await _sqliteService.queryTable(sql: _cardsInDeckSql);
+
+    final cardsByDeck = <String, List<CardInDeckModel>>{};
+    for (final row in rows) {
+      cardsByDeck.putIfAbsent(row['deckId'] as String, () => []).add(
+          CardInDeckModel(card: CardModel.fromJson(row), count: row['count']));
+    }
+
+    return decks.map((row) {
+      final deck = DeckModel.fromJsonForLocal(row);
       return DeckModel(
         deckId: deck.deckId,
         name: deck.name,
-        cards: [],
+        cards: cardsByDeck[deck.deckId] ?? [],
         isSynced: deck.isSynced,
         updatedAt: deck.updatedAt,
       );
@@ -85,36 +68,14 @@ class DeckLocalDatasource {
   Future<List<CardInDeckModel>> fetchCardsInDeck({
     required String deckId,
   }) async {
-    final List<Map<String, dynamic>> cardLinks = await _sqliteService.getTable(
-      table: 'cardsInDeck',
-      where: 'deckId = ?',
-      whereArgs: [deckId],
+    final rows = await _sqliteService.queryTable(
+      sql: '$_cardsInDeckSql WHERE cd.deckId = ?',
+      arguments: [deckId],
     );
-
-    final List<CardInDeckModel> cards = [];
-
-    for (final row in cardLinks) {
-      final String collectionId = row['collectionId'];
-      final String cardId = row['cardId'];
-      final int count = row['count'];
-
-      final result = await _sqliteService.getTable(
-        table: 'cards',
-        where: 'collectionId = ? AND cardId = ?',
-        whereArgs: [collectionId, cardId],
-      );
-
-      if (result.isNotEmpty) {
-        final CardModel card = CardModel.fromJson(result.first);
-
-        cards.add(CardInDeckModel(
-          card: card,
-          count: count,
-        ));
-      }
-    }
-
-    return cards;
+    return rows
+        .map((row) =>
+            CardInDeckModel(card: CardModel.fromJson(row), count: row['count']))
+        .toList();
   }
 
   Future<void> update({
@@ -127,66 +88,44 @@ class DeckLocalDatasource {
         where: 'deckId = ?',
         whereArgs: [deck.deckId],
       );
-
-      final List<CardInDeckModel> cards = deck.cards;
-
-      if (cards.isEmpty) {
-        await txn.delete(
-          table: 'cardsInDeck',
-          where: 'deckId = ?',
-          whereArgs: [deck.deckId],
-        );
-        return;
-      }
-
-      final String placeholders = List.generate(
-        cards.length,
-        (_) => '(cardId = ? AND collectionId = ?)',
-      ).join(' OR ');
-
-      final List<dynamic> ids = cards
-          .expand(
-            (c) => [c.card.cardId, c.card.collectionId],
-          )
-          .toList();
-
       await txn.delete(
         table: 'cardsInDeck',
-        where: 'deckId = ? AND NOT ($placeholders)',
-        whereArgs: [deck.deckId, ...ids],
+        where: 'deckId = ?',
+        whereArgs: [deck.deckId],
       );
-
-      for (final cardInDeck in cards) {
-        final String cardId = cardInDeck.card.cardId;
-        final String collectionId = cardInDeck.card.collectionId;
-
-        final List<Map<String, dynamic>> existing = await txn.getTable(
-          table: 'cardsInDeck',
-          where: 'deckId = ? AND cardId = ? AND collectionId = ?',
-          whereArgs: [deck.deckId, cardId, collectionId],
-        );
-
-        final Map<String, dynamic> cardData = {
-          'deckId': deck.deckId,
-          'collectionId': collectionId,
-          'cardId': cardId,
-          'count': cardInDeck.count,
-        };
-
-        if (existing.isEmpty) {
-          await txn.insert(
-            table: 'cardsInDeck',
-            data: cardData,
-          );
-        } else {
-          await txn.update(
-            table: 'cardsInDeck',
-            data: cardData,
-            where: 'deckId = ? AND cardId = ? AND collectionId = ?',
-            whereArgs: [deck.deckId, cardId, collectionId],
-          );
-        }
-      }
+      await _writeCards(txn, deck);
     });
+  }
+
+  Future<void> _writeCards(SQLiteService txn, DeckModel deck) async {
+    if (deck.cards.isEmpty) return;
+
+    final collectionIds = {for (final c in deck.cards) c.card.collectionId};
+    for (final collectionId in collectionIds) {
+      final isBuiltIn = _isBuiltIn(collectionId);
+      await txn.insert(
+        table: 'collections',
+        data: CollectionModel(
+          collectionId: collectionId,
+          name: isBuiltIn ? collectionId : CollectionEntity.unknownName,
+          isSynced: true,
+          updatedAt: DateTime.now(),
+        ).toJsonForLocal(),
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      );
+    }
+
+    for (final cardInDeck in deck.cards) {
+      await txn.insert(
+        table: 'cards',
+        data: cardInDeck.card.toJsonForLocal(),
+        conflictAlgorithm: ConflictAlgorithm.ignore,
+      );
+    }
+
+    await txn.insertBatch(
+      table: 'cardsInDeck',
+      dataList: deck.toJsonForCardsInDeck(),
+    );
   }
 }

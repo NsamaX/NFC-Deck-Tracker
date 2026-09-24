@@ -1,3 +1,4 @@
+import '../service/clock.dart';
 import '../service/id_generator.dart';
 import '../service/sync_policy.dart';
 import '../repository/card.dart';
@@ -11,12 +12,14 @@ class CreateCardUsecase {
   final CollectionRepository collectionRepository;
   final ImageRepository imageRepository;
   final IdGenerator idGenerator;
+  final Clock clock;
 
   CreateCardUsecase({
     required this.cardRepository,
     required this.collectionRepository,
     required this.imageRepository,
     this.idGenerator = const IdGenerator(),
+    this.clock = const Clock(),
   });
 
   Future<CardEntity> call({
@@ -44,6 +47,7 @@ class CreateCardUsecase {
       cardId: cardId,
       imageUrl: uploadedUrl,
       name: newName,
+      updatedAt: clock.now(),
     );
 
     await collectionRepository.touch(

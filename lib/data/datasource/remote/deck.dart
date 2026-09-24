@@ -13,8 +13,6 @@ class DeckRemoteDatasource {
     required String userId,
     required DeckModel deck,
   }) async {
-    if (deck.cards.isEmpty) return false;
-
     final deckPath = 'users/$userId/decks';
 
     final cardsList =
