@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/tag.dart';
 import 'package:nfc_deck_tracker/domain/usecase/find_card_from_tag.dart';
+import 'package:nfc_deck_tracker/domain/value/card_lookup_failure.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -41,26 +42,24 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
     try {
       final card = await findCardFromTagUsecase(event.tag!);
       emit(state.copyWith(
-        readedCards: [...state.readedCards, card!],
+        readedCards: [...state.readedCards, card],
         successMessage: 'nfc_snack_bar.success_read_tag',
         isLoading: false,
       ));
-    } catch (e) {
-      final errorStr = e.toString();
-
-      switch (errorStr) {
-        case 'Exception: INVALID_TAG':
-          emit(state.copyWith(errorMessage: 'nfc_snack_bar.error_no_data'));
-        case 'Exception: CARD_NOT_FOUND':
-          emit(state.copyWith(
-              warningMessage: 'nfc_snack_bar.error_card_not_found'));
-        case 'Exception: GAME_NOT_SUPPORTED':
-          emit(state.copyWith(
-              errorMessage: 'nfc_snack_bar.error_game_not_supported'));
-        default:
-          emit(state.copyWith(errorMessage: 'nfc_snack_bar.error_unknown'));
-      }
-      emit(state.copyWith(isLoading: false));
+    } on CardLookupException catch (e) {
+      emit(switch (e.failure) {
+        CardLookupFailure.invalidTag => state.copyWith(
+            errorMessage: 'nfc_snack_bar.error_no_data', isLoading: false),
+        CardLookupFailure.cardNotFound => state.copyWith(
+            warningMessage: 'nfc_snack_bar.error_card_not_found',
+            isLoading: false),
+        CardLookupFailure.gameNotSupported => state.copyWith(
+            errorMessage: 'nfc_snack_bar.error_game_not_supported',
+            isLoading: false),
+      });
+    } catch (_) {
+      emit(state.copyWith(
+          errorMessage: 'nfc_snack_bar.error_unknown', isLoading: false));
     }
   }
 

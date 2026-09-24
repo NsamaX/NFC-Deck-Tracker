@@ -13,4 +13,5 @@ tags:
 - [[domain---entity---card.dart]]
 - [[domain---entity---tag.dart]]
 - [[domain---repository---card.dart]]
+- [[domain---value---card_lookup_failure.dart]]
 

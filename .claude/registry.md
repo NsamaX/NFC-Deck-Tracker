@@ -1,6 +1,6 @@
 # Registry
 
-> Last updated: 2026-09-20
+> Last updated: 2026-09-24
 > Verified by `dart run tool/verify_registry.dart`. Update this file whenever a
 > port, use case, or entity is added, removed, or gains a public member.
 
@@ -224,7 +224,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### FindCardFromTagUsecase (`find_card_from_tag.dart`)
 
-`call(tag)` — local lookup, then the game API; throws `INVALID_TAG` on an empty tag.
+`call(tag)` — local lookup, then the game API; failures throw `CardLookupException` (see Values).
 
 ### GenerateShareDeckClipboardUsecase (`generate_share_deck_clipboard.dart`)
 
@@ -364,6 +364,12 @@ Per-card statistics computed from a record.
 
 Source: `lib/domain/value/`
 Check: classes
+
+### CardLookupFailure (`card_lookup_failure.dart`)
+
+Why `FindCardFromTagUsecase` found no card: `invalidTag`, `cardNotFound`
+(the API has no such card), or `gameNotSupported` (the API call failed).
+Thrown inside `CardLookupException`; `ReaderBloc` maps it to translation keys.
 
 ### PlayerAction (`player_action.dart`)
 

@@ -13,6 +13,7 @@ import 'package:nfc_deck_tracker/domain/usecase/find_card_from_tag.dart';
 import 'package:nfc_deck_tracker/domain/entity/app_settings.dart';
 import 'package:nfc_deck_tracker/domain/usecase/init_setting.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
+import 'package:nfc_deck_tracker/domain/value/card_lookup_failure.dart';
 import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 
 class MemoryDecks extends Fake implements DeckRepository {
@@ -62,6 +63,7 @@ class MemoryDecks extends Fake implements DeckRepository {
 class MemoryCards extends Fake implements CardRepository {
   CardEntity? local;
   CardEntity? api;
+  bool apiFails = false;
   int apiCalls = 0;
   @override
   Future<CardEntity?> findForLocal(
@@ -71,6 +73,7 @@ class MemoryCards extends Fake implements CardRepository {
   Future<CardEntity?> findForApi(
       {required String collectionId, required String cardId}) async {
     apiCalls++;
+    if (apiFails) throw UnsupportedError('no API for $collectionId');
     return api;
   }
 }
@@ -211,11 +214,26 @@ void main() {
     expect(await FindCardFromTagUsecase(cardRepository: cards)(tag), cards.api);
     expect(cards.apiCalls, 1);
   });
+  Matcher failsWith(CardLookupFailure failure) => throwsA(
+      isA<CardLookupException>().having((e) => e.failure, 'failure', failure));
   test('invalid tag fails before accessing repositories', () async {
-    final lookup = FindCardFromTagUsecase(cardRepository: MemoryCards());
+    final cards = MemoryCards();
     await expectLater(
-        lookup(const TagEntity(tagId: 'tag', cardId: '', collectionId: '')),
-        throwsException);
+        FindCardFromTagUsecase(cardRepository: cards)(
+            const TagEntity(tagId: 'tag', cardId: '', collectionId: '')),
+        failsWith(CardLookupFailure.invalidTag));
+    expect(cards.apiCalls, 0);
+  });
+  test('tag lookup reports a card missing from the API as not found',
+      () async {
+    await expectLater(FindCardFromTagUsecase(cardRepository: MemoryCards())(tag),
+        failsWith(CardLookupFailure.cardNotFound));
+  });
+  test('tag lookup reports a failing API as an unsupported game', () async {
+    await expectLater(
+        FindCardFromTagUsecase(cardRepository: MemoryCards()..apiFails = true)(
+            tag),
+        failsWith(CardLookupFailure.gameNotSupported));
   });
   test('settings load stored values and can clear the guest id', () async {
     final repository = MemorySettings()
