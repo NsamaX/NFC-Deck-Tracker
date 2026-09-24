@@ -22,5 +22,5 @@ Pure Dart application logic. Imports only other domain files and the packages
 
 ## Related
 
-- [Layer boundaries](../../docs/architecture.md)
+- [Working guide](../../.claude/guide.md)
 - [data](../data/README.md)

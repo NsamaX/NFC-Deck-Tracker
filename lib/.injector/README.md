@@ -26,4 +26,4 @@ Registration order: services, data sources, repositories, use cases, blocs.
 
 ## Related
 
-- [Layer boundaries](../../docs/architecture.md)
+- [Working guide](../../.claude/guide.md)

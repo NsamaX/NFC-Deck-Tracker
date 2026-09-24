@@ -38,4 +38,4 @@ file needs a `language_name` entry. See [assets](../../assets/README.md).
 
 ## Related
 
-- [Layer boundaries](../../docs/architecture.md)
+- [Working guide](../../.claude/guide.md)

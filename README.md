@@ -59,7 +59,7 @@ flutter test --dart-define=GUEST_MODE=true
 ```
 
 `verify.dart` checks layer boundaries, `.claude/registry.md`, and
-`dart analyze`. Architecture: [docs/architecture.md](docs/architecture.md).
+`dart analyze`. Working guide: [.claude/guide.md](.claude/guide.md).
 Source overview: [lib/README.md](lib/README.md).
 
 ## Project

@@ -27,7 +27,7 @@ See the [project README](../README.md#getting-started) for setup.
 
 ## Related
 
-- [Layer boundaries](../docs/architecture.md)
+- [Working guide](../.claude/guide.md)
 - [.config](.config/README.md), [.injector](.injector/README.md),
   [domain](domain/README.md), [data](data/README.md),
   [presentation](presentation/README.md), [util](util/README.md)

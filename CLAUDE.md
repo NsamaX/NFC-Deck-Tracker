@@ -10,19 +10,20 @@ into feature folders or change screens unless asked.
 
 ## Before a task
 
-1. Read `README.md` and `docs/architecture.md` (layer rules, where to change
-   code, deferred behavior findings).
-2. Inspect `git status --short` and identify the layer and files involved.
-3. Read the applicable source below before editing.
+1. Inspect `git status --short` and identify the layer and files involved.
+2. Read the source for the work below. `.claude/guide.md` is the working
+   guide; read only the section named, not the whole file.
 
-| Work | Required source |
+| Work | Read first |
 | --- | --- |
-| Adding or changing a port, use case, or entity | `.claude/registry.md` (then update it; `dart run tool/verify_registry.dart` checks it) |
-| Cross-layer imports, new dependencies between files | `.obsidian-graph/.VIOLATIONS.md` after `dart run tool/graph.dart` |
-| Wiring, Guest vs online implementations | `lib/.injector/` and `lib/.config/runtime.dart` |
-| SQL, JSON, Firestore or Supabase format | `lib/data/datasource/`, `lib/data/model/`, `lib/data/mapper/` |
-| Screens, widgets, blocs | `lib/presentation/`, entities and use cases from the registry only |
+| Adding or changing a port, use case, or entity | `.claude/registry.md` (then update it; `dart run tool/verify_registry.dart` checks it) and guide "Recipes" |
+| Cross-layer imports, new dependencies between files | `.obsidian-graph/.VIOLATIONS.md` after `dart run tool/graph.dart`; guide "Rules" |
+| Unsure which layer a change belongs to | guide "Where to start" |
+| Wiring, Guest vs online implementations | `lib/.injector/`, `lib/.config/runtime.dart` |
+| SQL, JSON, Firestore or Supabase format, sync | `lib/data/datasource/`, `lib/data/model/`, `lib/data/mapper/`; guide "Data rules" |
+| Screens, widgets, blocs | `lib/presentation/`, entities and use cases from the registry only; guide "Add a bloc or page" |
 | Translations | `assets/locale/`, `lib/presentation/locale/` |
+| Writing tests | guide "Testing" |
 
 Rules the tools enforce: domain imports only domain plus `equatable`/`uuid`;
 presentation never imports data, `.injector`, `main.dart`, `domain/repository`,

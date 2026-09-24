@@ -32,6 +32,6 @@ objects.
 
 ## Related
 
-- [Layer boundaries](../../docs/architecture.md)
+- [Working guide](../../.claude/guide.md)
 - [domain](../domain/README.md)
 - [Adding a game](../.config/README.md#adding-a-game)
