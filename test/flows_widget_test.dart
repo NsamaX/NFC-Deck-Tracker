@@ -43,7 +43,8 @@ void main() {
       (tester) async {
     final world = makeWorld();
     await world.pump(tester, initialRoute: RouteConstant.my_deck);
-    expect(find.text("Tap the '+' icon to create a new deck."), findsOneWidget);
+    expect(find.text('Tap the icon at the top left\nto create a new deck.'),
+        findsOneWidget);
 
     await tester.tap(find.byIcon(Icons.open_in_new_rounded));
     await tester.pumpAndSettle();
@@ -55,7 +56,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Dragon'));
     await tester.pumpAndSettle();
-    expect(find.text('Card Info'), findsOneWidget);
+    expect(find.text('Card Details'), findsOneWidget);
 
     await tester.tap(find.text('2'));
     await tester.pump();
@@ -68,7 +69,7 @@ void main() {
     // Add pops the card page itself, so one back returns to the builder.
     await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
     await tester.pumpAndSettle();
-    expect(find.text('Total 2 Cards'), findsOneWidget);
+    expect(find.text('Total: 2 cards'), findsOneWidget);
 
     await tester.tap(find.text('Save'));
     await tester.pumpAndSettle();
@@ -166,19 +167,19 @@ void main() {
     await world.pump(tester, initialRoute: RouteConstant.deck_tracker);
     await tester.tap(find.text('OK'));
     await tester.pumpAndSettle();
-    await tester.tap(find.text('Insight'));
+    await tester.tap(find.text('Statistics'));
     await tester.pumpAndSettle();
     await tester.pump(const Duration(seconds: 5));
     await tester.pumpAndSettle();
 
     await tester.tap(find.text('09:00:00'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Draw 1'), findsOneWidget);
+    expect(find.textContaining('Drawn: 1'), findsOneWidget);
     expect(find.textContaining('50.0%'), findsOneWidget);
 
     await tester.tap(find.text('09:30:00'));
     await tester.pumpAndSettle();
-    expect(find.textContaining('Draw 2'), findsOneWidget);
+    expect(find.textContaining('Drawn: 2'), findsOneWidget);
     expect(find.textContaining('100.0%'), findsOneWidget);
   });
 
@@ -192,7 +193,7 @@ void main() {
 
     await tester.enterText(find.byType(TextField), 'zzz');
     await tester.pumpAndSettle();
-    expect(find.text('No cards found matching your search.'), findsOneWidget);
+    expect(find.text('No cards match your search.'), findsOneWidget);
     expect(find.text('Dragon'), findsNothing);
 
     await tester.tap(find.text('Create'));
@@ -200,7 +201,7 @@ void main() {
     await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
     await tester.pumpAndSettle();
     expect(find.widgetWithText(TextField, 'zzz'), findsOneWidget);
-    expect(find.text('No cards found matching your search.'), findsOneWidget);
+    expect(find.text('No cards match your search.'), findsOneWidget);
     expect(find.text('Dragon'), findsNothing);
   });
 
