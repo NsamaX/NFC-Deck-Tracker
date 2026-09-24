@@ -13,6 +13,7 @@ import 'package:nfc_deck_tracker/data/repository/collection.dart';
 import 'package:nfc_deck_tracker/data/repository/deck.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/card_in_deck.dart';
+import 'package:nfc_deck_tracker/domain/entity/collection.dart';
 import 'package:nfc_deck_tracker/domain/entity/deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/create_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_collection.dart';
@@ -58,7 +59,7 @@ void main() {
   setUp(() async {
     sql = await openTestDatabase();
     cards = CardRepositoryImpl(
-      localDatasource: CardLocalDatasource(sql),
+      localDatasource: CardLocalDatasource(sql, isBuiltIn: isPokemon),
       remoteDatasource: CardRemoteDatasource(FirestoreService.offline()),
     );
     collections = CollectionRepositoryImpl(
@@ -106,6 +107,16 @@ void main() {
 
     final deck = (await decks.fetchForLocal()).single;
     expect(deck.cards.single.card.name, 'Renamed');
+  });
+
+  test('user cards exclude cached catalog cards', () async {
+    await catalog(PagedApi(1)).fetch(userId: '', collectionId: 'pokemon');
+    await collections.createForLocal(
+        collection: const CollectionEntity(collectionId: 'mine', name: 'M'));
+    await cards.createForLocal(
+        card: const CardEntity(collectionId: 'mine', cardId: 'c', name: 'C'));
+
+    expect((await cards.fetchUserCards()).map((c) => c.cardId), ['c']);
   });
 
   test('syncing collections online keeps built-in game collections', () async {

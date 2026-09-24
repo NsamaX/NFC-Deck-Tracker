@@ -1,11 +1,17 @@
+import 'package:nfc_deck_tracker/.config/game.dart';
+
 import '../../model/card.dart';
 
 import 'sqlite_service.dart';
 
 class CardLocalDatasource {
   final SQLiteService _sqliteService;
+  final bool Function(String collectionId) _isBuiltIn;
 
-  CardLocalDatasource(this._sqliteService);
+  CardLocalDatasource(
+    this._sqliteService, {
+    bool Function(String collectionId)? isBuiltIn,
+  }) : _isBuiltIn = isBuiltIn ?? GameConfig.instance.isSupported;
 
   Future<int> countByName({
     required String collectionId,
@@ -59,6 +65,14 @@ class CardLocalDatasource {
       """,
     );
     return result.map((row) => CardModel.fromJson(row)).toList();
+  }
+
+  Future<List<CardModel>> fetchUserCards() async {
+    final result = await _sqliteService.getTable(table: 'cards');
+    return result
+        .map(CardModel.fromJson)
+        .where((c) => !_isBuiltIn(c.collectionId))
+        .toList();
   }
 
   Future<CardModel?> find({

@@ -17,7 +17,7 @@ class ClearUserDataUsecase {
     required bool isGuest,
   }) async {
     if (isGuest) {
-      final cards = await cardRepository.fetchUsedCards();
+      final cards = await cardRepository.fetchUserCards();
       final imageUrls = [
         for (final card in cards)
           if (card.imageUrl case final url? when url.isNotEmpty) url,

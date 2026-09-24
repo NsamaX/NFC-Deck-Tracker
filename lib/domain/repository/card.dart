@@ -37,6 +37,8 @@ abstract interface class CardRepository {
 
   Future<List<CardEntity>> fetchUsedCards();
 
+  Future<List<CardEntity>> fetchUserCards();
+
   Future<CardEntity?> findForApi({
     required String collectionId,
     required String cardId,

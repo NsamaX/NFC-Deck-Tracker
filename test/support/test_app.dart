@@ -72,6 +72,8 @@ class MemoryCards extends Fake implements CardRepository {
   @override
   Future<List<CardEntity>> fetchUsedCards() async => local.values.toList();
   @override
+  Future<List<CardEntity>> fetchUserCards() async => local.values.toList();
+  @override
   Future<int> check(
           {required String collectionId, required String name}) async =>
       0;

@@ -38,6 +38,7 @@ calls when it is empty.
 - `fetchForLocal` — cards of one collection
 - `fetchForRemote` — cards of one collection for the user
 - `fetchUsedCards` — every card referenced by any deck
+- `fetchUserCards` — every card in a user collection (built-in game cards excluded)
 - `findForApi` — look up a catalog card by id via the game API
 - `findForLocal` — look up a stored card by collection and card id
 - `save` — upsert a batch of catalog cards into the local cache
@@ -171,7 +172,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### ClearUserDataUsecase (`clear_user_data.dart`)
 
-`call({isGuest})` — delete used-card images when guest, then wipe local data.
+`call({isGuest})` — delete the images of every user card when guest, then wipe local data.
 
 ### CreateCardUsecase (`create_card.dart`)
 

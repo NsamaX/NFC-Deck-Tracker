@@ -86,6 +86,13 @@ class CardRepositoryImpl implements CardRepository {
   }
 
   @override
+  Future<List<CardEntity>> fetchUserCards() async {
+    return (await localDatasource.fetchUserCards())
+        .map(CardMapper.toEntity)
+        .toList();
+  }
+
+  @override
   Future<CardEntity?> findForApi({
     required String collectionId,
     required String cardId,
