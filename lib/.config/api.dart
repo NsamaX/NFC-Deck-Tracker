@@ -18,13 +18,13 @@ class ApiConfig {
 
   static const Map<String, int> _catalogBatchSizes = {
     'development': 1,
-    'production': 20,
+    'production': 3,
   };
 
   final String environment;
   final Map<String, String> _baseUrls;
 
-  int get catalogBatchSize => _catalogBatchSizes[environment] ?? 20;
+  int get catalogBatchSize => _catalogBatchSizes[environment] ?? 3;
 
   ApiConfig._({
     required this.environment,

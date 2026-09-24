@@ -17,7 +17,9 @@ class GameConfig {
     'development': {
       if (!RuntimeConfig.guestMode) magic: 'https://api.scryfall.com/',
     },
-    'production': {},
+    'production': {
+      if (!RuntimeConfig.guestMode) magic: 'https://api.scryfall.com/',
+    },
   };
 
   final String environment;
