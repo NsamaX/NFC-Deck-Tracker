@@ -1,110 +1,101 @@
 part of '../../repository/nfc.dart';
 
+class NdefFailure implements Exception {
+  final NfcNotice notice;
+
+  const NdefFailure(this.notice);
+
+  @override
+  String toString() => 'NdefFailure: ${notice.name}';
+}
+
 Ndef validateNDEF({
   required NfcTag tag,
+  bool requireWritable = false,
 }) {
-  try {
-    final ndef = Ndef.from(tag);
-
-    if (ndef == null) {
-      throw Exception('[Validation] Tag does not support NDEF.');
-    }
-
-    if (!ndef.isWritable) {
-      throw Exception('[Validation] Tag is read-only.');
-    }
-
-    return ndef;
-  } catch (e) {
-    throw Exception('[Validation] Failed to validate NDEF tag: $e');
+  final ndef = Ndef.from(tag);
+  if (ndef == null) {
+    throw const NdefFailure(NfcNotice.errorNdefNotSupported);
   }
+  if (requireWritable && !ndef.isWritable) {
+    throw const NdefFailure(NfcNotice.errorNdefNotWritable);
+  }
+  return ndef;
 }
 
 bool hasNdefRecords(Ndef ndef) {
-  try {
-    final message = ndef.cachedMessage;
-    return message != null && message.records.isNotEmpty;
-  } catch (_) {
-    return false;
-  }
+  final message = ndef.cachedMessage;
+  return message != null && message.records.isNotEmpty;
 }
 
 List<String> extractFormattedNdefRecords(Ndef ndef) {
-  try {
-    final message = ndef.cachedMessage;
-
-    if (message == null || message.records.isEmpty) {
-      throw Exception('[Validation] No NDEF message found.');
-    }
-
-    return message.records
-        .map((record) => String.fromCharCodes(record.payload).substring(3))
-        .toList();
-  } catch (e) {
-    throw Exception('[Validation] Failed to extract NDEF records: $e');
+  final message = ndef.cachedMessage;
+  if (message == null || message.records.isEmpty) {
+    throw const NdefFailure(NfcNotice.errorNdefParseFailed);
   }
+  return message.records.map(decodeTextPayload).whereType<String>().toList();
+}
+
+String? decodeTextPayload(NdefRecord record) {
+  final payload = record.payload;
+  if (payload.isEmpty || payload[0] & 0x80 != 0) return null;
+  final languageLength = payload[0] & 0x3F;
+  if (payload.length < 1 + languageLength) return null;
+  try {
+    return utf8.decode(payload.sublist(1 + languageLength));
+  } on FormatException {
+    return null;
+  }
+}
+
+String tagIdentifier(NfcTag tag) {
+  for (final tech in tag.data.values) {
+    final identifier = tech is Map ? tech['identifier'] : null;
+    if (identifier is List && identifier.isNotEmpty) {
+      return identifier
+          .map((e) => (e as int).toRadixString(16).padLeft(2, '0'))
+          .join(':');
+    }
+  }
+  return '';
 }
 
 TagEntity createTagEntity({
   required NfcTag tag,
   required List<String> records,
 }) {
-  try {
-    final collectionId = records
-        .firstWhere(
-          (r) => r.startsWith('coId:'),
-          orElse: () => '',
-        )
-        .split(': ')
-        .last;
+  String field(String prefix) => records
+      .firstWhere((r) => r.startsWith(prefix), orElse: () => '')
+      .split(': ')
+      .last;
 
-    final cardId = records
-        .firstWhere(
-          (r) => r.startsWith('caId:'),
-          orElse: () => '',
-        )
-        .split(': ')
-        .last;
+  final collectionId = field('coId:');
+  final cardId = field('caId:');
+  final tagId = tagIdentifier(tag);
 
-    final tagId = (tag.data['nfca']?['identifier'] as List<dynamic>?)
-            ?.map((e) => e.toRadixString(16).padLeft(2, '0'))
-            .join(':') ??
-        '';
-
-    if (collectionId.isEmpty || cardId.isEmpty || tagId.isEmpty) {
-      throw Exception('[Validation] Incomplete tag data.');
-    }
-
-    return TagEntity(tagId: tagId, cardId: cardId, collectionId: collectionId);
-  } catch (e) {
-    throw Exception('[Validation] Failed to create tag entity: $e');
+  if (collectionId.isEmpty || cardId.isEmpty || tagId.isEmpty) {
+    throw const NdefFailure(NfcNotice.errorTagCardNotFound);
   }
+
+  return TagEntity(tagId: tagId, cardId: cardId, collectionId: collectionId);
 }
 
 NdefMessage createNDEFMessage({
   required CardEntity card,
+  required int maxSize,
 }) {
-  try {
-    final collectionId = card.collectionId;
-    final cardId = card.cardId;
-
-    if (collectionId.isEmpty || cardId.isEmpty) {
-      throw Exception('[Validation] Card data is incomplete.');
-    }
-
-    final records = [
-      NdefRecord.createText('coId: $collectionId'),
-      NdefRecord.createText('caId: $cardId'),
-    ];
-
-    final message = NdefMessage(records);
-
-    if (message.byteLength > 144) {
-      throw Exception('[Validation] Data exceeds tag capacity.');
-    }
-
-    return message;
-  } catch (e) {
-    throw Exception('[Validation] Failed to create NDEF message: $e');
+  if (card.collectionId.isEmpty || card.cardId.isEmpty) {
+    throw const NdefFailure(NfcNotice.errorNdefCreateFailed);
   }
+
+  final message = NdefMessage([
+    NdefRecord.createText('coId: ${card.collectionId}'),
+    NdefRecord.createText('caId: ${card.cardId}'),
+  ]);
+
+  if (message.byteLength > maxSize) {
+    throw const NdefFailure(NfcNotice.errorNdefDataTooLarge);
+  }
+
+  return message;
 }

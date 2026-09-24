@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nfc_manager/nfc_manager.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/domain/entity/tag.dart';
 import 'package:nfc_deck_tracker/domain/entity/nfc_result.dart';
@@ -80,17 +81,77 @@ void main() {
 
   test('NDEF adapter retains the existing coId/caId wire format', () {
     final message = createNDEFMessage(
-        card: const CardEntity(collectionId: 'game', cardId: 'card'));
+        card: const CardEntity(collectionId: 'game', cardId: 'card'),
+        maxSize: 144);
     expect(
         message.records
             .map((record) => String.fromCharCodes(record.payload).substring(3)),
         ['coId: game', 'caId: card']);
-  });
-  test('NDEF adapter retains validation of incomplete and oversized data', () {
-    expect(() => createNDEFMessage(card: const CardEntity()), throwsException);
     expect(
-        () => createNDEFMessage(
-            card: CardEntity(collectionId: 'game', cardId: 'x' * 200)),
-        throwsException);
+        message.records.map(decodeTextPayload), ['coId: game', 'caId: card']);
+  });
+  test('NDEF adapter reports incomplete and oversized data as typed notices',
+      () {
+    Matcher failsWith(NfcNotice notice) =>
+        throwsA(isA<NdefFailure>().having((e) => e.notice, 'notice', notice));
+    expect(() => createNDEFMessage(card: const CardEntity(), maxSize: 144),
+        failsWith(NfcNotice.errorNdefCreateFailed));
+    final long = CardEntity(collectionId: 'game', cardId: 'x' * 200);
+    expect(() => createNDEFMessage(card: long, maxSize: 144),
+        failsWith(NfcNotice.errorNdefDataTooLarge));
+    expect(createNDEFMessage(card: long, maxSize: 504).records, hasLength(2));
+  });
+  test('tag id is read from whichever technology reports an identifier', () {
+    NfcTag tagWith(Map<String, dynamic> data) =>
+        NfcTag(handle: 'h', data: data);
+    expect(
+        tagIdentifier(tagWith({
+          'nfca': {
+            'identifier': [1, 171]
+          }
+        })),
+        '01:ab');
+    expect(
+        tagIdentifier(tagWith({
+          'mifare': {
+            'identifier': [255]
+          }
+        })),
+        'ff');
+    expect(tagIdentifier(tagWith({})), isEmpty);
+  });
+  test('a read-only tag is readable but rejected for writing', () {
+    final written = createNDEFMessage(
+        card: const CardEntity(collectionId: 'game', cardId: 'card'),
+        maxSize: 144);
+    final tag = NfcTag(handle: 'h', data: {
+      'nfca': {
+        'identifier': [1, 2]
+      },
+      'ndef': {
+        'isWritable': false,
+        'maxSize': 144,
+        'cachedMessage': {
+          'records': [
+            for (final r in written.records)
+              {
+                'typeNameFormat': 1,
+                'type': r.type,
+                'identifier': r.identifier,
+                'payload': r.payload,
+              }
+          ]
+        },
+      },
+    });
+
+    final ndef = validateNDEF(tag: tag);
+    expect(
+        createTagEntity(tag: tag, records: extractFormattedNdefRecords(ndef)),
+        const TagEntity(tagId: '01:02', cardId: 'card', collectionId: 'game'));
+    expect(
+        () => validateNDEF(tag: tag, requireWritable: true),
+        throwsA(isA<NdefFailure>().having(
+            (e) => e.notice, 'notice', NfcNotice.errorNdefNotWritable)));
   });
 }
