@@ -375,7 +375,8 @@ Check: classes
 ### CardLookupFailure (`card_lookup_failure.dart`)
 
 Why `FindCardFromTagUsecase` found no card: `invalidTag`, `cardNotFound`
-(the API has no such card), or `gameNotSupported` (the API call failed).
+(the API has no such card), `unavailable` (the API could not be reached), or
+`gameNotSupported` (no API exists for the collection).
 Thrown inside `CardLookupException`; `ReaderBloc` maps it to translation keys.
 
 ### PlayerAction (`player_action.dart`)

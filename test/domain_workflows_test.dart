@@ -78,6 +78,13 @@ class MemoryCards extends Fake implements CardRepository {
   }
 }
 
+class UnreachableCards extends MemoryCards {
+  @override
+  Future<CardEntity?> findForApi(
+          {required String collectionId, required String cardId}) =>
+      throw const RemoteUnavailableException('offline');
+}
+
 class MemorySettings implements SettingsRepository {
   AppSettings stored = const AppSettings(locale: 'ja');
   @override
@@ -224,10 +231,15 @@ void main() {
         failsWith(CardLookupFailure.invalidTag));
     expect(cards.apiCalls, 0);
   });
-  test('tag lookup reports a card missing from the API as not found',
-      () async {
-    await expectLater(FindCardFromTagUsecase(cardRepository: MemoryCards())(tag),
+  test('tag lookup reports a card missing from the API as not found', () async {
+    await expectLater(
+        FindCardFromTagUsecase(cardRepository: MemoryCards())(tag),
         failsWith(CardLookupFailure.cardNotFound));
+  });
+  test('tag lookup reports an unreachable API as unavailable', () async {
+    final cards = UnreachableCards();
+    await expectLater(FindCardFromTagUsecase(cardRepository: cards)(tag),
+        failsWith(CardLookupFailure.unavailable));
   });
   test('tag lookup reports a failing API as an unsupported game', () async {
     await expectLater(

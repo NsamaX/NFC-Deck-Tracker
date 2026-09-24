@@ -18,5 +18,6 @@ tags:
 - [[util---logger.dart]]
 
 ## Packages
+- `dart:convert`
 - `package:nfc_manager/nfc_manager.dart`
 

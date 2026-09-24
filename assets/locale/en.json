@@ -44,6 +44,7 @@
     "error_no_data": "No data was found on the NFC tag.",
     "error_card_not_found": "No matching card was found for this tag.",
     "error_game_not_supported": "This game is not supported by the app.",
+    "error_card_lookup_unavailable": "Could not reach the card service. Check your connection and try again.",
     "error_unknown": "An unknown error occurred. Please try again later."
   },
   "bottom_navigation_bar": {

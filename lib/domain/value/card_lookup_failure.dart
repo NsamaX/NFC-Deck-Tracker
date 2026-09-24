@@ -2,6 +2,7 @@ enum CardLookupFailure {
   invalidTag,
   cardNotFound,
   gameNotSupported,
+  unavailable,
 }
 
 class CardLookupException implements Exception {

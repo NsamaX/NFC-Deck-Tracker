@@ -56,6 +56,9 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
         CardLookupFailure.gameNotSupported => state.copyWith(
             errorMessage: 'nfc_snack_bar.error_game_not_supported',
             isLoading: false),
+        CardLookupFailure.unavailable => state.copyWith(
+            errorMessage: 'nfc_snack_bar.error_card_lookup_unavailable',
+            isLoading: false),
       });
     } catch (_) {
       emit(state.copyWith(

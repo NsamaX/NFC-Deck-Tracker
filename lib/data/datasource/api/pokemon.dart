@@ -1,6 +1,9 @@
 import 'package:nfc_deck_tracker/.config/game.dart';
+import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
 
 import '../../model/card.dart';
+
+import 'package:http/http.dart' as http;
 
 import 'game_api.dart';
 import 'base_api.dart';
@@ -8,7 +11,8 @@ import 'base_api.dart';
 class PokemonApi extends BaseApi implements GameApi {
   PokemonApi({
     required String baseUrl,
-  }) : super(baseUrl: baseUrl);
+    http.Client? client,
+  }) : super(baseUrl: baseUrl, client: client);
 
   @override
   Future<CardPage> fetch({
@@ -32,17 +36,15 @@ class PokemonApi extends BaseApi implements GameApi {
   Future<CardModel?> find({
     required String cardId,
   }) async {
+    final http.Response response;
     try {
-      final response = await getRequest(path: 'cards/$cardId');
-      final body = decodeResponse(response: response);
-
-      if (body['data'] == null) return null;
-
-      final data = body['data'] as Map<String, dynamic>;
-      return _parseData(data: data);
-    } catch (e) {
-      return null;
+      response = await getRequest(path: 'cards/$cardId');
+    } on ApiStatusException catch (e) {
+      if (e.statusCode == 404) return null;
+      throw RemoteUnavailableException('find $cardId: $e');
     }
+    final data = decodeResponse(response: response)['data'];
+    return data is Map<String, dynamic> ? _parseData(data: data) : null;
   }
 
   CardModel _parseData({

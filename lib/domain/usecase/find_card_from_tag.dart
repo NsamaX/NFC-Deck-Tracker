@@ -3,6 +3,7 @@ import '../repository/card.dart';
 import '../entity/card.dart';
 import '../entity/tag.dart';
 import '../value/card_lookup_failure.dart';
+import '../value/remote_unavailable.dart';
 
 class FindCardFromTagUsecase {
   final CardRepository cardRepository;
@@ -29,6 +30,8 @@ class FindCardFromTagUsecase {
     try {
       apiCard = await cardRepository.findForApi(
           collectionId: tag.collectionId, cardId: tag.cardId);
+    } on RemoteUnavailableException {
+      throw const CardLookupException(CardLookupFailure.unavailable);
     } catch (_) {
       throw const CardLookupException(CardLookupFailure.gameNotSupported);
     }

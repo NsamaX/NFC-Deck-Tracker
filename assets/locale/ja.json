@@ -44,6 +44,7 @@
     "error_no_data": "NFCタグにデータが見つかりませんでした。",
     "error_card_not_found": "このタグに一致するカードは見つかりませんでした。",
     "error_game_not_supported": "このゲームはアプリでサポートされていません。",
+    "error_card_lookup_unavailable": "カード情報サービスに接続できません。接続を確認して、もう一度お試しください。",
     "error_unknown": "不明なエラーが発生しました。後でもう一度お試しください。"
   },
   "bottom_navigation_bar": {

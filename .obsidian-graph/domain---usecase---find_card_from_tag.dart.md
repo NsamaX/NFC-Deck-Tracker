@@ -14,4 +14,5 @@ tags:
 - [[domain---entity---tag.dart]]
 - [[domain---repository---card.dart]]
 - [[domain---value---card_lookup_failure.dart]]
+- [[domain---value---remote_unavailable.dart]]
 
