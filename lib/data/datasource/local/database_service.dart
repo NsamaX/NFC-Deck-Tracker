@@ -6,33 +6,34 @@ import 'package:nfc_deck_tracker/util/logger.dart';
 import 'database_constant.dart';
 
 class DatabaseService {
-  static final DatabaseService _instance = DatabaseService._internal();
+  final DatabaseFactory? _factory;
+  final String? _path;
 
-  factory DatabaseService() => _instance;
-
-  DatabaseService._internal();
+  DatabaseService({DatabaseFactory? factory, String? path})
+      : _factory = factory,
+        _path = path;
 
   Future<Database>? _database;
 
   static const String _db = DatabaseConstant.dbName;
   static const int _dbVersion = DatabaseConstant.dbVersion;
 
-  Future<Database> get database async {
-    _database ??= _initDatabase();
-    return _database!;
-  }
+  Future<Database> get database => _database ??= _initDatabase();
 
   Future<Database> _initDatabase() async {
     try {
-      final String dbPath = await getDatabasesPath();
-      final String path = join(dbPath, _db);
+      final factory = _factory ?? databaseFactory;
+      final String path = _path ?? join(await factory.getDatabasesPath(), _db);
 
-      final Database db = await openDatabase(
+      final Database db = await factory.openDatabase(
         path,
-        version: _dbVersion,
-        onCreate: _createTables,
-        onUpgrade: _migrate,
-        onDowngrade: onDatabaseDowngradeDelete,
+        options: OpenDatabaseOptions(
+          version: _dbVersion,
+          onConfigure: (db) => db.execute('PRAGMA foreign_keys = ON'),
+          onCreate: _createTables,
+          onUpgrade: _migrate,
+          onDowngrade: onDatabaseDowngradeDelete,
+        ),
       );
 
       await _configureDatabase(db);
@@ -41,6 +42,7 @@ class DatabaseService {
       LoggerUtil.flush();
       return db;
     } catch (e) {
+      _database = null;
       LoggerUtil.e('Failed to initialize the database: $e');
       rethrow;
     }
@@ -98,7 +100,6 @@ class DatabaseService {
     Database db,
   ) async {
     try {
-      await db.rawQuery('PRAGMA foreign_keys = ON');
       await db.rawQuery('PRAGMA journal_mode = WAL');
 
       LoggerUtil.buffer('Database configured successfully');
