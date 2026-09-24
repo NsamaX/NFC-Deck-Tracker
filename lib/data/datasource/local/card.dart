@@ -11,7 +11,7 @@ class CardLocalDatasource {
   CardLocalDatasource(
     this._sqliteService, {
     bool Function(String collectionId)? isBuiltIn,
-  }) : _isBuiltIn = isBuiltIn ?? GameConfig.instance.isSupported;
+  }) : _isBuiltIn = isBuiltIn ?? ((id) => GameConfig.instance.isSupported(id));
 
   Future<int> countByName({
     required String collectionId,

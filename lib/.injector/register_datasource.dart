@@ -33,6 +33,7 @@ Future<void> registerDataSource() async {
     LoggerUtil.buffer('DataSource registered successfully.');
   } catch (e) {
     LoggerUtil.buffer('Failed to register datasource: $e');
+    rethrow;
   }
 }
 

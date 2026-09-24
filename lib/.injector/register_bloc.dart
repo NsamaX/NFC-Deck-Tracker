@@ -25,6 +25,7 @@ Future<void> registerBloc() async {
     LoggerUtil.buffer('Bloc registered successfully.');
   } catch (e) {
     LoggerUtil.buffer('Failed to register bloc: $e');
+    rethrow;
   }
 }
 

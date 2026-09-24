@@ -30,7 +30,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
     required this.defaultBatchSize,
     bool Function(String collectionId)? isBuiltIn,
     PagingStrategy Function(String collectionId)? pagingFor,
-  })  : _isBuiltIn = isBuiltIn ?? GameConfig.instance.isSupported,
+  })  : _isBuiltIn = isBuiltIn ?? ((id) => GameConfig.instance.isSupported(id)),
         _pagingFor = pagingFor ??
             ((id) => ServiceFactory.create<PagingStrategy>(collectionId: id));
 

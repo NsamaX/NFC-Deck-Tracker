@@ -22,7 +22,7 @@ class DeckLocalDatasource {
   DeckLocalDatasource(
     this._sqliteService, {
     bool Function(String collectionId)? isBuiltIn,
-  }) : _isBuiltIn = isBuiltIn ?? GameConfig.instance.isSupported;
+  }) : _isBuiltIn = isBuiltIn ?? ((id) => GameConfig.instance.isSupported(id));
 
   Future<void> create({
     required DeckModel deck,
