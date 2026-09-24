@@ -1,29 +1,37 @@
-# Assets Folder
+# assets
 
-## Overview
-The assets folder contains all static resources used in the nfc_deck_tracker application, organized into subfolders for better management. This app uses the Playpen Sans Thai font for its UI.
+Static resources bundled with the app. Every folder is declared under
+`flutter: assets:` in `pubspec.yaml`, so new files inside them need no
+`pubspec.yaml` change.
 
----
+## Contents
 
-## Folder Structure & Responsibilities
-- `font/`: Stores font files, exclusively using the .ttf format (e.g., PlaypenSansThai-Regular.ttf).
-- `icon/`: Contains icon files, exclusively using the .svg format (e.g., icon_add.svg).
-- `image/`: Holds image assets, exclusively using the .png format (e.g., image_landing.png).
-- `locale/`: Stores localization files, exclusively using the .json format (e.g., en.json).
+| Path | Format | Purpose |
+| --- | --- | --- |
+| `font/` | `.ttf` | Playpen Sans Thai, the app font, in all weights. Registered under `flutter: fonts:`. |
+| `icon/` | `.svg` | UI icons. |
+| `image/` | `.png` | Screen illustrations and the launcher icon source. |
+| `image/game/` | `.png` | Game icons, one per game ID in `lib/.config/game.dart`. |
+| `locale/` | `.json` | Translations, one file per language code. |
 
----
+## Translations
 
-## Usage
-- Add new assets to the appropriate subfolder.
-- Update `pubspec.yaml` under `flutter:` > `assets:` to include new files or folders (e.g., - `- assets/image/`).
-- Follow naming conventions (e.g., `font_PlaypenSansThai-Bold.ttf`, `icon_button_add.svg`) for consistency.
+- Each file needs a `language_name` entry, shown in the language picker.
+- Keys are grouped into nested objects and read as dotted paths
+  (`common.button_ok`).
+- Dynamic values use named placeholders such as `{total}`; the caller
+  replaces them.
+- To add a language, copy `en.json` to `<code>.json` and translate the values.
+  The app discovers new files at startup.
 
----
+## Guidelines
 
-## Contribution Guidelines
-- Ensure all assets are optimized (e.g., compressed .png images).
-- Test UI after adding new assets to verify rendering.
-- Use only .ttf, .svg, .png, and .json file formats as specified.
-- Update this README if new guidelines or changes are introduced.
+- Use lowercase, hyphenated file names (`internet-lost.png`).
+- Compress `.png` files before adding them.
+- The launcher icons are generated from `image/icon.png` and
+  `image/icon_foreground.png` by `flutter_launcher_icons`.
 
----
+## Related
+
+- [presentation](../lib/presentation/README.md)
+- [Adding a game](../lib/.config/README.md#adding-a-game)

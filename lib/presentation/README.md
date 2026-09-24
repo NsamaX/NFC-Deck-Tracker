@@ -1,75 +1,41 @@
-<h1 align="center">Presentation Layer</h1>
+# presentation
 
-## Overview
+Screens, widgets, and UI state. Works with domain entities and use cases only.
 
-`app.dart` receives typed `PresentationDependencies` from composition and exposes
-them through `PresentationScope`. Views create blocs through typed factories;
-they never import GetIt, data implementations, or infrastructure SDKs. See
-[layer boundaries](../../docs/architecture.md).
+`app.dart` receives `PresentationDependencies` from the composition root and
+exposes them through `PresentationScope`. Pages create blocs through the typed
+factories in that scope.
 
-The `presentation/` layer is responsible for managing the **User Interface (UI)** and **user interactions** within the application.  
-It renders the visual components based on the current application state and handles input from users.  
-This layer communicates with the domain or application layer (via Blocs) to execute logic and reflect changes.
+## Contents
 
----
+| Path | Purpose |
+| --- | --- |
+| `app.dart` | `AppRoot`: theme, locale, routing, and the global error banner. |
+| `dependencies.dart` | `PresentationDependencies` and `PresentationScope`. |
+| `nfc_life_cycle_observer.dart` | Stops the NFC session on route changes and when the app is paused. |
+| `constant.dart` | `WidgetConstant`: shared sizes and paddings. |
+| `auth/` | Guest entry and navigation helper. |
+| `bloc/` | One folder per bloc (`bloc.dart`, `event.dart`, `state.dart`) and `ErrorReporting`. |
+| `page/` | Top-level screens, one per route. |
+| `route/` | Route names, arguments, and `RouteGenerator`. |
+| `theme/` | Colors, text styles, and component themes. |
+| `widget/` | Reusable widgets, grouped by feature or role. |
+| `locale/` | Translation loading and language switching. |
 
-## Folder Structure & Responsibilities
+## Localization
 
-```plaintext
-presentation/
-├── auth/
-├── bloc/
-├── locale/
-├── page/
-├── route/
-├── theme/
-├── widget/
-├── constant.dart
-```
+Translation files live in `assets/locale/`, one JSON file per language code.
+`LanguageManager` discovers them from the asset manifest, so adding a language
+needs no code change. Keys are dotted paths (`common.button_ok`), and each
+file needs a `language_name` entry. See [assets](../../assets/README.md).
 
----
+## Rules
 
-### Detailed Folder Descriptions
+- Never import `data/`, `.injector/`, `main.dart`, `domain/repository/`, or
+  infrastructure SDKs.
+- Blocs that await a use case mix in `ErrorReporting`; pages show errors
+  through `ErrorListener`.
 
-* **`auth/`**
+## Related
 
-  * Contains the Guest entry/navigation helper.
-  * Online authentication calls `SessionUsecase`; Firebase/Google SDK code lives in data.
-
-* **`bloc/`**
-
-  * Contains bloc classes and corresponding states used for managing UI state.
-  * Each bloc encapsulates UI-specific business logic and emits states to trigger UI updates.
-
-* **`locale/`**
-
-  * Handles all localization and translation logic.
-  * Includes language files, localization delegates, and language switch mechanisms.
-  * Supports multi-language UI rendering using internationalization (`i18n`).
-
-* **`page/`**
-
-  * Contains all top-level screens or pages displayed in the app.
-  * Each page corresponds to a route and may contain multiple widgets and blocs.
-
-* **`route/`**
-
-  * Defines and manages app navigation routes.
-  * Includes `RouteGenerator`, initial route handling, and observer logic.
-  * Ensures centralized routing and consistent navigation across the app.
-
-* **`theme/`**
-
-  * Stores global styling configuration such as color palettes, typography, and widget themes.
-  * Ensures UI consistency and supports light/dark modes or custom branding.
-
-* **`widget/`**
-
-  * Contains reusable and modular UI components (e.g., buttons, form fields, cards).
-  * Widgets in this folder are intended to be shared across multiple pages to maintain consistency and reduce duplication.
-
-* **`constant.dart`**
-
-  * These constants are often used to configure UI elements.
-
----
+- [Layer boundaries](../../docs/architecture.md)

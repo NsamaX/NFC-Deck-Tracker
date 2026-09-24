@@ -1,21 +1,37 @@
-# Data layer
+# data
 
-Implements `domain/repository` interfaces; public contracts exchange domain
-entities instead of persistence models or SDK objects.
+Implements the `domain/repository` interfaces and owns storage, serialization,
+and platform I/O. Public contracts return domain entities, never models or SDK
+objects.
 
-- `repository/`: grouped implementations and platform adapters.
-- `mapper/`: conversions between storage models and domain entities.
-- `model/`: persistence representations and serialization.
-- `datasource/local/`: one SQLite or SharedPreferences class per aggregate
-  (`DeckLocalDatasource`, `CardLocalDatasource`, ...), matching `repository/`.
-- `datasource/remote/`: one Firestore class per aggregate.
-- `datasource/api/`: game APIs and pagination strategies.
-- `datasource/device/`: NDEF encoding/decoding used by the NFC adapter.
+## Contents
 
-`CardCatalogRepositoryImpl` owns API paging and cache bookkeeping. Auth maps
-Firebase users to `SessionUser`; Guest uses `GuestSessionRepository`. NFC,
-image selection/storage, permissions, app version, and connectivity SDK calls
-stay in this layer. QR camera views remain presentation widgets.
+| Path | Purpose |
+| --- | --- |
+| `repository/` | Repository implementations and platform adapters, one per aggregate. |
+| `model/` | Persistence representations and serialization. |
+| `mapper/` | Conversions between models and domain entities. |
+| `datasource/local/` | SQLite and SharedPreferences access, one class per aggregate. |
+| `datasource/remote/` | Firestore and Supabase access, one class per aggregate. |
+| `datasource/api/` | Game card APIs, paging strategies, and `ServiceFactory`. |
+| `datasource/device/` | NDEF encoding and decoding for the NFC adapter. |
 
-Data never imports presentation or `.injector`. See
-[architecture](../../docs/architecture.md).
+## Notes
+
+- `CardCatalogRepositoryImpl` owns API paging and cache bookkeeping.
+- Auth maps Firebase users to `SessionUser`; Guest mode uses
+  `GuestSessionRepository`.
+- NFC, image, permission, app version, and connectivity SDK calls stay here.
+  QR camera views stay in presentation.
+
+## Rules
+
+- Never import `presentation/` or `.injector/`.
+- Adding a field touches one model, one mapper, and the matching local and
+  remote data source.
+
+## Related
+
+- [Layer boundaries](../../docs/architecture.md)
+- [domain](../domain/README.md)
+- [Adding a game](../.config/README.md#adding-a-game)

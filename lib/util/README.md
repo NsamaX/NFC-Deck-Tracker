@@ -1,7 +1,19 @@
-<h1 align="center"\>Util Layer\</h1\>
+# util
 
-## Overview
+Logging helpers shared across the app.
 
-The `util/` layer is home to a collection of **general-purpose utility functions and helpers**. It provides common functionalities that are **reusable across different parts of the application**, promoting code reusability and reducing redundancy. This layer is designed to be independent and can contain anything from formatting helpers to common validators.
+## Contents
 
------
+| Path | Purpose |
+| --- | --- |
+| `logger.dart` | `LoggerUtil`: debug-only logging with a message buffer. |
+| `domain_logger.dart` | `AppDomainLogger`: adapts `LoggerUtil` to the domain `DomainLogger` port. |
+
+## Rules
+
+- Keep helpers here free of business logic. Domain code logs through the
+  `DomainLogger` port, not `LoggerUtil`.
+
+## Related
+
+- [lib](../README.md)

@@ -1,100 +1,78 @@
 # NFC Deck Tracker
 
-A mobile application for managing and tracking trading card game (TCG) decks in real time using NFC technology, developed as a Bachelor's Thesis at Silpakorn University.
-
-## Screenshots
+A Flutter app for building trading card game (TCG) decks and tracking them
+during play with NFC tags. Bachelor's thesis, Silpakorn University.
 
 ![Screenshot](nfc-deck-tracker.png)
 
 ## Features
 
-- **Deck Management**: Create, edit, and organize custom decks across multiple TCGs
-- **Card Search**: Search for cards via public game APIs or user-defined collections
-- **NFC Integration**: Track and update cards in real time using NFC-enabled tags
-- **Custom Cards**: Support for user-created cards with images and metadata
-- **Game Analytics**: Record match history, analyze deck usage, and visualize stats
+- Deck building across multiple games
+- Card search through public game APIs or custom collections
+- Custom cards with images
+- Real-time deck tracking by scanning NFC tags
+- Match history and deck usage statistics
+- English, Japanese, and Thai
 
-## Local configuration
+## Getting started
 
-Architecture and contribution guidance: [Layer boundaries](docs/architecture.md).
-Domain owns contracts/use cases; data implements storage/platform adapters;
-presentation receives typed dependencies from the composition root.
+Requirements: Flutter 3.41.1, JDK 21, Android SDK 36.
 
-### Guest mode on an Android emulator
+### Guest mode
 
-Guest mode stores decks, collections, cards, and settings locally. It skips
-Firebase and Supabase initialization, keeps selected images on the device,
-and hides Google sign-in and remote card catalogs. Cloud sync and record
-sharing are unavailable in this mode. NFC scanning requires a physical device.
+Runs fully offline with local storage. No Firebase, Supabase, or `.env`
+values needed. Google sign-in, remote card catalogs, cloud sync, and record
+sharing are unavailable.
 
-On this Windows workspace, a local Android SDK, JDK 21, and the
-`NFC_Deck_API_35` emulator are installed under the ignored `.local/` directory.
-Start the emulator and app with:
+On this Windows workspace the Android SDK, JDK, and emulator live in the
+ignored `.local/` directory:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\scripts\run-guest.ps1
 ```
 
-Use `-BuildOnly` to create an x86_64 debug APK, or `-DeviceId <id>` to run on an
-already connected device. The script sets tool paths for its process only;
-it does not change system-wide settings. It also disables Windows desktop
-plugin generation for that shell, so Android development does not require
-Windows Developer Mode.
-
-For manual commands in PowerShell:
+`-BuildOnly` builds an x86_64 debug APK; `-DeviceId <id>` runs on a connected
+device. Manual commands:
 
 ```powershell
 . .\scripts\android-env.ps1
-flutter pub get
-flutter devices
-flutter run -d emulator-5554 --dart-define=GUEST_MODE=true
-flutter test --dart-define=GUEST_MODE=true
+flutter run --dart-define=GUEST_MODE=true
 ```
 
-Guest mode needs no real values in `.env`; the launcher copies `.env.example`
-if the file is missing. On another machine, install the
-[Android toolchain](https://docs.flutter.dev/platform-integration/android/setup)
-and create an emulator first. The local SDK and emulator are not part of Git.
-This setup uses Flutter 3.41.1, JDK 21, Android SDK 36, and an Android 35 emulator.
-
-Android build compatibility notes: `nfc_manager` 3.x compiles with Kotlin 1.9
-language/API compatibility, and Kotlin incremental compilation is disabled to
-avoid cache errors when the Pub cache and project are on different Windows
-drives. The QR scanner uses the
-[compatibility fork](https://pub.dev/packages/qr_code_scanner_plus) at version
-2.1.2 to support the newer Android build tools without changing its UI.
+NFC scanning requires a physical device.
 
 ### Online mode
 
-Copy `.env.example` to `.env` in the project root, then fill in
-`SUPABASE_URL` and `SUPABASE_ANON_KEY` for your Supabase project.
-The app already loads this file through `flutter_dotenv`.
+1. Copy `.env.example` to `.env` and set `SUPABASE_URL` and
+   `SUPABASE_ANON_KEY`. Use the anon key only; `.env` is bundled into the app.
+2. Add `android/app/google-services.json` or
+   `ios/Runner/GoogleService-Info.plist`.
+3. Run `flutter run`.
 
-`.env` and its local variants are ignored by Git; `.env.example` is the shared
-template. Flutter bundles `.env` as an asset, so use the client anon key,
-never a service-role key or other server credentials.
+Release builds also need `android/key.properties` and a keystore.
 
-Firebase configuration is separate from `.env`. Online mode initializes
-Firebase from the native mobile configuration: restore
-`android/app/google-services.json` for Android, or configure
-`ios/Runner/GoogleService-Info.plist` for iOS. The Android Google Services plugin
-is applied when its configuration file exists. Release signing still needs
-your own `android/key.properties` and keystore; debug builds use Android's
-debug signing and do not require release credentials.
+## Development
 
-After configuring the project and installing the Flutter SDK, run
-`flutter pub get` and `flutter run` (without `GUEST_MODE=true`).
+```powershell
+dart run tool/verify.dart
+flutter test --dart-define=GUEST_MODE=true
+```
 
-## Demo
+`verify.dart` checks layer boundaries, `.claude/registry.md`, and
+`dart analyze`. Architecture: [docs/architecture.md](docs/architecture.md).
+Source overview: [lib/README.md](lib/README.md).
 
-| Field          | Value                                        |
-|----------------|----------------------------------------------|
-| Thesis Title   | NFC Deck Tracker Application                 |
-| Student        | Vijuksama Hongthongdaeng (640710759)          |
-| Advisor        | Lecturer Apisake Hongwitayakorn              |
-| Academic Year  | 2024                                         |
-| Department     | Information Technology, Faculty of Science, Silpakorn University |
+## Project
+
+| | |
+| --- | --- |
+| Student | Vijuksama Hongthongdaeng (640710759) |
+| Advisor | Lecturer Apisake Hongwitayakorn |
+| Academic year | 2024 |
+| Department | Information Technology, Faculty of Science, Silpakorn University |
+
+Thesis document and design materials: `documents/`.
 
 ## License
 
-This project is licensed under the **MIT License**.
+[MIT](LICENSE)
