@@ -24,7 +24,10 @@ class CreateCardUsecase {
   }) async {
     final String cardId = card.cardId.isEmpty ? const Uuid().v4() : card.cardId;
 
-    final uploadedUrl = await imageRepository.upload(imagePath: card.imageUrl!);
+    final imagePath = card.imageUrl;
+    final uploadedUrl = imagePath == null || imagePath.isEmpty
+        ? null
+        : await imageRepository.upload(imagePath: imagePath);
 
     final duplicateCount = await cardRepository.check(
       collectionId: card.collectionId,

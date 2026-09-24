@@ -21,9 +21,12 @@ class UpdateCardUsecase {
     String? finalImageUrl;
     final DateTime now = DateTime.now();
 
-    if (oldImageUrl != card.imageUrl) {
+    final newImagePath = card.imageUrl;
+    if (newImagePath != null &&
+        newImagePath.isNotEmpty &&
+        newImagePath != oldImageUrl) {
       finalImageUrl = await imageRepository.update(
-          oldImageUrl: oldImageUrl, newImagePath: card.imageUrl!);
+          oldImageUrl: oldImageUrl, newImagePath: newImagePath);
     }
 
     final updatedCard = card.copyWith(

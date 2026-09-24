@@ -10,6 +10,8 @@ offline sync results, local image paths, and bundled language discovery.
 - `domain_workflows_test.dart`: deck CRUD, sync outcomes, tag lookup, settings policy.
 - `deck_repository_test.dart`: use case → repository → datasource persistence mapping
   with a SQL fake, without a native database.
+- `card_image_test.dart`: card create/update and guest data clearing when a
+  card has no image.
 - `nfc_flow_test.dart`: typed NFC state updates without hardware and existing NDEF format.
 - `flows_widget_test.dart`: end-to-end page flows (deck builder, custom card
   create/edit, tracker history) against real blocs and in-memory repositories

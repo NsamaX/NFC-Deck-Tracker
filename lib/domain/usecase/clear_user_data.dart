@@ -16,12 +16,15 @@ class ClearUserDataUsecase {
   Future<void> call({
     required bool isGuest,
   }) async {
-    final cards = await cardRepository.fetchUsedCards();
-
-    if (isGuest && cards.isNotEmpty) {
-      final List<String> imageUrls =
-          cards.map((card) => card.imageUrl!).toList();
-      await imageRepository.delete(imageUrls: imageUrls);
+    if (isGuest) {
+      final cards = await cardRepository.fetchUsedCards();
+      final imageUrls = [
+        for (final card in cards)
+          if (card.imageUrl case final url? when url.isNotEmpty) url,
+      ];
+      if (imageUrls.isNotEmpty) {
+        await imageRepository.delete(imageUrls: imageUrls);
+      }
     }
 
     await localDataRepository.clear();
