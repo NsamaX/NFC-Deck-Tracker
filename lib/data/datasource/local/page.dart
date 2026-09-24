@@ -1,5 +1,6 @@
-import '../../model/page.dart';
 import 'dart:convert';
+
+import '../../model/page.dart';
 
 import 'sqlite_service.dart';
 
@@ -7,15 +8,6 @@ class PageLocalDatasource {
   final SQLiteService _sqliteService;
 
   PageLocalDatasource(this._sqliteService);
-
-  Future<void> create({
-    required PageModel page,
-  }) async {
-    await _sqliteService.insert(
-      table: 'pages',
-      data: page.toJson(),
-    );
-  }
 
   Future<Map<String, dynamic>> find({
     required String collectionId,
@@ -28,18 +20,19 @@ class PageLocalDatasource {
 
     if (result.isEmpty) return {};
 
-    final pagingJson = result.first['paging'];
-    return json.decode(pagingJson);
+    return Map<String, dynamic>.from(json.decode(result.first['paging']));
   }
 
-  Future<void> update({
+  Future<void> save({
     required PageModel page,
   }) async {
-    await _sqliteService.update(
-      table: 'pages',
-      data: page.toJson(),
-      where: 'collectionId = ?',
-      whereArgs: [page.collectionId],
-    );
+    await _sqliteService.transaction((txn) async {
+      await txn.delete(
+        table: 'pages',
+        where: 'collectionId = ?',
+        whereArgs: [page.collectionId],
+      );
+      await txn.insert(table: 'pages', data: page.toJson());
+    });
   }
 }

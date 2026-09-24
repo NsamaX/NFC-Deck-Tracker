@@ -14,6 +14,7 @@ tags:
 - [[domain---repository---card.dart]]
 - [[domain---repository---collection.dart]]
 - [[domain---repository---image.dart]]
+- [[domain---service---clock.dart]]
 - [[domain---service---id_generator.dart]]
 - [[domain---service---sync_policy.dart]]
 

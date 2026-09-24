@@ -80,9 +80,10 @@ class CardLocalDatasource {
     required List<CardModel> cards,
   }) async {
     final cardsJson = cards.map((card) => card.toJsonForLocal()).toList();
-    await _sqliteService.insertBatch(
+    await _sqliteService.upsertBatch(
       table: 'cards',
       dataList: cardsJson,
+      keyColumns: const ['collectionId', 'cardId'],
     );
   }
 

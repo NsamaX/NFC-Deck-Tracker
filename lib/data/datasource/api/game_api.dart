@@ -1,7 +1,14 @@
 import '../../model/card.dart';
 
+class CardPage {
+  final List<CardModel> cards;
+  final bool hasMore;
+
+  const CardPage({required this.cards, required this.hasMore});
+}
+
 abstract class GameApi {
-  Future<List<CardModel>> fetch({
+  Future<CardPage> fetch({
     required Map<String, dynamic> page,
   });
   Future<CardModel?> find({

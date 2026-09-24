@@ -46,7 +46,7 @@ calls when it is empty.
 
 ### CardCatalogRepository (`card_catalog.dart`)
 
-- `fetch` — supported games: pages from the game API cached locally; custom collections: `SyncPolicy.reconcile` against the user's remote cards
+- `fetch` — supported games: the next `batchSize` API pages after the stored cursor, upserted into the local cache, then all cached cards; custom collections: `SyncPolicy.reconcile` against the user's remote cards
 
 ### CollectionRepository (`collection.dart`)
 
@@ -54,7 +54,7 @@ calls when it is empty.
 - `createForRemote` — insert the user's collection
 - `deleteForLocal` — delete by id, returns whether a row was removed
 - `deleteForRemote` — delete the user's collection
-- `fetchForLocal` — all collections
+- `fetchForLocal` — user collections; built-in game collections are catalog cache and are excluded so sync never touches them
 - `fetchForRemote` — the user's collections
 - `find` — one collection by id
 - `touch` — bump `updatedAt` so a collection sorts as recently used
@@ -63,14 +63,14 @@ calls when it is empty.
 
 ### DeckRepository (`deck.dart`)
 
-- `createForLocal` — insert a deck and its card memberships
+- `createForLocal` — insert a deck, its card memberships, and any missing cards or collections they reference
 - `createForRemote` — insert the user's deck
 - `deleteForLocal` — delete by id
 - `deleteForRemote` — delete the user's deck
 - `fetchCardsInDeck` — card memberships with counts for one deck
-- `fetchForLocal` — all decks
+- `fetchForLocal` — all decks with their cards
 - `fetchForRemote` — the user's decks
-- `updateForLocal` — update card memberships of a deck (deck metadata is not rewritten; see docs/architecture.md)
+- `updateForLocal` — rewrite the deck row and replace its card memberships, inserting missing cards or collections
 - `updateForRemote` — update the user's deck
 
 ### DeviceRepository (`device.dart`)
@@ -87,7 +87,7 @@ calls when it is empty.
 
 ### LocalDataRepository (`local_data.dart`)
 
-- `clear` — wipe every local table and stored preference
+- `clear` — delete decks, records, and user collections (their cards cascade); built-in game collections and preferences are kept
 
 ### NfcRepository (`nfc.dart`)
 
@@ -336,10 +336,6 @@ A deck with its cards, game, timestamps, and `isSynced`.
 ### NfcResult (`nfc_result.dart`)
 
 Typed NFC outcome (`NfcResultKind`, `NfcNotice`) that replaces raw `NfcTag`/`Ndef` in presentation.
-
-### PageEntity (`page.dart`)
-
-Pagination cursor for catalog fetches.
 
 ### RecordEntity (`record.dart`)
 

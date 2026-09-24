@@ -1,11 +1,17 @@
+import 'package:nfc_deck_tracker/.config/game.dart';
+
 import '../../model/collection.dart';
 
 import 'sqlite_service.dart';
 
 class CollectionLocalDatasource {
   final SQLiteService _sqliteService;
+  final bool Function(String collectionId) _isBuiltIn;
 
-  CollectionLocalDatasource(this._sqliteService);
+  CollectionLocalDatasource(
+    this._sqliteService, {
+    bool Function(String collectionId)? isBuiltIn,
+  }) : _isBuiltIn = isBuiltIn ?? GameConfig.instance.isSupported;
 
   Future<void> create({
     required CollectionModel collection,
@@ -30,7 +36,10 @@ class CollectionLocalDatasource {
     final result = await _sqliteService.getTable(
       table: 'collections',
     );
-    return result.map((row) => CollectionModel.fromJson(row)).toList();
+    return result
+        .map((row) => CollectionModel.fromJson(row))
+        .where((c) => !_isBuiltIn(c.collectionId))
+        .toList();
   }
 
   Future<CollectionModel?> find({

@@ -4,7 +4,7 @@ import 'game_api.dart';
 
 class DummyApi extends GameApi {
   @override
-  Future<List<CardModel>> fetch({
+  Future<CardPage> fetch({
     required Map<String, dynamic> page,
   }) {
     throw Exception('DummyApi.fetchCard() is not implemented');

@@ -11,7 +11,7 @@ class PokemonApi extends BaseApi implements GameApi {
   }) : super(baseUrl: baseUrl);
 
   @override
-  Future<List<CardModel>> fetch({
+  Future<CardPage> fetch({
     required Map<String, dynamic> page,
   }) async {
     final Map<String, String> queryParams = page.map(
@@ -25,7 +25,7 @@ class PokemonApi extends BaseApi implements GameApi {
     final body = decodeResponse(response: response);
     final List<dynamic> data = body['data'] ?? [];
 
-    return _filterData(data: data);
+    return CardPage(cards: _filterData(data: data), hasMore: data.isNotEmpty);
   }
 
   @override

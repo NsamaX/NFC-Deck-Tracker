@@ -15,16 +15,12 @@ tags:
 - [[data---datasource---api---service_factory.dart]]
 - [[data---datasource---local---page.dart]]
 - [[data---mapper---card.dart]]
-- [[data---mapper---page.dart]]
+- [[data---model---page.dart]]
 - [[domain---entity---card.dart]]
 - [[domain---entity---collection.dart]]
-- [[domain---entity---page.dart]]
 - [[domain---repository---card.dart]]
 - [[domain---repository---card_catalog.dart]]
 - [[domain---repository---collection.dart]]
 - [[domain---service---sync_policy.dart]]
 - [[util---logger.dart]]
-
-## Packages
-- `dart:convert`
 
