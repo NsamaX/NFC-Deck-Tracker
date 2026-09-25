@@ -1,15 +1,19 @@
 import '../entity/record.dart';
+import '../repository/pending_delete.dart';
 import '../repository/record.dart';
 import '../service/domain_logger.dart';
 import '../service/sync_policy.dart';
+import '../value/sync_kind.dart';
 
 class FetchRecordUsecase {
   final DomainLogger logger;
   final RecordRepository recordRepository;
+  final PendingDeleteRepository pendingDeletes;
 
   FetchRecordUsecase({
     this.logger = const SilentDomainLogger(),
     required this.recordRepository,
+    required this.pendingDeletes,
   });
 
   Future<List<RecordEntity>> call({
@@ -22,6 +26,12 @@ class FetchRecordUsecase {
       fetchRemote: () =>
           recordRepository.fetchForRemote(userId: userId, deckId: deckId),
       target: SyncTarget(
+        pendingDeletes:
+            await pendingDeletes.ids(userId: userId, kind: SyncKind.record),
+        deleteRemote: (e) => recordRepository.deleteForRemote(
+            userId: userId, recordId: e.recordId),
+        forgetDelete: (id) => pendingDeletes.remove(
+            userId: userId, kind: SyncKind.record, id: id),
         id: (e) => e.recordId,
         updatedAt: (e) => e.updatedAt,
         isSynced: (e) => e.isSynced == true,

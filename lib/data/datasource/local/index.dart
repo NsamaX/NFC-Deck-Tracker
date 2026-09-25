@@ -5,3 +5,4 @@ export 'page.dart';
 export 'record.dart';
 export 'settings.dart';
 export 'user_data.dart';
+export 'pending_delete.dart';

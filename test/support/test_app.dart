@@ -33,6 +33,7 @@ import 'package:nfc_deck_tracker/presentation/locale/localization.dart';
 import 'package:nfc_deck_tracker/presentation/route/generator.dart';
 import 'package:nfc_deck_tracker/presentation/theme/theme.dart';
 import 'package:nfc_deck_tracker/presentation/widget/notification/app_error_banner.dart';
+import 'pending_deletes.dart';
 
 class MemoryDecks extends Fake implements DeckRepository {
   final local = <String, DeckEntity>{};
@@ -210,8 +211,10 @@ class TestWorld {
     dependencies = PresentationDependencies(
       nfcBloc: NfcBloc(session: NfcSessionUsecase(nfc)),
       deckBloc: DeckBloc(
-        fetchDeckUsecase: FetchDeckUsecase(deckRepository: decks),
-        deleteDeckUsecase: DeleteDeckUsecase(deckRepository: decks),
+        fetchDeckUsecase: FetchDeckUsecase(
+            pendingDeletes: MemoryPendingDeletes(), deckRepository: decks),
+        deleteDeckUsecase: DeleteDeckUsecase(
+            pendingDeletes: MemoryPendingDeletes(), deckRepository: decks),
       ),
       deckBuilderBloc: DeckBuilderBloc(
         createDeckUsecase: CreateDeckUsecase(deckRepository: decks),
@@ -237,11 +240,14 @@ class TestWorld {
       collectionBloc: CollectionBloc(
         createCollectionUsecase:
             CreateCollectionUsecase(collectionRepository: collections),
-        deleteCollectionUsecase:
-            DeleteCollectionUsecase(collectionRepository: collections),
-        fetchCollectionUsecase:
-            FetchCollectionUsecase(collectionRepository: collections),
-        fetchDeckUsecase: FetchDeckUsecase(deckRepository: decks),
+        deleteCollectionUsecase: DeleteCollectionUsecase(
+            pendingDeletes: MemoryPendingDeletes(),
+            collectionRepository: collections),
+        fetchCollectionUsecase: FetchCollectionUsecase(
+            pendingDeletes: MemoryPendingDeletes(),
+            collectionRepository: collections),
+        fetchDeckUsecase: FetchDeckUsecase(
+            pendingDeletes: MemoryPendingDeletes(), deckRepository: decks),
         fetchUsedCardDistinctUsecase:
             FetchUsedCardDistinctUsecase(cardRepository: cards),
       ),
@@ -258,8 +264,10 @@ class TestWorld {
       createDrawerBloc: () => _track(DrawerBloc()),
       createPinCardBloc: () => _track(PinCardBloc()),
       createBrowseCardBloc: () => _track(BrowseCardBloc(
-        deleteCardUsecase:
-            DeleteCardUsecase(cardRepository: cards, imageRepository: images),
+        deleteCardUsecase: DeleteCardUsecase(
+            pendingDeletes: MemoryPendingDeletes(),
+            cardRepository: cards,
+            imageRepository: images),
         fetchCardUsecase: FetchCardUsecase(repository: LocalCatalog(cards)),
       )),
       createReaderBloc: () => _track(ReaderBloc(
@@ -271,9 +279,11 @@ class TestWorld {
         calculateUsageCardUsecase: CalculateUsageCardUsecase(),
         summarizeRecordUsecase: const SummarizeRecordUsecase(),
         getCardFromRecordUsecase: GetCardFromRecordUsecase(),
-        fetchRecordUsecase: FetchRecordUsecase(recordRepository: records),
+        fetchRecordUsecase: FetchRecordUsecase(
+            pendingDeletes: MemoryPendingDeletes(), recordRepository: records),
         createRecordUsecase: CreateRecordUsecase(recordRepository: records),
-        deleteRecordUsecase: DeleteRecordUsecase(recordRepository: records),
+        deleteRecordUsecase: DeleteRecordUsecase(
+            pendingDeletes: MemoryPendingDeletes(), recordRepository: records),
         importRecordUsecase: ImportRecordUsecase(recordRepository: records),
         shareRecordUsecase: ShareRecordUsecase(recordRepository: records),
       )),

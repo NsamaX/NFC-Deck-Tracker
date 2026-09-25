@@ -10,6 +10,7 @@ import 'package:nfc_deck_tracker/domain/usecase/find_card_from_tag.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/deck/bloc.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/error_reporting.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/reader/bloc.dart';
+import 'support/pending_deletes.dart';
 
 class BrokenDecks extends Fake implements DeckRepository {
   bool broken = true;
@@ -36,8 +37,10 @@ void main() {
       () async {
     final repository = BrokenDecks();
     final bloc = DeckBloc(
-      fetchDeckUsecase: FetchDeckUsecase(deckRepository: repository),
-      deleteDeckUsecase: DeleteDeckUsecase(deckRepository: repository),
+      fetchDeckUsecase: FetchDeckUsecase(
+          pendingDeletes: MemoryPendingDeletes(), deckRepository: repository),
+      deleteDeckUsecase: DeleteDeckUsecase(
+          pendingDeletes: MemoryPendingDeletes(), deckRepository: repository),
     );
 
     bloc.add(const FetchDeckEvent(userId: ''));
@@ -52,8 +55,7 @@ void main() {
     await bloc.close();
   });
 
-  test('a card missing from the API reaches the reader as a warning',
-      () async {
+  test('a card missing from the API reaches the reader as a warning', () async {
     final bloc = ReaderBloc(
         findCardFromTagUsecase:
             FindCardFromTagUsecase(cardRepository: MissingCards()));

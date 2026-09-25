@@ -2,7 +2,16 @@ class DatabaseConstant {
   static const String dbName = 'nfc_deck_tracker.db';
   // Bump when adding a migration. `tables` is always the latest schema and
   // runs on a fresh install; `migrations[v]` upgrades an existing v-1 file.
-  static const int dbVersion = 1;
+  static const int dbVersion = 2;
+  static const String _pendingDeletes = '''
+    CREATE TABLE pendingDeletes (
+      userId TEXT NOT NULL,
+      kind TEXT NOT NULL,
+      id TEXT NOT NULL,
+      PRIMARY KEY (userId, kind, id)
+    );
+    ''';
+
   static const List<String> tables = [
     '''
     CREATE TABLE collections (
@@ -64,6 +73,9 @@ class DatabaseConstant {
       FOREIGN KEY (deckId) REFERENCES decks(deckId) ON DELETE CASCADE
     );
     ''',
+    _pendingDeletes,
   ];
-  static const Map<int, List<String>> migrations = {};
+  static const Map<int, List<String>> migrations = {
+    2: [_pendingDeletes],
+  };
 }

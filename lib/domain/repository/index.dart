@@ -6,3 +6,4 @@ export 'image.dart';
 export 'settings.dart';
 export 'local_data.dart';
 export 'card_catalog.dart';
+export 'pending_delete.dart';

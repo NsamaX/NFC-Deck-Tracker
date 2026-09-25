@@ -21,6 +21,8 @@ tags:
 - [[domain---repository---card.dart]]
 - [[domain---repository---card_catalog.dart]]
 - [[domain---repository---collection.dart]]
+- [[domain---repository---pending_delete.dart]]
 - [[domain---service---sync_policy.dart]]
+- [[domain---value---sync_kind.dart]]
 - [[util---logger.dart]]
 

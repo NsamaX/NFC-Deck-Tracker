@@ -26,6 +26,7 @@ Future<void> registerDataSource() async {
     _pageLocalDatasource();
     _recordLocalDatasource();
     _settingLocalDatasource();
+    _pendingDeleteLocalDatasource();
 
     _cardRemoteDatasource();
     _collectionRemoteDatasource();
@@ -74,6 +75,11 @@ void _pageLocalDatasource() {
 void _recordLocalDatasource() {
   locator.registerLazySingleton(
       () => RecordLocalDatasource(locator<SQLiteService>()));
+}
+
+void _pendingDeleteLocalDatasource() {
+  locator.registerLazySingleton(
+      () => PendingDeleteLocalDatasource(locator<SQLiteService>()));
 }
 
 void _settingLocalDatasource() {

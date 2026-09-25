@@ -44,6 +44,7 @@ void _cardUsecase() {
         imageRepository: locator<ImageRepository>(),
       ));
   locator.registerLazySingleton(() => DeleteCardUsecase(
+        pendingDeletes: locator<PendingDeleteRepository>(),
         cardRepository: locator<CardRepository>(),
         imageRepository: locator<ImageRepository>(),
       ));
@@ -67,9 +68,11 @@ void _collectionUsecase() {
         collectionRepository: locator<CollectionRepository>(),
       ));
   locator.registerLazySingleton(() => DeleteCollectionUsecase(
+        pendingDeletes: locator<PendingDeleteRepository>(),
         collectionRepository: locator<CollectionRepository>(),
       ));
   locator.registerLazySingleton(() => FetchCollectionUsecase(
+        pendingDeletes: locator<PendingDeleteRepository>(),
         logger: const AppDomainLogger(),
         collectionRepository: locator<CollectionRepository>(),
       ));
@@ -83,12 +86,14 @@ void _deckUsecase() {
         deckRepository: locator<DeckRepository>(),
       ));
   locator.registerLazySingleton(() => DeleteDeckUsecase(
+        pendingDeletes: locator<PendingDeleteRepository>(),
         deckRepository: locator<DeckRepository>(),
       ));
   locator.registerLazySingleton(() => FetchCardInDeckUsecase(
         deckRepository: locator<DeckRepository>(),
       ));
   locator.registerLazySingleton(() => FetchDeckUsecase(
+        pendingDeletes: locator<PendingDeleteRepository>(),
         logger: const AppDomainLogger(),
         deckRepository: locator<DeckRepository>(),
       ));
@@ -115,9 +120,11 @@ void _recordUsecase() {
         recordRepository: locator<RecordRepository>(),
       ));
   locator.registerLazySingleton(() => DeleteRecordUsecase(
+        pendingDeletes: locator<PendingDeleteRepository>(),
         recordRepository: locator<RecordRepository>(),
       ));
   locator.registerLazySingleton(() => FetchRecordUsecase(
+        pendingDeletes: locator<PendingDeleteRepository>(),
         logger: const AppDomainLogger(),
         recordRepository: locator<RecordRepository>(),
       ));

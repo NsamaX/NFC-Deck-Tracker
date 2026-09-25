@@ -18,6 +18,7 @@ import 'package:nfc_deck_tracker/domain/usecase/summarize_record.dart';
 import 'package:nfc_deck_tracker/domain/usecase/tracking_interaction.dart';
 import 'package:nfc_deck_tracker/domain/value/player_action.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/tracker/bloc.dart';
+import 'support/pending_deletes.dart';
 
 class MemoryRecords extends Fake implements RecordRepository {
   final local = <String, RecordEntity>{};
@@ -60,9 +61,11 @@ TrackerBloc makeBloc(MemoryRecords repository) => TrackerBloc(
       calculateUsageCardUsecase: CalculateUsageCardUsecase(),
       summarizeRecordUsecase: const SummarizeRecordUsecase(),
       getCardFromRecordUsecase: GetCardFromRecordUsecase(),
-      fetchRecordUsecase: FetchRecordUsecase(recordRepository: repository),
+      fetchRecordUsecase: FetchRecordUsecase(
+          pendingDeletes: MemoryPendingDeletes(), recordRepository: repository),
       createRecordUsecase: CreateRecordUsecase(recordRepository: repository),
-      deleteRecordUsecase: DeleteRecordUsecase(recordRepository: repository),
+      deleteRecordUsecase: DeleteRecordUsecase(
+          pendingDeletes: MemoryPendingDeletes(), recordRepository: repository),
       importRecordUsecase: ImportRecordUsecase(recordRepository: repository),
       shareRecordUsecase: ShareRecordUsecase(recordRepository: repository),
     );

@@ -18,6 +18,8 @@ offline sync results, local image paths, and bundled language discovery.
 - `image_repository_test.dart`: local image files removed when replaced or deleted.
 - `share_record_test.dart`: shared records use a valid Firestore path and
   round-trip.
+- `pending_delete_test.dart`: rows deleted offline are not imported back; the
+  pendingDeletes table after a v1 upgrade.
 - `remote_parse_test.dart`: malformed Firestore documents keep local data.
 - `card_image_test.dart`: card create/update and guest data clearing when a
   card has no image.

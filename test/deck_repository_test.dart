@@ -13,6 +13,7 @@ import 'package:nfc_deck_tracker/domain/usecase/update_deck.dart';
 import 'package:nfc_deck_tracker/data/mapper/deck.dart';
 
 import 'support/sqlite.dart';
+import 'support/pending_deletes.dart';
 
 class FakeDeckRemote extends Fake implements DeckRemoteDatasource {
   final decks = <String, DeckModel>{};
@@ -53,8 +54,9 @@ void main() {
         deck: const DeckEntity(
             name: 'Test', cards: [CardInDeckEntity(card: ace, count: 3)]));
 
-    final decks =
-        await FetchDeckUsecase(deckRepository: repository)(userId: '');
+    final decks = await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: '');
     expect(decks.single.name, 'Test');
     expect(decks.single.isSynced, isFalse);
     expect(decks.single.cards.single.card.name, 'Ace');
@@ -86,7 +88,9 @@ void main() {
     remote.decks[saved.deckId] =
         DeckMapper.toModel(saved.copyWith(updatedAt: DateTime(2020)));
 
-    await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: 'u');
 
     expect(remote.decks[saved.deckId]!.cards.single.card.cardId, 'ace');
   });
@@ -95,8 +99,9 @@ void main() {
     final saved = await CreateDeckUsecase(deckRepository: repository)(
         userId: '', deck: const DeckEntity(name: 'Empty'));
 
-    final decks =
-        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    final decks = await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: 'u');
 
     expect(remote.decks.keys, [saved.deckId]);
     expect(decks.single.isSynced, isTrue);
@@ -113,8 +118,9 @@ void main() {
         cards: const [CardInDeckEntity(card: king, count: 4)],
         updatedAt: DateTime(2100)));
 
-    final decks =
-        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    final decks = await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: 'u');
 
     expect(decks.single.name, 'Remote');
     final local = (await repository.fetchForLocal()).single;

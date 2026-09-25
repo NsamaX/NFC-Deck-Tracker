@@ -3,7 +3,7 @@ tags:
   - layer/data
   - role/datasource-local
   - entry/barrel
-  - coupling/medium
+  - coupling/high
 ---
 
 # index.dart
@@ -15,6 +15,7 @@ tags:
 - [[data---datasource---local---collection.dart]]
 - [[data---datasource---local---deck.dart]]
 - [[data---datasource---local---page.dart]]
+- [[data---datasource---local---pending_delete.dart]]
 - [[data---datasource---local---record.dart]]
 - [[data---datasource---local---settings.dart]]
 - [[data---datasource---local---user_data.dart]]

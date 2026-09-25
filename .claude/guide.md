@@ -131,7 +131,9 @@ that has shipped.
 ### Change sync behavior
 
 `SyncPolicy.write` saves locally and marks `isSynced` from the remote result.
-`SyncPolicy.reconcile` imports remote-only rows, keeps the newer side by
+`SyncPolicy.delete` records a pending delete when the remote call fails,
+and `SyncPolicy.reconcile` retries those instead of importing them. It
+imports remote-only rows, keeps the newer side by
 `updatedAt`, pushes unsynced rows, and deletes local rows that are synced but
 absent remotely. Any change there affects every aggregate, so test it in
 `test/domain_workflows_test.dart` and against SQLite.

@@ -21,6 +21,7 @@ import 'package:nfc_deck_tracker/domain/usecase/create_deck.dart';
 import 'package:nfc_deck_tracker/domain/usecase/fetch_collection.dart';
 
 import 'support/sqlite.dart';
+import 'support/pending_deletes.dart';
 
 class PagedApi implements GameApi {
   final int lastPage;
@@ -82,6 +83,7 @@ void main() {
   });
 
   CardCatalogRepositoryImpl catalog() => CardCatalogRepositoryImpl(
+        pendingDeletes: MemoryPendingDeletes(),
         pageDatasource: PageLocalDatasource(sql),
         collectionRepository: collections,
         cardRepository: cards,
@@ -156,6 +158,7 @@ void main() {
         ]));
 
     final synced = await FetchCollectionUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
         collectionRepository: collections)(userId: 'u');
 
     expect(synced, isEmpty);

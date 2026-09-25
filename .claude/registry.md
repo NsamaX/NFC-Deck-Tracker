@@ -90,6 +90,15 @@ calls when it is empty.
 
 - `clear` — delete decks, records, and user collections (their cards cascade); built-in game collections and preferences are kept
 
+### PendingDeleteRepository (`pending_delete.dart`)
+
+Local list of rows deleted while their remote delete failed, per user and
+`SyncKind`, so `reconcile` deletes them remotely instead of importing them.
+
+- `add` — remember a pending remote delete (idempotent)
+- `ids` — pending ids of one kind for a user
+- `remove` — forget one after the remote delete succeeded or the row is gone
+
 ### NfcRepository (`nfc.dart`)
 
 - `isAvailable` — whether the device has usable NFC
@@ -148,8 +157,9 @@ only when the entity has no id yet.
 
 The single owner of offline-first rules, used by every `Create*`, `Update*`,
 `Delete*`, and `Fetch*` use case. `write` calls remote first when signed in and
-stores the resulting `isSynced`; `delete` removes local then remote;
-`reconcile` imports newer remote rows, uploads unsynced and newer local rows,
+stores the resulting `isSynced`; `delete` removes local then remote and
+records a pending delete when the remote call fails; `reconcile` retries
+pending deletes instead of importing those rows, imports newer remote rows, uploads unsynced and newer local rows,
 then deletes synced local rows missing remotely (rows uploaded in the same
 pass are kept). A `RemoteUnavailableException` skips the whole pass.
 `SyncTarget<T>` adapts an aggregate's repository to it.
@@ -192,19 +202,19 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### DeleteCardUsecase (`delete_card.dart`)
 
-`call({userId, collectionId, cardId, imageUrl})` — delete the card and its image.
+`call({userId, collectionId, cardId, imageUrl})` — delete the card and its image; a failed remote delete is kept in `PendingDeleteRepository`.
 
 ### DeleteCollectionUsecase (`delete_collection.dart`)
 
-`call({userId, collectionId})` — delete a collection.
+`call({userId, collectionId})` — delete a collection; a failed remote delete is kept in `PendingDeleteRepository`.
 
 ### DeleteDeckUsecase (`delete_deck.dart`)
 
-`call({userId, deckId})` — delete a deck.
+`call({userId, deckId})` — delete a deck; a failed remote delete is kept in `PendingDeleteRepository`.
 
 ### DeleteRecordUsecase (`delete_record.dart`)
 
-`call({userId, recordId})` — delete a record.
+`call({userId, recordId})` — delete a record; a failed remote delete is kept in `PendingDeleteRepository`.
 
 ### DeviceUsecase (`device.dart`)
 
@@ -383,6 +393,11 @@ Thrown inside `CardLookupException`; `ReaderBloc` maps it to translation keys.
 ### PlayerAction (`player_action.dart`)
 
 Enumerated action recorded on each tracker interaction.
+
+### SyncKind (`sync_kind.dart`)
+
+Aggregate a pending remote delete belongs to: `collection`, `card`, `deck`,
+`record`.
 
 ### RemoteUnavailableException (`remote_unavailable.dart`)
 

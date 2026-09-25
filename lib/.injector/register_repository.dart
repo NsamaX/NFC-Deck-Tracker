@@ -26,6 +26,8 @@ import '../domain/repository/image.dart';
 import '../data/repository/settings.dart';
 import '../domain/repository/settings.dart';
 import '../data/repository/local_data.dart';
+import '../data/repository/pending_delete.dart';
+import '../domain/repository/pending_delete.dart';
 import '../domain/repository/local_data.dart';
 import '../data/repository/card_catalog.dart';
 import '../domain/repository/card_catalog.dart';
@@ -66,11 +68,16 @@ Future<void> registerRepository() async {
       .registerLazySingleton<LocalDataRepository>(() => LocalDataRepositoryImpl(
             localDatasource: locator<UserDataLocalDatasource>(),
           ));
+  locator.registerLazySingleton<PendingDeleteRepository>(
+      () => PendingDeleteRepositoryImpl(
+            localDatasource: locator<PendingDeleteLocalDatasource>(),
+          ));
   locator.registerLazySingleton<CardCatalogRepository>(
       () => CardCatalogRepositoryImpl(
             cardRepository: locator<CardRepository>(),
             collectionRepository: locator<CollectionRepository>(),
             apis: locator<GameApiRegistry>(),
+            pendingDeletes: locator<PendingDeleteRepository>(),
             defaultBatchSize: ApiConfig.instance.catalogBatchSize,
             pageDatasource: locator<PageLocalDatasource>(),
           ));

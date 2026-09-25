@@ -3,7 +3,7 @@ tags:
   - layer/domain
   - role/port
   - entry/barrel
-  - coupling/medium
+  - coupling/high
 ---
 
 # index.dart
@@ -17,6 +17,7 @@ tags:
 - [[domain---repository---deck.dart]]
 - [[domain---repository---image.dart]]
 - [[domain---repository---local_data.dart]]
+- [[domain---repository---pending_delete.dart]]
 - [[domain---repository---record.dart]]
 - [[domain---repository---settings.dart]]
 

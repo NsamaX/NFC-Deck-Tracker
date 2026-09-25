@@ -6,7 +6,9 @@ import '../../domain/entity/collection.dart';
 import '../../domain/repository/card.dart';
 import '../../domain/repository/card_catalog.dart';
 import '../../domain/repository/collection.dart';
+import '../../domain/repository/pending_delete.dart';
 import '../../domain/service/sync_policy.dart';
+import '../../domain/value/sync_kind.dart';
 import '../datasource/api/game_api.dart';
 import '../datasource/api/game_api_registry.dart';
 import '../datasource/local/page.dart';
@@ -18,6 +20,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
   final CollectionRepository collectionRepository;
   final CardRepository cardRepository;
   final GameApiRegistry apis;
+  final PendingDeleteRepository pendingDeletes;
   final int defaultBatchSize;
   final bool Function(String collectionId) _isBuiltIn;
 
@@ -26,6 +29,7 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
     required this.collectionRepository,
     required this.cardRepository,
     required this.apis,
+    required this.pendingDeletes,
     required this.defaultBatchSize,
     bool Function(String collectionId)? isBuiltIn,
   }) : _isBuiltIn = isBuiltIn ?? ((id) => GameConfig.instance.isSupported(id));
@@ -119,6 +123,12 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
       fetchRemote: () => cardRepository.fetchForRemote(
           userId: userId, collectionId: collectionId),
       target: SyncTarget<CardEntity>(
+        pendingDeletes:
+            await pendingDeletes.ids(userId: userId, kind: SyncKind.card),
+        deleteRemote: (e) => cardRepository.deleteForRemote(
+            userId: userId, collectionId: e.collectionId, cardId: e.cardId),
+        forgetDelete: (id) =>
+            pendingDeletes.remove(userId: userId, kind: SyncKind.card, id: id),
         id: (e) => e.cardId,
         updatedAt: (e) => e.updatedAt,
         isSynced: (e) => e.isSynced,

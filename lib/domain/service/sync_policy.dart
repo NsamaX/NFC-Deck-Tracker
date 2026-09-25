@@ -13,6 +13,12 @@ class SyncTarget<T> {
   final Future<bool> Function(T entity) updateRemote;
   final T? Function(T local, T remote)? mergeExisting;
 
+  /// Ids deleted locally whose remote delete has not succeeded yet. Such a
+  /// remote row is deleted again instead of being imported back.
+  final Set<String> pendingDeletes;
+  final Future<bool> Function(T entity)? deleteRemote;
+  final Future<void> Function(String id)? forgetDelete;
+
   const SyncTarget({
     required this.id,
     required this.updatedAt,
@@ -24,6 +30,9 @@ class SyncTarget<T> {
     required this.createRemote,
     required this.updateRemote,
     this.mergeExisting,
+    this.pendingDeletes = const {},
+    this.deleteRemote,
+    this.forgetDelete,
   });
 }
 
@@ -53,10 +62,15 @@ class SyncPolicy {
   Future<void> delete({
     required String userId,
     required Future<void> Function() local,
-    required Future<void> Function() remote,
+    required Future<bool> Function() remote,
+    required Future<void> Function() rememberPending,
   }) async {
     await local();
-    if (_isSignedIn(userId)) await remote();
+    if (!_isSignedIn(userId)) return;
+    if (!await remote()) {
+      logger.e('Remote delete failed; retrying on the next sync');
+      await rememberPending();
+    }
   }
 
   Future<List<T>> reconcile<T>({
@@ -76,10 +90,27 @@ class SyncPolicy {
       return result;
     }
 
-    final remoteMap = {for (final r in remoteList) target.id(r): r};
+    final remoteIds = {for (final r in remoteList) target.id(r)};
+    for (final id in target.pendingDeletes.difference(remoteIds)) {
+      await target.forgetDelete?.call(id);
+    }
+
+    final pending = <T>[];
+    final live = <T>[];
+    for (final r in remoteList) {
+      (target.pendingDeletes.contains(target.id(r)) ? pending : live).add(r);
+    }
+    for (final remote in pending) {
+      if (await target.deleteRemote?.call(remote) ?? false) {
+        await target.forgetDelete?.call(target.id(remote));
+        logger.d('Deleted remote after a failed delete: ${target.id(remote)}');
+      }
+    }
+
+    final remoteMap = {for (final r in live) target.id(r): r};
     final localMap = {for (final l in result) target.id(l): l};
 
-    for (final remote in remoteList) {
+    for (final remote in live) {
       final existing = localMap[target.id(remote)];
       if (existing == null) {
         await target.createLocal(remote);

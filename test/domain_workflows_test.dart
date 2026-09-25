@@ -15,6 +15,7 @@ import 'package:nfc_deck_tracker/domain/usecase/init_setting.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
 import 'package:nfc_deck_tracker/domain/value/card_lookup_failure.dart';
 import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
+import 'support/pending_deletes.dart';
 
 class MemoryDecks extends Fake implements DeckRepository {
   final local = <String, DeckEntity>{};
@@ -103,16 +104,18 @@ void main() {
     final repository = MemoryDecks();
     await CreateDeckUsecase(deckRepository: repository)(
         userId: '', deck: const DeckEntity(name: 'First', cards: []));
-    final decks =
-        await FetchDeckUsecase(deckRepository: repository)(userId: '');
+    final decks = await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: '');
     expect(decks.single.deckId, isNotEmpty);
     expect(decks.single.isSynced, isFalse);
     await UpdateDeckUsecase(deckRepository: repository)(
         userId: '', deck: decks.single.copyWith(name: 'Renamed'));
     expect(repository.local.values.single.name, 'Renamed');
     expect(repository.local.values.single.updatedAt, isNotNull);
-    await DeleteDeckUsecase(deckRepository: repository)(
-        userId: '', deckId: decks.single.deckId);
+    await DeleteDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: '', deckId: decks.single.deckId);
     expect(repository.local, isEmpty);
     expect(repository.remoteCalls, 0);
   });
@@ -138,7 +141,10 @@ void main() {
         isSynced: true,
         updatedAt: DateTime(2025));
     repository.remote['remote'] = deck;
-    expect(await FetchDeckUsecase(deckRepository: repository)(userId: 'user'),
+    expect(
+        await FetchDeckUsecase(
+            pendingDeletes: MemoryPendingDeletes(),
+            deckRepository: repository)(userId: 'user'),
         [deck]);
     expect(repository.local['remote'], deck);
   });
@@ -153,8 +159,9 @@ void main() {
         isSynced: true,
         updatedAt: DateTime(2024));
     repository.local['kept'] = synced;
-    final decks =
-        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    final decks = await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: 'u');
     expect(decks, [synced]);
     expect(repository.local['kept'], synced);
   });
@@ -167,8 +174,9 @@ void main() {
         name: 'Gone',
         isSynced: true,
         updatedAt: DateTime(2024));
-    final decks =
-        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    final decks = await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: 'u');
     expect(decks, isEmpty);
     expect(repository.local, isEmpty);
   });
@@ -181,8 +189,9 @@ void main() {
         name: 'Made offline',
         isSynced: false,
         updatedAt: DateTime(2024));
-    final decks =
-        await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    final decks = await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: 'u');
     expect(decks.single.deckId, 'offline');
     expect(decks.single.isSynced, isTrue);
     expect(repository.remote.containsKey('offline'), isTrue);
@@ -208,7 +217,9 @@ void main() {
     repository.remote['d'] = old;
     repository.local['d'] =
         old.copyWith(name: 'New', updatedAt: DateTime(2024, 2));
-    await FetchDeckUsecase(deckRepository: repository)(userId: 'u');
+    await FetchDeckUsecase(
+        pendingDeletes: MemoryPendingDeletes(),
+        deckRepository: repository)(userId: 'u');
     expect(repository.remote['d']!.name, 'New');
   });
 
