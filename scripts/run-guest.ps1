@@ -41,6 +41,8 @@ try {
             Start-Sleep -Seconds 2
         } while ($true)
 
+        if (-not $NoWindow) { & "$PSScriptRoot/fit-emulator-window.ps1" }
+
         & flutter run -d $DeviceId --dart-define=GUEST_MODE=true --no-pub
         if ($LASTEXITCODE -ne 0) { throw 'Flutter could not run the Guest app.' }
     }
