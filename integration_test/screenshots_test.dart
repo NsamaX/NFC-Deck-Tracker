@@ -7,6 +7,7 @@ import 'package:nfc_deck_tracker/.config/app.dart';
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 import 'package:nfc_deck_tracker/domain/entity/nfc_result.dart';
 import 'package:nfc_deck_tracker/domain/entity/tag.dart';
+import 'package:nfc_deck_tracker/domain/usecase/index.dart';
 import 'package:nfc_deck_tracker/main.dart' as app;
 import 'package:nfc_deck_tracker/presentation/bloc/deck/bloc.dart';
 import 'package:nfc_deck_tracker/presentation/bloc/deck_builder/bloc.dart';
@@ -36,7 +37,6 @@ void main() {
       await tester.pump(const Duration(milliseconds: 200));
     }
 
-    final world = await seedMockData();
     await binding.convertFlutterSurfaceToImage();
 
     Future<void> settle([Duration extra = Duration.zero]) async {
@@ -71,9 +71,28 @@ void main() {
       await settle(const Duration(milliseconds: 400));
     }
 
+    await locator<ClearUserDataUsecase>()(isGuest: true);
+    locator<DeckBloc>().add(const FetchDeckEvent(userId: ''));
+    await settle(const Duration(seconds: 1));
+    await shot('my-decks-empty');
+
+    final world = await seedMockData();
     locator<DeckBloc>().add(const FetchDeckEvent(userId: ''));
     await settle(const Duration(seconds: 1));
     await shot('my-decks');
+    await tap(find.byIcon(Icons.edit_rounded));
+    await shot('my-decks-edit');
+    locator<DeckBuilderBloc>().add(CloseEditModeEvent());
+    await settle();
+
+    locator<DeckBuilderBloc>().add(const NewDeckEvent(name: 'Deck Builder'));
+    await settle();
+    await open(RouteConstant.deck_builder);
+    await shot('deck-builder-new');
+    await open(RouteConstant.collection, const CollectionArgs(onAdd: true));
+    await shot('collections-pick-for-deck');
+    await back();
+    await back();
 
     await open(RouteConstant.landing);
     await shot('landing');
@@ -86,8 +105,19 @@ void main() {
     await settle(const Duration(seconds: 1));
     await open(RouteConstant.deck_builder);
     await shot('deck-builder');
+    await open(
+        RouteConstant.card,
+        CardArgs(
+            collectionId: world.fireDeck.cards.first.card.collectionId,
+            card: world.fireDeck.cards.first.card,
+            onNFC: true));
+    await shot('card-write-tag');
+    await back();
     await tap(find.text('Edit'));
     await shot('deck-builder-edit');
+    await tap(find.byIcon(Icons.delete_outline_rounded));
+    await shot('deck-builder-delete-dialog');
+    await back();
     locator<DeckBuilderBloc>().add(CloseEditModeEvent());
     await settle();
 
@@ -103,11 +133,18 @@ void main() {
     await shot('deck-tracker-advanced');
     await tap(find.byIcon(Icons.access_time_rounded));
     await shot('deck-tracker-history');
+    await tap(find.byIcon(Icons.access_time_rounded));
+    await tap(find.byIcon(Icons.refresh_rounded));
+    await shot('deck-tracker-reset-dialog');
+    await back();
     await back();
     await back();
 
     await open(RouteConstant.collection);
     await shot('collections');
+    await tap(find.text('New'));
+    await shot('collections-new-dialog');
+    await back();
     await back();
     await open(
         RouteConstant.browse_card,
