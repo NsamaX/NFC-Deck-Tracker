@@ -9,18 +9,29 @@ import '../../util/logger.dart';
 part '../datasource/device/ndef_codec.dart';
 
 class NfcRepositoryImpl implements NfcRepository {
+  // NTAG stickers are ISO 14443; FeliCa (ISO 18092) would need system codes
+  // in the iOS Info.plist, and tracking needs the iOS session to stay open.
+  static const pollingOptions = {
+    NfcPollingOption.iso14443,
+    NfcPollingOption.iso15693,
+  };
+
   @override
   Future<bool> isAvailable() => NfcManager.instance.isAvailable();
   @override
   Future<void> start(
           {CardEntity? card, required void Function(NfcResult) onResult}) =>
-      NfcManager.instance.startSession(onDiscovered: (tag) async {
-        if (card == null) {
-          await _processReadTag(tag: tag, onResult: onResult);
-        } else {
-          await _processWriteTag(tag: tag, card: card, onResult: onResult);
-        }
-      });
+      NfcManager.instance.startSession(
+        pollingOptions: pollingOptions,
+        invalidateAfterFirstRead: false,
+        onDiscovered: (tag) async {
+          if (card == null) {
+            await _processReadTag(tag: tag, onResult: onResult);
+          } else {
+            await _processWriteTag(tag: tag, card: card, onResult: onResult);
+          }
+        },
+      );
   @override
   Future<void> stop() => NfcManager.instance.stopSession();
 
