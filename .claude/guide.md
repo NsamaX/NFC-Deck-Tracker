@@ -163,6 +163,11 @@ Conventions:
 
 ## Data rules
 
+- Conflicts are last-write-wins per row: `reconcile` keeps whichever side
+  has the later `updatedAt`, taken from each device's clock. If two devices
+  edit the same row before syncing, the older edit is lost, and a device
+  with a wrong clock can win or lose unfairly. This is a deliberate choice
+  for a single-user app; there is no merge or conflict copy.
 - Built-in game collections (`GameConfig.availableGames`) are catalog cache,
   not user data. `CollectionRepository.fetchForLocal` excludes them, so sync
   never uploads or deletes them, and clearing user data keeps them.

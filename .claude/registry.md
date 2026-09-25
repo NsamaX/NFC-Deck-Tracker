@@ -161,7 +161,9 @@ stores the resulting `isSynced`; `delete` removes local then remote and
 records a pending delete when the remote call fails; `reconcile` retries
 pending deletes instead of importing those rows, imports newer remote rows, uploads unsynced and newer local rows,
 then deletes synced local rows missing remotely (rows uploaded in the same
-pass are kept). A `RemoteUnavailableException` skips the whole pass.
+pass are kept). Conflicts are last-write-wins by `updatedAt` from each
+device's clock; there is no merge. A `RemoteUnavailableException` skips the
+whole pass.
 `SyncTarget<T>` adapts an aggregate's repository to it.
 
 ---
