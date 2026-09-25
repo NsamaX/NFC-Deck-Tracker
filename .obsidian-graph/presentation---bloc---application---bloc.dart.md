@@ -16,6 +16,7 @@ tags:
 - [[domain---usecase---device.dart]]
 - [[domain---usecase---init_setting.dart]]
 - [[domain---usecase---session.dart]]
+- [[domain---usecase---sync_pending.dart]]
 - [[domain---usecase---update_setting.dart]]
 - [[presentation---bloc---application---event.dart]]
 - [[presentation---bloc---application---state.dart]]

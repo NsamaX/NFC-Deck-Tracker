@@ -37,6 +37,7 @@ tags:
 - [[domain---usecase---session.dart]]
 - [[domain---usecase---share_record.dart]]
 - [[domain---usecase---summarize_record.dart]]
+- [[domain---usecase---sync_pending.dart]]
 - [[domain---usecase---tracking_interaction.dart]]
 - [[domain---usecase---update_card.dart]]
 - [[domain---usecase---update_card_in_deck.dart]]

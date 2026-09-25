@@ -236,6 +236,13 @@ class TestWorld {
             UpdateSettingUsecase(settingsRepository: settings),
         sessionUsecase: session,
         deviceUsecase: deviceUsecase,
+        syncPendingUsecase: SyncPendingUsecase(
+          collectionRepository: collections,
+          cardRepository: cards,
+          deckRepository: decks,
+          recordRepository: records,
+          pendingDeletes: MemoryPendingDeletes(),
+        ),
       ),
       collectionBloc: CollectionBloc(
         createCollectionUsecase:

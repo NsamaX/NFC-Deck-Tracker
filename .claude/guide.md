@@ -135,7 +135,9 @@ that has shipped.
 and `SyncPolicy.reconcile` retries those instead of importing them. It
 imports remote-only rows, keeps the newer side by
 `updatedAt`, pushes unsynced rows, and deletes local rows that are synced but
-absent remotely. Any change there affects every aggregate, so test it in
+absent remotely. `SyncPendingUsecase` pushes only unsynced rows and
+pending deletes; `ApplicationBloc` runs it on sign-in and when the device
+comes back online. Any change there affects every aggregate, so test it in
 `test/domain_workflows_test.dart` and against SQLite.
 
 ## Rules

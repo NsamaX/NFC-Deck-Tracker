@@ -36,6 +36,7 @@ void _applicationBloc() {
         updateSettingUsecase: locator<UpdateSettingUsecase>(),
         sessionUsecase: locator<SessionUsecase>(),
         deviceUsecase: locator<DeviceUsecase>(),
+        syncPendingUsecase: locator<SyncPendingUsecase>(),
       ));
 }
 

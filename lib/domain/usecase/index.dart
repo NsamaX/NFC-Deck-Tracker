@@ -24,6 +24,7 @@ export 'nfc_session.dart';
 export 'session.dart';
 export 'share_record.dart';
 export 'summarize_record.dart';
+export 'sync_pending.dart';
 export 'tracking_interaction.dart';
 export 'update_card.dart';
 export 'update_card_in_deck.dart';

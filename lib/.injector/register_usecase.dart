@@ -28,6 +28,7 @@ Future<void> registerUsecase() async {
     _deckUsecase();
     _localUsecase();
     _recordUsecase();
+    _syncUsecase();
     _settingUsecase();
 
     LoggerUtil.buffer('Usecase registered successfully.');
@@ -110,6 +111,17 @@ void _localUsecase() {
         localDataRepository: locator<LocalDataRepository>(),
         imageRepository: locator<ImageRepository>(),
         cardRepository: locator<CardRepository>(),
+      ));
+}
+
+void _syncUsecase() {
+  locator.registerLazySingleton(() => SyncPendingUsecase(
+        logger: const AppDomainLogger(),
+        collectionRepository: locator<CollectionRepository>(),
+        cardRepository: locator<CardRepository>(),
+        deckRepository: locator<DeckRepository>(),
+        recordRepository: locator<RecordRepository>(),
+        pendingDeletes: locator<PendingDeleteRepository>(),
       ));
 }
 

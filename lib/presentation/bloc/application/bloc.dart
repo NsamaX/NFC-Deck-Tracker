@@ -10,6 +10,7 @@ import 'package:nfc_deck_tracker/domain/usecase/clear_user_data.dart';
 import 'package:nfc_deck_tracker/domain/usecase/device.dart';
 import 'package:nfc_deck_tracker/domain/usecase/init_setting.dart';
 import 'package:nfc_deck_tracker/domain/usecase/session.dart';
+import 'package:nfc_deck_tracker/domain/usecase/sync_pending.dart';
 import 'package:nfc_deck_tracker/domain/usecase/update_setting.dart';
 import 'package:nfc_deck_tracker/util/logger.dart';
 
@@ -26,6 +27,8 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState>
   final UpdateSettingUsecase updateSettingUsecase;
   final SessionUsecase sessionUsecase;
   final DeviceUsecase deviceUsecase;
+  final SyncPendingUsecase syncPendingUsecase;
+  bool _syncing = false;
   StreamSubscription<SessionUser?>? _sessionSubscription;
   StreamSubscription<bool>? _connectivitySubscription;
 
@@ -35,12 +38,11 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState>
     required this.updateSettingUsecase,
     required this.sessionUsecase,
     required this.deviceUsecase,
+    required this.syncPendingUsecase,
   }) : super(const ApplicationState()) {
     on<InitApplicationEvent>(_onInitApplication);
-    on<SessionChangedEvent>((event, emit) =>
-        emit(state.copyWith(user: event.user, clearUser: event.user == null)));
-    on<ConnectivityChangedEvent>(
-        (event, emit) => emit(state.copyWith(isOnline: event.isOnline)));
+    on<SessionChangedEvent>(_onSessionChanged);
+    on<ConnectivityChangedEvent>(_onConnectivityChanged);
     on<UpdateSettingsEvent>(_onUpdateSettings);
     on<SetPageIndexEvent>(_onSetPageIndex);
     on<ClearUserDataEvent>(_onClearUserData);
@@ -66,6 +68,37 @@ class ApplicationBloc extends Bloc<ApplicationEvent, ApplicationState>
         currentPageIndex: RouteConstant.on_boarding_index,
       ));
     });
+  }
+
+  void _onSessionChanged(
+    SessionChangedEvent event,
+    Emitter<ApplicationState> emit,
+  ) {
+    emit(state.copyWith(user: event.user, clearUser: event.user == null));
+    final user = event.user;
+    if (user != null) unawaited(_syncPending(user.uid));
+  }
+
+  void _onConnectivityChanged(
+    ConnectivityChangedEvent event,
+    Emitter<ApplicationState> emit,
+  ) {
+    final cameOnline = event.isOnline && !state.isOnline;
+    emit(state.copyWith(isOnline: event.isOnline));
+    final user = state.user;
+    if (cameOnline && user != null) unawaited(_syncPending(user.uid));
+  }
+
+  Future<void> _syncPending(String userId) async {
+    if (_syncing) return;
+    _syncing = true;
+    try {
+      await syncPendingUsecase(userId: userId);
+    } catch (e) {
+      LoggerUtil.e('Pending sync failed: $e');
+    } finally {
+      _syncing = false;
+    }
   }
 
   @override

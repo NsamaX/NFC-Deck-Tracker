@@ -20,6 +20,7 @@ offline sync results, local image paths, and bundled language discovery.
   round-trip.
 - `pending_delete_test.dart`: rows deleted offline are not imported back; the
   pendingDeletes table after a v1 upgrade.
+- `sync_pending_test.dart`: offline changes pushed on reconnect and sign-in.
 - `remote_parse_test.dart`: malformed Firestore documents keep local data.
 - `card_image_test.dart`: card create/update and guest data clearing when a
   card has no image.

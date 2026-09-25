@@ -280,6 +280,10 @@ only decide ids, timestamps, and which repository methods to bind.
 
 `call({deck, record, stats})` — pure `RecordSummary` (totals, share of the deck played, unused cards) for the insight panel.
 
+### SyncPendingUsecase (`sync_pending.dart`)
+
+`call({userId})` — push unsynced collections, custom cards, decks, and records, and retry pending deck, collection, and record deletes; returns the count. `ApplicationBloc` runs it on sign-in and when the device comes back online. Pending card deletes need the collection id and are retried when that collection is browsed.
+
 ### TrackingInteractionUsecase (`tracking_interaction.dart`)
 
 `call({deck, logs, tag})` — apply one NFC scan to the live tracker; returns `TrackingInteractionResult` with a `TrackingOutcome` (`applied`, `notInDeck`, `ignored`) that `TrackerBloc` maps to a warning.
