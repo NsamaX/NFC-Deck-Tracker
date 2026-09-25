@@ -26,6 +26,7 @@ class FetchRecordUsecase {
       fetchRemote: () =>
           recordRepository.fetchForRemote(userId: userId, deckId: deckId),
       target: SyncTarget(
+        remoteIsComplete: false,
         pendingDeletes:
             await pendingDeletes.ids(userId: userId, kind: SyncKind.record),
         deleteRemote: (e) => recordRepository.deleteForRemote(

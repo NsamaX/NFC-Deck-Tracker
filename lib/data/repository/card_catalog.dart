@@ -123,12 +123,16 @@ class CardCatalogRepositoryImpl implements CardCatalogRepository {
       fetchRemote: () => cardRepository.fetchForRemote(
           userId: userId, collectionId: collectionId),
       target: SyncTarget<CardEntity>(
-        pendingDeletes:
-            await pendingDeletes.ids(userId: userId, kind: SyncKind.card),
+        pendingDeletes: {
+          for (final id
+              in await pendingDeletes.ids(userId: userId, kind: SyncKind.card))
+            if (id.startsWith('$collectionId/'))
+              id.substring(collectionId.length + 1)
+        },
         deleteRemote: (e) => cardRepository.deleteForRemote(
             userId: userId, collectionId: e.collectionId, cardId: e.cardId),
-        forgetDelete: (id) =>
-            pendingDeletes.remove(userId: userId, kind: SyncKind.card, id: id),
+        forgetDelete: (id) => pendingDeletes.remove(
+            userId: userId, kind: SyncKind.card, id: '$collectionId/$id'),
         id: (e) => e.cardId,
         updatedAt: (e) => e.updatedAt,
         isSynced: (e) => e.isSynced,

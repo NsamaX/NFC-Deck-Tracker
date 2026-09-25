@@ -27,8 +27,8 @@ class DeleteCardUsecase {
           collectionId: collectionId, cardId: cardId),
       remote: () => cardRepository.deleteForRemote(
           userId: userId, collectionId: collectionId, cardId: cardId),
-      rememberPending: () =>
-          pendingDeletes.add(userId: userId, kind: SyncKind.card, id: cardId),
+      rememberPending: () => pendingDeletes.add(
+          userId: userId, kind: SyncKind.card, id: '$collectionId/$cardId'),
     );
 
     await imageRepository.delete(imageUrls: [imageUrl]);

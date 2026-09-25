@@ -93,7 +93,7 @@ calls when it is empty.
 ### PendingDeleteRepository (`pending_delete.dart`)
 
 Local list of rows deleted while their remote delete failed, per user and
-`SyncKind`, so `reconcile` deletes them remotely instead of importing them.
+`SyncKind`, so `reconcile` deletes them remotely instead of importing them. Card ids are stored as `collectionId/cardId`.
 
 - `add` — remember a pending remote delete (idempotent)
 - `ids` — pending ids of one kind for a user
@@ -282,7 +282,7 @@ only decide ids, timestamps, and which repository methods to bind.
 
 ### SyncPendingUsecase (`sync_pending.dart`)
 
-`call({userId})` — push unsynced collections, custom cards, decks, and records, and retry pending deck, collection, and record deletes; returns the count. `ApplicationBloc` runs it on sign-in and when the device comes back online. Pending card deletes need the collection id and are retried when that collection is browsed.
+`call({userId})` — reconcile only the lists that hold unsynced rows (collections, a custom collection's cards, decks, a deck's records) or pending collection/deck deletes, and retry pending record and card deletes by id; returns what was synced. `ApplicationBloc` runs it on sign-in and when the device comes back online. Conflicts go through `SyncPolicy.reconcile`, so an older offline edit never overwrites a newer remote one.
 
 ### TrackingInteractionUsecase (`tracking_interaction.dart`)
 

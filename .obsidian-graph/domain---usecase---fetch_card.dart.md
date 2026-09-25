@@ -2,6 +2,7 @@
 tags:
   - layer/domain
   - role/usecase
+  - coupling/medium
 ---
 
 # fetch_card.dart

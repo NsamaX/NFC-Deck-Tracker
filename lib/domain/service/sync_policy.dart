@@ -19,6 +19,10 @@ class SyncTarget<T> {
   final Future<bool> Function(T entity)? deleteRemote;
   final Future<void> Function(String id)? forgetDelete;
 
+  /// False when the remote list is scoped (records of one deck), so a
+  /// pending id missing from it may belong to another scope.
+  final bool remoteIsComplete;
+
   const SyncTarget({
     required this.id,
     required this.updatedAt,
@@ -33,6 +37,7 @@ class SyncTarget<T> {
     this.pendingDeletes = const {},
     this.deleteRemote,
     this.forgetDelete,
+    this.remoteIsComplete = true,
   });
 }
 
@@ -90,9 +95,11 @@ class SyncPolicy {
       return result;
     }
 
-    final remoteIds = {for (final r in remoteList) target.id(r)};
-    for (final id in target.pendingDeletes.difference(remoteIds)) {
-      await target.forgetDelete?.call(id);
+    if (target.remoteIsComplete) {
+      final remoteIds = {for (final r in remoteList) target.id(r)};
+      for (final id in target.pendingDeletes.difference(remoteIds)) {
+        await target.forgetDelete?.call(id);
+      }
     }
 
     final pending = <T>[];

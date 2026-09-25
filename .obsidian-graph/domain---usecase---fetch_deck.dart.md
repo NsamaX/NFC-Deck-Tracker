@@ -2,7 +2,7 @@
 tags:
   - layer/domain
   - role/usecase
-  - coupling/medium
+  - coupling/high
 ---
 
 # fetch_deck.dart

@@ -2,7 +2,7 @@
 tags:
   - layer/domain
   - role/usecase
-  - coupling/medium
+  - coupling/high
 ---
 
 # sync_pending.dart
@@ -15,6 +15,9 @@ tags:
 - [[domain---repository---deck.dart]]
 - [[domain---repository---pending_delete.dart]]
 - [[domain---repository---record.dart]]
-- [[domain---service---domain_logger.dart]]
+- [[domain---usecase---fetch_card.dart]]
+- [[domain---usecase---fetch_collection.dart]]
+- [[domain---usecase---fetch_deck.dart]]
+- [[domain---usecase---fetch_record.dart]]
 - [[domain---value---sync_kind.dart]]
 

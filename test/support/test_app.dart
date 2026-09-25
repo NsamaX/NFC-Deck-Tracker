@@ -242,6 +242,15 @@ class TestWorld {
           deckRepository: decks,
           recordRepository: records,
           pendingDeletes: MemoryPendingDeletes(),
+          fetchCollections: FetchCollectionUsecase(
+              pendingDeletes: MemoryPendingDeletes(),
+              collectionRepository: collections),
+          fetchCards: FetchCardUsecase(repository: LocalCatalog(cards)),
+          fetchDecks: FetchDeckUsecase(
+              pendingDeletes: MemoryPendingDeletes(), deckRepository: decks),
+          fetchRecords: FetchRecordUsecase(
+              pendingDeletes: MemoryPendingDeletes(),
+              recordRepository: records),
         ),
       ),
       collectionBloc: CollectionBloc(

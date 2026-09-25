@@ -116,12 +116,15 @@ void _localUsecase() {
 
 void _syncUsecase() {
   locator.registerLazySingleton(() => SyncPendingUsecase(
-        logger: const AppDomainLogger(),
         collectionRepository: locator<CollectionRepository>(),
         cardRepository: locator<CardRepository>(),
         deckRepository: locator<DeckRepository>(),
         recordRepository: locator<RecordRepository>(),
         pendingDeletes: locator<PendingDeleteRepository>(),
+        fetchCollections: locator<FetchCollectionUsecase>(),
+        fetchCards: locator<FetchCardUsecase>(),
+        fetchDecks: locator<FetchDeckUsecase>(),
+        fetchRecords: locator<FetchRecordUsecase>(),
       ));
 }
 
