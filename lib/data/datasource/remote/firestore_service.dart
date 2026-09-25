@@ -74,7 +74,7 @@ class FirestoreService {
     }).toList();
   }
 
-  Future<DocumentSnapshot<Map<String, dynamic>>?> getDocument({
+  Future<Map<String, dynamic>?> getDocument({
     required String collectionPath,
     required String documentId,
   }) async {
@@ -84,8 +84,7 @@ class FirestoreService {
     try {
       final doc =
           await firestore.collection(collectionPath).doc(documentId).get();
-      if (!doc.exists) return null;
-      return doc;
+      return doc.exists ? doc.data() : null;
     } catch (e) {
       LoggerUtil.e(
           'Failed to get document "$documentId" in "$collectionPath": $e');

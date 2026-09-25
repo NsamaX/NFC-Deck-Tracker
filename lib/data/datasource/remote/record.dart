@@ -1,9 +1,13 @@
+import 'package:nfc_deck_tracker/domain/value/remote_unavailable.dart';
+
 import '../../model/record.dart';
 import '../../model/share_record.dart';
 
 import 'firestore_service.dart';
 
 class RecordRemoteDatasource {
+  static const String sharesPath = 'shares';
+
   final FirestoreService _firestoreService;
 
   RecordRemoteDatasource(this._firestoreService);
@@ -44,15 +48,15 @@ class RecordRemoteDatasource {
   Future<ShareRecordModel?> import({
     required String userId,
   }) async {
-    final docSnapshot = await _firestoreService.getDocument(
-      collectionPath: 'users/$userId',
-      documentId: 'room',
+    final data = await _firestoreService.getDocument(
+      collectionPath: sharesPath,
+      documentId: userId,
     );
-
-    if (docSnapshot != null && docSnapshot.exists) {
-      return ShareRecordModel.fromJson(docSnapshot.data()!);
-    } else {
-      return null;
+    if (data == null) return null;
+    try {
+      return ShareRecordModel.fromJson(data);
+    } catch (e) {
+      throw RemoteUnavailableException('malformed $sharesPath/$userId: $e');
     }
   }
 
@@ -61,9 +65,10 @@ class RecordRemoteDatasource {
     required ShareRecordModel shareRecord,
   }) async {
     return await _firestoreService.insert(
-      collectionPath: 'users/$userId',
-      documentId: 'room',
+      collectionPath: sharesPath,
+      documentId: userId,
       data: shareRecord.toJson(),
+      merge: false,
     );
   }
 

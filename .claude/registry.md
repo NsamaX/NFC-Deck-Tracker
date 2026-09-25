@@ -104,8 +104,8 @@ calls when it is empty.
 - `deleteForRemote` — delete the user's record
 - `fetchForLocal` — records of one deck
 - `fetchForRemote` — the user's records of one deck
-- `import` — fetch a record shared to this user, or null when none exists
-- `share` — publish a record to another user
+- `import` — the record shared by the user whose id was scanned (`shares/{userId}`), or null when none exists
+- `share` — publish this user's current record to `shares/{userId}`, replacing the previous one
 - `updateForLocal` — update a record
 - `updateForRemote` — update the user's record
 

@@ -16,6 +16,8 @@ offline sync results, local image paths, and bundled language discovery.
 - `game_api_test.dart`: `ApiClient` retries, request sharing, 404 memory, and
   spacing; the Scryfall adapter against `MockClient`.
 - `image_repository_test.dart`: local image files removed when replaced or deleted.
+- `share_record_test.dart`: shared records use a valid Firestore path and
+  round-trip.
 - `remote_parse_test.dart`: malformed Firestore documents keep local data.
 - `card_image_test.dart`: card create/update and guest data clearing when a
   card has no image.

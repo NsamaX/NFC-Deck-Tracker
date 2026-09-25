@@ -13,4 +13,5 @@ tags:
 - [[data---datasource---remote---firestore_service.dart]]
 - [[data---model---record.dart]]
 - [[data---model---share_record.dart]]
+- [[domain---value---remote_unavailable.dart]]
 
