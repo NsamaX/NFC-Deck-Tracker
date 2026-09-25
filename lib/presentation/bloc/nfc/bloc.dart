@@ -32,66 +32,64 @@ class NfcBloc extends Bloc<NfcEvent, NfcState> {
       warningMessage: '',
       errorMessage: '',
     ));
-
-    LoggerUtil.d(
-        '[Session Control] Starting NFC session: ${event.card == null ? "Read" : "Write"} mode');
-
-    try {
-      final isAvailable = await session.isAvailable();
-      if (!isAvailable) {
-        emit(state.copyWith(errorMessage: 'nfc_snack_bar.error_unavailable'));
-        throw Exception('NFC is not available.');
-      }
-
-      await session.start(
-          card: event.card,
-          onResult: (result) {
-            if (!isClosed) add(NfcResultEvent(result));
-          });
-
-      emit(state.copyWith(isSessionActive: true));
-    } catch (e) {
-      emit(state.copyWith(errorMessage: 'nfc_snack_bar.error_start_session'));
-      LoggerUtil.e('[Session Control] Error initializing NFC session: $e');
-    } finally {
-      emit(state.copyWith(isSessionBusy: false));
-    }
+    await _start(event.card, emit,
+        failureKey: 'nfc_snack_bar.error_start_session');
+    emit(state.copyWith(isSessionBusy: false));
   }
 
   Future<void> _onStopSession(
       StopNfcSessionEvent event, Emitter<NfcState> emit) async {
     try {
       await session.stop();
-      emit(state.copyWith(isSessionActive: false, isSessionBusy: false));
       LoggerUtil.d(
           '[Session Control] NFC session stopped. Reason: ${event.reason}');
     } catch (e) {
       LoggerUtil.e('[Session Control] Error stopping session: $e');
-      emit(state.copyWith(isSessionBusy: false));
     }
+    emit(state.copyWith(isSessionActive: false, isSessionBusy: false));
   }
 
   Future<void> _onRestartSession(
       RestartNfcSessionEvent event, Emitter<NfcState> emit) async {
-    if (state.isSessionBusy) return;
-    emit(state.copyWith(isSessionBusy: true));
+    if (state.isSessionBusy || !state.isSessionActive) return;
     emit(state.copyWith(
-        successMessage: '', warningMessage: '', errorMessage: ''));
+      isSessionBusy: true,
+      successMessage: '',
+      warningMessage: '',
+      errorMessage: '',
+    ));
+    try {
+      await session.stop();
+    } catch (e) {
+      LoggerUtil.e('[Error Recovery] Error stopping session: $e');
+    }
+    emit(state.copyWith(isSessionActive: false));
+    await _start(event.card, emit,
+        failureKey: 'nfc_snack_bar.error_restart_session');
+    emit(state.copyWith(isSessionBusy: false));
+  }
 
-    if (state.isSessionActive) {
-      try {
-        if (event.isCardChanged) {
-          LoggerUtil.d(
-              '[Error Recovery] Card changed. Restarting NFC session...');
-          add(StopNfcSessionEvent(
-              reason: 'Card changed, restarting session...'));
-        }
-        add(StartNfcSessionEvent(card: event.card));
-      } catch (e) {
-        emit(state.copyWith(
-            errorMessage: 'nfc_snack_bar.error_restart_session'));
-        LoggerUtil.e('[Error Recovery] Failed to restart NFC session: $e');
+  Future<void> _start(
+    CardEntity? card,
+    Emitter<NfcState> emit, {
+    required String failureKey,
+  }) async {
+    LoggerUtil.d(
+        '[Session Control] Starting NFC session: ${card == null ? "Read" : "Write"} mode');
+    try {
+      if (!await session.isAvailable()) {
+        emit(state.copyWith(errorMessage: 'nfc_snack_bar.error_unavailable'));
+        return;
       }
+      await session.start(
+          card: card,
+          onResult: (result) {
+            if (!isClosed) add(NfcResultEvent(result));
+          });
+      emit(state.copyWith(isSessionActive: true));
+    } catch (e) {
+      emit(state.copyWith(errorMessage: failureKey));
+      LoggerUtil.e('[Session Control] Error starting NFC session: $e');
     }
   }
 

@@ -31,15 +31,13 @@ class StopNfcSessionEvent extends NfcEvent {
 
 class RestartNfcSessionEvent extends NfcEvent {
   final CardEntity? card;
-  final bool isCardChanged;
 
   const RestartNfcSessionEvent({
     this.card,
-    this.isCardChanged = false,
   });
 
   @override
-  List<Object?> get props => [card, isCardChanged];
+  List<Object?> get props => [card];
 }
 
 class NfcResultEvent extends NfcEvent {

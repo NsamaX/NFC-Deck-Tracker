@@ -11,6 +11,7 @@ import 'package:nfc_deck_tracker/data/repository/nfc.dart';
 class FakeNfcRepository implements NfcRepository {
   bool available = true;
   bool stopped = false;
+  int starts = 0;
   CardEntity? writeCard;
   void Function(NfcResult)? report;
   @override
@@ -18,6 +19,7 @@ class FakeNfcRepository implements NfcRepository {
   @override
   Future<void> start(
       {CardEntity? card, required void Function(NfcResult) onResult}) async {
+    starts++;
     writeCard = card;
     report = onResult;
   }
@@ -75,8 +77,40 @@ void main() {
     final failed = bloc.stream.firstWhere(
         (state) => !state.isSessionBusy && state.errorMessage.isNotEmpty);
     bloc.add(const StartNfcSessionEvent());
-    expect((await failed).isSessionActive, isFalse);
+    final state = await failed;
+    expect(state.isSessionActive, isFalse);
+    expect(state.errorMessage, 'nfc_snack_bar.error_unavailable');
     expect(repository.report, isNull);
+  });
+
+  test('a restart after an error starts a new session and frees the bloc',
+      () async {
+    final repository = FakeNfcRepository();
+    final bloc = NfcBloc(session: NfcSessionUsecase(repository));
+    addTearDown(bloc.close);
+    bloc.add(const StartNfcSessionEvent());
+    await bloc.stream.firstWhere((s) => s.isSessionActive && !s.isSessionBusy);
+
+    bloc.add(const RestartNfcSessionEvent());
+    await bloc.stream.firstWhere((s) => s.isSessionActive && !s.isSessionBusy);
+    expect(repository.starts, 2);
+    expect(repository.stopped, isTrue);
+
+    bloc.add(const StopNfcSessionEvent());
+    await bloc.stream.firstWhere((s) => !s.isSessionActive);
+    bloc.add(const StartNfcSessionEvent());
+    await bloc.stream.firstWhere((s) => s.isSessionActive && !s.isSessionBusy);
+    expect(repository.starts, 3);
+  });
+
+  test('a restart without an active session does nothing', () async {
+    final repository = FakeNfcRepository();
+    final bloc = NfcBloc(session: NfcSessionUsecase(repository));
+    addTearDown(bloc.close);
+    bloc.add(const RestartNfcSessionEvent());
+    await Future<void>.delayed(Duration.zero);
+    expect(repository.starts, 0);
+    expect(bloc.state.isSessionBusy, isFalse);
   });
 
   test('NDEF adapter retains the existing coId/caId wire format', () {
