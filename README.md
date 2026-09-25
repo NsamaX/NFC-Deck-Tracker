@@ -56,6 +56,7 @@ Release builds also need `android/key.properties` and a keystore.
 ```powershell
 dart run tool/verify.dart
 flutter test --dart-define=GUEST_MODE=true
+flutter test integration_test -d emulator-5554 --dart-define=GUEST_MODE=true
 ```
 
 `verify.dart` checks layer boundaries, `.claude/registry.md`, and

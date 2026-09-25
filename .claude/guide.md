@@ -203,6 +203,8 @@ dart run tool/verify.dart   # graph --check, registry, dart analyze
 . .\scripts\android-env.ps1
 flutter test --no-pub --dart-define=GUEST_MODE=true
 flutter build apk --debug --target-platform android-x64 --dart-define=GUEST_MODE=true --no-pub
+# emulator running (scripts/run-guest.ps1 starts one):
+flutter test integration_test -d emulator-5554 --dart-define=GUEST_MODE=true --no-pub
 ```
 
 | What changed | Test with |
@@ -214,8 +216,10 @@ flutter build apk --debug --target-platform android-x64 --dart-define=GUEST_MODE
 | Game API | `MockClient` from `package:http/testing.dart`; see `test/game_api_test.dart` |
 | NDEF codec | `NfcTag` built from a data map; see `test/nfc_flow_test.dart` |
 
-`test/README.md` lists every test file. Tests do not cover physical NFC,
-real Firebase, or real Supabase.
+`test/README.md` lists every test file. `integration_test/` runs the real
+Guest app (composition, SQLite, SharedPreferences) on an emulator; it seeds
+a card through use cases because the image picker cannot be scripted. No
+test covers physical NFC, real Firebase, or real Supabase.
 
 `dart run tool/graph.dart` regenerates `.obsidian-graph/` (one note per file,
 `.VIOLATIONS.md`, `.GRAPH-CONTEXT.md`); open it as an Obsidian vault to see
