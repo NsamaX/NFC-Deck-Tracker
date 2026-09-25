@@ -17,7 +17,6 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
   }) : super(const ReaderState()) {
     on<ReadTagEvent>(_onReadTag);
     on<SetReadedCardsEvent>(_onSetReadedCards);
-    on<ResetReadedCardsEvent>(_onResetReadedCards);
     on<ClearReaderMessagesEvent>(_onClearReaderMessages);
   }
 
@@ -68,11 +67,6 @@ class ReaderBloc extends Bloc<ReaderEvent, ReaderState> {
 
   void _onSetReadedCards(SetReadedCardsEvent event, Emitter<ReaderState> emit) {
     emit(state.copyWith(readedCards: event.readedCards));
-  }
-
-  void _onResetReadedCards(
-      ResetReadedCardsEvent event, Emitter<ReaderState> emit) {
-    emit(state.copyWith(readedCards: []));
   }
 
   void _onClearReaderMessages(

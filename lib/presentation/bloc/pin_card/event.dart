@@ -19,16 +19,3 @@ class PinColorEvent extends PinCardEvent {
   @override
   List<Object?> get props => [cardId, color];
 }
-
-class RemovePinEvent extends PinCardEvent {
-  final String cardId;
-
-  const RemovePinEvent({
-    required this.cardId,
-  });
-
-  @override
-  List<Object?> get props => [cardId];
-}
-
-class ResetPinEvent extends PinCardEvent {}

@@ -9,8 +9,6 @@ part 'state.dart';
 class PinCardBloc extends Bloc<PinCardEvent, PinCardState> {
   PinCardBloc() : super(const PinCardState()) {
     on<PinColorEvent>(_onPinColor);
-    on<RemovePinEvent>(_onRemovePin);
-    on<ResetPinEvent>(_onResetPin);
   }
 
   void _onPinColor(PinColorEvent event, Emitter<PinCardState> emit) {
@@ -23,15 +21,5 @@ class PinCardBloc extends Bloc<PinCardEvent, PinCardState> {
     }
 
     emit(state.copyWith(pinColor: updatedColors));
-  }
-
-  void _onRemovePin(RemovePinEvent event, Emitter<PinCardState> emit) {
-    final updatedColors = Map<String, Color>.from(state.pinColor);
-    updatedColors.remove(event.cardId);
-    emit(state.copyWith(pinColor: updatedColors));
-  }
-
-  void _onResetPin(ResetPinEvent event, Emitter<PinCardState> emit) {
-    emit(state.copyWith(pinColor: {}));
   }
 }

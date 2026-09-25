@@ -29,6 +29,4 @@ class SetReadedCardsEvent extends ReaderEvent {
   List<Object?> get props => [readedCards];
 }
 
-class ResetReadedCardsEvent extends ReaderEvent {}
-
 class ClearReaderMessagesEvent extends ReaderEvent {}
