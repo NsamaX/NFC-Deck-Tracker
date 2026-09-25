@@ -1,4 +1,4 @@
-package com.tacticsv.nfc_deck_tracker
+package com.nsamax.nfc_deck_tracker
 
 import android.app.PendingIntent
 import android.content.Intent

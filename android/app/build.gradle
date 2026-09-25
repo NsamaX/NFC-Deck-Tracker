@@ -15,7 +15,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.tacticsv.nfc_deck_tracker"
+    namespace = "com.nsamax.nfc_deck_tracker"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -30,7 +30,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.tacticsv.nfc_deck_tracker"
+        applicationId = "com.nsamax.nfc_deck_tracker"
         minSdk = 24
         targetSdk = 35
         versionCode = flutter.versionCode
