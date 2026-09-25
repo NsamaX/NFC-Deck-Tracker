@@ -11,6 +11,3 @@ tags:
 ## Imports
 - [[config---runtime.dart]]
 
-## Packages
-- `package:flutter/foundation.dart`
-

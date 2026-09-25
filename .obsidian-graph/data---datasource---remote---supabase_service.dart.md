@@ -3,7 +3,6 @@ tags:
   - layer/data
   - role/datasource-remote
   - entry/service
-  - coupling/medium
 ---
 
 # supabase_service.dart

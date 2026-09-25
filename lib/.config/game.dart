@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'runtime.dart';
 
 class GameConfig {

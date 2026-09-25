@@ -1,13 +1,8 @@
 import '../domain/repository/nfc.dart';
-import '../domain/usecase/nfc_session.dart';
 import '../domain/repository/device.dart';
-import '../domain/usecase/device.dart';
 import '../domain/repository/session.dart';
-import '../domain/usecase/session.dart';
-import 'package:flutter/foundation.dart';
 
 import '../domain/repository/index.dart';
-import '../.config/app.dart';
 import '../util/domain_logger.dart';
 import 'package:nfc_deck_tracker/domain/usecase/index.dart';
 

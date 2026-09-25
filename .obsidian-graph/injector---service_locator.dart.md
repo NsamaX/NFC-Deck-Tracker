@@ -18,6 +18,3 @@ tags:
 - [[injector---register_usecase.dart]]
 - [[util---logger.dart]]
 
-## Packages
-- `package:flutter/foundation.dart`
-

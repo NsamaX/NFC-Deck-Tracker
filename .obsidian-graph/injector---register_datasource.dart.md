@@ -19,9 +19,5 @@ tags:
 - [[data---datasource---local---sqlite_service.dart]]
 - [[data---datasource---remote---firestore_service.dart]]
 - [[data---datasource---remote---index.dart]]
-- [[data---datasource---remote---supabase_service.dart]]
 - [[util---logger.dart]]
-
-## Packages
-- `package:flutter/foundation.dart`
 

@@ -3,7 +3,8 @@ import 'dart:io';
 const steps = [
   ('graph', ['run', 'tool/graph.dart', '--check']),
   ('registry', ['run', 'tool/verify_registry.dart']),
-  ('analyze', ['analyze']),
+  // `dart analyze` skips dot-directories, so name them explicitly.
+  ('analyze', ['analyze', '.', 'lib/.injector', 'lib/.config']),
 ];
 
 Future<void> main() async {

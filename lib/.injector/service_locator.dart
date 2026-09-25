@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 
 import 'package:nfc_deck_tracker/util/logger.dart';
 
