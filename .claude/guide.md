@@ -204,7 +204,12 @@ dart run tool/verify.dart   # graph --check, registry, dart analyze
 flutter test --no-pub --dart-define=GUEST_MODE=true
 flutter build apk --debug --target-platform android-x64 --dart-define=GUEST_MODE=true --no-pub
 # emulator running (scripts/run-guest.ps1 starts one):
-flutter test integration_test -d emulator-5554 --dart-define=GUEST_MODE=true --no-pub
+flutter test integration_test/guest_app_test.dart -d emulator-5554 --dart-define=GUEST_MODE=true --no-pub
+# screenshots of every page with mock data, written to .temp/screenshots
+# (wipes the emulator's guest data first):
+flutter drive --driver=test_driver/screenshots.dart --target=integration_test/screenshots_test.dart -d emulator-5554 --dart-define=GUEST_MODE=true --no-pub
+# online build (needs android/app/google-services.json and a filled .env):
+flutter drive --driver=test_driver/screenshots.dart --target=integration_test/online_smoke_test.dart -d emulator-5554 --no-pub
 ```
 
 | What changed | Test with |
