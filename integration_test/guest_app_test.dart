@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:nfc_deck_tracker/.config/app.dart';
 
 import 'package:nfc_deck_tracker/.injector/service_locator.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
@@ -34,11 +37,16 @@ void main() {
     final collectionName = 'IT Cards $stamp';
     final cardName = 'IT Knight $stamp';
 
+    // Earlier runs may have left another language stored on the device.
+    await (await SharedPreferences.getInstance())
+        .setString(AppConfig.keyLocale, 'en');
+
     app.main();
     await pumpUntil(
         tester,
-        find.byWidgetPredicate((w) =>
-            w is Text && (w.data == 'Get Started' || w.data == 'Decks')));
+        find.byWidgetPredicate(
+            (w) => w is Text && (w.data == 'Get Started' || w.data == 'Decks')),
+        timeout: const Duration(minutes: 1));
     if (find.text('Get Started').evaluate().isNotEmpty) {
       await tapAndSettle(tester, find.text('Get Started'));
       await tapAndSettle(tester, find.text('Continue as Guest'));
@@ -74,9 +82,6 @@ void main() {
 
     await tapAndSettle(tester, find.byIcon(Icons.play_arrow_rounded));
     await pumpUntil(tester, find.text('Deck Tracker'));
-    if (find.text('OK').evaluate().isNotEmpty) {
-      await tapAndSettle(tester, find.text('OK'));
-    }
     expect(find.text(cardName), findsOneWidget);
     await tapAndSettle(tester, find.byIcon(Icons.wifi_tethering_off_rounded));
     await pumpUntil(tester, find.textContaining('NFC'));
