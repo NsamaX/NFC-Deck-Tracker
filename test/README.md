@@ -31,5 +31,8 @@ offline sync results, local image paths, and bundled language discovery.
 - `flows_widget_test.dart`: end-to-end page flows (deck builder, custom card
   create/edit, tracker history) against real blocs and in-memory repositories
   from `support/test_app.dart`; no emulator or Firebase needed.
+- `pages_widget_test.dart`: landing to guest sign-in, settings theme and info
+  pages, about version, language choice, library, tracker advanced mode and
+  card pins, collection create and delete.
 - `tracker_bloc_test.dart`, `deck_builder_bloc_test.dart`, `bloc_error_test.dart`:
   bloc behavior, including error state.
