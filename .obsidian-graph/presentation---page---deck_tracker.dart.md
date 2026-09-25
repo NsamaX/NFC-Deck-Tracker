@@ -16,7 +16,6 @@ tags:
 - [[presentation---bloc---nfc---bloc.dart]]
 - [[presentation---bloc---tracker---bloc.dart]]
 - [[presentation---dependencies.dart]]
-- [[presentation---locale---localization.dart]]
 - [[presentation---widget---app_bar---deck_tracker.dart]]
 - [[presentation---widget---deck---insight_view.dart]]
 - [[presentation---widget---deck---switch_mode.dart]]
@@ -25,10 +24,8 @@ tags:
 - [[presentation---widget---drawer---share_record.dart]]
 - [[presentation---widget---listener---error.dart]]
 - [[presentation---widget---listener---tracker.dart]]
-- [[presentation---widget---notification---cupertino_dialog.dart]]
 
 ## Packages
-- `package:flutter/cupertino.dart`
 - `package:flutter/material.dart`
 - `package:flutter_bloc/flutter_bloc.dart`
 

@@ -326,7 +326,7 @@ means "not set yet" (a blank form), so guards test `isEmpty`, never `null`.
 
 ### AppSettings (`app_settings.dart`)
 
-Typed preferences: `locale`, `isDark`, `showNfcTutorial`, and optional
+Typed preferences: `locale`, `isDark`, and optional
 `guestId`, `recentId`, `recentGame`. `copyWith(clearGuestId: true)` signs a
 guest out; `isGuest` is `guestId != null`.
 

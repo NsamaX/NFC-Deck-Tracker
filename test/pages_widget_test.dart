@@ -110,8 +110,8 @@ void main() {
         .firstWhere((s) => s.currentDeck.deckId == 'deck' && !s.isLoading);
 
     await world.pump(tester, initialRoute: RouteConstant.deck_tracker);
-    await tester.tap(find.text('OK'));
-    await tester.pumpAndSettle();
+    expect(find.text('NFC is not available on this device.'), findsOneWidget,
+        reason: 'opening the tracker starts an NFC session right away');
 
     expect(find.byIcon(Icons.refresh_rounded), findsNothing);
     await tester.tap(find.byIcon(Icons.build_outlined));

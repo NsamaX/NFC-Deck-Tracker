@@ -165,8 +165,6 @@ void main() {
         .firstWhere((s) => s.currentDeck.deckId == 'deck' && !s.isLoading);
 
     await world.pump(tester, initialRoute: RouteConstant.deck_tracker);
-    await tester.tap(find.text('OK'));
-    await tester.pumpAndSettle();
     await tester.tap(find.text('Statistics'));
     await tester.pumpAndSettle();
     await tester.pump(const Duration(seconds: 5));
@@ -216,8 +214,6 @@ void main() {
 
     await world.pump(tester, initialRoute: RouteConstant.deck_builder);
     await tester.tap(find.byIcon(Icons.play_arrow_rounded));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('OK'));
     await tester.pumpAndSettle();
     expect(world.createdBlocs.length, 4);
     expect(world.createdBlocs.every((b) => !b.isClosed), isTrue);

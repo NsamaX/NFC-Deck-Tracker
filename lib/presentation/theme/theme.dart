@@ -18,7 +18,6 @@ extension CustomColorScheme on ColorScheme {
   Color get pinColor3 => AppColor.pinColor3;
 
   Color get opacityText => AppColor.opacityText;
-  Color get tutorial => AppColor.tutorial;
 }
 
 class AppThemes {

@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nfc_deck_tracker/domain/entity/card.dart';
 import 'package:nfc_deck_tracker/presentation/dependencies.dart';
 
-import '../../bloc/application/bloc.dart';
 import '../../bloc/deck_builder/bloc.dart';
 import '../../bloc/deck/bloc.dart';
 import '../../bloc/nfc/bloc.dart';
@@ -14,7 +13,6 @@ import '../../route/constant.dart';
 
 import '../notification/cupertino_dialog.dart';
 import '../notification/snackbar.dart';
-import '../specific/tutorail_nfc_icon.dart';
 
 import 'default.dart';
 import '../../route/arguments.dart';
@@ -186,17 +184,6 @@ class DeckBuilderAppBar extends StatelessWidget implements PreferredSizeWidget {
               .translate('page_deck_builder.toggle_edit'),
           action: MenuAction.callback(() {
             context.read<DeckBuilderBloc>().add(ToggleEditModeEvent());
-            if (context.read<ApplicationBloc>().state.tutorialNfcIcon) {
-              showGeneralDialog(
-                context: context,
-                barrierDismissible: true,
-                barrierLabel: "Tutorial",
-                transitionDuration: const Duration(milliseconds: 200),
-                pageBuilder: (_, __, ___) => const TutorailNFCIcon(),
-              );
-              context.read<ApplicationBloc>().add(UpdateSettingsEvent(
-                  (s) => s.copyWith(showNfcTutorial: false)));
-            }
           }),
         ),
       ];

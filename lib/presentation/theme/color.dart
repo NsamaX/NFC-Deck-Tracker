@@ -22,5 +22,4 @@ class AppColor {
   static const Color pinColor3 = Color(0xFFFF9E8F);
 
   static const Color opacityText = Color(0xFFAEAEAE);
-  static const Color tutorial = Color(0xFF1C1C2A);
 }

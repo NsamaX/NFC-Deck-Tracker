@@ -191,8 +191,7 @@ class TestWorld {
   final cards = MemoryCards();
   final collections = MemoryCollections();
   final records = MemoryRecords();
-  final settings = MemorySettings(
-      const AppSettings(guestId: 'guest', showNfcTutorial: false));
+  final settings = MemorySettings(const AppSettings(guestId: 'guest'));
   final device = FakeDevice();
   final nfc = NoNfc();
   final images = PassThroughImages();

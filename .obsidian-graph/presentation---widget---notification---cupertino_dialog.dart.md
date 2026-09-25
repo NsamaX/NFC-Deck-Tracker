@@ -2,7 +2,6 @@
 tags:
   - layer/presentation
   - role/widget
-  - coupling/medium
 ---
 
 # cupertino_dialog.dart

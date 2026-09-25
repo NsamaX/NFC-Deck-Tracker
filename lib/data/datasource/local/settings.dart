@@ -13,8 +13,6 @@ class SettingsLocalDatasource {
     return AppSettings(
       locale: await _read<String>(AppConfig.keyLocale) ?? defaults.locale,
       isDark: await _read<bool>(AppConfig.keyIsDark) ?? defaults.isDark,
-      showNfcTutorial:
-          await _read<bool>(AppConfig.keyTutorial) ?? defaults.showNfcTutorial,
       guestId: await _read<String>(AppConfig.keyGuestId),
       recentId: await _read<String>(AppConfig.keyRecentId),
       recentGame: await _read<String>(AppConfig.keyRecentGame),
@@ -26,8 +24,6 @@ class SettingsLocalDatasource {
         key: AppConfig.keyLocale, value: settings.locale);
     await _sharedPreferencesService.save(
         key: AppConfig.keyIsDark, value: settings.isDark);
-    await _sharedPreferencesService.save(
-        key: AppConfig.keyTutorial, value: settings.showNfcTutorial);
     await _sharedPreferencesService.save(
         key: AppConfig.keyGuestId, value: settings.guestId);
     await _sharedPreferencesService.save(

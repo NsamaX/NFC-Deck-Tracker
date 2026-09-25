@@ -15,33 +15,6 @@ class DialogChoice {
   });
 }
 
-void buildCupertinoAlertDialog({
-  required ThemeData theme,
-  required String title,
-  required String content,
-  required String confirmButtonText,
-  required VoidCallback? onPressed,
-  required VoidCallback closeDialog,
-  required void Function(Widget dialog) showDialog,
-}) {
-  _buildShowDialog(
-    theme: theme,
-    title: title,
-    content: content,
-    actions: [
-      _buildActionDialog(
-        text: confirmButtonText,
-        color: theme.colorScheme.active,
-        onPressed: () {
-          closeDialog();
-          onPressed?.call();
-        },
-      ),
-    ],
-    showDialog: showDialog,
-  );
-}
-
 void buildCupertinoActionDialog({
   required ThemeData theme,
   required String title,

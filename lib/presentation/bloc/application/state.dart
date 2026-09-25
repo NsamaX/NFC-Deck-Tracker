@@ -22,7 +22,6 @@ class ApplicationState extends Equatable {
   String? get guestId => settings.guestId;
   String? get recentId => settings.recentId;
   String? get recentGame => settings.recentGame;
-  bool get tutorialNfcIcon => settings.showNfcTutorial;
 
   ApplicationState copyWith({
     AppSettings? settings,
