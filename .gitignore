@@ -45,3 +45,6 @@ documents-private/
 
 .obsidian-graph/.obsidian/
 .obsidian-graph/.GRAPH-CONTEXT.md
+
+# Local scratch output (screenshots, logs)
+.temp/
